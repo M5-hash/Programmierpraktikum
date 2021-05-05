@@ -20,9 +20,9 @@ public class PlayingField {
      */
     public PlayingField(int rows) {
         field = new int[rows][rows];
-        for (int i = 0; i < rows; i++) {
-            for (int k = 0; k < rows; k++) {
-                field[i][k] = 0;
+        for (int y = 0; y < rows; y++) {
+            for (int x = 0; x < rows; x++) {
+                field[y][x] = 0;
             }
         }
     }
@@ -55,10 +55,10 @@ public class PlayingField {
         int shippart = 0;
 
         for (int[] ints : field) {
-            for (int y = 0; y < field.length; y++) {
-                if (ints[y] == 0) {
+            for (int x = 0; x < field.length; x++) {
+                if (ints[x] == 0) {
                     water++;
-                } else if (ints[y] == 3 || ints[y] == 4) {
+                } else if (ints[x] == 3 || ints[x] == 4) {
                     shippart++;
                 }
             }
@@ -96,18 +96,18 @@ public class PlayingField {
             boolean xP = x + 1 >= field.length;
             boolean yP = y + 1 >= field.length;
 
-            if ((xC || yC || field[x - 1][y - 1] != 3)
-                    && (yC || field[x][y - 1] != 3)
-                    && (xP || yC || field[x + 1][y - 1] != 3)
-                    && (xC || field[x - 1][y] != 3)
-                    && field[x][y] != 3
-                    && (xP || field[x + 1][y] != 3)
-                    && (xC || yP || field[x - 1][y + 1] != 3)
-                    && (yP || field[x][y + 1] != 3)
-                    && (xP || yP || field[x + 1][y + 1] != 3)
+            if ((xC || yC || field[y - 1][x - 1] != 3)
+                    && (yC || field[y - 1][x] != 3)
+                    && (yC || xP || field[y - 1][x + 1] != 3)
+                    && (xC || field[y][x - 1] != 3)
+                    && field[y][x] != 3
+                    && (xP || field[y][x + 1] != 3)
+                    && (xC || yP || field[y + 1][x - 1] != 3)
+                    && (yP || field[y + 1][x] != 3)
+                    && (xP || yP || field[y + 1][x + 1] != 3)
             ) {
-                System.out.println(field[x][y]);
-                field[x][y] = 4;
+                System.out.println(field[y][x]);
+                field[y][x] = 4;
             } else {
                 //Markierte Felder zurücksetzen, wenn Schiff nicht gesetzt werden darf
                 this.replaceNotfinal(0);
@@ -147,14 +147,14 @@ public class PlayingField {
         int headX = x;
         int headY = y;
 
-        while(headX-1 > 0 && this.field[headX-1][headY] > 0 && this.field[headX-1][headY] < 4){
-            headX--;
-        }
-        while(headY-1 > 0 && this.field[headX][headY-1] > 0 && this.field[headX][headY-1] < 4){
+        while(headY-1 > 0 && this.field[headY-1][headX] > 0 && this.field[headY-1][headX] < 4){
             headY--;
         }
+        while(headX-1 > 0 && this.field[headY][headX-1] > 0 && this.field[headY][headX-1] < 4){
+            headX--;
+        }
 
-        return new int[]{headX, headY};
+        return new int[]{headY, headX};
     }
 
     /**
@@ -167,33 +167,33 @@ public class PlayingField {
         checkCoordinatesInField(x, y);
 
         this.ships--;
-        this.field[x][y] = 0;
+        this.field[y][x] = 0;
 
         //Nach rechts
         int offset = 1;
-        while (x + offset >= 0 && this.field[x + offset][y] != 0) {
-            this.field[x + offset][y] = 0;
+        while (x + offset >= 0 && this.field[y][x + offset] != 0) {
+            this.field[y][x + offset] = 0;
             offset++;
         }
 
         //Nach links
         offset = -1;
-        while (x + offset < this.field.length && this.field[x + offset][y] != 0) {
-            this.field[x + offset][y] = 0;
+        while (x + offset < this.field.length && this.field[y][x + offset] != 0) {
+            this.field[y][x + offset] = 0;
             offset--;
         }
 
         //Nach unten
         offset = 1;
-        while (y + offset < this.field.length && this.field[x][y + offset] != 0) {
-            this.field[x][y + offset] = 0;
+        while (y + offset < this.field.length && this.field[y + offset][x] != 0) {
+            this.field[y + offset][x] = 0;
             offset++;
         }
 
         //Nach oben
         offset = -1;
-        while (y + offset >= 0 && this.field[x][y + offset] != 0) {
-            this.field[x][y + offset] = 0;
+        while (y + offset >= 0 && this.field[y + offset][x] != 0) {
+            this.field[y + offset][x] = 0;
             offset--;
         }
 
@@ -209,8 +209,8 @@ public class PlayingField {
     public int isShot(int x, int y) throws Exception {
         checkCoordinatesInField(x, y);
 
-        if (this.field[x][y] == 3) {
-            this.field[x][y] = 1;
+        if (this.field[y][x] == 3) {
+            this.field[y][x] = 1;
 
             //Überprüfen ob Schiff komplett zerstört
             //Falls ja, Schiff auf dem Spielfeld mit 2 markieren und ship-Variable dekrementieren
@@ -246,8 +246,8 @@ public class PlayingField {
 
         //Nach rechts bzw nach unten
         while (x + xOffset < this.field.length && y + yOffset < this.field.length
-                && this.field[x + xOffset][y + yOffset] != 0) {
-            this.field[x + xOffset][y + yOffset] = 2;
+                && this.field[y + yOffset][x + xOffset] != 0) {
+            this.field[y + yOffset][x + xOffset] = 2;
 
             if (horizontal) xOffset++;
             else yOffset++;
@@ -257,8 +257,8 @@ public class PlayingField {
         xOffset = 0;
         yOffset = 0;
         while (x + xOffset >= 0 && y + yOffset >= 0
-                && this.field[x + xOffset][y + yOffset] != 0) {
-            this.field[x + xOffset][y + yOffset] = 2;
+                && this.field[y + yOffset][x + xOffset] != 0) {
+            this.field[y + yOffset][x + xOffset] = 2;
 
             if (horizontal) xOffset--;
             else yOffset--;
@@ -282,26 +282,26 @@ public class PlayingField {
         int yOffset = 0;
 
         while (x + xOffset < this.field.length && y + yOffset < this.field.length
-                && this.field[x + xOffset][y + yOffset] == 1) {
+                && this.field[y + yOffset][x + xOffset] == 1) {
             if (horizontal) xOffset++;
             else yOffset++;
         }
 
         //Überprüfen ob nach zerstörten Schiffsteilen Wasser
-        if (this.field[x + xOffset][y + yOffset] == 0) {
+        if (this.field[y + yOffset][x + xOffset] == 0) {
             firstSideDestroyed = true;
         }
 
         xOffset = 0;
         yOffset = 0;
         while (x + xOffset >= 0 && y + yOffset >= 0
-                && this.field[x + xOffset][y + yOffset] == 1) {
+                && this.field[y + yOffset][x + xOffset] == 1) {
             if (horizontal) xOffset--;
             else yOffset--;
         }
 
         //Überprüfen ob nach zerstörten Schiffsteilen Wasser
-        if (this.field[x + xOffset][y + yOffset] == 0) {
+        if (this.field[y + yOffset][x + xOffset] == 0) {
             secondSideDestroyed = true;
         }
 
@@ -334,10 +334,10 @@ public class PlayingField {
      * @param set Status in den die Notfinal-Werte umgeändert werden sollen
      */
     private void replaceNotfinal(int set) {
-        for (int k = 0; k < field.length; k++) {
-            for (int j = 0; j < field.length; j++) {
-                if (field[k][j] == 4) {
-                    field[k][j] = set;
+        for (int y = 0; y < field.length; y++) {
+            for (int x = 0; x < field.length; x++) {
+                if (field[y][x] == 4) {
+                    field[y][x] = set;
                 }
             }
         }
