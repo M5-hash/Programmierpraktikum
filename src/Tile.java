@@ -36,7 +36,6 @@ public class Tile extends JPanel {
         this.field_width = x;
         Feld = new int[field_height][field_width];
         DummyLeser(Feld);
-        createnewField();
     }
 
     /*kopiert Array in anderen Array, ohne das funktioniert DummyLeser leider nicht, bin aber zu faul/dumm um zu verstehen, warum das so ist*/
@@ -47,7 +46,7 @@ public class Tile extends JPanel {
         for (int y = 0; y < field_height; y++) {
             if (field_width >= 0) System.arraycopy(Feldvorgabe[y], 0, Feld[y], 0, field_width);
         }
-        Image = Bild.BildLoader("D:\\ProgPrak\\Tom\\src\\Tileset.jpg");
+        Image = Bild.BildLoader("src/Tileset.jpg");
     }
 
     /*
@@ -169,14 +168,6 @@ public class Tile extends JPanel {
         }
 
         TileArrangement(Ebene);
-    }
-
-    public void createnewField() {
-        for (int i = 0; i < SpielWindow.Spielfeld.length; i++) {
-            for (int j = 0; j < SpielWindow.Spielfeld[0].length; j++) {
-                SpielWindow.Spielfeld[i][j] = 0;
-            }
-        }
     }
 
 }

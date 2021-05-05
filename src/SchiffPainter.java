@@ -198,32 +198,32 @@ public class SchiffPainter {
                             break;
 
                         case 1:
-                            Schiffdir = "D:\\ProgPrak\\Tom\\Schiffpic\\Vorne32true.png";
+                            Schiffdir = "src/Vorne32true.png";
                             dosmthng = true;
                             break;
 
                         case 2:
-                            Schiffdir = "D:\\ProgPrak\\Tom\\Schiffpic\\Vorne32false.png";
+                            Schiffdir = "src/Vorne32false.png";
                             dosmthng = true;
                             break;
 
                         case 3:
-                            Schiffdir = "D:\\ProgPrak\\Tom\\Schiffpic\\Mitte32true.png";
+                            Schiffdir = "src/Mitte32true.png";
                             dosmthng = true;
                             break;
 
                         case 4:
-                            Schiffdir = "D:\\ProgPrak\\Tom\\Schiffpic\\Mitte32false.png";
+                            Schiffdir = "src/Mitte32false.png";
                             dosmthng = true;
                             break;
 
                         case 5:
-                            Schiffdir = "D:\\ProgPrak\\Tom\\Schiffpic\\Hinten32true.png";
+                            Schiffdir = "src/Hinten32true.png";
                             dosmthng = true;
                             break;
 
                         case 6:
-                            Schiffdir = "D:\\ProgPrak\\Tom\\Schiffpic\\Hinten32false.png";
+                            Schiffdir = "src/Hinten32false.png";
                             dosmthng = true;
                             break;
 
@@ -268,7 +268,7 @@ public class SchiffPainter {
         g2.drawLine(xRightEnd + FieldBox_gap, Tile.top_gap + halfheightField + halfheightBox, xRightEnd + FieldBox_gap, Tile.top_gap + halfheightField - halfheightBox);
         g2.drawLine(xRightEnd + FieldBox_gap + fieldwidth, Tile.top_gap + halfheightField - halfheightBox, xRightEnd + FieldBox_gap + fieldwidth, Tile.top_gap + halfheightField + halfheightBox);
 
-        Image Schiff = Bild.BildLoader("D:\\ProgPrak\\Tom\\Schiffpic\\Vorne32false.png");
+        Image Schiff = Bild.BildLoader("src/Vorne32false.png");
 
         //switch[] (Usable)
 
