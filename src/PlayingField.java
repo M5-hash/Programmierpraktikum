@@ -46,17 +46,17 @@ public class PlayingField {
     /**
      * Gibt zurück wie viel % des Spielfeldes mit Schiffen gefüllt ist
      *
-     * @return
+     * @return Prozentuale Angabe der Schiffe im Vergleich zum Wasser
      */
     public double allShipsSetPercentage() {
         int water = 0;
         int shippart = 0;
 
-        for (int x = 0; x < field.length; x++) {
+        for (int[] ints : field) {
             for (int y = 0; y < field.length; y++) {
-                if (field[x][y] == 0) {
+                if (ints[y] == 0) {
                     water++;
-                } else if (field[x][y] == 3 || field[x][y] == 4) {
+                } else if (ints[y] == 3 || ints[y] == 4) {
                     shippart++;
                 }
             }
@@ -87,15 +87,21 @@ public class PlayingField {
             // x-1 y-1 | x y-1 | x+1 y-1
             // x-1 y   | x y   | x+1 y
             // x-1 y+1 | x y+1 | x+1 y+1
-            if (field[x - 1][y - 1] != 3
-                    && field[x][y - 1] != 3
-                    && field[x + 1][y - 1] != 3
-                    && field[x - 1][y] != 3
+            //
+            //xC, yC: Wenn an Spielfeldgrenze, erlauben
+            boolean xC = x - 1 <= 0;
+            boolean yC = y - 1 <= 0;
+            boolean xP = x + 1 >= field.length;
+            boolean yP = y + 1 >= field.length;
+            if ((xC || yC || field[x - 1][y - 1] != 3)
+                    && (yC || field[x][y - 1] != 3)
+                    && (xP || yC || field[x + 1][y - 1] != 3)
+                    && (xC || field[x - 1][y] != 3)
                     && field[x][y] != 3
-                    && field[x + 1][y] != 3
-                    && field[x - 1][y + 1] != 3
-                    && field[x][y + 1] != 3
-                    && field[x + 1][y + 1] != 3
+                    && (xP || field[x + 1][y] != 3)
+                    && (xC || yP || field[x - 1][y + 1] != 3)
+                    && (yP || field[x][y + 1] != 3)
+                    && (xP || yP || field[x + 1][y + 1] != 3)
             ) {
                 field[y][x] = 4;
             } else {
@@ -121,6 +127,29 @@ public class PlayingField {
         }
 
         return false;
+    }
+
+    /**
+     * Ermittelt Schiffskopf eines Schiffsteils und gibt die Koordinaten zurück
+     *
+     * @param x X-Koordinate des zu überprüfenden Teiles
+     * @param y Y-Koordinate des zu überprüfenden Teiles
+     * @return Gibt X und Y Koordinate vom Kopf eines Schiffes zurück
+     */
+    private int[] getHeadOfShip(int x, int y) throws Exception {
+        checkCoordinatesInField(x, y);
+
+        int headX = x;
+        int headY = y;
+
+        while(headX-1 > 0 && this.field[headX-1][headY] > 0 && this.field[headX-1][headY] < 4){
+            headX--;
+        }
+        while(headY-1 > 0 && this.field[headX][headY-1] > 0 && this.field[headX][headY-1] < 4){
+            headY--;
+        }
+
+        return new int[]{headX, headY};
     }
 
     /**
@@ -288,7 +317,7 @@ public class PlayingField {
      * Gibt zurück ob alle Schiffe zerstört wurden.
      * Erst sinnvoll nutzbar nach dem Platzieren der Schiffe
      *
-     * @return
+     * @return True: Spiel vorbei
      */
     public boolean gameover() {
         return this.ships <= 0;
@@ -312,9 +341,9 @@ public class PlayingField {
     /**
      * Überprüft ob Koordinaten im Spielfeld sind, falls nicht wird eine Exception geworfen
      *
-     * @param x
-     * @param y
-     * @throws Exception
+     * @param x X-Koordinate
+     * @param y Y-Koordinate
+     * @throws Exception, wenn X/Y Koordinate nicht im Spielfeld
      */
     private void checkCoordinatesInField(int x, int y) throws Exception {
         if (x < 0 || x >= this.field.length || y < 0 || y > this.field.length) {
