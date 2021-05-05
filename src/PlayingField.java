@@ -1,5 +1,7 @@
 package src;
 
+import java.util.Arrays;
+
 public class PlayingField {
     /**
      * 0 = Wasser
@@ -93,6 +95,7 @@ public class PlayingField {
             boolean yC = y - 1 <= 0;
             boolean xP = x + 1 >= field.length;
             boolean yP = y + 1 >= field.length;
+
             if ((xC || yC || field[x - 1][y - 1] != 3)
                     && (yC || field[x][y - 1] != 3)
                     && (xP || yC || field[x + 1][y - 1] != 3)
@@ -103,11 +106,12 @@ public class PlayingField {
                     && (yP || field[x][y + 1] != 3)
                     && (xP || yP || field[x + 1][y + 1] != 3)
             ) {
-                field[y][x] = 4;
+                System.out.println(field[x][y]);
+                field[x][y] = 4;
             } else {
                 //Markierte Felder zurücksetzen, wenn Schiff nicht gesetzt werden darf
                 this.replaceNotfinal(0);
-
+                System.out.println(Arrays.deepToString(field).replace("]", "]\n"));
                 return false;
             }
 
@@ -123,9 +127,10 @@ public class PlayingField {
         if (!allShipsSet()) {
             this.replaceNotfinal(3);
             this.ships++;
+            System.out.println(Arrays.deepToString(field).replace("]", "]\n"));
             return true;
         }
-
+        System.out.println(Arrays.deepToString(field).replace("]", "]\n"));
         return false;
     }
 
