@@ -46,7 +46,7 @@ public class Tile extends JPanel {
         for (int y = 0; y < field_height; y++) {
             if (field_width >= 0) System.arraycopy(Feldvorgabe[y], 0, Feld[y], 0, field_width);
         }
-        Image = Bild.BildLoader("src/Tileset.jpg");
+        Image = Bild.BildLoader("src/Images/Tileset.jpg");
     }
 
     /*
