@@ -156,6 +156,15 @@ public class PlayingField {
 
         return new int[]{headY, headX};
     }
+/*
+    private int[] getDirHeadOfShip(int x, int y) throws Exception {
+        int[] data = getHeadOfShip(x,y);
+        bool horizontal = false;
+
+        //if(field[x+1][y] > 0 && this.field[])
+
+        return new int[]{data[0], data[1], horizontal};
+    }*/
 
     /**
      * Schiffsteil und benachbarte Schiffsteile entfernen
