@@ -158,6 +158,26 @@ public class PlayingField {
     }
 
     /**
+     * Wrapper für getHeadOfShip mit zusätzlicher Ermittlung der Ausrichtung des Schiffes
+     *
+     * @param x X-Koordinate des zu überprüfenden Teiles
+     * @param y Y-Koordinate des zu überprüfenden Teiles
+     * @throws Exception, wenn x/y auserhalb des Spielfeldes
+     * @return Gibt X und Y Koordinate vom Kopf eines Schiffes, sowie die Ausrichtung zurück
+     */
+    public int[] getDirHeadOfShip(int x, int y) throws Exception {
+        int[] data = getHeadOfShip(x,y);
+        int horizontal = 0; //int statt bool, wegen int-Array Rückgabe
+
+        //Überprüfen ob rechts vom Schiff ein weiteres Teil. Dann ist das Schiff Horizontal ausgelegt, sonst Vertikal
+        if(x+1 < field.length && field[x+1][y] > 0 && this.field[x+1][y] < 4){
+            horizontal = 1;
+        }
+
+        return new int[]{data[0], data[1], horizontal};
+    }
+
+    /**
      * Schiffsteil und benachbarte Schiffsteile entfernen
      *
      * @param x X-Koordinate eines Schiffteiles
