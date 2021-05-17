@@ -81,6 +81,7 @@ public class PlayingField {
             //Überprüfen ob das zu besetzende Feld erlaubt ist
             //Nicht innerhalb des Spielfeldes
             if (x < 0 || x >= field.length || y < 0 || y >= field.length) {
+                this.replaceNotfinal(0);
                 return false;
             }
 
