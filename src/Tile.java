@@ -8,7 +8,7 @@ import java.util.Random;
 public class Tile extends JPanel {
 
     private BufferedImage Image;
-    private Bildloader Bild = new Bildloader();
+    private final Bildloader Bild = new Bildloader();
     private final int[][] Feld;
     private final int field_height;
     private final int field_width;
@@ -92,12 +92,6 @@ public class Tile extends JPanel {
             g2.drawLine(side_gapl, top_gap + y * TileSize.Tile_Height, side_gapl + field_width * TileSize.Tile_Width, top_gap + y * TileSize.Tile_Width);
         } //Zeichnet alle Horizontalen Linien, welche die Felder des Spiels klarer macht
 
-
-        boolean vertikal = SpielWindow.horizontal;
-
-        //BufferedImage Schiffkopf = Bild.BildLoader()
-
-        //g.drawImage(Schiffkopf,)
     }
 
     /*public static Tile DateiLeser(String datei_dir) {

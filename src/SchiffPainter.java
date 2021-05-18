@@ -5,10 +5,9 @@ import java.awt.*;
 public class SchiffPainter {
 
     private int[][] SchiffPos;
-    public static int[][] BugHeckMeck = new int[SpielWindow.field_height][SpielWindow.field_width];
-    //public static int[][] BugHeckdummy = new int[SpielWindow.field_height][SpielWindow.field_width];      Hatte drüber nachgedacht, dass nicht jedesmal ohne Änderung das nette Schiffzeichner aufgerufen wird
+    public static int[][] BugHeckMeck = new int[SpielWindow.field_size][SpielWindow.field_size];
+    //public static int[][] BugHeckdummy = new int[SpielWindow.field_size][SpielWindow.field_size];      Hatte drüber nachgedacht, dass nicht jedesmal ohne Änderung das nette Schiffzeichner aufgerufen wird
     public static boolean ready = false;
-    PlayingField playingField = new PlayingField(10);
     Bildloader Bild = new Bildloader();
 
 
@@ -44,21 +43,6 @@ public class SchiffPainter {
 
     }
 
-    public boolean Schiffplatzieren(int x, int y, int groesse, boolean vertikal) {
-
-        int var = vertikal ? 1 : 0;
-        int j = y;
-
-        for (int i = x; i <= x + var * groesse; i++) {
-            System.out.println(i + " , " + j);
-            for (; j >= y - Math.pow(-1, var) * groesse; j--) {
-                System.out.println(i + " , " + j);
-            }
-        }
-
-        return true;
-    }
-
     /*
      * Ermittelt, wo beim Schiff es sich um das Bug(Vorne) oder Heck(Hinten) handelt, um so das richtige Image zu wählen, sodass die Aesthetic passt.
      *
@@ -68,6 +52,8 @@ public class SchiffPainter {
 
 
     public int[][] Schiffteil() {
+
+        System.out.println("Schiffteil wurde aufgerufen");
 
         int[][] Schiffe = SpielWindow.playingField.getField();
 
@@ -82,7 +68,7 @@ public class SchiffPainter {
             }
         }*/
 
-//        int[][] BugHeckMeck = new int[SpielWindow.field_height][SpielWindow.field_width];
+//        int[][] BugHeckMeck = new int[SpielWindow.field_size][SpielWindow.field_size];
 
         /*
          * Werte für BugHeckMeck:
@@ -100,10 +86,10 @@ public class SchiffPainter {
          *
          **/
 
-        boolean x1 ;
-        boolean x2 ;
-        boolean y1 ;
-        boolean y2 ;
+        boolean x1;
+        boolean x2;
+        boolean y1;
+        boolean y2;
 
         /* Ausgehend von Schiffe[i][j]
          *
@@ -125,11 +111,11 @@ public class SchiffPainter {
 
                     if (i != 0 && Schiffe[i - 1][j] != 0)
                         x1 = true;
-                    if (i != (SpielWindow.field_width - 1) && Schiffe[i + 1][j] != 0)
+                    if (i != (SpielWindow.field_size - 1) && Schiffe[i + 1][j] != 0)
                         x2 = true;
                     if (j != 0 && Schiffe[i][j - 1] != 0)
                         y1 = true;
-                    if (j != (SpielWindow.field_height - 1) && Schiffe[i][j + 1] != 0)
+                    if (j != (SpielWindow.field_size - 1) && Schiffe[i][j + 1] != 0)
                         y2 = true;
 
                     if (!x1 && !x2 && !y1 && y2)
@@ -160,14 +146,17 @@ public class SchiffPainter {
         }*/
 
         ready = true;
+        SpielWindow.change = false;
 
         return BugHeckMeck;
 
     }
 
+
+
     public boolean Schiffzeichner(Graphics g) {
 
-        Schiffteil();
+        if (SpielWindow.change) Schiffteil();
 
 //            System.out.println("Schiffzeichner wurde aufgerufen");
 
@@ -239,12 +228,14 @@ public class SchiffPainter {
 
     public void Wahlstation(Graphics g) {
 
+        int[][] SchiffWahl ;
+
 
         //int[] Usable =
         Graphics2D g2 = (Graphics2D) g;
 
-        int xRightEnd = Tile.side_gapl + SpielWindow.field_width * TileSize.Tile_Width;
-        int halfheightField = (SpielWindow.field_height * TileSize.Tile_Height) / 2;
+        int xRightEnd = Tile.side_gapl + SpielWindow.field_size * TileSize.Tile_Width;
+        int halfheightField = (SpielWindow.field_size * TileSize.Tile_Height) / 2;
         int halfheightBox = 4 * TileSize.Tile_Height;
         int fieldwidth = 3 * TileSize.Tile_Width + TileSize.Tile_Width / 2;
         int FieldBox_gap = Math.max(60, 120 % TileSize.Tile_Width);
@@ -267,7 +258,7 @@ public class SchiffPainter {
                 Tile.top_gap + halfheightField - halfheightBox + TileSize.Tile_Height / 2,
                 TileSize.Tile_Width,
                 TileSize.Tile_Height, null);
-
+        /*
         g.drawImage(Schiff, xRightEnd + FieldBox_gap + TileSize.Tile_Width / 2,
                 Tile.top_gap + halfheightField + halfheightBox - (TileSize.Tile_Height * 5) / 2,
                 TileSize.Tile_Width,
@@ -276,9 +267,8 @@ public class SchiffPainter {
         g.drawImage(Schiff, xRightEnd + FieldBox_gap + TileSize.Tile_Width * 2,
                 Tile.top_gap + halfheightField + halfheightBox - (TileSize.Tile_Height * 7) / 2,
                 TileSize.Tile_Width,
-                TileSize.Tile_Height, null);
+                TileSize.Tile_Height, null);*/
 
     }
-
 
 }

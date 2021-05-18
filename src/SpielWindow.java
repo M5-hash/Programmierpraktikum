@@ -12,9 +12,8 @@ public class SpielWindow extends JPanel {
     public static PlayingField playingField = new PlayingField(10) ;
 
     public static boolean horizontal = true;
-    public static int field_height = 10;
-    public static int field_width = 10;
-    public static int[][] Spielfeld = new int[field_height][field_width];
+    public static boolean change = false;
+    public static int field_size = 10;
     public static int groesse = 3;                                                 //Standardmäßig ist ein Schiff mit der größe 3 ausgewählt
 
 
@@ -25,7 +24,7 @@ public class SpielWindow extends JPanel {
         int bottom_gap = 80;
 
         JFrame frame = new JFrame("Schiffe versenken");
-        TilePainter tile = new TilePainter(field_height, field_width);
+        TilePainter tile = new TilePainter(field_size, field_size);
         frame.setSize(new Dimension(1600, 1200));
         frame.setLocation(new Point(1400, 20));
         frame.getContentPane().add(tile);
@@ -51,8 +50,8 @@ public class SpielWindow extends JPanel {
                         //frame.setSize(frame.getWidth(), frame.getWidth());
                     }
 
-                    TileSize.setTile_Height(Math.min(frame_height[0], frame_width[0]) / field_height);
-                    TileSize.setTile_Width(Math.min(frame_height[0], frame_width[0]) / field_width);
+                    TileSize.setTile_Height(Math.min(frame_height[0], frame_width[0]) / field_size);
+                    TileSize.setTile_Width(Math.min(frame_height[0], frame_width[0]) / field_size);
 
 
                 }
@@ -60,7 +59,7 @@ public class SpielWindow extends JPanel {
             }
         });
         timer.start();
-        //frame.setSize(TileSize.Tile_Height * field_height + 120 , TileSize.Tile_Height * field_height + 120 + 20/10);
+        //frame.setSize(TileSize.Tile_Height * field_size + 120 , TileSize.Tile_Height * field_size + 120 + 20/10);
         frame.getContentPane().add(new SpielWindow());
     }
 
@@ -79,6 +78,13 @@ public class SpielWindow extends JPanel {
                 if (e.getButton() == MouseEvent.BUTTON1) {
                     int x = e.getX();
                     int y = e.getY();
+
+                    int xRightEnd = Tile.side_gapl + SpielWindow.field_size * TileSize.Tile_Width;
+                    int halfheightField = (SpielWindow.field_size * TileSize.Tile_Height) / 2;
+                    int halfheightBox = 4 * TileSize.Tile_Height;
+                    int fieldwidth = 3 * TileSize.Tile_Width + TileSize.Tile_Width / 2;
+                    int FieldBox_gap = Math.max(60, 120 % TileSize.Tile_Width);
+
                     /*Die Position auf dem Feld wird durch diese Funktion berechnet, anstatt das nur die aktuelle Position in Pixeln zurückgegeben wird.
                      *
                      * Erzeugt dabei die Parameter yFeld und xFeld
@@ -88,15 +94,30 @@ public class SpielWindow extends JPanel {
                      *
                      * */
 
-                    if(x > Tile.side_gapl && x < field_width * TileSize.Tile_Width + Tile.top_gap && y > Tile.top_gap && y < Tile.top_gap + field_height * TileSize.Tile_Height){
+                    if(x > Tile.side_gapl && x < field_size * TileSize.Tile_Width + Tile.side_gapl && y > Tile.top_gap && y < Tile.top_gap + field_size * TileSize.Tile_Height){
                         int yFeld = ((y - Tile.top_gap) / TileSize.Tile_Height);
                         int xFeld = ((x - Tile.side_gapl) / TileSize.Tile_Width);
 
                         System.out.println("Die Position auf der Y-Achse beträgt:" + yFeld + "\nDie Postion auf der X-Achse beträgt:" + xFeld);
 
-                        System.out.println(playingField.setShip(groesse,xFeld, yFeld, horizontal));
+                        change = playingField.setShip(groesse,xFeld, yFeld, horizontal);
+                    } else {
+
+                        if( x >= xRightEnd + FieldBox_gap + TileSize.Tile_Width / 2                                                                 //Bereich in dem man klicken muss um sein Schiff auf die Groesse 4 zu setzen
+                                && x <= xRightEnd + FieldBox_gap + TileSize.Tile_Width / 2 + TileSize.Tile_Width
+                                && y >= Tile.top_gap + halfheightField - halfheightBox + TileSize.Tile_Height / 2
+                                && y <= Tile.top_gap + halfheightField - halfheightBox + TileSize.Tile_Height / 2 + 5 * TileSize.Tile_Height)
+                            groesse = 5 ;
+
+                        if( x >= xRightEnd + FieldBox_gap + TileSize.Tile_Width * 2                                                                 //Bereich in dem man klicken muss um sein Schiff auf die Groesse 4 zu setzen
+                                && x <= xRightEnd + FieldBox_gap + TileSize.Tile_Width * 2 + TileSize.Tile_Width
+                                && y >= Tile.top_gap + halfheightField - halfheightBox + TileSize.Tile_Height / 2
+                                && y <= Tile.top_gap + halfheightField - halfheightBox + TileSize.Tile_Height / 2 + 3 * TileSize.Tile_Height)
+                            groesse = 3 ;
+
                     }
 
+                    //xRightEnd + FieldBox_gap + TileSize.Tile_Width / 2
 
                 }
 
