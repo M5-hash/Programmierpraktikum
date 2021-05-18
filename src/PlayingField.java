@@ -81,6 +81,7 @@ public class PlayingField {
             //Überprüfen ob das zu besetzende Feld erlaubt ist
             //Nicht innerhalb des Spielfeldes
             if (x < 0 || x >= field.length || y < 0 || y >= field.length) {
+                this.replaceNotfinal(0);
                 return false;
             }
 
@@ -93,8 +94,8 @@ public class PlayingField {
             //xC, yC: Wenn an Spielfeldgrenze, erlauben
             boolean xC = x - 1 <= 0;
             boolean yC = y - 1 <= 0;
-            boolean xP = x + 1 >= field.length;
-            boolean yP = y + 1 >= field.length;
+            boolean xP = x + 1 >= field.length -1;
+            boolean yP = y + 1 >= field.length -1;
 
             if ((xC || yC || field[y - 1][x - 1] != 3)
                     && (yC || field[y - 1][x] != 3)
@@ -110,6 +111,7 @@ public class PlayingField {
                 field[y][x] = 4;
             } else {
                 //Markierte Felder zurücksetzen, wenn Schiff nicht gesetzt werden darf
+                System.out.println("TEST RESET 4 -> 0");
                 this.replaceNotfinal(0);
                 System.out.println(Arrays.deepToString(field).replace("]", "]\n"));
                 return false;
@@ -129,6 +131,8 @@ public class PlayingField {
             this.ships++;
             System.out.println(Arrays.deepToString(field).replace("]", "]\n"));
             return true;
+        }else{
+            this.replaceNotfinal(0);
         }
         System.out.println(Arrays.deepToString(field).replace("]", "]\n"));
         return false;
@@ -147,10 +151,10 @@ public class PlayingField {
         int headX = x;
         int headY = y;
 
-        while(headY-1 > 0 && this.field[headY-1][headX] > 0 && this.field[headY-1][headX] < 4){
+        while (headY - 1 > 0 && this.field[headY - 1][headX] > 0 && this.field[headY - 1][headX] < 4) {
             headY--;
         }
-        while(headX-1 > 0 && this.field[headY][headX-1] > 0 && this.field[headY][headX-1] < 4){
+        while (headX - 1 > 0 && this.field[headY][headX - 1] > 0 && this.field[headY][headX - 1] < 4) {
             headX--;
         }
 
@@ -162,15 +166,18 @@ public class PlayingField {
      *
      * @param x X-Koordinate des zu überprüfenden Teiles
      * @param y Y-Koordinate des zu überprüfenden Teiles
+     * @return Rückgabe von Int-Array:
+     * [0] X-Koordinate vom Kopf
+     * [1] Y-Koordinate vom Kopf
+     * [2] 1 == Horizontal, 0 == Vertikal
      * @throws Exception, wenn x/y auserhalb des Spielfeldes
-     * @return Gibt X und Y Koordinate vom Kopf eines Schiffes, sowie die Ausrichtung zurück
      */
     public int[] getDirHeadOfShip(int x, int y) throws Exception {
-        int[] data = getHeadOfShip(x,y);
+        int[] data = getHeadOfShip(x, y);
         int horizontal = 0; //int statt bool, wegen int-Array Rückgabe
 
         //Überprüfen ob rechts vom Schiff ein weiteres Teil. Dann ist das Schiff Horizontal ausgelegt, sonst Vertikal
-        if(x+1 < field.length && field[x+1][y] > 0 && this.field[x+1][y] < 4){
+        if (x + 1 < field.length && field[x + 1][y] > 0 && this.field[x + 1][y] < 4) {
             horizontal = 1;
         }
 
@@ -222,8 +229,8 @@ public class PlayingField {
     /**
      * Überprüft ob ein Schuss ein Schiff erwischt hat
      *
-     * @param x X-Koordinate des Schusses
-     * @param y Y-Koordinate des Schusses
+     * @param x X-Koordinate Schiffkopf
+     * @param y Y-Koordinate Schiffkopf
      * @return 0: Kein Treffer, 1: Treffer, 2: Treffer und versenkt
      */
     public int isShot(int x, int y) throws Exception {
@@ -232,13 +239,9 @@ public class PlayingField {
         if (this.field[y][x] == 3) {
             this.field[y][x] = 1;
 
-            //Überprüfen ob Schiff komplett zerstört
-            //Falls ja, Schiff auf dem Spielfeld mit 2 markieren und ship-Variable dekrementieren
-            if (isShipDestroyed(x, y, true)) { //Schiff horizontal zerstört
-                markShipDestroyed(x, y, true);
-                return 2;
-            } else if (isShipDestroyed(x, y, false)) { //Schiff vertikal zerstört
-                markShipDestroyed(x, y, true);
+            int[] data = getDirHeadOfShip(x, y);
+            if (isShipDestroyed(data[0], data[1], data[2] == 1)) {
+                markShipDestroyed(data[0], data[1], data[2] == 1);
                 return 2;
             }
 
@@ -251,8 +254,8 @@ public class PlayingField {
     /**
      * Markiert ein Schiff als komplett zerstört (Int-Wert 2)
      *
-     * @param x          X-Koordinate eines Schiffteiles
-     * @param y          Y-Koordinate eines Schiffteiles
+     * @param x          X-Koordinate Schiffkopf
+     * @param y          Y-Koordinate Schiffkopf
      * @param horizontal Schiff ist horizontal gelegt
      */
     private void markShipDestroyed(int x, int y, boolean horizontal) throws Exception {
@@ -272,32 +275,19 @@ public class PlayingField {
             if (horizontal) xOffset++;
             else yOffset++;
         }
-
-        //Nach links bzw nach oben
-        xOffset = 0;
-        yOffset = 0;
-        while (x + xOffset >= 0 && y + yOffset >= 0
-                && this.field[y + yOffset][x + xOffset] != 0) {
-            this.field[y + yOffset][x + xOffset] = 2;
-
-            if (horizontal) xOffset--;
-            else yOffset--;
-        }
     }
 
     /**
      * Überprüft ob ein komplettes Schiff zerstört ist
      *
-     * @param x          X-Koordinate eines Schiffteiles
-     * @param y          Y-Koordinate eines Schiffteiles
+     * @param x          X-Koordinate Schiffkopf
+     * @param y          Y-Koordinate Schiffkopf
      * @param horizontal Schiff horizontal überprüfen
      * @return True: Komplettes Schiff ist zerstört
      */
     private boolean isShipDestroyed(int x, int y, boolean horizontal) throws Exception {
         checkCoordinatesInField(x, y);
 
-        boolean firstSideDestroyed = false;
-        boolean secondSideDestroyed = false;
         int xOffset = 0;
         int yOffset = 0;
 
@@ -308,24 +298,7 @@ public class PlayingField {
         }
 
         //Überprüfen ob nach zerstörten Schiffsteilen Wasser
-        if (this.field[y + yOffset][x + xOffset] == 0) {
-            firstSideDestroyed = true;
-        }
-
-        xOffset = 0;
-        yOffset = 0;
-        while (x + xOffset >= 0 && y + yOffset >= 0
-                && this.field[y + yOffset][x + xOffset] == 1) {
-            if (horizontal) xOffset--;
-            else yOffset--;
-        }
-
-        //Überprüfen ob nach zerstörten Schiffsteilen Wasser
-        if (this.field[y + yOffset][x + xOffset] == 0) {
-            secondSideDestroyed = true;
-        }
-
-        return firstSideDestroyed && secondSideDestroyed;
+        return this.field[y + yOffset][x + xOffset] == 0;
     }
 
     //TODO
