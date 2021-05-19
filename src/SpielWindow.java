@@ -100,7 +100,7 @@ public class SpielWindow extends JPanel {
 
                         System.out.println("Die Position auf der Y-Achse beträgt:" + yFeld + "\nDie Postion auf der X-Achse beträgt:" + xFeld);
 
-                        change = playingField.setShip(groesse,xFeld, yFeld, horizontal);
+                        change = playingField.setShip(groesse,xFeld, yFeld, horizontal);                                                            //Lässt die Schiffzeichnen Methode wissen, on es zu einer Änderung gekommen ist
                     } else {
 
                         if( x >= xRightEnd + FieldBox_gap + TileSize.Tile_Width / 2                                                                 //Bereich in dem man klicken muss um sein Schiff auf die Groesse 4 zu setzen
@@ -109,11 +109,12 @@ public class SpielWindow extends JPanel {
                                 && y <= Tile.top_gap + halfheightField - halfheightBox + TileSize.Tile_Height / 2 + 5 * TileSize.Tile_Height)
                             groesse = 5 ;
 
+
                         if( x >= xRightEnd + FieldBox_gap + TileSize.Tile_Width * 2                                                                 //Bereich in dem man klicken muss um sein Schiff auf die Groesse 4 zu setzen
                                 && x <= xRightEnd + FieldBox_gap + TileSize.Tile_Width * 2 + TileSize.Tile_Width
                                 && y >= Tile.top_gap + halfheightField - halfheightBox + TileSize.Tile_Height / 2
-                                && y <= Tile.top_gap + halfheightField - halfheightBox + TileSize.Tile_Height / 2 + 3 * TileSize.Tile_Height)
-                            groesse = 3 ;
+                                && y <= Tile.top_gap + halfheightField - halfheightBox + TileSize.Tile_Height / 2 + 4 * TileSize.Tile_Height)
+                            groesse = 4 ;
 
                     }
 
