@@ -42,7 +42,7 @@ public class PlayingField {
      * @return True >= 30%, False < 30%
      */
     private boolean allShipsSet() {
-        return this.allShipsSetPercentage() >= 0.3;
+        return this.allShipsSetPercentage() >= 0.30000;
     }
 
     /**
@@ -51,20 +51,17 @@ public class PlayingField {
      * @return Prozentuale Angabe der Schiffe im Vergleich zum Wasser
      */
     public double allShipsSetPercentage() {
-        int water = 0;
         int shippart = 0;
 
         for (int[] ints : field) {
             for (int x = 0; x < field.length; x++) {
-                if (ints[x] == 0) {
-                    water++;
-                } else if (ints[x] == 3 || ints[x] == 4) {
+                if (ints[x] == 3 || ints[x] == 4) {
                     shippart++;
                 }
             }
         }
 
-        return (double) shippart / (double) water;
+        return (double) shippart / (double)(this.field.length*this.field.length);
     }
 
     /**
@@ -205,7 +202,7 @@ public class PlayingField {
             else yOffset++;
         }
 
-        this.ships--;//
+        this.ships--;
     }
 
     /**
