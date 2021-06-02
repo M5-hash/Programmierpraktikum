@@ -153,7 +153,10 @@ public class SchiffPainter {
     }
 
 
-
+    /**
+     * @param g wird benötigt, sodass eine Variable des Typs Graphics existiert
+     * @return
+     */
     public boolean Schiffzeichner(Graphics g) {
 
         if (SpielWindow.change) Schiffteil();
