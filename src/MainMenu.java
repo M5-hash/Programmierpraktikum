@@ -33,16 +33,16 @@ public class MainMenu extends JFrame {
         setCursor(cursor);
 
         JLayeredPane layeredPane = new JLayeredPane();
-        layeredPane.setBounds(0,0,640,480);
+        layeredPane.setBounds(0, 0, 640, 480);
 
         JLabel bgLabel = new JLabel(bgImage);
-        bgLabel.setBounds(0,0,640,480);
+        bgLabel.setBounds(0, 0, 640, 480);
 
         JPanel buttonsPanel = new JPanel();
-        GridLayout buttonsLayout = new GridLayout(0,1);
+        GridLayout buttonsLayout = new GridLayout(0, 1);
         buttonsLayout.setVgap(10);
         buttonsPanel.setLayout(buttonsLayout);
-        buttonsPanel.setBounds(213,40,213, 360);
+        buttonsPanel.setBounds(213, 40, 213, 360);
         buttonsPanel.setOpaque(false);
 
         JButton spButton = new JButton("Singleplayer");
@@ -110,7 +110,7 @@ public class MainMenu extends JFrame {
             dispose();
             // Create new Options Menu
             try {
-                new GUI.OptionsMenu(MainMenu.this).setVisible(true);
+                new src.OptionsMenu(MainMenu.this).setVisible(true);
             } catch (MalformedURLException malformedURLException) {
                 malformedURLException.printStackTrace();
             }
