@@ -205,7 +205,7 @@ public class PlayingField {
             else yOffset++;
         }
 
-        this.ships--;
+        this.ships--;//
     }
 
     /**
