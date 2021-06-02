@@ -94,8 +94,8 @@ public class PlayingField {
             //xC, yC: Wenn an Spielfeldgrenze, erlauben
             boolean xC = x - 1 <= 0;
             boolean yC = y - 1 <= 0;
-            boolean xP = x + 1 >= field.length -1;
-            boolean yP = y + 1 >= field.length -1;
+            boolean xP = x + 1 >= field.length - 1;
+            boolean yP = y + 1 >= field.length - 1;
 
             if ((xC || yC || field[y - 1][x - 1] != 3)
                     && (yC || field[y - 1][x] != 3)
@@ -111,7 +111,6 @@ public class PlayingField {
                 field[y][x] = 4;
             } else {
                 //Markierte Felder zurücksetzen, wenn Schiff nicht gesetzt werden darf
-                System.out.println("TEST RESET 4 -> 0");
                 this.replaceNotfinal(0);
                 System.out.println(Arrays.deepToString(field).replace("]", "]\n"));
                 return false;
@@ -131,7 +130,7 @@ public class PlayingField {
             this.ships++;
             System.out.println(Arrays.deepToString(field).replace("]", "]\n"));
             return true;
-        }else{
+        } else {
             this.replaceNotfinal(0);
         }
         System.out.println(Arrays.deepToString(field).replace("]", "]\n"));
@@ -193,37 +192,20 @@ public class PlayingField {
     public void deleteShip(int x, int y) throws Exception {
         checkCoordinatesInField(x, y);
 
+        int[] data = getDirHeadOfShip(x, y);
+        int xOffset = 0;
+        int yOffset = 0;
+
+        while (data[0] + xOffset < this.field.length && data[1] + yOffset < this.field.length
+                && this.field[data[1] + yOffset][data[0] + xOffset] == 1) {
+
+            this.field[data[1] + yOffset][data[0] + xOffset] = 0;
+
+            if (data[2] == 1) xOffset++;
+            else yOffset++;
+        }
+
         this.ships--;
-        this.field[y][x] = 0;
-
-        //Nach rechts
-        int offset = 1;
-        while (x + offset >= 0 && this.field[y][x + offset] != 0) {
-            this.field[y][x + offset] = 0;
-            offset++;
-        }
-
-        //Nach links
-        offset = -1;
-        while (x + offset < this.field.length && this.field[y][x + offset] != 0) {
-            this.field[y][x + offset] = 0;
-            offset--;
-        }
-
-        //Nach unten
-        offset = 1;
-        while (y + offset < this.field.length && this.field[y + offset][x] != 0) {
-            this.field[y + offset][x] = 0;
-            offset++;
-        }
-
-        //Nach oben
-        offset = -1;
-        while (y + offset >= 0 && this.field[y + offset][x] != 0) {
-            this.field[y + offset][x] = 0;
-            offset--;
-        }
-
     }
 
     /**
