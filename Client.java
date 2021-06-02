@@ -1,18 +1,20 @@
+import src.Com_base;
+
 import java.net.*;
 import java.io.*;
 
-class Client {
-    final int port;
-    final String IP;
-    private Socket s;
-    private BufferedReader in;
-    private Writer out;
-    private BufferedReader usr;
-    private String line;
+class Client extends Com_base {
 
-    public Client(String IP_in, int Port) throws IOException, ConnectException{
-        this.port = 50000;
-        this.IP = IP_in;
+    private final String IP;
+
+    public Client() throws IOException{
+        super();
+        System.out.println("Bitte geben Sie die IP Ihres Spielpartners ein:");
+        //
+        // IP einlesen implementieren
+        //
+        // Remove test IP
+        this.IP = "192.168.206.1";
         this.s = new Socket(this.IP, this.port);
         System.out.println("Connection established.");
         this.in = new BufferedReader(new InputStreamReader(s.getInputStream()));
@@ -22,46 +24,13 @@ class Client {
         KillSocket();
     }
 
-    public void Send(String input) throws IOException{
-        this.out.write(String.format("%s%n", input));
-        this.out.flush();
-    }
-
-    public String Receive() throws IOException{
-        System.out.println(this.line);
-        return this.line;
-    }
-
-
-    public void KillSocket() throws IOException{
-        this.s.shutdownOutput();
-        System.out.println("Connection closed.");
-    }
-
-    public boolean out_check() throws IOException{
-        this.line = this.usr.readLine();
-        if (this.line == null || this.line.equals("")){
-            return false;
-        }
-        return true;
-
-    }
-
-    public boolean in_check() throws IOException {
-        this.line = this.in.readLine();
-        if (this.line == null || this.line.equals("")) {
-            return false;
-        }
-        return true;
-    }
-
    public void ClientCommunicate() throws IOException{
        while (true) {
-            if(out_check() == false) break;
+            if(!out_check()) break;
 
            Send("aa");
 
-           if(in_check() == false) break;
+           if(!in_check()) break;
 
            Receive();
        }

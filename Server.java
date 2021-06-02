@@ -1,21 +1,19 @@
+import src.Com_base;
+
 import java.net.*;
 import java.io.*;
 import java.util.Enumeration;
 
-class Server {
+class Server extends Com_base {
 
-    final int port;
+
     private ServerSocket ss;
-    private Socket s;
-    private BufferedReader in;
-    private Writer out;
-    private BufferedReader usr;
-    private String line;
 
-    public Server(int Port) throws IOException, NullPointerException {
 
-        this.port = 50000;
-        this.ss = new ServerSocket(port);
+    public Server() throws IOException, NullPointerException {
+
+        super();
+        this.ss = new ServerSocket(this.port);
 
 
         IP_Ausgabe();
@@ -45,48 +43,16 @@ class Server {
         }
     }
 
-    public void Send(String input) throws IOException{
-        this.out.write(String.format("%s%n", input));
-        this.out.flush();
-    }
-
-    public String Receive() throws IOException{
-        System.out.println(this.line);
-        return this.line;
-    }
-
-    public boolean out_check() throws IOException {
-        this.line = this.usr.readLine();
-        if (this.line == null || this.line.equals("")) {
-            return false;
-        }
-        return true;
-
-    }
-
-    public boolean in_check() throws IOException {
-        this.line = this.in.readLine();
-        if (this.line == null || this.line.equals("")) {
-            return false;
-        }
-        return true;
-    }
 
     public void ServerCommunicate() throws IOException {
         while (true) {
-            if(in_check() == false) break;
+            if(!in_check()) break;
 
             Receive();
 
-            if(out_check() == false) break;
+            if(!out_check()) break;
 
             Send("aa");
         }
-
-    }
-
-    public void KillSocket() throws IOException{
-        this.s.shutdownOutput();
-        System.out.println("Connection closed.");
     }
 }
