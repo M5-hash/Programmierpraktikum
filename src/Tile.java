@@ -28,8 +28,11 @@ public class Tile extends JPanel {
         TileArrangement(FeldVorgabe);                                   //Das umschreiben geschiet zugegebener Maßen in der TileArrangement aber
     }*/
 
-    /*Wird verwendet, wenn das Feld nicht durch ein direktes Array erstellt werden soll sondern nur mit angaben für Höhe und Breite
-     * Wir mit int Werten für Höhe und Breite separat angegeben. */
+    /**
+     * @param x Gibt die Größe des Feldes an, welches in Tile gezeichnet werden soll
+     *          Diese Information wird per int mitgeteilt
+     */
+
     public Tile(int x) {
         this.field_size = x;
         Feld = new int[field_size][field_size];
@@ -95,6 +98,15 @@ public class Tile extends JPanel {
         for (int y = 0; y < (field_size + 1); y++) {
             g2.drawLine(side_gapl, top_gap + y * TileSize.Tile_Height, side_gapl + field_size * TileSize.Tile_Width, top_gap + y * TileSize.Tile_Width);
         } //Zeichnet alle Horizontalen Linien, welche die Felder des Spiels klarer macht
+
+        JButton Fertig = new JButton("Fertig") ;
+
+        int xRightEnd = Tile.side_gapl + SpielWindow.field_size * TileSize.Tile_Width;
+        int FieldBox_gap = Math.max(60, 120 % TileSize.Tile_Width);
+        int fieldwidth = 3 * TileSize.Tile_Width + TileSize.Tile_Width / 2;
+
+        Fertig.setBounds( xRightEnd + FieldBox_gap + fieldwidth + 60, 200, 200, 80 );
+        Fertig.setVisible(true);
 
     }
 
