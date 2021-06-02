@@ -10,8 +10,7 @@ public class Tile extends JPanel {
     private BufferedImage Image;
     private final Bildloader Bild = new Bildloader();
     private final int[][] Feld;
-    private final int field_height;
-    private final int field_width;
+    public static int field_size;
     private static int counter = 0;
     protected static int top_gap = 30;
     protected static int side_gapl = 60;
@@ -22,50 +21,52 @@ public class Tile extends JPanel {
      */
 
    /* public Tile(int[][] FeldVorgabe) {                                       //Konstruktor der Funktioniert, nimmt das ganze Array und schreibt es in eine lokale Variable und Speichert zudem noch Momentan Nutzlos könnte ich eigentlich löschen
-        this.field_height = FeldVorgabe.length;                            //Höhe und breite des Arrays
-        this.field_width = FeldVorgabe[0].length;
+        this.field_size = FeldVorgabe.length;                            //Höhe und breite des Arrays
+        this.field_size = FeldVorgabe[0].length;
 
-        Feld = new int[field_height][field_width];
+        Feld = new int[field_size][field_size];
         TileArrangement(FeldVorgabe);                                   //Das umschreiben geschiet zugegebener Maßen in der TileArrangement aber
     }*/
 
     /*Wird verwendet, wenn das Feld nicht durch ein direktes Array erstellt werden soll sondern nur mit angaben für Höhe und Breite
-     * Wir mit int Werten für Höhe und Breite sepperat angegeben. */
-    public Tile(int y, int x) {
-        this.field_height = y;
-        this.field_width = x;
-        Feld = new int[field_height][field_width];
+     * Wir mit int Werten für Höhe und Breite separat angegeben. */
+    public Tile(int x) {
+        this.field_size = x;
+        Feld = new int[field_size][field_size];
         DummyLeser(Feld);
     }
 
-    /*kopiert Array in anderen Array, ohne das funktioniert DummyLeser leider nicht, bin aber zu faul/dumm um zu verstehen, warum das so ist*/
-
+    /**
+     * @param Feldvorgabe Ist das 2-Dimensionale int Array, von welchem das Spielfeld abgeleitet werden soll.
+     *                    Momentan handelt es sich hierbei immer um den return aus DummyLeser
+     *                    <p>
+     *                    kopiert Array in anderen Array, ohne das funktioniert DummyLeser leider nicht, bin aber zu faul/dumm um zu verstehen, warum das so ist
+     */
     public void TileArrangement(int[][] Feldvorgabe) {
         System.out.println("TileArrangement aufgerufen");
 
-        for (int y = 0; y < field_height; y++) {
-            if (field_width >= 0) System.arraycopy(Feldvorgabe[y], 0, Feld[y], 0, field_width);
+        for (int y = 0; y < field_size; y++) {
+            if (field_size >= 0) System.arraycopy(Feldvorgabe[y], 0, Feld[y], 0, field_size);
         }
         Image = Bild.BildLoader("src/Images/Tileset.jpg");
     }
 
-    /*
-     *++
-     *Wird verwendet um die jeweiligen Tiles der Wasser Animation zu zeichnen
-     * Da aus einem TileSet gelesen muss nicht nur das Ziel bzw. die Position davon geändert werden sondern auch die Source
-     *
-     * */
+    /**
+     * @param g Wird verwendet um die jeweiligen Tiles der Wasser Animation zu zeichnen
+     *          Da aus einem TileSet gelesen muss nicht nur das Ziel bzw. die Position davon geändert werden sondern auch die Source
+     */
+    public void DrawLayer(Graphics g) {
 
-    public void DrawLayer(Graphics g) {                          //Wird nur gebraucht, falls wir alle TileFrames in einem Bild ablegen wollen (TileSet), da in diesem Fall Zeilenumsprünge benötigt werden
-        for (int y = 0; y < field_height; y++) {
-            for (int x = 0; x < field_width; x++) {
+
+        for (int y = 0; y < field_size; y++) {                                // Wird nur gebraucht, falls wir alle TileFrames in einem Bild ablegen wollen (TileSet), da in diesem Fall Zeilenumsprünge benötigt werden
+            for (int x = 0; x < field_size; x++) {
                 int index = ((Feld[y][x] + counter) % 32);
                 int yOffset = 0;
 
-                if (index > (Image.getWidth() / 32) - 1) {           //
-                    while ((index > (Image.getWidth() / 32) - 1)) {
+                if (index > (Image.getWidth() / 32) - 1) {                      // Da das Tileset nicht nur horizontal ausgerichtet ist, muss jedes mal wenn die rechte Seite des TileSets erreicht wurde unsere source
+                    while ((index > (Image.getWidth() / 32) - 1)) {             // Wieder an die linke Seite des Bildes verschoben werden
                         index = index - (Image.getWidth() / 32);
-                        yOffset++;
+                        yOffset++;                                              //Aber um eine Zeile nach unten verschoben
                     }
                 }
 
@@ -85,11 +86,14 @@ public class Tile extends JPanel {
 
         Graphics2D g2 = (Graphics2D) g;
         g2.setStroke(new BasicStroke(Math.max(1, TileSize.Tile_Height / 25)));       //nach Bauchgefühl gesetz, wie viel Bild und wie viel des einzelnen Tiles Strich sein soll, das max garantiert, dass der Strich nicht dünner als ein Pixel wird
-        for (int x = 0; x < (field_width + 1); x++) {
-            g2.drawLine(side_gapl + x * TileSize.Tile_Width, top_gap, side_gapl + x * TileSize.Tile_Width, top_gap + field_height * TileSize.Tile_Height);
+
+
+        for (int x = 0; x < (field_size + 1); x++) {
+            g2.drawLine(side_gapl + x * TileSize.Tile_Width, top_gap, side_gapl + x * TileSize.Tile_Width, top_gap + field_size * TileSize.Tile_Height);
         } // Zeichnet alle Vertikale Linien, welche die Felder des Spiels klarer macht
-        for (int y = 0; y < (field_width + 1); y++) {
-            g2.drawLine(side_gapl, top_gap + y * TileSize.Tile_Height, side_gapl + field_width * TileSize.Tile_Width, top_gap + y * TileSize.Tile_Width);
+
+        for (int y = 0; y < (field_size + 1); y++) {
+            g2.drawLine(side_gapl, top_gap + y * TileSize.Tile_Height, side_gapl + field_size * TileSize.Tile_Width, top_gap + y * TileSize.Tile_Width);
         } //Zeichnet alle Horizontalen Linien, welche die Felder des Spiels klarer macht
 
     }
@@ -146,6 +150,12 @@ public class Tile extends JPanel {
         return Ebene;
     }*/
 
+    /**
+     * @param Ebene Gibt die Größe des Spielfelds an, welche vom DummyLeser gefüllt werden soll
+     *              <p>
+     *              Es sieht meiner Meinung nach einfach schöner aus, wenn die Animation nicht für jedes Frame gleichzeitig den selben Frame zeigt
+     *              Hier werden zufällige Werte den Feldern zugewiesen, sodass der Startframe Tile spezifisch ist.
+     */
     public void DummyLeser(int[][] Ebene) {
 
         int height = Ebene.length;

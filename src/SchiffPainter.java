@@ -153,7 +153,10 @@ public class SchiffPainter {
     }
 
 
-
+    /**
+     * @param g wird benötigt, sodass eine Variable des Typs Graphics existiert
+     * @return
+     */
     public boolean Schiffzeichner(Graphics g) {
 
         if (SpielWindow.change) Schiffteil();
@@ -258,7 +261,7 @@ public class SchiffPainter {
                 Tile.top_gap + halfheightField - halfheightBox + TileSize.Tile_Height / 2,
                 TileSize.Tile_Width,
                 TileSize.Tile_Height, null);
-        /*
+
         g.drawImage(Schiff, xRightEnd + FieldBox_gap + TileSize.Tile_Width / 2,
                 Tile.top_gap + halfheightField + halfheightBox - (TileSize.Tile_Height * 5) / 2,
                 TileSize.Tile_Width,
@@ -267,7 +270,7 @@ public class SchiffPainter {
         g.drawImage(Schiff, xRightEnd + FieldBox_gap + TileSize.Tile_Width * 2,
                 Tile.top_gap + halfheightField + halfheightBox - (TileSize.Tile_Height * 7) / 2,
                 TileSize.Tile_Width,
-                TileSize.Tile_Height, null);*/
+                TileSize.Tile_Height, null);
 
     }
 
