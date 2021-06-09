@@ -307,8 +307,6 @@ public class PlayingField {
         System.out.println(Arrays.deepToString(pf.field).replace("]", "]\n"));
     }
 
-    //TODO
-
     /**
      * Speichern des Spielstandes
      *
