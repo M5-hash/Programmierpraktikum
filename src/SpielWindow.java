@@ -19,6 +19,12 @@ public class SpielWindow extends JPanel {
 
     public static void main(String[] args) {                     //Startet das Programm und erstellt das Window
 
+        SpielWindow Hallo = new SpielWindow() ;
+
+    }
+
+    public SpielWindow() {
+
         final int[] frame_height = new int[1];
         final int[] frame_width = new int[1];
         int bottom_gap = 80;
@@ -78,11 +84,6 @@ public class SpielWindow extends JPanel {
 
             }
         });
-
-
-    }
-
-    public SpielWindow() {
 
 
     }
