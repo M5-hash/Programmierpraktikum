@@ -16,6 +16,17 @@ public class PlayingField {
     private int ships = 0;
 
     /**
+     * Gibt zurück wie viel % des Spielfeldes mit Schiffen gefüllt ist
+     *
+     * @param rows   Größe des Spielfeldes
+     * @param sparts Anzahl der Schiffsteile
+     * @return Prozentuale Angabe der Schiffe im Vergleich zum Wasser
+     */
+    public static int shipsPercentage(int rows, int sparts) {
+        return (int) ((double) sparts / (double) (rows * rows));
+    }
+
+    /**
      * Konstruktor
      *
      * @param rows - Höhe und Breite des Spielfeldes
@@ -45,34 +56,6 @@ public class PlayingField {
      */
     public int[][] getField() {
         return this.field;
-    }
-
-    /**
-     * Gibt zurück ob 30% des Spielfeldes mit Schiffen gefüllt ist
-     *
-     * @return True >= 30%, False < 30%
-     */
-    private boolean allShipsSet() {
-        return this.allShipsSetPercentage() >= 0.30000;
-    }
-
-    /**
-     * Gibt zurück wie viel % des Spielfeldes mit Schiffen gefüllt ist
-     *
-     * @return Prozentuale Angabe der Schiffe im Vergleich zum Wasser
-     */
-    public double allShipsSetPercentage() {
-        int shippart = 0;
-
-        for (int[] ints : field) {
-            for (int x = 0; x < field.length; x++) {
-                if (ints[x] == 3 || ints[x] == 4) {
-                    shippart++;
-                }
-            }
-        }
-
-        return (double) shippart / (double) (this.field.length * this.field.length);
     }
 
     /**
@@ -133,16 +116,10 @@ public class PlayingField {
         }
 
         //Schiffmarkierung auf Schiff setzen
-        if (!allShipsSet()) {
-            this.replaceNotfinal(3);
-            this.ships++;
-            System.out.println(Arrays.deepToString(field).replace("]", "]\n"));
-            return true;
-        } else {
-            this.replaceNotfinal(0);
-        }
+        this.replaceNotfinal(3);
+        this.ships++;
         System.out.println(Arrays.deepToString(field).replace("]", "]\n"));
-        return false;
+        return true;
     }
 
     /**
@@ -314,7 +291,7 @@ public class PlayingField {
      * @param status 0 = Schiffe setzen
      *               1 = Spieler darf schießen
      *               2 = Gegner darf schießen
-     * @throws IOException
+     * @throws IOException Wenn Problem beim Datei beschreiben
      */
     public void saveGame(int id, int status) throws IOException {
         //Saves-Ordner erstellen
@@ -348,7 +325,7 @@ public class PlayingField {
      * 0 = Schiffe setzen
      * 1 = Spieler darf schießen
      * 2 = Gegner darf schießen
-     * @throws FileNotFoundException
+     * @throws FileNotFoundException Wenn die Spielstand-Datei nicht existiert
      */
     public int loadGame(int id) throws FileNotFoundException {
         File f = new File("." + File.separator + "Saves" + File.separator + id + "_save.txt");
