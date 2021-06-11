@@ -13,9 +13,10 @@ public class Bildloader {
     static ArrayList<String> Loaded = new ArrayList<>();                       // Speichert als String die Quellen der bereits geladenen Bilder ab
 
 
+
     /**
      * @param Bild_dir gibt die zu ladende Datei an
-     * @return
+     * @return img Das gewollte image
      */
     public BufferedImage BildLoader(String Bild_dir) {                           // Läd die Datei ein und macht sicher, dass diese auch als Bilddatei gelesen wird
 

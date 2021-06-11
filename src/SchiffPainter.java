@@ -9,6 +9,16 @@ public class SchiffPainter {
     //public static int[][] BugHeckdummy = new int[SpielWindow.field_size][SpielWindow.field_size];      Hatte drüber nachgedacht, dass nicht jedesmal ohne Änderung das nette Schiffzeichner aufgerufen wird
     public static boolean ready = false;
     Bildloader Bild = new Bildloader();
+    int[][] getEnemyPlacement = {{0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+                    , {0, 0, 8, 8, 8, 8, 0, 0, 0, 0}
+                    , {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+                    , {0, 0, 0, 0, 0, 7, 7, 7, 0, 0}
+                    , {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+                    , {0, 0, 0, 0, 0, 8, 0, 0, 0, 0}
+                    , {0, 8, 8, 0, 0, 8, 0, 0, 0, 0}
+                    , {0, 8, 8, 0, 0, 8, 0, 0, 0, 0}
+                    , {0, 8, 8, 0, 0, 8, 0, 0, 0, 0}
+                    , {0, 8, 8, 0, 0, 0, 0, 0, 0, 0}};
 
 
     public SchiffPainter() {
@@ -155,10 +165,12 @@ public class SchiffPainter {
 
     /**
      * @param g wird benötigt, sodass eine Variable des Typs Graphics existiert
-     * @return
+     * @return ob die Schiffe gezeichnet wurden
      */
     public boolean Schiffzeichner(Graphics g) {
 
+        int[][] dummy ;
+        int field = 0;
         if (SpielWindow.change) Schiffteil();
 
 //            System.out.println("Schiffzeichner wurde aufgerufen");
@@ -167,111 +179,94 @@ public class SchiffPainter {
         Image Schiff; //Nur ein Platzhalter, dass die IDE nicht weint
         boolean dosmthng = false;
 
-        for (int y = 0; y < BugHeckMeck.length; y++) {
-            for (int x = 0; x < BugHeckMeck[0].length; x++) {
+        while (field <= TileSize.getFighting()) {
 
-                switch (BugHeckMeck[y][x]) {
+            //System.out.println(TileSize.getFighting());
 
-                    case 0:
-                        break;
+            if(field == 0){
+                dummy = BugHeckMeck ;
+            } else
+                dummy = getEnemyPlacement ;
 
-                    case 1:
-                        Schiffdir = "src/Images/Vorne32true.png";
-                        dosmthng = true;
-                        break;
+            for (int y = 0; y < dummy.length; y++) {
+                for (int x = 0; x < dummy[0].length; x++) {
 
-                    case 2:
-                        Schiffdir = "src/Images/Vorne32false.png";
-                        dosmthng = true;
-                        break;
 
-                    case 3:
-                        Schiffdir = "src/Images/Mitte32true.png";
-                        dosmthng = true;
-                        break;
+                    switch (dummy[y][x]) {
 
-                    case 4:
-                        Schiffdir = "src/Images/Mitte32false.png";
-                        dosmthng = true;
-                        break;
+                        case 0:
+                            break;
 
-                    case 5:
-                        Schiffdir = "src/Images/Hinten32true.png";
-                        dosmthng = true;
-                        break;
+                        case 1:
+                            Schiffdir = "src/Images/Vorne32true.png";
+                            dosmthng = true;
+                            break;
 
-                    case 6:
-                        Schiffdir = "src/Images/Hinten32false.png";
-                        dosmthng = true;
-                        break;
+                        case 2:
+                            Schiffdir = "src/Images/Vorne32false.png";
+                            dosmthng = true;
+                            break;
 
-                    default:
-                        System.out.println("Gamer, dass ist aber dick nicht Gut mein bester, das sollte nämlich nicht gehen");
-                        System.out.println("Es gibt also einen Fehler in der Schiffteil Methode");
+                        case 3:
+                            Schiffdir = "src/Images/Mitte32true.png";
+                            dosmthng = true;
+                            break;
+
+                        case 4:
+                            Schiffdir = "src/Images/Mitte32false.png";
+                            dosmthng = true;
+                            break;
+
+                        case 5:
+                            Schiffdir = "src/Images/Hinten32true.png";
+                            dosmthng = true;
+                            break;
+
+                        case 6:
+                            Schiffdir = "src/Images/Hinten32false.png";
+                            dosmthng = true;
+                            break;
+
+                        case 7:
+                            Schiffdir = "src/Images/EinX2.png";
+                            dosmthng = true;
+                            break;
+
+                        case 8:
+                            Schiffdir = "src/Images/Nebel.png";
+                            dosmthng = true;
+                            //System.out.println("Ich wurde aufgerufen");
+                            break;
+
+                        default:
+                            System.out.println("Gamer, dass ist aber dick nicht Gut mein bester, das sollte nämlich nicht gehen");
+                            System.out.println("Es gibt also einen Fehler in der Schiffteil Methode");
+
+                    }
+
+                    int displacement = field * (Tile.field_size * TileSize.Tile_Size + Math.max(60, 120 % TileSize.Tile_Size));
+
+                    if (dosmthng) {
+                        Schiff = Bild.BildLoader(Schiffdir);
+
+                        g.drawImage(Schiff, (x * TileSize.Tile_Size + Tile.side_gapl + displacement),
+                                (y * TileSize.Tile_Size + Tile.top_gap),
+                                TileSize.Tile_Size,
+                                TileSize.Tile_Size, null);
+                        dosmthng = false;
+                    }
+
 
                 }
-
-                if (dosmthng) {
-                    Schiff = Bild.BildLoader(Schiffdir);
-
-                    g.drawImage(Schiff, (x * TileSize.Tile_Width + Tile.side_gapl),
-                            (y * TileSize.Tile_Height + Tile.top_gap),
-                            TileSize.Tile_Width,
-                            TileSize.Tile_Height, null);
-                    dosmthng = false;
-                }
-
 
             }
+            field++ ;
 
         }
 
         return true;
     }
 
-    public void Wahlstation(Graphics g) {
 
-        int[][] SchiffWahl ;
-
-
-        //int[] Usable =
-        Graphics2D g2 = (Graphics2D) g;
-
-        int xRightEnd = Tile.side_gapl + SpielWindow.field_size * TileSize.Tile_Width;
-        int halfheightField = (SpielWindow.field_size * TileSize.Tile_Height) / 2;
-        int halfheightBox = 4 * TileSize.Tile_Height;
-        int fieldwidth = 3 * TileSize.Tile_Width + TileSize.Tile_Width / 2;
-        int FieldBox_gap = Math.max(60, 120 % TileSize.Tile_Width);
-
-        g2.drawLine(xRightEnd + FieldBox_gap, Tile.top_gap + halfheightField + halfheightBox, xRightEnd + FieldBox_gap + fieldwidth, Tile.top_gap + halfheightField + halfheightBox);
-        g2.drawLine(xRightEnd + FieldBox_gap, Tile.top_gap + halfheightField - halfheightBox, xRightEnd + FieldBox_gap + fieldwidth, Tile.top_gap + halfheightField - halfheightBox);
-        g2.drawLine(xRightEnd + FieldBox_gap, Tile.top_gap + halfheightField + halfheightBox, xRightEnd + FieldBox_gap, Tile.top_gap + halfheightField - halfheightBox);
-        g2.drawLine(xRightEnd + FieldBox_gap + fieldwidth, Tile.top_gap + halfheightField - halfheightBox, xRightEnd + FieldBox_gap + fieldwidth, Tile.top_gap + halfheightField + halfheightBox);
-
-        Image Schiff = Bild.BildLoader("src/Images/Vorne32false.png");
-
-        //switch[] (Usable)
-
-        g.drawImage(Schiff, xRightEnd + FieldBox_gap + TileSize.Tile_Width / 2,
-                Tile.top_gap + halfheightField - halfheightBox + TileSize.Tile_Height / 2,
-                TileSize.Tile_Width,
-                TileSize.Tile_Height, null);
-
-        g.drawImage(Schiff, xRightEnd + FieldBox_gap + TileSize.Tile_Width * 2,
-                Tile.top_gap + halfheightField - halfheightBox + TileSize.Tile_Height / 2,
-                TileSize.Tile_Width,
-                TileSize.Tile_Height, null);
-
-        g.drawImage(Schiff, xRightEnd + FieldBox_gap + TileSize.Tile_Width / 2,
-                Tile.top_gap + halfheightField + halfheightBox - (TileSize.Tile_Height * 5) / 2,
-                TileSize.Tile_Width,
-                TileSize.Tile_Height, null);
-
-        g.drawImage(Schiff, xRightEnd + FieldBox_gap + TileSize.Tile_Width * 2,
-                Tile.top_gap + halfheightField + halfheightBox - (TileSize.Tile_Height * 7) / 2,
-                TileSize.Tile_Width,
-                TileSize.Tile_Height, null);
-
-    }
 
 }

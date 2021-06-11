@@ -7,83 +7,81 @@ import java.awt.event.ActionListener;
 
 public class SpielWindow extends JPanel {
 
-    private static JButton Singleplayer = new JButton("SinglePlayer");
-    private JPanel panel1;
-    private static JButton Multiplayer = new JButton("MultiPlayer");
-
     public static PlayingField playingField = new PlayingField(10);
     public static boolean change = false;
     public static int field_size = 10;
-    //Standardmäßig ist ein Schiff mit der größe 3 ausgewählt
+    String Feldvon = "Spieler"; //"GegnerKI" "GegnerMensch"
 
 
-    public static void main(String[] args) {                     //Startet das Programm und erstellt das Window
+    public static void main(String[] args) {                     //Startet das Programm und erstellt das Window wir hier nur wegen dem testen benötigt
 
-        SpielWindow Hallo = new SpielWindow() ;
+        SpielWindow Hallo = new SpielWindow();
 
     }
 
     public SpielWindow() {
 
+        Wahlstation wahlstation = new Wahlstation() ;
+
+
         final int[] frame_height = new int[1];
         final int[] frame_width = new int[1];
         int bottom_gap = 80;
 
-
+        JLayeredPane LayeredPanel = new JLayeredPane();
         JFrame frame = new JFrame("Schiffe versenken");
 
-        frame.setSize(new Dimension(1600, 1200));
-        frame.setLocation(new Point(1400, 20));
+        frame.setSize(new Dimension(1920, 1080));
+        frame.setLocation(new Point(200, 20));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
-        frame.add(Singleplayer);
+
+        TileSize.setTile_Size(frame.getWidth() / 25);
+
+        System.out.println("Du hast den schönen SinglePlayer Knopf berührt");
+
+        JPanel tile = new TilePainter(10);
+
+        //tile.setBounds(1000, 100, 20, 20);
+        tile.setBounds(15, 15, 600, 1000);
+        wahlstation.setBounds(800,25,700,700);
+
+        LayeredPanel.add(tile, Integer.valueOf(1));
+        LayeredPanel.add(wahlstation, Integer.valueOf(1));
+
+        LayeredPanel.setBackground(Color.darkGray);
+        LayeredPanel.setVisible(true);
+        frame.add(LayeredPanel);
+
+        frame_height[0] = frame.getHeight();
+        frame_width[0] = frame.getWidth();
 
 
-        Singleplayer.addActionListener(new ActionListener() {
+        Timer timer = new Timer(100, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                System.out.println("Du hast den schönen SinglePlayer Knopf berührt");
-                TilePainter tile = new TilePainter(field_size);
-                frame.remove(Singleplayer);
-                frame.getContentPane().add(tile);
-                frame_height[0] = frame.getHeight();
-                frame_width[0] = frame.getWidth();
+                JPanel Background = new JPanel();
 
 
-                Timer timer = new Timer(55, new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
+                if (frame_width[0] != frame.getWidth()) {
+                    TileSize.setTile_Size(frame.getWidth() / 25);
 
-                        //System.out.println("Der Timer wurde gestartet");
+                } else if (frame_height[0] != frame.getHeight()) {
+                    TileSize.setTile_Size(frame.getHeight() / 14);
+                }
 
-                        if (frame_height[0] != frame.getHeight() || frame_width[0] != frame.getWidth()) {
-                            if (frame.getWidth() > frame.getHeight()) {
-                                frame_height[0] = frame.getHeight() - 30;
-                                frame_width[0] = (frame.getHeight() - 100);
-                                //frame.setSize(frame.getHeight(), frame.getHeight() + bottom_gap);
+                LayeredPanel.setBounds(0, 0, TileSize.Tile_Size * SpielWindow.field_size, TileSize.Tile_Size * SpielWindow.field_size);
+                //tile.setBounds(300, 120, TileSize.Tile_Size * SpielWindow.field_size, TileSize.Tile_Size * SpielWindow.field_size);
 
-                            } else if (frame.getWidth() < frame.getHeight()) {
-                                frame_height[0] = frame.getWidth() - 30;
-                                frame_width[0] = frame.getWidth() - 100;
-                                //frame.setSize(frame.getWidth(), frame.getWidth());
-                            }
-
-                            TileSize.setTile_Height(Math.min(frame_height[0], frame_width[0]) / field_size);
-                            TileSize.setTile_Width(Math.min(frame_height[0], frame_width[0]) / field_size);
-
-
-                        }
-                        tile.repaint(); //Der beste Command, der von der Menschheit erfunden wurde
-                        tile.revalidate();
-                    }
-                });
-                //frame.getContentPane().add(new SpielWindow());
-                timer.start();
-                //frame.setSize(TileSize.Tile_Height * field_size + 120 , TileSize.Tile_Height * field_size + 120 + 20/10);
+                tile.repaint(); //Der beste Command, der von der Menschheit erfunden wurde
+                tile.revalidate();
+                wahlstation.repaint();
+                wahlstation.revalidate();
 
             }
         });
+        timer.start();
 
 
     }
