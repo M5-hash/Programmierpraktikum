@@ -13,7 +13,6 @@ public class Bildloader {
     static ArrayList<String> Loaded = new ArrayList<>();                       // Speichert als String die Quellen der bereits geladenen Bilder ab
 
 
-
     /**
      * @param Bild_dir gibt die zu ladende Datei an
      * @return img Das gewollte image
@@ -39,7 +38,7 @@ public class Bildloader {
         Loaded.add(counter, Bild_dir);                                         // Fügt die Quelle dem Zwischenspeicher hinzu
         Finished.add(counter, img);                                             // Fügt das Bild dem Zwischenspeicher hinzu
         counter++;                                                             // Der Counter wird um Eins erhöht, das in beide Arrays mindestens ein Element hinzugefügt wurde
-        System.out.println("Es wurden bis jetzt " + counter + " Bilder geladen");
+        //System.out.println("Es wurden bis jetzt " + counter + " Bilder geladen");
         return img;
     }
 }

@@ -11,7 +11,6 @@ public class TileSize {                         //Die Dimesionen der Tiles
     public static int FieldBox_gap = Math.max(60, 120 % Tile_Size);
 
 
-
     public static int getxRightEnd() {
         return xRightEnd;
     }
@@ -49,20 +48,18 @@ public class TileSize {                         //Die Dimesionen der Tiles
         TileSize.displacement = displacement;
     }
 
-    public static int fighting = Tile.fightstart ? 1 : 0 ;
+    public static int fighting = Tile.fightstart ? 1 : 0;
     public static int displacement = fighting * (Tile.field_size * TileSize.Tile_Size + Math.max(60, 120 % TileSize.Tile_Size));
 
     public static void setTile_Size(int tile_Size) {
-        if(!Tile.fightstart)
-            if(tile_Size != 0){
+        if (!Tile.fightstart)
+            if (tile_Size != 0) {
                 Tile_Size = tile_Size;
+            } else {
+                if (tile_Size * 3 / 4 != 0) {
+                    Tile_Size = tile_Size * 3 / 4;
+                }
             }
-
-        else{
-            if(tile_Size * 3 / 4 != 0){
-                Tile_Size = tile_Size * 3 / 4;
-            }
-        }
     }
 
 }

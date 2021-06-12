@@ -10,15 +10,15 @@ public class SchiffPainter {
     public static boolean ready = false;
     Bildloader Bild = new Bildloader();
     int[][] getEnemyPlacement = {{0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
-                    , {0, 0, 8, 8, 8, 8, 0, 0, 0, 0}
-                    , {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
-                    , {0, 0, 0, 0, 0, 7, 7, 7, 0, 0}
-                    , {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
-                    , {0, 0, 0, 0, 0, 8, 0, 0, 0, 0}
-                    , {0, 8, 8, 0, 0, 8, 0, 0, 0, 0}
-                    , {0, 8, 8, 0, 0, 8, 0, 0, 0, 0}
-                    , {0, 8, 8, 0, 0, 8, 0, 0, 0, 0}
-                    , {0, 8, 8, 0, 0, 0, 0, 0, 0, 0}};
+            , {0, 0, 8, 8, 8, 8, 0, 0, 0, 0}
+            , {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+            , {0, 0, 0, 0, 0, 7, 7, 7, 0, 0}
+            , {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+            , {0, 0, 0, 0, 0, 8, 0, 0, 0, 0}
+            , {0, 8, 8, 0, 0, 8, 0, 0, 0, 0}
+            , {0, 8, 8, 0, 0, 8, 0, 0, 0, 0}
+            , {0, 8, 8, 0, 0, 8, 0, 0, 0, 0}
+            , {0, 8, 8, 0, 0, 0, 0, 0, 0, 0}};
 
 
     public SchiffPainter() {
@@ -169,7 +169,7 @@ public class SchiffPainter {
      */
     public boolean Schiffzeichner(Graphics g) {
 
-        int[][] dummy ;
+        int[][] dummy;
         int field = 0;
         if (SpielWindow.change) Schiffteil();
 
@@ -183,10 +183,10 @@ public class SchiffPainter {
 
             //System.out.println(TileSize.getFighting());
 
-            if(field == 0){
-                dummy = BugHeckMeck ;
+            if (field == 0) {
+                dummy = BugHeckMeck;
             } else
-                dummy = getEnemyPlacement ;
+                dummy = getEnemyPlacement;
 
             for (int y = 0; y < dummy.length; y++) {
                 for (int x = 0; x < dummy[0].length; x++) {
@@ -260,13 +260,12 @@ public class SchiffPainter {
                 }
 
             }
-            field++ ;
+            field++;
 
         }
 
         return true;
     }
-
 
 
 }

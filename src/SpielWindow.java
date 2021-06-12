@@ -1,5 +1,7 @@
 package src;
 
+import src.Images.Zielhilfe;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -7,9 +9,14 @@ import java.awt.event.ActionListener;
 
 public class SpielWindow extends JPanel {
 
-    public static PlayingField playingField = new PlayingField(10);
+
+    Wahlstation wahlstation = new Wahlstation();
+
     public static boolean change = false;
     public static int field_size = 10;
+    public static PlayingField playingField = new PlayingField(field_size);
+    public static TilePainter tile = new TilePainter(field_size);
+    public static Zielhilfe Z = new Zielhilfe() ;
     String Feldvon = "Spieler"; //"GegnerKI" "GegnerMensch"
 
 
@@ -20,9 +27,6 @@ public class SpielWindow extends JPanel {
     }
 
     public SpielWindow() {
-
-        Wahlstation wahlstation = new Wahlstation() ;
-
 
         final int[] frame_height = new int[1];
         final int[] frame_width = new int[1];
@@ -40,14 +44,15 @@ public class SpielWindow extends JPanel {
 
         System.out.println("Du hast den schönen SinglePlayer Knopf berührt");
 
-        JPanel tile = new TilePainter(10);
 
         //tile.setBounds(1000, 100, 20, 20);
         tile.setBounds(15, 15, 600, 1000);
-        wahlstation.setBounds(800,25,700,700);
+        wahlstation.setBounds(800, 25, 700, 700);
+        Z.setBounds(1600, 25, 700, 700);
 
         LayeredPanel.add(tile, Integer.valueOf(1));
         LayeredPanel.add(wahlstation, Integer.valueOf(1));
+        LayeredPanel.add(Z,Integer.valueOf(1)) ;
 
         LayeredPanel.setBackground(Color.darkGray);
         LayeredPanel.setVisible(true);
@@ -74,15 +79,23 @@ public class SpielWindow extends JPanel {
                 LayeredPanel.setBounds(0, 0, TileSize.Tile_Size * SpielWindow.field_size, TileSize.Tile_Size * SpielWindow.field_size);
                 //tile.setBounds(300, 120, TileSize.Tile_Size * SpielWindow.field_size, TileSize.Tile_Size * SpielWindow.field_size);
 
-                tile.repaint(); //Der beste Command, der von der Menschheit erfunden wurde
-                tile.revalidate();
-                wahlstation.repaint();
-                wahlstation.revalidate();
+                repaintAll();
 
             }
         });
         timer.start();
 
+
+    }
+
+    void repaintAll() {
+
+        tile.repaint(); //Der beste Command, der von der Menschheit erfunden wurde
+        tile.revalidate();
+
+
+//        wahlstation.repaint();
+//        wahlstation.revalidate();
 
     }
 }

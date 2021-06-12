@@ -14,7 +14,7 @@ public class Tile extends JPanel {
     private static int counter = 0;
     protected static int top_gap = 0;
     protected static int side_gapl = 0;
-    static boolean fightstart = false ;
+    static boolean fightstart = false;
 
 
     /*Liest die Groesse bzw, das Format des Spielfelds,welches durch das
@@ -60,12 +60,12 @@ public class Tile extends JPanel {
      *          Da aus einem TileSet gelesen muss nicht nur das Ziel bzw. die Position davon geändert werden sondern auch die Source
      */
     public void DrawLayer(Graphics g) {
-        int field = 0 ;
+        int field = 0;
         int fighting = fightstart ? 1 : 0;
         Graphics2D g2 = (Graphics2D) g;
         g2.setStroke(new BasicStroke(Math.max(1, TileSize.Tile_Size / 25)));       //nach Bauchgefühl gesetz, wie viel Bild und wie viel des einzelnen Tiles Strich sein soll, das max garantiert, dass der Strich nicht dünner als ein Pixel wird
 
-        while(field <= fighting) {
+        while (field <= fighting) {
 
             int displacement = field * (field_size * TileSize.Tile_Size + Math.max(60, 120 % TileSize.Tile_Size));
 

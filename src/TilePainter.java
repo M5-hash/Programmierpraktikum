@@ -1,5 +1,7 @@
 package src;
 
+import src.Images.Zielhilfe;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -13,6 +15,30 @@ public class TilePainter extends JPanel implements MouseMotionListener {
     public static int groesse = 3;
     public static boolean horizontal = true;
     public static int AnzSchiffe = 0;
+    public static int PosX = 0 ;
+    public static int PosY = 0 ;
+    public static boolean Onfirstfield = false ;
+
+    public static boolean getOnfirstfield() {
+        return Onfirstfield;
+    }
+
+    public static int getPosX() {
+        return PosX;
+    }
+
+    public static int getPosY() {
+        return PosY;
+    }
+
+    public static void setPosX(int posX) {
+        PosX = posX;
+    }
+
+    public static void setPosY(int posY) {
+        PosY = posY;
+    }
+
 
     private final Tile Ebene;
     SchiffPainter h = new SchiffPainter();
@@ -40,14 +66,20 @@ public class TilePainter extends JPanel implements MouseMotionListener {
                      * */
 
                     if (!Tile.fightstart) {
-                        if (Onfirstfield(e)) {
+
+                        setOnfirstfield(e);
+
+                        if (Onfirstfield) {
                             int yFeld = ((y - Tile.top_gap) / TileSize.Tile_Size);
                             int xFeld = ((x - Tile.side_gapl) / TileSize.Tile_Size);
 
                             System.out.println("Die Position auf der Y-Achse beträgt:" + yFeld + "\nDie Postion auf der X-Achse beträgt:" + xFeld);
 
-                            if (SpielWindow.change = SpielWindow.playingField.setShip(groesse, xFeld, yFeld, horizontal))
-                                AnzSchiffe++;//Lässt die Schiffzeichnen Methode wissen, on es zu einer Änderung gekommen ist
+                            if (SpielWindow.change = SpielWindow.playingField.setShip(groesse, xFeld, yFeld, horizontal)){
+                                AnzSchiffe++;
+
+                            }
+                                //Lässt die Schiffzeichnen Methode wissen, on es zu einer Änderung gekommen ist
                         } else {
 
                             if (x >= TileSize.getxRightEnd() + TileSize.getFieldBox_gap() + TileSize.Tile_Size / 2                                                                 //Bereich in dem man klicken muss um sein Schiff auf die Groesse 5 zu setzen
@@ -142,6 +174,7 @@ public class TilePainter extends JPanel implements MouseMotionListener {
         Ebene.DrawLayer(g);
         if (SchiffPainter.ready) {
             h.Schiffzeichner(g);
+            //Zielhilfe Z = new Zielhilfe(g) ;
             if (!Tile.fightstart) {
 
             }
@@ -150,33 +183,39 @@ public class TilePainter extends JPanel implements MouseMotionListener {
         }
 
     }
-        @Override
-        public void mouseDragged(MouseEvent e){
 
-        }
+    @Override
+    public void mouseDragged(MouseEvent e) {
 
-        public boolean Onfirstfield (MouseEvent e){
-
-            int x = e.getX();
-            int y = e.getY();
-
-
-            if (x > Tile.side_gapl && x < Tile.field_size * TileSize.Tile_Size + Tile.side_gapl && y > Tile.top_gap && y < Tile.top_gap + x * TileSize.Tile_Size)
-                return true;
-            else return false;
-        }
-
-        @Override
-        public void mouseMoved (MouseEvent e){
-
-            /*int xPos = e.getX() / Tile.field_size;
-            int yPos = e.getY() / Tile.field_size;
-
-            if (Onfirstfield(e)) {
-                //Hellseher(xPos, yPos);
-            }*/
-
-
-        }
     }
+
+    public void setOnfirstfield(MouseEvent e) {
+
+        int x = e.getX();
+        int y = e.getY();
+
+
+        if (x > 0 && x < Tile.field_size * TileSize.Tile_Size && y > 0 && y < SpielWindow.field_size * TileSize.Tile_Size)
+            Onfirstfield = true;
+        else Onfirstfield = false;
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+
+        setOnfirstfield(e);
+        if(Onfirstfield){
+            setPosX(e.getX() / TileSize.Tile_Size) ;
+            setPosY(e.getY() / TileSize.Tile_Size) ;
+
+            System.out.println("mouseMoved wurde aufgerufen");
+        }
+            if (Onfirstfield) {
+                //Hellseher(xPos, yPos);
+
+            }
+
+
+    }
+}
 

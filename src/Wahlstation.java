@@ -5,23 +5,23 @@ import java.awt.*;
 
 public class Wahlstation extends JPanel {
 
-        public void paintComponent(Graphics g) {
+    public void paintComponent(Graphics g) {
 
-                super.paintComponent(g);
-                if (SchiffPainter.ready) {
-                        if (!Tile.fightstart) {
-                                Wahlstation(g);
+        super.paintComponent(g);
+        if (SchiffPainter.ready) {
+            if (!Tile.fightstart) {
+                Wahlstation(g);
 
-                        }
+            }
 
-
-                }
 
         }
 
-        Bildloader Bild = new Bildloader();
+    }
 
-        public void Wahlstation(Graphics g) {
+    Bildloader Bild = new Bildloader();
+
+    public void Wahlstation(Graphics g) {
 
         int[][] SchiffWahl;
 
@@ -51,10 +51,10 @@ public class Wahlstation extends JPanel {
 //        g2.drawLine(xRightEnd + FieldBox_gap, Tile.top_gap + halfheightField + halfBoxheight, xRightEnd + FieldBox_gap, Tile.top_gap + halfheightField - halfBoxheight);
 //        g2.drawLine(xRightEnd + FieldBox_gap + fieldwidth, Tile.top_gap + halfheightField - halfBoxheight, xRightEnd + FieldBox_gap + fieldwidth, Tile.top_gap + halfheightField + halfBoxheight);
 
-        g2.drawLine(0,0,fieldwidth, 0); //Linie oben
-        g2.drawLine(0, Boxheight, fieldwidth, Boxheight) ; //Linie unten
-        g2.drawLine(0,0,0,Boxheight ); //Linie links
-        g2.drawLine(fieldwidth,0,fieldwidth, Boxheight); //Linie rechts
+        g2.drawLine(0, 0, fieldwidth, 0); //Linie oben
+        g2.drawLine(0, Boxheight, fieldwidth, Boxheight); //Linie unten
+        g2.drawLine(0, 0, 0, Boxheight); //Linie links
+        g2.drawLine(fieldwidth, 0, fieldwidth, Boxheight); //Linie rechts
 
         Image Schiff = Bild.BildLoader("src/Images/Vorne32false.png");
 

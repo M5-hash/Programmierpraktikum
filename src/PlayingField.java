@@ -98,12 +98,12 @@ public class PlayingField {
                     && (yP || field[y + 1][x] != 3)
                     && (xP || yP || field[y + 1][x + 1] != 3)
             ) {
-                System.out.println(field[y][x]);
+                //System.out.println(field[y][x]);
                 field[y][x] = 4;
             } else {
                 //Markierte Felder zurücksetzen, wenn Schiff nicht gesetzt werden darf
                 this.replaceNotfinal(0);
-                System.out.println(Arrays.deepToString(field).replace("]", "]\n"));
+                //System.out.println(Arrays.deepToString(field).replace("]", "]\n"));
                 return false;
             }
 
@@ -118,7 +118,7 @@ public class PlayingField {
         //Schiffmarkierung auf Schiff setzen
         this.replaceNotfinal(3);
         this.ships++;
-        System.out.println(Arrays.deepToString(field).replace("]", "]\n"));
+        //System.out.println(Arrays.deepToString(field).replace("]", "]\n"));
         return true;
     }
 
@@ -276,12 +276,12 @@ public class PlayingField {
 
         try {
             pf.saveGame(199191918, 0);
-            System.out.println("\nLaden:" + pf.loadGame(199191918));
+            //System.out.println("\nLaden:" + pf.loadGame(199191918));
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            //System.out.println(e.getMessage());
         }
 
-        System.out.println(Arrays.deepToString(pf.field).replace("]", "]\n"));
+        //System.out.println(Arrays.deepToString(pf.field).replace("]", "]\n"));
     }
 
     /**
@@ -361,7 +361,7 @@ public class PlayingField {
 
         }
 
-        System.out.println(save);
+        //System.out.println(save);
 
         return status;
     }
