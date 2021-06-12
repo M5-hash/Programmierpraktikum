@@ -1,3 +1,5 @@
+package src;
+
 import src.Com_base;
 
 import java.net.*;
@@ -10,7 +12,7 @@ class Server extends Com_base {
     private ServerSocket ss;
 
 
-    public Server() throws IOException, NullPointerException {
+    public Server(String start_mode, int in_size, String in_ships) throws IOException, NullPointerException {
 
         super();
         this.ss = new ServerSocket(this.port);
@@ -23,10 +25,28 @@ class Server extends Com_base {
         this.in = new BufferedReader(new InputStreamReader(this.s.getInputStream()));
         this.out = new OutputStreamWriter(this.s.getOutputStream());
         this.usr = new BufferedReader(new InputStreamReader(System.in));
+
+
+        if(start_mode.equals("setup")){
+            PlayingField pf = new PlayingField(in_size);
+            Send("size "+ in_size);
+            if(Receive().equals("done")){
+                Send("ships " + in_ships);
+            }
+            if(Receive().equals("done")){
+                Send("ready");
+            }
+        }
+        else{
+            PlayingField pf = new PlayingField(0);
+            pf.loadGame(Long.valueOf(start_mode.split(" ")[1]));
+        }
+
         ServerCommunicate();
         KillSocket();
-
     }
+
+
 
     public void IP_Ausgabe() throws IOException {
         Enumeration<NetworkInterface> nis =
@@ -43,16 +63,28 @@ class Server extends Com_base {
         }
     }
 
+    protected boolean setup_server(){
+
+        //send(Größe Spielfeld)
+        //if receive != done ???
+        //send(Schiffanzahl)
+        //if receive != done ???
+        //send("ready")
+        //if receive != ready ???
+        // ServerCommunicate();
+        return true;
+    }
 
     public void ServerCommunicate() throws IOException {
         while (true) {
-            if(!in_check()) break;
-
-            Receive();
 
             if(!out_check()) break;
 
             Send("aa");
+
+            if(!in_check()) break;
+
+            Receive();
         }
     }
 }

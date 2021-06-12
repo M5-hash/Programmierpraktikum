@@ -14,11 +14,12 @@ public abstract class Com_base {
     protected Writer out;
     protected BufferedReader usr;
     protected String line;
+    protected boolean setup;
 
 
     public Com_base(){
         this.port = 50000;
-
+        this.setup = false;
     }
 
     public void Send(String input) throws IOException {
@@ -52,5 +53,34 @@ public abstract class Com_base {
             return false;
         }
         return true;
+    }
+
+    protected String message_check(String in){
+
+        String message = "";
+        String [] holder = in.split(" ");
+        if(holder[0].equals("shot")){
+            int x = Integer.parseInt(holder[1]);
+            int y = Integer.parseInt(holder[2]);
+
+            //Ist shot hit?   mit x und y
+        }
+
+        else if(holder[0].equals("save")){
+            //Spiel speichern
+        }
+
+        else if(holder[0].equals("done")){
+            //enable play
+        }
+        return message;
+    }
+
+    protected int[] ship_array(String [] in_ships){
+        int [] out_ships = new int[in_ships.length];
+        for (int i = 0; i < in_ships.length; i++){
+            out_ships[i] = Integer.parseInt(in_ships[i]);
+        }
+        return out_ships;
     }
 }
