@@ -1,6 +1,8 @@
 package src;
 
+import java.io.*;
 import java.util.Arrays;
+import java.util.Scanner;
 
 public class PlayingField {
     /**
@@ -10,8 +12,19 @@ public class PlayingField {
      * 3 = Normales Schiffsteil
      * 4 = Geplantes Schiffsteil, noch nicht gesetzt
      */
-    private final int[][] field;
+    private int[][] field;
     private int ships = 0;
+
+    /**
+     * Gibt zurück wie viel % des Spielfeldes mit Schiffen gefüllt ist
+     *
+     * @param rows   Größe des Spielfeldes
+     * @param sparts Anzahl der Schiffsteile
+     * @return Prozentuale Angabe der Schiffe im Vergleich zum Wasser
+     */
+    public static int shipsPercentage(int rows, int sparts) {
+        return (int) ((double) sparts / (double) (rows * rows));
+    }
 
     /**
      * Konstruktor
@@ -19,6 +32,15 @@ public class PlayingField {
      * @param rows - Höhe und Breite des Spielfeldes
      */
     public PlayingField(int rows) {
+        this.initField(rows);
+    }
+
+    /**
+     * Erzeugt/Initialisiert das Spielfeld-Array
+     *
+     * @param rows Breite und Länge
+     */
+    private void initField(int rows) {
         field = new int[rows][rows];
         for (int y = 0; y < rows; y++) {
             for (int x = 0; x < rows; x++) {
@@ -34,34 +56,6 @@ public class PlayingField {
      */
     public int[][] getField() {
         return this.field;
-    }
-
-    /**
-     * Gibt zurück ob 30% des Spielfeldes mit Schiffen gefüllt ist
-     *
-     * @return True >= 30%, False < 30%
-     */
-    private boolean allShipsSet() {
-        return this.allShipsSetPercentage() >= 0.30000;
-    }
-
-    /**
-     * Gibt zurück wie viel % des Spielfeldes mit Schiffen gefüllt ist
-     *
-     * @return Prozentuale Angabe der Schiffe im Vergleich zum Wasser
-     */
-    public double allShipsSetPercentage() {
-        int shippart = 0;
-
-        for (int[] ints : field) {
-            for (int x = 0; x < field.length; x++) {
-                if (ints[x] == 3 || ints[x] == 4) {
-                    shippart++;
-                }
-            }
-        }
-
-        return (double) shippart / (double)(this.field.length*this.field.length);
     }
 
     /**
@@ -122,16 +116,10 @@ public class PlayingField {
         }
 
         //Schiffmarkierung auf Schiff setzen
-        if (!allShipsSet()) {
-            this.replaceNotfinal(3);
-            this.ships++;
-            System.out.println(Arrays.deepToString(field).replace("]", "]\n"));
-            return true;
-        } else {
-            this.replaceNotfinal(0);
-        }
+        this.replaceNotfinal(3);
+        this.ships++;
         System.out.println(Arrays.deepToString(field).replace("]", "]\n"));
-        return false;
+        return true;
     }
 
     /**
@@ -280,14 +268,102 @@ public class PlayingField {
         return this.field[y + yOffset][x + xOffset] == 0;
     }
 
-    //TODO
-    public boolean saveGame(int id) {
-        return false;
+    public static void main(String[] args) {
+        PlayingField pf = new PlayingField(10);
+
+        pf.setShip(3, 4, 4, true);
+        pf.setShip(4, 0, 0, false);
+
+        try {
+            pf.saveGame(199191918, 0);
+            System.out.println("\nLaden:" + pf.loadGame(199191918));
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+
+        System.out.println(Arrays.deepToString(pf.field).replace("]", "]\n"));
     }
 
-    //TODO
-    public boolean loadGame(int id) {
-        return false;
+    /**
+     * Speichern des Spielstandes
+     *
+     * @param id     ID des Spielstandes
+     * @param status 0 = Schiffe setzen
+     *               1 = Spieler darf schießen
+     *               2 = Gegner darf schießen
+     * @throws IOException Wenn Problem beim Datei beschreiben
+     */
+    public void saveGame(int id, int status) throws IOException {
+        //Saves-Ordner erstellen
+        File directory = new File("." + File.separator + "Saves");
+        if (!directory.exists()) directory.mkdir();
+
+        //Speicherdatei erstellen bzw überschreiben
+        File file = new File("." + File.separator + "Saves" + File.separator + id + "_save.txt");
+        FileWriter fw = new FileWriter(file.getAbsoluteFile());
+        BufferedWriter bw = new BufferedWriter(fw);
+
+        //Spielzustand auslesen und in String schreiben
+        String save = "" + status;
+        save += "," + this.field.length + ",";
+        for (int i = 0; i < this.field.length; i++) {
+            for (int j = 0; j < this.field.length; j++) {
+                save += this.field[i][j];
+            }
+        }
+
+        //Daten in Datei schreiben
+        bw.write(save);
+        bw.close();
+    }
+
+    /**
+     * Laden eines Spielstandes
+     *
+     * @param id ID des Spielstandes
+     * @return Status
+     * 0 = Schiffe setzen
+     * 1 = Spieler darf schießen
+     * 2 = Gegner darf schießen
+     * @throws FileNotFoundException Wenn die Spielstand-Datei nicht existiert
+     */
+    public int loadGame(int id) throws FileNotFoundException {
+        File f = new File("." + File.separator + "Saves" + File.separator + id + "_save.txt");
+        Scanner s = new Scanner(f);
+
+        String save = "";
+        int status = -1;
+
+        if (s.hasNextLine()) save = s.nextLine();
+
+        //Status auslesen (Erste Zahl in save)
+        status = Integer.parseInt("" + save.charAt(0));
+        save = save.substring(2);
+
+        //Spielfeldgröße auslesen
+        String[] saveArr = save.split(",");
+        int rows = Integer.parseInt(saveArr[0]);
+        this.initField(rows);
+        save = saveArr[1];
+
+        char[] cArr = save.toCharArray();
+
+        //Spielfeld auslesen
+        int k = 0;
+        for (int i = 0; i < this.field.length; i++) {
+            for (int j = 0; j < this.field.length; j++) {
+                this.field[i][j] = Integer.parseInt("" + cArr[k++]);
+            }
+        }
+        int i = 0, j = 0;
+        for (char c : save.toCharArray()) {
+            if (status == -1) status = c;
+
+        }
+
+        System.out.println(save);
+
+        return status;
     }
 
     /**
