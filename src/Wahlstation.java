@@ -5,12 +5,14 @@ import java.awt.*;
 
 public class Wahlstation extends JPanel {
 
+    Bildloader Bild = new Bildloader();
+
     public void paintComponent(Graphics g) {
 
         super.paintComponent(g);
         if (SchiffPainter.ready) {
             if (!Tile.fightstart) {
-                Wahlstation(g);
+                Wahlstationpainter(g);
 
             }
 
@@ -19,9 +21,7 @@ public class Wahlstation extends JPanel {
 
     }
 
-    Bildloader Bild = new Bildloader();
-
-    public void Wahlstation(Graphics g) {
+    public void Wahlstationpainter(Graphics g) {
 
         int[][] SchiffWahl;
 

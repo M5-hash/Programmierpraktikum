@@ -43,7 +43,7 @@ public class Zielhilfe extends JPanel {
                         //System.out.println(Inbetweener);
 
                         if (Inbetweener == 1) {
-                            Zahldir = "src/Image/1.png";
+                            Zahldir = "src/Image/1.jpg";
                         } else {
 
                             while ((Inbetweener - Exponent(10, i)) > 0) {
@@ -63,43 +63,43 @@ public class Zielhilfe extends JPanel {
                                 switch (laeufer) {
 
                                     case 0:
-                                        Zahldir = "src/Image/0.png";
+                                        Zahldir = "src/Image/0.jpg";
                                         break;
 
                                     case 1:
-                                        Zahldir = "src/Image/1.png";
+                                        Zahldir = "src/Image/0.jpg";
                                         break;
 
                                     case 2:
-                                        Zahldir = "src/Image/2.png";
+                                        Zahldir = "src/Image/2.jpg";
                                         break;
 
                                     case 3:
-                                        Zahldir = "src/Image/3.png";
+                                        Zahldir = "src/Image/3.jpg";
                                         break;
 
                                     case 4:
-                                        Zahldir = "src/Image/4.png";
+                                        Zahldir = "src/Image/4.jpg";
                                         break;
 
                                     case 5:
-                                        Zahldir = "src/Image/5.png";
+                                        Zahldir = "src/Image/5.jpg";
                                         break;
 
                                     case 6:
-                                        Zahldir = "src/Image/6.png";
+                                        Zahldir = "src/Image/6.jpg";
                                         break;
 
                                     case 7:
-                                        Zahldir = "src/Image/7.png";
+                                        Zahldir = "src/Image/7.jpg";
                                         break;
 
                                     case 8:
-                                        Zahldir = "src/Image/8.png";
+                                        Zahldir = "src/Image/8.jpg";
                                         break;
 
                                     case 9:
-                                        Zahldir = "src/Image/9.png";
+                                        Zahldir = "src/Image/9.jpg";
                                         break;
 
                                     default:

@@ -7,14 +7,14 @@ import java.util.Random;
 
 public class Tile extends JPanel {
 
-    private BufferedImage Image;
-    private final Bildloader Bild = new Bildloader();
-    private final int[][] Feld;
     public static int field_size;
-    private static int counter = 0;
     protected static int top_gap = 0;
     protected static int side_gapl = 0;
     static boolean fightstart = false;
+    private static int counter = 0;
+    private final Bildloader Bild = new Bildloader();
+    private final int[][] Feld;
+    int xRightEnd = Tile.side_gapl + SpielWindow.field_size * TileSize.Tile_Size;
 
 
     /*Liest die Groesse bzw, das Format des Spielfelds,welches durch das
@@ -28,6 +28,9 @@ public class Tile extends JPanel {
         Feld = new int[field_size][field_size];
         TileArrangement(FeldVorgabe);                                   //Das umschreiben geschiet zugegebener Maßen in der TileArrangement aber
     }*/
+    int FieldBox_gap = Math.max(60, 120 % TileSize.Tile_Size);
+    int fieldwidth = 3 * TileSize.Tile_Size + TileSize.Tile_Size / 2;
+    private BufferedImage Image;
 
     /**
      * @param x Gibt die Größe des Feldes an, welches in Tile gezeichnet werden soll
@@ -60,60 +63,48 @@ public class Tile extends JPanel {
      *          Da aus einem TileSet gelesen muss nicht nur das Ziel bzw. die Position davon geändert werden sondern auch die Source
      */
     public void DrawLayer(Graphics g) {
-        int field = 0;
-        int fighting = fightstart ? 1 : 0;
         Graphics2D g2 = (Graphics2D) g;
         g2.setStroke(new BasicStroke(Math.max(1, TileSize.Tile_Size / 25)));       //nach Bauchgefühl gesetz, wie viel Bild und wie viel des einzelnen Tiles Strich sein soll, das max garantiert, dass der Strich nicht dünner als ein Pixel wird
 
-        while (field <= fighting) {
 
-            int displacement = field * (field_size * TileSize.Tile_Size + Math.max(60, 120 % TileSize.Tile_Size));
+        for (int y = 0; y < field_size; y++) {                                // Wird nur gebraucht, falls wir alle TileFrames in einem Bild ablegen wollen (TileSet), da in diesem Fall Zeilenumsprünge benötigt werden
+            for (int x = 0; x < field_size; x++) {
+                int index = ((Feld[y][x] + counter) % 32);
+                int yOffset = 0;
 
-            for (int y = 0; y < field_size; y++) {                                // Wird nur gebraucht, falls wir alle TileFrames in einem Bild ablegen wollen (TileSet), da in diesem Fall Zeilenumsprünge benötigt werden
-                for (int x = 0; x < field_size; x++) {
-                    int index = ((Feld[y][x] + counter) % 32);
-                    int yOffset = 0;
-
-                    if (index > (Image.getWidth() / 32) - 1) {                      // Da das Tileset nicht nur horizontal ausgerichtet ist, muss jedes mal wenn die rechte Seite des TileSets erreicht wurde unsere source
-                        while ((index > (Image.getWidth() / 32) - 1)) {             // Wieder an die linke Seite des Bildes verschoben werden
-                            index = index - (Image.getWidth() / 32);
-                            yOffset++;                                              //Aber um eine Zeile nach unten verschoben
-                        }
+                if (index > (Image.getWidth() / 32) - 1) {                      // Da das Tileset nicht nur horizontal ausgerichtet ist, muss jedes mal wenn die rechte Seite des TileSets erreicht wurde unsere source
+                    while ((index > (Image.getWidth() / 32) - 1)) {             // Wieder an die linke Seite des Bildes verschoben werden
+                        index = index - (Image.getWidth() / 32);
+                        yOffset++;                                              //Aber um eine Zeile nach unten verschoben
                     }
-
-                    g.drawImage(Image, (x * TileSize.Tile_Size + side_gapl + displacement),                  //ok das ist jetzt blöd zu erklären
-                            (y * TileSize.Tile_Size + top_gap),                           //Es wird ein Viereck zwischen diesen 2 Punkten aufgeschlagen, die ersten 2 sind das linke obere ende
-                            ((x + 1) * TileSize.Tile_Size + side_gapl + displacement),                      //die anderen 2 sind das rechte untere ende. Es handelt sich hierbei um das Ziel
-                            ((y + 1) * TileSize.Tile_Size + top_gap),
-                            index * 32,                                         //Es wird ein Viereck zwischen diesen 2 Punkten aufgeschlagen, die ersten 2 sind das linke obere ende
-                            yOffset * 32,                                       //die anderen 2 sind das rechte untere ende. Es handelt sich hierbei um die Quelle, da die Source und das ausgegebene
-                            (index + 1) * 32,                                   //gleich groß sein sollen sind die Variablen nahezu identisch
-                            (yOffset + 1) * 32,
-                            null);
-
                 }
+
+                g.drawImage(Image, (x * TileSize.Tile_Size),                  //ok das ist jetzt blöd zu erklären
+                        (y * TileSize.Tile_Size),                           //Es wird ein Viereck zwischen diesen 2 Punkten aufgeschlagen, die ersten 2 sind das linke obere ende
+                        ((x + 1) * TileSize.Tile_Size),                      //die anderen 2 sind das rechte untere ende. Es handelt sich hierbei um das Ziel
+                        ((y + 1) * TileSize.Tile_Size),
+                        index * 32,                                         //Es wird ein Viereck zwischen diesen 2 Punkten aufgeschlagen, die ersten 2 sind das linke obere ende
+                        yOffset * 32,                                       //die anderen 2 sind das rechte untere ende. Es handelt sich hierbei um die Quelle, da die Source und das ausgegebene
+                        (index + 1) * 32,                                   //gleich groß sein sollen sind die Variablen nahezu identisch
+                        (yOffset + 1) * 32,
+                        null);
+
             }
-            field++;
-
-
-            counter = (counter + 1) % 32;
-
-            for (int x = 0; x < (field_size + 1); x++) {
-                g2.drawLine(side_gapl + x * TileSize.Tile_Size + displacement, top_gap, side_gapl + x * TileSize.Tile_Size + displacement, top_gap + field_size * TileSize.Tile_Size);
-            } // Zeichnet alle Vertikale Linien, welche die Felder des Spiels klarer macht
-
-            for (int y = 0; y < (field_size + 1); y++) {
-                g2.drawLine(side_gapl + displacement, top_gap + y * TileSize.Tile_Size, side_gapl + field_size * TileSize.Tile_Size + displacement, top_gap + y * TileSize.Tile_Size);
-            } //Zeichnet alle Horizontalen Linien, welche die Felder des Spiels klarer macht
-
         }
 
-        int xRightEnd = Tile.side_gapl + SpielWindow.field_size * TileSize.Tile_Size;
-        int FieldBox_gap = Math.max(60, 120 % TileSize.Tile_Size);
-        int fieldwidth = 3 * TileSize.Tile_Size + TileSize.Tile_Size / 2;
 
+        counter = (counter + 1) % 32;
+
+        for (int x = 0; x < (field_size + 1); x++) {
+            g2.drawLine(x * TileSize.Tile_Size, 0,x * TileSize.Tile_Size, field_size * TileSize.Tile_Size);
+        } // Zeichnet alle Vertikale Linien, welche die Felder des Spiels klarer macht
+
+        for (int y = 0; y < (field_size + 1); y++) {
+            g2.drawLine(0, y * TileSize.Tile_Size, field_size * TileSize.Tile_Size, y * TileSize.Tile_Size);
+        } //Zeichnet alle Horizontalen Linien, welche die Felder des Spiels klarer macht
 
     }
+
 
     /*public static Tile DateiLeser(String datei_dir) {
         Tile Ebene;

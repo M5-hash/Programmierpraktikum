@@ -17,6 +17,17 @@ public class SpielWindow extends JPanel {
     public static PlayingField playingField = new PlayingField(field_size);
     public static TilePainter tile = new TilePainter(field_size);
     public static Zielhilfe Z = new Zielhilfe() ;
+
+    public static int getFramewidth() {
+        return framewidth;
+    }
+
+    public static int getFrameheigth() {
+        return frameheigth;
+    }
+
+    public static int framewidth = 0 ;
+    public static int frameheigth = 0 ;
     String Feldvon = "Spieler"; //"GegnerKI" "GegnerMensch"
 
 
@@ -28,8 +39,6 @@ public class SpielWindow extends JPanel {
 
     public SpielWindow() {
 
-        final int[] frame_height = new int[1];
-        final int[] frame_width = new int[1];
         int bottom_gap = 80;
 
         JLayeredPane LayeredPanel = new JLayeredPane();
@@ -44,42 +53,55 @@ public class SpielWindow extends JPanel {
 
         System.out.println("Du hast den schönen SinglePlayer Knopf berührt");
 
+        frameheigth = frame.getHeight();
+        framewidth = frame.getWidth();
+
+        Background Bg = new Background() ;
+
 
         //tile.setBounds(1000, 100, 20, 20);
         tile.setBounds(15, 15, 600, 1000);
         wahlstation.setBounds(800, 25, 700, 700);
-        Z.setBounds(1600, 25, 700, 700);
+        Z.setBounds(15, 25, 60, 70);
+        Bg.setBounds(0, 0, frame.getWidth(), frame.getHeight() );
 
+
+        LayeredPanel.add(Bg, Integer.valueOf(0)) ;
         LayeredPanel.add(tile, Integer.valueOf(1));
         LayeredPanel.add(wahlstation, Integer.valueOf(1));
-        LayeredPanel.add(Z,Integer.valueOf(1)) ;
+        LayeredPanel.add(Z,Integer.valueOf(2)) ;
 
         LayeredPanel.setBackground(Color.darkGray);
         LayeredPanel.setVisible(true);
         frame.add(LayeredPanel);
 
-        frame_height[0] = frame.getHeight();
-        frame_width[0] = frame.getWidth();
 
+
+        LayeredPanel.setBounds(0, 0, TileSize.Tile_Size * SpielWindow.field_size, TileSize.Tile_Size * SpielWindow.field_size);
+        TileSize.setTile_Size(frame.getHeight() / 14);
 
         Timer timer = new Timer(100, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                JPanel Background = new JPanel();
-
-
-                if (frame_width[0] != frame.getWidth()) {
+                if (framewidth != frame.getWidth()) {
+                    framewidth = frame.getWidth() ;
                     TileSize.setTile_Size(frame.getWidth() / 25);
 
-                } else if (frame_height[0] != frame.getHeight()) {
+                } else if (frameheigth != frame.getHeight()) {
+                    frameheigth = frame.getHeight() ;
                     TileSize.setTile_Size(frame.getHeight() / 14);
                 }
+                Bg.setBounds(0, 0, frame.getWidth(), frame.getHeight() );
+                tile.setBounds(15, 15, TileSize.Tile_Size * SpielWindow.field_size, TileSize.Tile_Size * SpielWindow.field_size);
+                LayeredPanel.setBounds(0, 0,frame.getWidth(), frame.getHeight());
 
-                LayeredPanel.setBounds(0, 0, TileSize.Tile_Size * SpielWindow.field_size, TileSize.Tile_Size * SpielWindow.field_size);
+
                 //tile.setBounds(300, 120, TileSize.Tile_Size * SpielWindow.field_size, TileSize.Tile_Size * SpielWindow.field_size);
 
                 repaintAll();
+                Bg.repaint();
+                Bg.revalidate();
 
             }
         });

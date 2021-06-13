@@ -70,8 +70,8 @@ public class TilePainter extends JPanel implements MouseMotionListener {
                         setOnfirstfield(e);
 
                         if (Onfirstfield) {
-                            int yFeld = ((y - Tile.top_gap) / TileSize.Tile_Size);
-                            int xFeld = ((x - Tile.side_gapl) / TileSize.Tile_Size);
+                            int yFeld = (y / TileSize.Tile_Size);
+                            int xFeld = (x / TileSize.Tile_Size);
 
                             System.out.println("Die Position auf der Y-Achse beträgt:" + yFeld + "\nDie Postion auf der X-Achse beträgt:" + xFeld);
 
@@ -203,19 +203,19 @@ public class TilePainter extends JPanel implements MouseMotionListener {
     @Override
     public void mouseMoved(MouseEvent e) {
 
-        setOnfirstfield(e);
-        if(Onfirstfield){
-            setPosX(e.getX() / TileSize.Tile_Size) ;
-            setPosY(e.getY() / TileSize.Tile_Size) ;
-
-            System.out.println("mouseMoved wurde aufgerufen");
+//        setOnfirstfield(e);
+//        if(Onfirstfield){
+//            setPosX(e.getX() / TileSize.Tile_Size) ;
+//            setPosY(e.getY() / TileSize.Tile_Size) ;
+//
+//            System.out.println("mouseMoved wurde aufgerufen");
+//        }
+//            if (Onfirstfield) {
+//                //Hellseher(xPos, yPos);
+//
+//            }
+//
+//
         }
-            if (Onfirstfield) {
-                //Hellseher(xPos, yPos);
-
-            }
-
-
-    }
 }
 

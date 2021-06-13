@@ -4,7 +4,6 @@ import java.awt.*;
 
 public class SchiffPainter {
 
-    private int[][] SchiffPos;
     public static int[][] BugHeckMeck = new int[SpielWindow.field_size][SpielWindow.field_size];
     //public static int[][] BugHeckdummy = new int[SpielWindow.field_size][SpielWindow.field_size];      Hatte drüber nachgedacht, dass nicht jedesmal ohne Änderung das nette Schiffzeichner aufgerufen wird
     public static boolean ready = false;
@@ -19,6 +18,7 @@ public class SchiffPainter {
             , {0, 8, 8, 0, 0, 8, 0, 0, 0, 0}
             , {0, 8, 8, 0, 0, 8, 0, 0, 0, 0}
             , {0, 8, 8, 0, 0, 0, 0, 0, 0, 0}};
+    private int[][] SchiffPos;
 
 
     public SchiffPainter() {

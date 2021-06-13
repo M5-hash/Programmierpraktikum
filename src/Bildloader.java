@@ -21,7 +21,7 @@ public class Bildloader {
 
 
         if (counter > 0) {                                                        // Macht sicher, dass die zuladende Datei auch eine neue Datei ist. Falls die Datei schon einmal geladen wurde, wurde Sie gespeichert
-            for (int i = 0; i < Loaded.size(); i++) {                           // Aus diesem Speicher wird Sie nun wieder asugelesen
+            for (int i = 0; i < Loaded.size(); i++) {                           // Aus diesem Speicher wird Sie nun wieder ausgelesen
                 if (Loaded.get(i).contentEquals(Bild_dir)) {
                     return Finished.get(i);
                 }
