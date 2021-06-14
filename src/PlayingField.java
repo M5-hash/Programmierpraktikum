@@ -85,8 +85,8 @@ public class PlayingField {
             //xC, yC: Wenn an Spielfeldgrenze, erlauben
             boolean xC = x - 1 <= 0;
             boolean yC = y - 1 <= 0;
-            boolean xP = x + 1 >= field.length - 1;
-            boolean yP = y + 1 >= field.length - 1;
+            boolean xP = x + 1 >= field.length;
+            boolean yP = y + 1 >= field.length;
 
             if ((xC || yC || field[y - 1][x - 1] != 3)
                     && (yC || field[y - 1][x] != 3)
@@ -98,12 +98,12 @@ public class PlayingField {
                     && (yP || field[y + 1][x] != 3)
                     && (xP || yP || field[y + 1][x + 1] != 3)
             ) {
-                //System.out.println(field[y][x]);
+                System.out.println("field[y][x]: " + field[y][x] + " (y: " + y + ")(x: " + x + ")");
                 field[y][x] = 4;
             } else {
                 //Markierte Felder zurücksetzen, wenn Schiff nicht gesetzt werden darf
                 this.replaceNotfinal(0);
-                //System.out.println(Arrays.deepToString(field).replace("]", "]\n"));
+                System.out.println(Arrays.deepToString(field).replace("]", "]\n"));
                 return false;
             }
 
@@ -118,7 +118,7 @@ public class PlayingField {
         //Schiffmarkierung auf Schiff setzen
         this.replaceNotfinal(3);
         this.ships++;
-        //System.out.println(Arrays.deepToString(field).replace("]", "]\n"));
+        System.out.println(Arrays.deepToString(field).replace("]", "]\n"));
         return true;
     }
 
@@ -276,12 +276,12 @@ public class PlayingField {
 
         try {
             pf.saveGame(199191918, 0);
-            //System.out.println("\nLaden:" + pf.loadGame(199191918));
+            System.out.println("\nLaden:" + pf.loadGame(199191918));
         } catch (IOException e) {
-            //System.out.println(e.getMessage());
+            System.out.println(e.getMessage());
         }
 
-        //System.out.println(Arrays.deepToString(pf.field).replace("]", "]\n"));
+        System.out.println(Arrays.deepToString(pf.field).replace("]", "]\n"));
     }
 
     /**
@@ -293,7 +293,7 @@ public class PlayingField {
      *               2 = Gegner darf schießen
      * @throws IOException Wenn Problem beim Datei beschreiben
      */
-    public void saveGame(int id, int status) throws IOException {
+    public void saveGame(long id, int status) throws IOException {
         //Saves-Ordner erstellen
         File directory = new File("." + File.separator + "Saves");
         if (!directory.exists()) directory.mkdir();
@@ -327,7 +327,7 @@ public class PlayingField {
      * 2 = Gegner darf schießen
      * @throws FileNotFoundException Wenn die Spielstand-Datei nicht existiert
      */
-    public int loadGame(int id) throws FileNotFoundException {
+    public int loadGame(long id) throws FileNotFoundException {
         File f = new File("." + File.separator + "Saves" + File.separator + id + "_save.txt");
         Scanner s = new Scanner(f);
 
@@ -355,13 +355,13 @@ public class PlayingField {
                 this.field[i][j] = Integer.parseInt("" + cArr[k++]);
             }
         }
-        int i = 0, j = 0;
+
         for (char c : save.toCharArray()) {
             if (status == -1) status = c;
 
         }
 
-        //System.out.println(save);
+        System.out.println(save);
 
         return status;
     }
