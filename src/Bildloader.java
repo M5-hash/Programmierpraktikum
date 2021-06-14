@@ -38,7 +38,7 @@ public class Bildloader {
         Loaded.add(counter, Bild_dir);                                         // Fügt die Quelle dem Zwischenspeicher hinzu
         Finished.add(counter, img);                                             // Fügt das Bild dem Zwischenspeicher hinzu
         counter++;                                                             // Der Counter wird um Eins erhöht, das in beide Arrays mindestens ein Element hinzugefügt wurde
-        //System.out.println("Es wurden bis jetzt " + counter + " Bilder geladen");
+        System.out.println("Es wurden bis jetzt " + counter + " Bilder geladen");
         return img;
     }
 }

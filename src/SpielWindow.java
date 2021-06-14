@@ -1,6 +1,5 @@
 package src;
 
-import src.Images.Zielhilfe;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,7 +14,8 @@ public class SpielWindow extends JPanel {
     public static boolean change = false;
     public static int field_size = 10;
     public static PlayingField playingField = new PlayingField(field_size);
-    public static TilePainter tile = new TilePainter(field_size);
+    public static TilePainter tile2 = new TilePainter(field_size, "GegnerKI") ;
+    public static TilePainter tile = new TilePainter(field_size, "Spieler");
     public static Zielhilfe Z = new Zielhilfe() ;
 
     public static int getFramewidth() {
@@ -60,14 +60,17 @@ public class SpielWindow extends JPanel {
 
 
         //tile.setBounds(1000, 100, 20, 20);
+        wahlstation.setBackground(new Color(0,0,0,0));
+        tile2.setBounds(1200,15,600,1000);
         tile.setBounds(15, 15, 600, 1000);
-        wahlstation.setBounds(800, 25, 700, 700);
+        wahlstation.setBounds(800, 25, 3 * TileSize.Tile_Size + TileSize.Tile_Size  / 2 + 2, 8 * TileSize.Tile_Size + 2);
         Z.setBounds(15, 25, 60, 70);
         Bg.setBounds(0, 0, frame.getWidth(), frame.getHeight() );
 
 
         LayeredPanel.add(Bg, Integer.valueOf(0)) ;
         LayeredPanel.add(tile, Integer.valueOf(1));
+        LayeredPanel.add(tile2, Integer.valueOf(1));
         LayeredPanel.add(wahlstation, Integer.valueOf(1));
         LayeredPanel.add(Z,Integer.valueOf(2)) ;
 
@@ -84,17 +87,30 @@ public class SpielWindow extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
 
+
+                double dbframeheigth = (double) frame.getHeight() ;
+                double dbframewidth = (double) frame.getWidth() ;
+                int TileSizer = (int)  (dbframewidth * 0.30) / field_size ;
+
                 if (framewidth != frame.getWidth()) {
                     framewidth = frame.getWidth() ;
-                    TileSize.setTile_Size(frame.getWidth() / 25);
+                    TileSize.setTile_Size(TileSizer) ;
 
                 } else if (frameheigth != frame.getHeight()) {
                     frameheigth = frame.getHeight() ;
-                    TileSize.setTile_Size(frame.getHeight() / 14);
+                    TileSize.setTile_Size(TileSizer);
                 }
+
+
+                int yposFeld1 = (int) ( dbframeheigth * 0.23) ;
+                int xposFeld1 = (int) ( dbframewidth * 0.095) ;
+
+
                 Bg.setBounds(0, 0, frame.getWidth(), frame.getHeight() );
-                tile.setBounds(15, 15, TileSize.Tile_Size * SpielWindow.field_size, TileSize.Tile_Size * SpielWindow.field_size);
+                tile.setBounds(xposFeld1, yposFeld1 , TileSize.Tile_Size * SpielWindow.field_size, TileSize.Tile_Size * SpielWindow.field_size);
+                tile2.setBounds(1200, 15, TileSize.Tile_Size * SpielWindow.field_size, TileSize.Tile_Size * SpielWindow.field_size);
                 LayeredPanel.setBounds(0, 0,frame.getWidth(), frame.getHeight());
+                wahlstation.setBounds(800, 25, 3 * TileSize.Tile_Size + TileSize.Tile_Size / 2 + 2, 8 * TileSize.Tile_Size + 2); //Ohne das + 2 werden die netten Striche um die Wahlstation nicht gezeichnet
 
 
                 //tile.setBounds(300, 120, TileSize.Tile_Size * SpielWindow.field_size, TileSize.Tile_Size * SpielWindow.field_size);
@@ -115,9 +131,11 @@ public class SpielWindow extends JPanel {
         tile.repaint(); //Der beste Command, der von der Menschheit erfunden wurde
         tile.revalidate();
 
+        Z.repaint();
+        Z.revalidate();
 
-//        wahlstation.repaint();
-//        wahlstation.revalidate();
+        wahlstation.repaint();
+        wahlstation.revalidate();
 
     }
 }

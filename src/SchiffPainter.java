@@ -8,20 +8,25 @@ public class SchiffPainter {
     //public static int[][] BugHeckdummy = new int[SpielWindow.field_size][SpielWindow.field_size];      Hatte drüber nachgedacht, dass nicht jedesmal ohne Änderung das nette Schiffzeichner aufgerufen wird
     public static boolean ready = false;
     Bildloader Bild = new Bildloader();
-    int[][] getEnemyPlacement = {{0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
-            , {0, 0, 8, 8, 8, 8, 0, 0, 0, 0}
-            , {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
-            , {0, 0, 0, 0, 0, 7, 7, 7, 0, 0}
-            , {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
-            , {0, 0, 0, 0, 0, 8, 0, 0, 0, 0}
-            , {0, 8, 8, 0, 0, 8, 0, 0, 0, 0}
-            , {0, 8, 8, 0, 0, 8, 0, 0, 0, 0}
-            , {0, 8, 8, 0, 0, 8, 0, 0, 0, 0}
-            , {0, 8, 8, 0, 0, 0, 0, 0, 0, 0}};
+    String Fieldof ;
+    int[][] getEnemyPlacement =
+            {{0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+                    , {0, 0, 8, 8, 8, 8, 0, 0, 0, 0}
+                    , {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+                    , {0, 0, 0, 0, 0, 7, 7, 7, 0, 0}
+                    , {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+                    , {0, 0, 0, 0, 0, 8, 0, 0, 0, 0}
+                    , {0, 8, 8, 0, 0, 8, 0, 0, 0, 0}
+                    , {0, 8, 8, 0, 0, 8, 0, 0, 0, 0}
+                    , {0, 8, 8, 0, 0, 8, 0, 0, 0, 0}
+                    , {0, 8, 8, 0, 0, 0, 0, 0, 0, 0}};
     private int[][] SchiffPos;
 
 
-    public SchiffPainter() {
+    public SchiffPainter(String Feldvon) {
+
+        Fieldof = Feldvon ;
+
         Schiffteil();
     }
 
@@ -170,7 +175,7 @@ public class SchiffPainter {
     public boolean Schiffzeichner(Graphics g) {
 
         int[][] dummy;
-        int field = 0;
+
         if (SpielWindow.change) Schiffteil();
 
 //            System.out.println("Schiffzeichner wurde aufgerufen");
@@ -179,89 +184,84 @@ public class SchiffPainter {
         Image Schiff; //Nur ein Platzhalter, dass die IDE nicht weint
         boolean dosmthng = false;
 
-        while (field <= TileSize.getFighting()) {
 
-            //System.out.println(TileSize.getFighting());
+        //System.out.println(TileSize.getFighting());
 
-            if (field == 0) {
-                dummy = BugHeckMeck;
-            } else
-                dummy = getEnemyPlacement;
-
-            for (int y = 0; y < dummy.length; y++) {
-                for (int x = 0; x < dummy[0].length; x++) {
+        dummy = switch (Fieldof) {
+            case "Spieler" -> BugHeckMeck;
+            case "GegnerKI" -> getEnemyPlacement;
+            case "GegnerMensch" -> getEnemyPlacement;
+            default -> BugHeckMeck;
+        };
 
 
-                    switch (dummy[y][x]) {
+        for (int y = 0; y < dummy.length; y++) {
+            for (int x = 0; x < dummy[0].length; x++) {
 
-                        case 0:
-                            break;
 
-                        case 1:
-                            Schiffdir = "src/Images/Vorne32true.png";
-                            dosmthng = true;
-                            break;
+                switch (dummy[y][x]) {
 
-                        case 2:
-                            Schiffdir = "src/Images/Vorne32false.png";
-                            dosmthng = true;
-                            break;
+                    case 0:
+                        break;
 
-                        case 3:
-                            Schiffdir = "src/Images/Mitte32true.png";
-                            dosmthng = true;
-                            break;
+                    case 1:
+                        Schiffdir = "src/Images/Vorne32true.png";
+                        dosmthng = true;
+                        break;
 
-                        case 4:
-                            Schiffdir = "src/Images/Mitte32false.png";
-                            dosmthng = true;
-                            break;
+                    case 2:
+                        Schiffdir = "src/Images/Vorne32false.png";
+                        dosmthng = true;
+                        break;
 
-                        case 5:
-                            Schiffdir = "src/Images/Hinten32true.png";
-                            dosmthng = true;
-                            break;
+                    case 3:
+                        Schiffdir = "src/Images/Mitte32true.png";
+                        dosmthng = true;
+                        break;
 
-                        case 6:
-                            Schiffdir = "src/Images/Hinten32false.png";
-                            dosmthng = true;
-                            break;
+                    case 4:
+                        Schiffdir = "src/Images/Mitte32false.png";
+                        dosmthng = true;
+                        break;
 
-                        case 7:
-                            Schiffdir = "src/Images/EinX2.png";
-                            dosmthng = true;
-                            break;
+                    case 5:
+                        Schiffdir = "src/Images/Hinten32true.png";
+                        dosmthng = true;
+                        break;
 
-                        case 8:
-                            Schiffdir = "src/Images/Nebel.png";
-                            dosmthng = true;
-                            //System.out.println("Ich wurde aufgerufen");
-                            break;
+                    case 6:
+                        Schiffdir = "src/Images/Hinten32false.png";
+                        dosmthng = true;
+                        break;
 
-                        default:
-                            System.out.println("Gamer, dass ist aber dick nicht Gut mein bester, das sollte nämlich nicht gehen");
-                            System.out.println("Es gibt also einen Fehler in der Schiffteil Methode");
+                    case 7:
+                        Schiffdir = "src/Images/EinX2.png";
+                        dosmthng = true;
+                        break;
 
-                    }
+                    case 8:
+                        Schiffdir = "src/Images/Nebel1.png";
+                        dosmthng = true;
+                        //System.out.println("Ich wurde aufgerufen");
+                        break;
 
-                    int displacement = field * (Tile.field_size * TileSize.Tile_Size + Math.max(60, 120 % TileSize.Tile_Size));
-
-                    if (dosmthng) {
-                        Schiff = Bild.BildLoader(Schiffdir);
-
-                        g.drawImage(Schiff, (x * TileSize.Tile_Size + Tile.side_gapl + displacement),
-                                (y * TileSize.Tile_Size + Tile.top_gap),
-                                TileSize.Tile_Size,
-                                TileSize.Tile_Size, null);
-                        dosmthng = false;
-                    }
-
+                    default:
+                        System.out.println("Gamer, dass ist aber dick nicht Gut mein bester, das sollte nämlich nicht gehen");
+                        System.out.println("Es gibt also einen Fehler in der Schiffteil Methode");
 
                 }
 
-            }
-            field++;
 
+                if (dosmthng) {
+                    Schiff = Bild.BildLoader(Schiffdir);
+
+                    g.drawImage(Schiff, (x * TileSize.Tile_Size + Tile.side_gapl),
+                            (y * TileSize.Tile_Size + Tile.top_gap),
+                            TileSize.Tile_Size,
+                            TileSize.Tile_Size, null);
+                    dosmthng = false;
+                }
+            }
         }
 
         return true;
