@@ -85,8 +85,8 @@ public class PlayingField {
             //xC, yC: Wenn an Spielfeldgrenze, erlauben
             boolean xC = x - 1 <= 0;
             boolean yC = y - 1 <= 0;
-            boolean xP = x + 1 >= field.length - 1;
-            boolean yP = y + 1 >= field.length - 1;
+            boolean xP = x + 1 >= field.length;
+            boolean yP = y + 1 >= field.length;
 
             if ((xC || yC || field[y - 1][x - 1] != 3)
                     && (yC || field[y - 1][x] != 3)
@@ -98,7 +98,7 @@ public class PlayingField {
                     && (yP || field[y + 1][x] != 3)
                     && (xP || yP || field[y + 1][x + 1] != 3)
             ) {
-                System.out.println(field[y][x]);
+                System.out.println("field[y][x]: " + field[y][x] + " (y: " + y + ")(x: " + x + ")");
                 field[y][x] = 4;
             } else {
                 //Markierte Felder zurücksetzen, wenn Schiff nicht gesetzt werden darf
@@ -355,7 +355,7 @@ public class PlayingField {
                 this.field[i][j] = Integer.parseInt("" + cArr[k++]);
             }
         }
-        int i = 0, j = 0;
+
         for (char c : save.toCharArray()) {
             if (status == -1) status = c;
 
