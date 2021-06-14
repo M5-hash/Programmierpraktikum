@@ -293,7 +293,7 @@ public class PlayingField {
      *               2 = Gegner darf schießen
      * @throws IOException Wenn Problem beim Datei beschreiben
      */
-    public void saveGame(int id, int status) throws IOException {
+    public void saveGame(long id, int status) throws IOException {
         //Saves-Ordner erstellen
         File directory = new File("." + File.separator + "Saves");
         if (!directory.exists()) directory.mkdir();
@@ -327,7 +327,7 @@ public class PlayingField {
      * 2 = Gegner darf schießen
      * @throws FileNotFoundException Wenn die Spielstand-Datei nicht existiert
      */
-    public int loadGame(int id) throws FileNotFoundException {
+    public int loadGame(long id) throws FileNotFoundException {
         File f = new File("." + File.separator + "Saves" + File.separator + id + "_save.txt");
         Scanner s = new Scanner(f);
 
