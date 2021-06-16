@@ -31,11 +31,11 @@ public class SpielWindow extends JPanel {
     String Feldvon = "Spieler"; //"GegnerKI" "GegnerMensch"
 
 
-    public static void main(String[] args) {                     //Startet das Programm und erstellt das Window wir hier nur wegen dem testen benötigt
-
-        SpielWindow Hallo = new SpielWindow();
-
-    }
+//    public static void main(String[] args) {                     //Startet das Programm und erstellt das Window wir hier nur wegen dem testen benötigt
+//
+//        SpielWindow Hallo = new SpielWindow();
+//
+//    }
 
     public SpielWindow() {
 
@@ -56,7 +56,7 @@ public class SpielWindow extends JPanel {
         frameheigth = frame.getHeight();
         framewidth = frame.getWidth();
 
-        Background Bg = new Background() ;
+        JPanel Bg = new Background() ;
 
 
         //tile.setBounds(1000, 100, 20, 20);
