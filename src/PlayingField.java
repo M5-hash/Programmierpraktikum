@@ -36,6 +36,11 @@ public class PlayingField {
     }
 
     /**
+     * Leerer-Konstruktor, um ein PlayingField zu erstellen, welches seine Daten über this.loadGame erhält
+     */
+    public PlayingField(){}
+
+    /**
      * Erzeugt/Initialisiert das Spielfeld-Array
      *
      * @param rows Breite und Länge
