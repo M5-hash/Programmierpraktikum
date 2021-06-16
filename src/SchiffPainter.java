@@ -30,34 +30,6 @@ public class SchiffPainter {
         Schiffteil();
     }
 
-    private boolean Enemyplacement() {
-
-        for (int[] schiffPo : SchiffPos) {
-            for (int j = 0; j < SchiffPos[0].length; j++) {
-                switch (schiffPo[j]) {
-                    case 0:                                             //An dieser position befindet sich kein Schiff bzw. Schiffteil
-                        break;
-                    case 1:                                             //Hier befindet sich ein zerstörtes Schiffteil
-                        drawEntity(1);
-                    case 2:                                             //Hier befindet ein zerstörtes Schiff
-                        drawEntity(2);
-                    case 3:                                             //Hier befindet sich ein intaktes Schiffteil
-                        drawEntity(3);
-
-                    default:                                        //Invalid Entry mein Gamer, dass sollte aber nicht vorkommen.
-                        System.out.println("Invalid entry");
-                        return false;
-                }
-            }
-        }
-        return true;
-    }
-
-    private void drawEntity(int Ship) {
-        //Bildloader
-
-    }
-
     /*
      * Ermittelt, wo beim Schiff es sich um das Bug(Vorne) oder Heck(Hinten) handelt, um so das richtige Image zu wählen, sodass die Aesthetic passt.
      *
@@ -176,7 +148,7 @@ public class SchiffPainter {
 
         int[][] dummy;
 
-        if (SpielWindow.change) Schiffteil();
+        if (SpielWindow.change && Fieldof.equals("Spieler")) Schiffteil();
 
 //            System.out.println("Schiffzeichner wurde aufgerufen");
 
@@ -240,7 +212,7 @@ public class SchiffPainter {
                         break;
 
                     case 8:
-                        Schiffdir = "src/Images/Nebel1.png";
+                        Schiffdir = "src/Images/PokeTest32.jpg";
                         dosmthng = true;
                         //System.out.println("Ich wurde aufgerufen");
                         break;
