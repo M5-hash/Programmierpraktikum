@@ -45,91 +45,95 @@ public class TilePainter extends JPanel implements MouseMotionListener {
 
 
     public TilePainter(int Feldgroesse, String Feldvon) {
-        Ebene = new Tile(Feldgroesse);
+        Ebene = new Tile(Feldgroesse, Feldvon);
         hier = new SchiffPainter(Feldvon);
 
-        addMouseMotionListener(this);
+        if(Feldvon.equals("Spieler")) {
 
-        addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                if (e.getButton() == MouseEvent.BUTTON1) {
-                    int x = e.getX();
-                    int y = e.getY();
+            addMouseMotionListener(this);
+
+            addMouseListener(new MouseAdapter() {
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    if (e.getButton() == MouseEvent.BUTTON1) {
+                        int x = e.getX();
+                        int y = e.getY();
 
 
-                    /*Die Position auf dem Feld wird durch diese Funktion berechnet, anstatt das nur die aktuelle Position in Pixeln zurückgegeben wird.
-                     *
-                     * Erzeugt dabei die Parameter yFeld und xFeld
-                     *
-                     * y-Feld: (y - top_gap) / TileSize.tile_height
-                     * x-Feld: (x - sidegapl) / TileSize.tile_width
-                     *
-                     * */
+                        /*Die Position auf dem Feld wird durch diese Funktion berechnet, anstatt das nur die aktuelle Position in Pixeln zurückgegeben wird.
+                         *
+                         * Erzeugt dabei die Parameter yFeld und xFeld
+                         *
+                         * y-Feld: (y - top_gap) / TileSize.tile_height
+                         * x-Feld: (x - sidegapl) / TileSize.tile_width
+                         *
+                         * */
 
-                    if (!Tile.fightstart) {
+                        if (!Tile.fightstart) {
 
-                        setOnfirstfield(e);
+                            setOnfirstfield(e);
 
-                        if (Onfirstfield) {
-                            int yFeld = (y / TileSize.Tile_Size);
-                            int xFeld = (x / TileSize.Tile_Size);
+                            if (Onfirstfield) {
+                                int yFeld = (y / TileSize.Tile_Size);
+                                int xFeld = (x / TileSize.Tile_Size);
 
-                            System.out.println("Die Position auf der Y-Achse beträgt:" + yFeld + "\nDie Postion auf der X-Achse beträgt:" + xFeld);
+                                System.out.println("Die Position auf der Y-Achse beträgt:" + yFeld + "\nDie Postion auf der X-Achse beträgt:" + xFeld);
 
-                            if (SpielWindow.change = SpielWindow.playingField.setShip(groesse, xFeld, yFeld, horizontal)){
-                                AnzSchiffe++;
+                                if (SpielWindow.change = SpielWindow.playingField.setShip(groesse, xFeld, yFeld, horizontal)) {
+                                    AnzSchiffe++;
 
-                            }
+                                }
                                 //Lässt die Schiffzeichnen Methode wissen, on es zu einer Änderung gekommen ist
-                        }
-                    } else {
-                        System.out.println("Ich bin in die else gekommen, sonst passiert hier aber noch wenig");
-                        System.out.println(TileSize.getDisplacement());
-                        if (x > TileSize.getDisplacement() + Tile.side_gapl && x < Tile.field_size * TileSize.Tile_Size + Tile.side_gapl + TileSize.getDisplacement() && y > Tile.top_gap && y < Tile.top_gap + x * TileSize.Tile_Size) {
-                            try {
-                                SpielWindow.playingField.isShot(x, y);
-                                System.out.println("Es wurde geschossen auf X: " + x + " Y: " + y);
-                            } catch (Exception exception) {
-                                exception.printStackTrace();
+                            }
+                        } else {
+                            System.out.println("Ich bin in die else gekommen, sonst passiert hier aber noch wenig");
+                            System.out.println(TileSize.getDisplacement());
+                            if (x > TileSize.getDisplacement() + Tile.side_gapl && x < Tile.field_size * TileSize.Tile_Size + Tile.side_gapl + TileSize.getDisplacement() && y > Tile.top_gap && y < Tile.top_gap + x * TileSize.Tile_Size) {
+                                try {
+                                    SpielWindow.playingField.isShot(x, y);
+                                    System.out.println("Es wurde geschossen auf X: " + x + " Y: " + y);
+                                } catch (Exception exception) {
+                                    exception.printStackTrace();
+                                }
                             }
                         }
+
+                        //xRightEnd + TileSize.getFieldBox_gap() + TileSize.Tile_Width / 2
+
                     }
 
-                    //xRightEnd + TileSize.getFieldBox_gap() + TileSize.Tile_Width / 2
+                }
+            });
+
+            /*
+             * Erlaubt es dem Nutzer mit der rechten Maustaste zwischen einem vertikal und horizontal ausgerichteten Schiff zu wechseln
+             * @param
+             *
+             * */
+            addMouseListener(new MouseAdapter() {
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    if (e.getButton() == MouseEvent.BUTTON3) {
+                        horizontal = !horizontal;
+                        System.out.println("Es wurden " + AnzSchiffe + " platziert");
+                    }
 
                 }
+            });
 
-            }
-        });
+            addMouseListener(new MouseAdapter() {
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    if (e.getButton() == MouseEvent.BUTTON2) {
+                        Tile.fightstart = !Tile.fightstart;
+                        TileSize.setFighting(Tile.fightstart ? 1 : 0);
+                        System.out.println("Der Kampf hat begonnen");
+                    }
 
-        /*
-         * Erlaubt es dem Nutzer mit der rechten Maustaste zwischen einem vertikal und horizontal ausgerichteten Schiff zu wechseln
-         * @param
-         *
-         * */
-        addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                if (e.getButton() == MouseEvent.BUTTON3) {
-                    horizontal = !horizontal;
-                    System.out.println("Es wurden " + AnzSchiffe + " platziert");
                 }
+            });
 
-            }
-        });
-
-        addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                if (e.getButton() == MouseEvent.BUTTON2) {
-                    Tile.fightstart = !Tile.fightstart;
-                    TileSize.setFighting(Tile.fightstart ? 1 : 0);
-                    System.out.println("Der Kampf hat begonnen");
-                }
-
-            }
-        });
+        }
     }
 
     /**

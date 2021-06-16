@@ -51,8 +51,6 @@ public class SpielWindow extends JPanel {
 
         TileSize.setTile_Size(frame.getWidth() / 25);
 
-        System.out.println("Du hast den schönen SinglePlayer Knopf berührt");
-
         frameheigth = frame.getHeight();
         framewidth = frame.getWidth();
 
@@ -88,8 +86,8 @@ public class SpielWindow extends JPanel {
             public void actionPerformed(ActionEvent e) {
 
 
-                double dbframeheigth = (double) frame.getHeight() ;
-                double dbframewidth = (double) frame.getWidth() ;
+                double dbframeheigth = frame.getHeight() ;
+                double dbframewidth = frame.getWidth() ;
                 int TileSizer = (int)  (dbframewidth * 0.30) / field_size ;
 
                 if (framewidth != frame.getWidth()) {
