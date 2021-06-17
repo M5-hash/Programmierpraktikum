@@ -47,7 +47,8 @@ public class PlayingField {
     /**
      * Leerer-Konstruktor, um ein PlayingField zu erstellen, welches seine Daten über this.loadGame erhält
      */
-    public PlayingField(){}
+    public PlayingField() {
+    }
 
     /**
      * Erzeugt/Initialisiert das Spielfeld-Array
@@ -73,15 +74,18 @@ public class PlayingField {
     }
 
     /**
-     * Setzen eines Schiffes auf das Spielfeld und die davorige Überprüfung ob das Schiff überhaupt dorthin platziert werden darf
+     * Setzen eines Schiffes auf das Spielfeld und die davorige Überprüfung ob das Schiff überhaupt dorthin platziert werden darf.
+     * Wenn set auf false, dann wird nur zurückgegeben ob das Schiff gesetzt werden darf, oder nicht
      *
      * @param length     Schifflänge
      * @param x          X-Koordinate vom Schiffkopf
      * @param y          Y-Koordinate vom Schiffkopf
      * @param horizontal In welcher Richtung vom Schiffskopf der Rest des Schiffes ist
+     * @param set        True: Schiff wird paltziert, wenn erlaubt
+     *                   False: Es wird nur zurückgegeben, ob das Schiff überhaupt dort paltziert werden darfs
      * @return True = Schiff gesetzt, False = Schiff durfte nicht gesetzt werden
      */
-    public boolean setShip(int length, int x, int y, boolean horizontal) {
+    private boolean setShipIntern(int length, int x, int y, boolean horizontal, boolean set) {
         for (int i = 0; i < length; i++) {
             //Überprüfen ob das zu besetzende Feld erlaubt ist
             //Nicht innerhalb des Spielfeldes
@@ -130,10 +134,36 @@ public class PlayingField {
         }
 
         //Schiffmarkierung auf Schiff setzen
-        this.replaceNotfinal(3);
-        this.ships++;
-        System.out.println(Arrays.deepToString(field).replace("]", "]\n"));
+        if (set) {
+            this.replaceNotfinal(3);
+            this.ships++;
+            System.out.println(Arrays.deepToString(field).replace("]", "]\n"));
+        }else{
+            this.replaceNotfinal(0);
+        }
         return true;
+    }
+
+    /**
+     * Wrapper von setShipWithCheck.
+     * Setzt ein Schiff, wenn erlaubt.
+     *
+     * @return siehe setShipIntern
+     * @params siehe setShipIntern
+     */
+    public boolean setShip(int length, int x, int y, boolean horizontal) {
+        return setShipIntern(length, x, y, horizontal, true);
+    }
+
+    /**
+     * Wrapper von setShipWithCheck.
+     * Prüft ob ein Schiff an übergebene Stelle gesetzt werden darf.
+     *
+     * @return siehe setShipIntern
+     * @params siehe setShipIntern
+     */
+    public boolean checkShip(int length, int x, int y, boolean horizontal) {
+        return setShipIntern(length, x, y, horizontal, false);
     }
 
     /**
@@ -217,9 +247,9 @@ public class PlayingField {
     public int isShot(int x, int y) throws Exception {
         checkCoordinatesInField(x, y);
 
-        if(this.field[y][x] == 0){
+        if (this.field[y][x] == 0) {
             this.field[y][x] = 5;
-        }else if (this.field[y][x] == 3) {
+        } else if (this.field[y][x] == 3) {
             this.field[y][x] = 1;
 
             int[] data = getDirHeadOfShip(x, y);
