@@ -11,9 +11,18 @@ public class PlayingField {
      * 2 = Komplett zerstört
      * 3 = Normales Schiffsteil
      * 4 = Geplantes Schiffsteil, noch nicht gesetzt
+     * 5 = Wasser abgeschossen
      */
     private int[][] field;
     private int ships = 0;
+
+    /**
+     * 0 = Kein Computerspieler-Spiel
+     * 1 = Computerspieler Einfach
+     * 2 = Computerspieler Mittel
+     * 3 = Computerspieler Schwer
+     */
+    private int com = 0;
 
     /**
      * Gibt zurück wie viel % des Spielfeldes mit Schiffen gefüllt ist
@@ -166,7 +175,7 @@ public class PlayingField {
         int horizontal = 0; //int statt bool, wegen int-Array Rückgabe
 
         //Überprüfen ob rechts vom Schiff ein weiteres Teil. Dann ist das Schiff Horizontal ausgelegt, sonst Vertikal
-        if (x + 1 < field.length && field[x + 1][y] > 0 && this.field[x + 1][y] < 4) {
+        if (x + 1 < field.length && field[y][x + 1] > 0 && this.field[y][x + 1] < 4) {
             horizontal = 1;
         }
 
@@ -208,7 +217,9 @@ public class PlayingField {
     public int isShot(int x, int y) throws Exception {
         checkCoordinatesInField(x, y);
 
-        if (this.field[y][x] == 3) {
+        if(this.field[y][x] == 0){
+            this.field[y][x] = 5;
+        }else if (this.field[y][x] == 3) {
             this.field[y][x] = 1;
 
             int[] data = getDirHeadOfShip(x, y);
@@ -241,7 +252,7 @@ public class PlayingField {
 
         //Nach rechts bzw nach unten
         while (x + xOffset < this.field.length && y + yOffset < this.field.length
-                && this.field[y + yOffset][x + xOffset] != 0) {
+                && this.field[y + yOffset][x + xOffset] != 0 && this.field[y + yOffset][x + xOffset] != 5) {
             this.field[y + yOffset][x + xOffset] = 2;
 
             if (horizontal) xOffset++;
@@ -270,23 +281,25 @@ public class PlayingField {
         }
 
         //Überprüfen ob nach zerstörten Schiffsteilen Wasser
-        return this.field[y + yOffset][x + xOffset] == 0;
+        return this.field[y + yOffset][x + xOffset] == 0 || this.field[y + yOffset][x + xOffset] == 5;
     }
 
+    //TODO entfernen, bei Release-Version. Nur zum testen
     public static void main(String[] args) {
         PlayingField pf = new PlayingField(10);
+        PlayingField pf2 = new PlayingField();
 
         pf.setShip(3, 4, 4, true);
         pf.setShip(4, 0, 0, false);
 
         try {
-            pf.saveGame(199191918, 0);
-            System.out.println("\nLaden:" + pf.loadGame(199191918));
+            pf.saveGame(199191918, 0, false);
+            System.out.println("\nLaden:" + pf2.loadGame(199191918, false));
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
 
-        System.out.println(Arrays.deepToString(pf.field).replace("]", "]\n"));
+        System.out.println(Arrays.deepToString(pf2.field).replace("]", "]\n"));
     }
 
     /**
@@ -298,7 +311,8 @@ public class PlayingField {
      *               2 = Gegner darf schießen
      * @throws IOException Wenn Problem beim Datei beschreiben
      */
-    public void saveGame(long id, int status) throws IOException {
+    //TODO ComputerGegner, in Spieler-Datei Schwierigkeitsgrad von Com, in Com-Datei (Auswahl mit extra Param) Spielfeld vom Com
+    public void saveGame(long id, int status, boolean com) throws IOException {
         //Saves-Ordner erstellen
         File directory = new File("." + File.separator + "Saves");
         if (!directory.exists()) directory.mkdir();
@@ -330,9 +344,12 @@ public class PlayingField {
      * 0 = Schiffe setzen
      * 1 = Spieler darf schießen
      * 2 = Gegner darf schießen
+     * 3 = Computer-Gegner-Spiel & Schiffe setzen
+     * 4 = Computer-Gegner-Spiel & Spieler darf schißen (Computer darf schießen
      * @throws FileNotFoundException Wenn die Spielstand-Datei nicht existiert
      */
-    public int loadGame(long id) throws FileNotFoundException {
+    //TODO ComputerGegner, in Spieler-Datei Schwierigkeitsgrad von Com, in Com-Datei (Auswahl mit extra Param) Spielfeld vom Com
+    public int loadGame(long id, boolean com) throws FileNotFoundException {
         File f = new File("." + File.separator + "Saves" + File.separator + id + "_save.txt");
         Scanner s = new Scanner(f);
 
