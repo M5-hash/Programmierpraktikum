@@ -148,8 +148,8 @@ public class PlayingField {
      * Wrapper von setShipWithCheck.
      * Setzt ein Schiff, wenn erlaubt.
      *
-     * @return siehe setShipIntern
-     * @params siehe setShipIntern
+     * param siehe setShipIntern
+     * return siehe setShipIntern
      */
     public boolean setShip(int length, int x, int y, boolean horizontal) {
         return setShipIntern(length, x, y, horizontal, true);
@@ -159,8 +159,8 @@ public class PlayingField {
      * Wrapper von setShipWithCheck.
      * Prüft ob ein Schiff an übergebene Stelle gesetzt werden darf.
      *
-     * @return siehe setShipIntern
-     * @params siehe setShipIntern
+     * param siehe setShipIntern
+     * return siehe setShipIntern
      */
     public boolean checkShip(int length, int x, int y, boolean horizontal) {
         return setShipIntern(length, x, y, horizontal, false);
