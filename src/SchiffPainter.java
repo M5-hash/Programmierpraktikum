@@ -8,7 +8,7 @@ public class SchiffPainter {
     //public static int[][] BugHeckdummy = new int[SpielWindow.field_size][SpielWindow.field_size];      Hatte drüber nachgedacht, dass nicht jedesmal ohne Änderung das nette Schiffzeichner aufgerufen wird
     public static boolean ready = false;
     Bildloader Bild = new Bildloader();
-    String Fieldof ;
+    String Fieldof;
     int[][] getEnemyPlacement =
             {{0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
                     , {0, 0, 8, 8, 8, 8, 0, 0, 0, 0}
@@ -25,7 +25,7 @@ public class SchiffPainter {
 
     public SchiffPainter(String Feldvon) {
 
-        Fieldof = Feldvon ;
+        Fieldof = Feldvon;
 
         Schiffteil();
     }

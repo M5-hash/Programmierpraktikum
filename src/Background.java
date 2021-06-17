@@ -6,9 +6,8 @@ import java.awt.*;
 public class Background extends JPanel {
 
 
-
-    Bildloader Bild = new Bildloader() ;
-    Image img = null ;
+    Bildloader Bild = new Bildloader();
+    Image img = null;
 
     public void paintComponent(Graphics g) {
 
@@ -19,9 +18,9 @@ public class Background extends JPanel {
 
     public void Backgroundpainter(Graphics g) {
 
-        img = Bild.BildLoader("src/Images/theme_1_background.jpg") ;
+        img = Bild.BildLoader("src/Images/theme_1_background.jpg");
 
-        g.drawImage(img,0,0,SpielWindow.getFramewidth(),SpielWindow.getFrameheigth(), null) ;
+        g.drawImage(img, 0, 0, SpielWindow.getFramewidth(), SpielWindow.getFrameheigth(), null);
 
     }
 }

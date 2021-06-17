@@ -15,9 +15,9 @@ public class TilePainter extends JPanel implements MouseMotionListener {
     public static int groesse = 3;
     public static boolean horizontal = true;
     public static int AnzSchiffe = 0;
-    public static int PosX = 0 ;
-    public static int PosY = 0 ;
-    public static boolean Onfirstfield = false ;
+    public static int PosX = 0;
+    public static int PosY = 0;
+    public static boolean Onfirstfield = false;
 
     public static boolean getOnfirstfield() {
         return Onfirstfield;
@@ -41,14 +41,14 @@ public class TilePainter extends JPanel implements MouseMotionListener {
 
 
     private final Tile Ebene;
-    SchiffPainter hier ;
+    SchiffPainter hier;
 
 
     public TilePainter(int Feldgroesse, String Feldvon) {
         Ebene = new Tile(Feldgroesse, Feldvon);
         hier = new SchiffPainter(Feldvon);
 
-        if(Feldvon.equals("Spieler")) {
+        if (Feldvon.equals("Spieler")) {
 
             addMouseMotionListener(this);
 
@@ -187,6 +187,6 @@ public class TilePainter extends JPanel implements MouseMotionListener {
 //            }
 //
 //
-        }
+    }
 }
 

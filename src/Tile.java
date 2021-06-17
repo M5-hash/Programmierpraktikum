@@ -16,6 +16,7 @@ public class Tile extends JPanel {
     private final int[][] Feld;
     String Fieldof;
     private BufferedImage Image;
+    private BufferedImage Border ;
 
 
     /*Liest die Groesse bzw, das Format des Spielfelds,welches durch das
@@ -40,6 +41,7 @@ public class Tile extends JPanel {
         Fieldof = Feldvon;
         Feld = new int[field_size][field_size];
         DummyLeser(Feld);
+        Border = Bild.BildLoader("src/Images/Border.jpg");
     }
 
     /**
@@ -64,7 +66,12 @@ public class Tile extends JPanel {
     public void DrawLayer(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
         g2.setStroke(new BasicStroke(Math.max(1, TileSize.Tile_Size / 25)));       //nach Bauchgefühl gesetz, wie viel Bild und wie viel des einzelnen Tiles Strich sein soll, das max garantiert, dass der Strich nicht dünner als ein Pixel wird
+        int SizeofBorder = Math.max(18, TileSize.Tile_Size / 12) ;
+        int Size = field_size * TileSize.Tile_Size + 2 * SizeofBorder ;
 
+
+
+        g.drawImage(Border, 0, 0, Size, Size, null );
 
         for (int y = 0; y < field_size; y++) {                                // Wird nur gebraucht, falls wir alle TileFrames in einem Bild ablegen wollen (TileSet), da in diesem Fall Zeilenumsprünge benötigt werden
             for (int x = 0; x < field_size; x++) {
@@ -81,42 +88,43 @@ public class Tile extends JPanel {
                         }
                     }
 
-                    g.drawImage(Image, (x * TileSize.Tile_Size),                  //ok das ist jetzt blöd zu erklären
-                            (y * TileSize.Tile_Size),                           //Es wird ein Viereck zwischen diesen 2 Punkten aufgeschlagen, die ersten 2 sind das linke obere ende
-                            ((x + 1) * TileSize.Tile_Size),                      //die anderen 2 sind das rechte untere ende. Es handelt sich hierbei um das Ziel
-                            ((y + 1) * TileSize.Tile_Size),
+                    g.drawImage(Image, (x * TileSize.Tile_Size) + SizeofBorder,                  //ok das ist jetzt blöd zu erklären
+                            (y * TileSize.Tile_Size) + SizeofBorder,                           //Es wird ein Viereck zwischen diesen 2 Punkten aufgeschlagen, die ersten 2 sind das linke obere ende
+                            ((x + 1) * TileSize.Tile_Size) + SizeofBorder,                      //die anderen 2 sind das rechte untere ende. Es handelt sich hierbei um das Ziel
+                            ((y + 1) * TileSize.Tile_Size) + SizeofBorder,
                             index * 32,                                         //Es wird ein Viereck zwischen diesen 2 Punkten aufgeschlagen, die ersten 2 sind das linke obere ende
                             yOffset * 32,                                       //die anderen 2 sind das rechte untere ende. Es handelt sich hierbei um die Quelle, da die Source und das ausgegebene
                             (index + 1) * 32,                                   //gleich groß sein sollen sind die Variablen nahezu identisch
                             (yOffset + 1) * 32,
                             null);
 
-                } if(Fieldof.equals("GegnerKI") || Fieldof.equals("GegnerMensch")) {
+                }
+                if (Fieldof.equals("GegnerKI") || Fieldof.equals("GegnerMensch")) {
 
-                    Image = Bild.BildLoader("src/Images/PokeTest.png") ;
+                    Image = Bild.BildLoader("src/Images/PokeTest.jpg*");
 
-                    g.drawImage(Image, (x * TileSize.Tile_Size),                  //ok das ist jetzt blöd zu erklären
-                            (y * TileSize.Tile_Size),                           //Es wird ein Viereck zwischen diesen 2 Punkten aufgeschlagen, die ersten 2 sind das linke obere ende
+                    g.drawImage(Image, (x * TileSize.Tile_Size) + SizeofBorder,                  //ok das ist jetzt blöd zu erklären
+                            (y * TileSize.Tile_Size) + SizeofBorder,                           //Es wird ein Viereck zwischen diesen 2 Punkten aufgeschlagen, die ersten 2 sind das linke obere ende
                             TileSize.Tile_Size,                      //die anderen 2 sind das rechte untere ende. Es handelt sich hierbei um das Ziel
-                            TileSize.Tile_Size, null) ;
+                            TileSize.Tile_Size, null);
 
-            }
+                }
 
-                g2.drawLine(x * TileSize.Tile_Size, 0, x * TileSize.Tile_Size, field_size * TileSize.Tile_Size);
+                g2.drawLine(x * TileSize.Tile_Size + SizeofBorder, SizeofBorder, x * TileSize.Tile_Size + SizeofBorder, field_size * TileSize.Tile_Size + SizeofBorder);
                 // Zeichnet alle Vertikale Linien, welche die Felder des Spiels klarer macht
 
-                g2.drawLine(0, y * TileSize.Tile_Size, field_size * TileSize.Tile_Size, y * TileSize.Tile_Size);
+                g2.drawLine(SizeofBorder, y * TileSize.Tile_Size + SizeofBorder, field_size * TileSize.Tile_Size + SizeofBorder, y * TileSize.Tile_Size + SizeofBorder);
                 //Zeichnet alle Horizontalen Linien, welche die Felder des Spiels klarer macht
 
 
+            }
+            counter = (counter + 1) % 32;
+
+
         }
-        counter = (counter + 1) % 32;
 
 
     }
-
-
-}
 
     /*public static Tile DateiLeser(String datei_dir) {
         Tile Ebene;
