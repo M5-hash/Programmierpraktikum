@@ -46,11 +46,13 @@ public class TilePainter extends JPanel implements MouseMotionListener {
 
                             setOnfirstfield(e);
 
-                            int SizeofBorder = Math.max(18, TileSize.Tile_Size / 12) ;
+
 
                             if (Onfirstfield) {
-                                int yFeld = ((y - SizeofBorder)/ TileSize.Tile_Size);
-                                int xFeld = ((x - SizeofBorder)/ TileSize.Tile_Size);
+
+
+                                int yFeld = ((y - TileSize.getSizeofBorder())/ TileSize.Tile_Size);
+                                int xFeld = ((x - TileSize.getSizeofBorder())/ TileSize.Tile_Size);
 
                                 System.out.println("Die Position auf der Y-Achse beträgt:" + yFeld + "\nDie Postion auf der X-Achse beträgt:" + xFeld);
 
@@ -118,7 +120,7 @@ public class TilePainter extends JPanel implements MouseMotionListener {
         int y = e.getY();
 
 
-        Onfirstfield = x > 0 && x < Tile.field_size * TileSize.Tile_Size && y > 0 && y < SpielWindow.field_size * TileSize.Tile_Size;
+        Onfirstfield = x > TileSize.getSizeofBorder() && x < Tile.field_size * TileSize.Tile_Size + TileSize.getSizeofBorder() && y > TileSize.getSizeofBorder() && y < TileSize.getSizeofBorder() + SpielWindow.field_size * TileSize.Tile_Size;
     }
 
     public static int getPosX() {
