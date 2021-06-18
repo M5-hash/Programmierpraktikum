@@ -316,6 +316,20 @@ public class PlayingField {
 
     //TODO entfernen, bei Release-Version. Nur zum testen
     public static void main(String[] args) {
+        try {
+            PlayingField spieler = new PlayingField(10);
+            spieler.setShip(4, 1, 1, true);
+            spieler.setShip(3, 5, 3, false);
+            spieler.setShip(2, 2, 6, true);
+            spieler.setShip(2, 7, 8, false);
+            System.out.println(Arrays.deepToString(spieler.getField()).replace("]", "]\n"));
+
+            ComPlayerEasy com = new ComPlayerEasy(10, new int[]{4, 3, 2, 2});
+            System.out.println(Arrays.deepToString(com.pf.getField()).replace("]", "]\n"));
+        }catch(Exception ex){
+            System.out.println(ex.getMessage());
+        }
+        /*
         PlayingField pf = new PlayingField(10);
         PlayingField pf2 = new PlayingField();
 
@@ -329,7 +343,21 @@ public class PlayingField {
             System.out.println(e.getMessage());
         }
 
-        System.out.println(Arrays.deepToString(pf2.field).replace("]", "]\n"));
+        System.out.println(Arrays.deepToString(pf2.field).replace("]", "]\n"));*/
+    }
+
+    /**
+     * Wrapper für saveGame (Ohne com Angabe)
+     */
+    public void saveGame(long id, int status) throws IOException{
+        this.saveGame(id, status, false);
+    }
+
+    /**
+     * Wrapper für loadGame (Ohne com Angabe)
+     */
+    public int loadGame(long id) throws FileNotFoundException {
+        return this.loadGame(id, false);
     }
 
     /**
