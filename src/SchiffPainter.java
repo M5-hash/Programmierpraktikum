@@ -1,6 +1,7 @@
 package src;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public class SchiffPainter {
 
@@ -43,6 +44,7 @@ public class SchiffPainter {
         System.out.println("Schiffteil wurde aufgerufen");
 
         int[][] Schiffe = SpielWindow.playingField.getField();
+
 
 
         /*int x = 0;                                                 //Nur zur Ausgabe in der Konsole muss man irgendwann wieder wegmachen
@@ -153,8 +155,10 @@ public class SchiffPainter {
 //            System.out.println("Schiffzeichner wurde aufgerufen");
 
         String Schiffdir = "Ich bin der String und ich bin ein Platzhalter";
-        Image Schiff; //Nur ein Platzhalter, dass die IDE nicht weint
+        BufferedImage Schiff; //Nur ein Platzhalter, dass die IDE nicht weint
         boolean dosmthng = false;
+
+        int SizeofBorder = Math.max(18, TileSize.Tile_Size / 12) ;
 
 
         //System.out.println(TileSize.getFighting());
@@ -227,8 +231,17 @@ public class SchiffPainter {
                 if (dosmthng) {
                     Schiff = Bild.BildLoader(Schiffdir);
 
-                    g.drawImage(Schiff, (x * TileSize.Tile_Size + Tile.side_gapl),
-                            (y * TileSize.Tile_Size + Tile.top_gap),
+                    Graphics2D d = Schiff.createGraphics() ;
+                    int transparency = 127; //0-255, 0 is invisible, 255 is opaque
+                    int colorMask = 0x00FFFFFF; //AARRGGBB
+                    int alphaShift = 24;
+                    for(int j = 0; j < Schiff.getHeight(); j++)
+                        for(int i = 0; i < Schiff.getWidth(); i++)
+                            Schiff.setRGB(x, y, (Schiff.getRGB(x, y) & colorMask) | (transparency << alphaShift));
+
+
+                    g.drawImage(Schiff, (x * TileSize.Tile_Size + SizeofBorder),
+                            (y * TileSize.Tile_Size + SizeofBorder),
                             TileSize.Tile_Size,
                             TileSize.Tile_Size, null);
                     dosmthng = false;

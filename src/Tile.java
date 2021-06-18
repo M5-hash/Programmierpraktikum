@@ -19,18 +19,6 @@ public class Tile extends JPanel {
     private BufferedImage Border ;
 
 
-    /*Liest die Groesse bzw, das Format des Spielfelds,welches durch das
-     *  weitergegebene 2 Dimensionales int-Array dargestellt wird.
-     */
-
-   /* public Tile(int[][] FeldVorgabe) {                                       //Konstruktor der Funktioniert, nimmt das ganze Array und schreibt es in eine lokale Variable und Speichert zudem noch Momentan Nutzlos könnte ich eigentlich löschen
-        this.field_size = FeldVorgabe.length;                            //Höhe und breite des Arrays
-        this.field_size = FeldVorgabe[0].length;
-
-        Feld = new int[field_size][field_size];
-        TileArrangement(FeldVorgabe);                                   //Das umschreiben geschiet zugegebener Maßen in der TileArrangement aber
-    }*/
-
     /**
      * @param x Gibt die Größe des Feldes an, welches in Tile gezeichnet werden soll
      *          Diese Information wird per int mitgeteilt
@@ -112,7 +100,6 @@ public class Tile extends JPanel {
 
                 g2.drawLine(x * TileSize.Tile_Size + SizeofBorder, SizeofBorder, x * TileSize.Tile_Size + SizeofBorder, field_size * TileSize.Tile_Size + SizeofBorder);
                 // Zeichnet alle Vertikale Linien, welche die Felder des Spiels klarer macht
-
                 g2.drawLine(SizeofBorder, y * TileSize.Tile_Size + SizeofBorder, field_size * TileSize.Tile_Size + SizeofBorder, y * TileSize.Tile_Size + SizeofBorder);
                 //Zeichnet alle Horizontalen Linien, welche die Felder des Spiels klarer macht
 
@@ -123,60 +110,13 @@ public class Tile extends JPanel {
 
         }
 
+        //Da man jeweils x + 1 Linien braucht um x Felder zu umranden werden hier die letzten 2 Striche gezeichnet
+        g2.drawLine(field_size * TileSize.Tile_Size + SizeofBorder, SizeofBorder,field_size  * TileSize.Tile_Size + SizeofBorder, field_size * TileSize.Tile_Size + SizeofBorder);
+        g2.drawLine(SizeofBorder, field_size * TileSize.Tile_Size + SizeofBorder, field_size * TileSize.Tile_Size + SizeofBorder, field_size * TileSize.Tile_Size + SizeofBorder);
+
+
 
     }
-
-    /*public static Tile DateiLeser(String datei_dir) {
-        Tile Ebene;
-
-        ArrayList<ArrayList<Integer>> dummyLayout = new ArrayList<>();
-
-        try (BufferedReader br = new BufferedReader(new FileReader(datei_dir))) {
-            String ZeileX;
-            while ((ZeileX = br.readLine()) != null) {
-                if (ZeileX.isEmpty()) {
-                    continue;
-                }
-
-                ArrayList<Integer> EinzelZeile = new ArrayList<>();
-
-                String[] Werte = ZeileX.trim().split(" ");
-                for (String string : Werte) {
-                    if (!string.isEmpty()) {
-                        int id = Integer.parseInt(string);
-
-                        EinzelZeile.add(id);
-                    }
-
-                }
-
-                dummyLayout.add(EinzelZeile);
-
-            }
-        } catch (IOException e) {
-
-            System.out.println("konnte nicht mehr aus Datei ausgelesen werden");
-
-        }
-
-        int height = dummyLayout.get(0).size();
-        int width = dummyLayout.size();
-
-        Ebene = new Tile(height, width);
-
-        for (int y = 0; y < width; y++) {
-            for (int x = 0; x < height; x++) {
-                Ebene.Feld[y][x] = dummyLayout.get(y).get(x);
-            }
-        }
-
-        Bildloader dummy = null;
-        Ebene.Image = dummy.BildLoader("D:\\ProgPrak\\Tom\\src\\Tileset.jpg");
-
-//        Ebene.Bild = Ebene.BildLoader("D:\\ProgPrak\\Tom\\src\\Tileset.jpg");
-
-        return Ebene;
-    }*/
 
     /**
      * @param Ebene Gibt die Größe des Spielfelds an, welche vom DummyLeser gefüllt werden soll

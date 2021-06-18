@@ -8,8 +8,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 
-import static src.TileSize.xRightEnd;
-
 public class TilePainter extends JPanel implements MouseMotionListener {
 
     public static int groesse = 3;
@@ -18,37 +16,12 @@ public class TilePainter extends JPanel implements MouseMotionListener {
     public static int PosX = 0;
     public static int PosY = 0;
     public static boolean Onfirstfield = false;
-
-    public static boolean getOnfirstfield() {
-        return Onfirstfield;
-    }
-
-    public static int getPosX() {
-        return PosX;
-    }
-
-    public static int getPosY() {
-        return PosY;
-    }
-
-    public static void setPosX(int posX) {
-        PosX = posX;
-    }
-
-    public static void setPosY(int posY) {
-        PosY = posY;
-    }
-
-
     private final Tile Ebene;
     SchiffPainter hier;
-
 
     public TilePainter(int Feldgroesse, String Feldvon) {
         Ebene = new Tile(Feldgroesse, Feldvon);
         hier = new SchiffPainter(Feldvon);
-
-        if (Feldvon.equals("Spieler")) {
 
             addMouseMotionListener(this);
 
@@ -69,13 +42,15 @@ public class TilePainter extends JPanel implements MouseMotionListener {
                          *
                          * */
 
-                        if (!Tile.fightstart) {
+                        if (!Tile.fightstart && Feldvon.equals("Spieler")) {
 
                             setOnfirstfield(e);
 
+                            int SizeofBorder = Math.max(18, TileSize.Tile_Size / 12) ;
+
                             if (Onfirstfield) {
-                                int yFeld = (y / TileSize.Tile_Size);
-                                int xFeld = (x / TileSize.Tile_Size);
+                                int yFeld = ((y - SizeofBorder)/ TileSize.Tile_Size);
+                                int xFeld = ((x - SizeofBorder)/ TileSize.Tile_Size);
 
                                 System.out.println("Die Position auf der Y-Achse beträgt:" + yFeld + "\nDie Postion auf der X-Achse beträgt:" + xFeld);
 
@@ -86,19 +61,16 @@ public class TilePainter extends JPanel implements MouseMotionListener {
                                 //Lässt die Schiffzeichnen Methode wissen, on es zu einer Änderung gekommen ist
                             }
                         } else {
-                            System.out.println("Ich bin in die else gekommen, sonst passiert hier aber noch wenig");
-                            System.out.println(TileSize.getDisplacement());
-                            if (x > TileSize.getDisplacement() + Tile.side_gapl && x < Tile.field_size * TileSize.Tile_Size + Tile.side_gapl + TileSize.getDisplacement() && y > Tile.top_gap && y < Tile.top_gap + x * TileSize.Tile_Size) {
+
+                            if (Feldvon.equals("GegnerKI") || Feldvon.equals("GegnerMensch")) {
                                 try {
-                                    SpielWindow.playingField.isShot(x, y);
+                                    SpielWindow.playingField.isShot(x, y); //Hier muss die KI playingfield rein, aber die existiert momentan noch nicht
                                     System.out.println("Es wurde geschossen auf X: " + x + " Y: " + y);
                                 } catch (Exception exception) {
                                     exception.printStackTrace();
                                 }
                             }
                         }
-
-                        //xRightEnd + TileSize.getFieldBox_gap() + TileSize.Tile_Width / 2
 
                     }
 
@@ -133,7 +105,36 @@ public class TilePainter extends JPanel implements MouseMotionListener {
                 }
             });
 
-        }
+
+    }
+
+    public static boolean getOnfirstfield() {
+        return Onfirstfield;
+    }
+
+    public void setOnfirstfield(MouseEvent e) {
+
+        int x = e.getX();
+        int y = e.getY();
+
+
+        Onfirstfield = x > 0 && x < Tile.field_size * TileSize.Tile_Size && y > 0 && y < SpielWindow.field_size * TileSize.Tile_Size;
+    }
+
+    public static int getPosX() {
+        return PosX;
+    }
+
+    public static void setPosX(int posX) {
+        PosX = posX;
+    }
+
+    public static int getPosY() {
+        return PosY;
+    }
+
+    public static void setPosY(int posY) {
+        PosY = posY;
     }
 
     /**
@@ -148,10 +149,6 @@ public class TilePainter extends JPanel implements MouseMotionListener {
         if (SchiffPainter.ready) {
             hier.Schiffzeichner(g);
             //Zielhilfe Z = new Zielhilfe(g) ;
-            if (!Tile.fightstart) {
-
-            }
-
 
         }
 
@@ -160,15 +157,6 @@ public class TilePainter extends JPanel implements MouseMotionListener {
     @Override
     public void mouseDragged(MouseEvent e) {
 
-    }
-
-    public void setOnfirstfield(MouseEvent e) {
-
-        int x = e.getX();
-        int y = e.getY();
-
-
-        Onfirstfield = x > 0 && x < Tile.field_size * TileSize.Tile_Size && y > 0 && y < SpielWindow.field_size * TileSize.Tile_Size;
     }
 
     @Override
