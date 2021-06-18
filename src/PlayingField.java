@@ -101,10 +101,12 @@ public class PlayingField {
             // x-1 y+1 | x y+1 | x+1 y+1
             //
             //xC, yC: Wenn an Spielfeldgrenze, erlauben
-            boolean xC = x - 1 <= 0;
-            boolean yC = y - 1 <= 0;
+            boolean xC = x - 1 < 0;
+            boolean yC = y - 1 < 0;
             boolean xP = x + 1 >= field.length;
             boolean yP = y + 1 >= field.length;
+            System.out.println("xC: " + xC + " ||| x - 1: " + (x-1)  + " <= 0");
+            System.out.println("yC: " + yC + " ||| y - 1: " + (y-1)  + " <= 0");
 
             if ((xC || yC || field[y - 1][x - 1] != 3)
                     && (yC || field[y - 1][x] != 3)
