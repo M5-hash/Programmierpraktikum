@@ -58,7 +58,7 @@ public class SpielWindow extends JPanel {
 
 
         //tile.setBounds(1000, 100, 20, 20);
-        wahlstation.setBackground(new Color(0, 0, 0, 0));
+        //wahlstation.setBackground(new Color(0, 0, 0, 0));
         //tile2.setBounds(1200, 15, 600, 1000);
         tile.setBounds(15, 15, 600, 1000);
         wahlstation.setBounds(800, 25, 3 * TileSize.Tile_Size + TileSize.Tile_Size / 2 + 2, 8 * TileSize.Tile_Size + 2);
@@ -109,7 +109,7 @@ public class SpielWindow extends JPanel {
                 tile.setBounds(xposFeld1, yposFeld1, Borderwidth, Borderwidth);
                 //tile2.setBounds(1200, 15, Borderwidth, Borderwidth);
                 LayeredPanel.setBounds(0, 0, frame.getWidth(), frame.getHeight());
-                wahlstation.setBounds(800, 25, 3 * TileSize.Tile_Size + TileSize.Tile_Size / 2 + 2, 8 * TileSize.Tile_Size + 2); //Ohne das + 2 werden die netten Striche um die Wahlstation nicht gezeichnet
+                wahlstation.setBounds((framewidth / 2) - (TileSize.Tile_Size * 3 + TileSize.Tile_Size / 2) / 2, frameheigth / 2 - 4 * TileSize.Tile_Size , 3 * TileSize.Tile_Size + TileSize.Tile_Size / 2 + 2, 8 * TileSize.Tile_Size + 2); //Ohne das + 2 werden die netten Striche um die Wahlstation nicht gezeichnet
 
 
                 //tile.setBounds(300, 120, TileSize.Tile_Size * SpielWindow.field_size, TileSize.Tile_Size * SpielWindow.field_size);

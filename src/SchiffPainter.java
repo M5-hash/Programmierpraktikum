@@ -4,11 +4,13 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.WritableRaster;
+import java.util.ArrayList;
 
 public class SchiffPainter {
 
+    static ArrayList<BufferedImage> Finished = new ArrayList<>();              // Zwischenspeicher für bereits geladene Bilder
+    static ArrayList<String> Loaded = new ArrayList<>();                       // Speichert als String die Quellen der bereits geladenen Bilder ab
     public static int[][] BugHeckMeck = new int[SpielWindow.field_size][SpielWindow.field_size];
-    //public static int[][] BugHeckdummy = new int[SpielWindow.field_size][SpielWindow.field_size];      Hatte drüber nachgedacht, dass nicht jedesmal ohne Änderung das nette Schiffzeichner aufgerufen wird
     public static boolean ready = false;
     Bildloader Bild = new Bildloader();
     String Fieldof;
@@ -28,8 +30,13 @@ public class SchiffPainter {
     int[][] Vorhersage = new int[SpielWindow.field_size][SpielWindow.field_size];
 
 
-
-
+    /**
+     * @param Feldvon   gibt an für wenn die Schiffe gezeichnet werden
+     *                  "Spieler" = Spieler
+     *                  "GegnerKI" = Computer Gegner
+     *                  "GegnerMensch" = OnlineGegners / Menschlicher Gegner
+     *                  "Preview" = Feld wird verwendet um das setzen des Spieler besser darzustellen
+     */
     public SchiffPainter(String Feldvon) {
 
         Fieldof = Feldvon;
@@ -38,14 +45,12 @@ public class SchiffPainter {
         Schiffteil();
     }
 
-    /*
-     * Ermittelt, wo beim Schiff es sich um das Bug(Vorne) oder Heck(Hinten) handelt, um so das richtige Image zu wählen, sodass die Aesthetic passt.
-     *
-     * Das Array wir mit getField() besorgt
-     *
-     * */
 
-
+    /**
+     *                  Wird verwendet um die Schiffe welche in Playingfield abgespeichert werden mit der richtigen Ausrichtung darzustellen
+     *
+     *                  wird auch in der Preview verwendet um eine richtige Ausrichtung der Schiffe zu garantieren
+     */
     public void Schiffteil() {
 
         System.out.println("Schiffteil wurde aufgerufen");
@@ -55,10 +60,6 @@ public class SchiffPainter {
         if(Fieldof.equals("Vorhersage")){
             Schiffe = Vorhersage ;
         }
-
-
-
-
 
         /*
          * Werte für BugHeckMeck:
@@ -133,6 +134,13 @@ public class SchiffPainter {
 
     }
 
+    /**
+     * @param g     Gibt Graphics Objekt weiter
+     * @param f     Gibt der Preview an, ob das Schiff gesetzt werden könnte
+     *
+     *              Wird nur von der Preview verwendet um gleichzeitig die Schiffzeichner Methode aufzurufen und
+     *              anzugeben ob das Schiff gesetzt werden könnte
+     */
     public void Schiffzeichner(Graphics g, boolean f) {
 
         fits = f ;
@@ -142,7 +150,14 @@ public class SchiffPainter {
 
 
     /**
-     * @param g wird benötigt, sodass eine Variable des Typs Graphics existiert
+     * @param g Gibt Graphics Objekt weiter
+     *
+     *          Zeichnet die Schiffe wie sie durch das in Schiffteil() ermittelt Array vorgegeben werden (Feld von Spieler)
+     *
+     *          Zeichnet was dem Spieler vom Feld seines Gegners bekannt ist (Feld von GegnerKi & GegnerMensch)
+     *
+     *          Zeichnet die Schiffe wie sie durch das in Schiffteil() ermittelt Array vorgegeben werden, aber mit der
+     *          weiteren Information ob diese dort überhaupt gesetzt werden dürfen (Feld von Preview)
      */
     public void Schiffzeichner(Graphics g) {
 
@@ -222,8 +237,8 @@ public class SchiffPainter {
                         break;
 
                     default:
-//                        System.out.println("Gamer, dass ist aber dick nicht Gut mein bester, das sollte nämlich nicht gehen");
-//                        System.out.println("Es gibt also einen Fehler in der Schiffteil Methode");
+                        System.out.println("Gamer, dass ist aber dick nicht Gut mein bester, das sollte nämlich nicht gehen");
+                        System.out.println("Es gibt also einen Fehler in der Schiffteil Methode");
                         Schiffdir = "src/Images/PokeTest32.jpg";
 
                 }
@@ -231,13 +246,17 @@ public class SchiffPainter {
 
                 if (dosmthng) {
                     Schiff = Bild.BildLoader(Schiffdir);
-
                     BufferedImage dummyImg ;
 
-
                     if(Fieldof.equals("Vorhersage")){
-                        dummyImg = colorpng(Schiff) ;
-                    } else {
+                        int check = fetchImg(Schiffdir) ;
+                        if( check != -1)
+                        {
+                            dummyImg = Finished.get(check);
+                        }else {
+                            dummyImg = colorshiftpng(Schiff, Schiffdir) ;
+                        }
+                    }else {
                         dummyImg = Schiff ;
                     }
 
@@ -251,10 +270,26 @@ public class SchiffPainter {
             }
         }
 
-        counter = 0 ;
-
     }
 
+    static int fetchImg(String Schiffdir){
+        if (counter > 0) {                                                        // Macht sicher, dass die zuladende Datei auch eine neue Datei ist. Falls die Datei schon einmal geladen wurde, wurde Sie gespeichert
+            for (int i = 0; i < Loaded.size(); i++) {// Aus diesem Speicher wird Sie nun wieder ausgelesen
+                String Stringaling = Schiffdir + fits;
+                if (Loaded.get(i).contentEquals(Stringaling)) {
+                    return i;
+                }
+            }
+        }
+        return  -1 ;
+    }
+
+    /**
+     * @param y Die y Postion des Tile über dem momentan die Maus hovert
+     * @param x Die x Postion des Tiles über dem momentan die Maus hovert
+     *
+     * Da nur der Startpunkt des Schiffes übergeben wird, muss berechnet werden wo sich der ganze Rest des Schiffes befinden wird
+     */
     public void setPrediction(int y, int x) {
 
         int size = TilePainter.groesse ;
@@ -275,14 +310,21 @@ public class SchiffPainter {
 
     }
 
-    private static BufferedImage colorpng(BufferedImage image) {
+    /**
+     * @param image         Übergebenes BufferedImage
+     * @param Schiff_dir    Übergibt den Pfad des Bildes
+     * @return              Rückgabe des bearbeiteten BufferedImage
+     *
+     *                      Verändert die Färbung, der in der Preview verwendeten BufferedImages, sodass diese direkt angeben, ob Sie gesetzt werden können
+     */
+    private static BufferedImage colorshiftpng(BufferedImage image, String Schiff_dir) {
 
         BufferedImage copy = deepCopy(image);
 
         int width = copy.getWidth();
         int height = copy.getHeight();
 
-        System.out.println("Es wurden insgesamt " + counter++ + " Bilder bearbeitet/umgefärbt");
+        System.out.println("Es wurden insgesamt " + counter + " Bilder bearbeitet/umgefärbt");
 
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
@@ -294,17 +336,14 @@ public class SchiffPainter {
                     float green = (pixel >> 8) & 0xff ;
                     float red = (pixel >> 16) & 0xff ;
 
-                    System.out.println("Ergebnis aus getRGB : \nred: " + red + "blue: " + blue);
-
-
-
+                    //System.out.println("Ergebnis aus getRGB : \nred: " + red + "blue: " + blue);
 
 
                     if(fits){
                         blue = blue / 510 ;     //Da nicht von 0 -> 255 erlaubt sondern von 0.0 -> 1.0 weitere Halbierung um die B Menge zu verringern/ es Grüner zu machen
                         red = red / 510 ;       //Verdopplung ist zufällig gewählt und wird sich wahrscheinlich noch ändern (Ich nehme Vorschläge)
 
-                        System.out.println("\nred: " + red + "blue: " + blue);
+                        //System.out.println("\nred: " + red + "blue: " + blue);
 
                         Color Cgreen = new Color(red, 0.42f, blue, 0.82f) ; //G und A zufällig gewählt
 
@@ -322,15 +361,20 @@ public class SchiffPainter {
                 }
             }
         }
+        String Stringaling = Schiff_dir + fits ;
+
+        Loaded.add(counter, Stringaling);                                         // Fügt die Quelle dem Zwischenspeicher hinzu
+        Finished.add(counter, copy);                                             // Fügt das Bild dem Zwischenspeicher hinzu
+        counter++;
         return copy;
     }
 
-    private static void splitRGB(int pixel){
-
-
-
-    }
-
+    /**
+     * @param bi    Gibt zu klonendes Bild an die Methode weiter
+     * @return      gibt das geklonte BufferedImage zurück
+     *
+     * Methode garantiert, dass es sich um verschieden BufferedImage Objekte handelt
+     */
     static BufferedImage deepCopy(BufferedImage bi) {
         ColorModel cm = bi.getColorModel();
         boolean isAlphaPremultiplied = cm.isAlphaPremultiplied() ;

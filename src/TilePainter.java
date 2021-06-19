@@ -23,6 +23,14 @@ public class TilePainter extends JPanel implements MouseMotionListener {
     boolean MovementHandler ;
 
 
+    /**
+     * @param Feldgroesse   gibt Groesse des Feldes vor
+     * @param Feldvon       gibt an für wen des Feld ist
+     *
+     *                      Konstruktor für TilePainter, welches das Felder an sich durch Tile aufruft
+     *
+     *                      Übernimmt die Inputs des Spielers gibt diese wenn nötig an andere Methoden weiter
+     */
     public TilePainter(int Feldgroesse, String Feldvon) {
         Ebene = new Tile(Feldgroesse, Feldvon);
         field = Feldvon ;
@@ -120,6 +128,11 @@ public class TilePainter extends JPanel implements MouseMotionListener {
         return Onfirstfield;
     }
 
+    /**
+     * @param e gibt MoueseEvent weiter
+     *
+     *          Überprüft ob die Maus sich momentan auf dem Spielfeld befindet
+     */
     public void setOnfirstfield(MouseEvent e) {
 
         int x = e.getX();
@@ -171,6 +184,11 @@ public class TilePainter extends JPanel implements MouseMotionListener {
 
     }
 
+    /**
+     * @param e gibt MouseEvent weiter
+     *
+     *          setzt die Pos Variablen auf das Tile auf dem sich die Maus momentan befindet
+     */
     @Override
     public void mouseMoved(MouseEvent e) {
 
@@ -182,9 +200,6 @@ public class TilePainter extends JPanel implements MouseMotionListener {
             setPosX((e.getX() - TileSize.getSizeofBorder()) / TileSize.Tile_Size) ;
             setPosY((e.getY() - TileSize.getSizeofBorder()) / TileSize.Tile_Size) ;
 
-//            if(){
-//                MovementHandler = true ;
-//            }
 
         }
     }
