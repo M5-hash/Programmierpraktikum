@@ -168,6 +168,20 @@ public class Zielhilfe extends JPanel {
             secondrun = true;
             Bildercounter = 1 ;
             i = 0;
+
+            if(PosY == 1){
+
+                Zahldir = "src/Images/1.jpg";
+
+                Zahl = Bild.BildLoader(Zahldir);
+
+                g.drawImage(Zahl, TileSize.Tile_Size,
+                        TileSize.Tile_Size,
+                        TileSize.Tile_Size,
+                        TileSize.Tile_Size, null);
+
+                break;
+            }
         }
     }
 
