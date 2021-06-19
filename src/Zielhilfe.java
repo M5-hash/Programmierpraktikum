@@ -1,9 +1,5 @@
 package src;
 
-import src.Bildloader;
-import src.SpielWindow;
-import src.TileSize;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;

@@ -21,8 +21,6 @@ public class Wahlstation extends JPanel {
 
     public void Wahlstationpainter(Graphics g) {
 
-        int[][] SchiffWahl;
-
         Graphics2D g2 = (Graphics2D) g;
 
         int Boxheight = 8 * TileSize.Tile_Size;

@@ -11,19 +11,25 @@ import java.awt.event.MouseMotionListener;
 public class TilePainter extends JPanel implements MouseMotionListener {
 
     public static int groesse = 3;
+    String field ;
     public static boolean horizontal = true;
     public static int AnzSchiffe = 0;
     public static int PosX = 0;
     public static int PosY = 0;
     public static boolean Onfirstfield = false;
     private final Tile Ebene;
-    SchiffPainter hier;
+    SchiffPainter hier ;
+    SchiffPainter Predicted ;
+    boolean MovementHandler ;
+
 
     public TilePainter(int Feldgroesse, String Feldvon) {
         Ebene = new Tile(Feldgroesse, Feldvon);
+        field = Feldvon ;
         hier = new SchiffPainter(Feldvon);
+        Predicted = new SchiffPainter("Vorhersage") ;
 
-            addMouseMotionListener(this);
+            if(Feldvon.equals("Spieler")) addMouseMotionListener(this);
 
             addMouseListener(new MouseAdapter() {
                 @Override
@@ -150,7 +156,11 @@ public class TilePainter extends JPanel implements MouseMotionListener {
         Ebene.DrawLayer(g);
         if (SchiffPainter.ready) {
             hier.Schiffzeichner(g);
-            //Zielhilfe Z = new Zielhilfe(g) ;
+
+                Predicted.setPrediction(PosX, PosY);
+            Predicted.Schiffzeichner(g, SpielWindow.playingField.checkShip(groesse, PosX, PosY, horizontal));
+                //Zielhilfe Z = new Zielhilfe(g) ;
+                MovementHandler = false ;
 
         }
 
@@ -164,19 +174,20 @@ public class TilePainter extends JPanel implements MouseMotionListener {
     @Override
     public void mouseMoved(MouseEvent e) {
 
-//        setOnfirstfield(e);
-//        if(Onfirstfield){
-//            setPosX(e.getX() / TileSize.Tile_Size) ;
-//            setPosY(e.getY() / TileSize.Tile_Size) ;
-//
-//            System.out.println("mouseMoved wurde aufgerufen");
-//        }
-//            if (Onfirstfield) {
-//                //Hellseher(xPos, yPos);
-//
+        setOnfirstfield(e);
+        boolean changed = true ;//PosX != ((e.getX() - TileSize.getSizeofBorder()) / TileSize.Tile_Size) || PosY != (e.getY() - TileSize.getSizeofBorder()) / TileSize.Tile_Size;
+
+        if(Onfirstfield){
+
+            setPosX((e.getX() - TileSize.getSizeofBorder()) / TileSize.Tile_Size) ;
+            setPosY((e.getY() - TileSize.getSizeofBorder()) / TileSize.Tile_Size) ;
+
+//            if(){
+//                MovementHandler = true ;
 //            }
-//
-//
+
+        }
     }
+
 }
 

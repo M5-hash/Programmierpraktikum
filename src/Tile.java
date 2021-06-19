@@ -8,8 +8,6 @@ import java.util.Random;
 public class Tile extends JPanel {
 
     public static int field_size;
-    protected static int top_gap = 0;
-    protected static int side_gapl = 0;
     static boolean fightstart = false;
     private static int counter = 0;
     private final Bildloader Bild = new Bildloader();

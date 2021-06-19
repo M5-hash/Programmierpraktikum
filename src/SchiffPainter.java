@@ -2,6 +2,8 @@ package src;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.awt.image.ColorModel;
+import java.awt.image.WritableRaster;
 
 public class SchiffPainter {
 
@@ -10,6 +12,8 @@ public class SchiffPainter {
     public static boolean ready = false;
     Bildloader Bild = new Bildloader();
     String Fieldof;
+    static boolean fits = true ;
+    public static int counter ;
     int[][] getEnemyPlacement =
             {{0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
                     , {0, 0, 8, 8, 8, 8, 0, 0, 0, 0}
@@ -21,12 +25,15 @@ public class SchiffPainter {
                     , {0, 8, 8, 0, 0, 8, 0, 0, 0, 0}
                     , {0, 8, 8, 0, 0, 8, 0, 0, 0, 0}
                     , {0, 8, 8, 0, 0, 0, 0, 0, 0, 0}};
-    private int[][] SchiffPos;
+    int[][] Vorhersage = new int[SpielWindow.field_size][SpielWindow.field_size];
+
+
 
 
     public SchiffPainter(String Feldvon) {
 
         Fieldof = Feldvon;
+        System.out.println( Fieldof );
 
         Schiffteil();
     }
@@ -39,25 +46,19 @@ public class SchiffPainter {
      * */
 
 
-    public int[][] Schiffteil() {
+    public void Schiffteil() {
 
         System.out.println("Schiffteil wurde aufgerufen");
 
         int[][] Schiffe = SpielWindow.playingField.getField();
 
+        if(Fieldof.equals("Vorhersage")){
+            Schiffe = Vorhersage ;
+        }
 
 
-        /*int x = 0;                                                 //Nur zur Ausgabe in der Konsole muss man irgendwann wieder wegmachen
-        for (int i = 0; i < Schiffe.length; i++) {
-            for (int j = 0; j < Schiffe[0].length; j++) {
-                if (x != i)
-                    System.out.print("\n");
-                System.out.print(Schiffe[i][j] + " ");
-                x = i;
-            }
-        }*/
 
-//        int[][] BugHeckMeck = new int[SpielWindow.field_size][SpielWindow.field_size];
+
 
         /*
          * Werte für BugHeckMeck:
@@ -124,34 +125,30 @@ public class SchiffPainter {
 
             }
         }
-        /*int x = 0;                                                 //Nur zur Ausgabe in der Konsole muss man irgendwann wieder wegmachen
-        for (int i = 0; i < BugHeckMeck.length; i++) {
-            for (int j = 0; j < BugHeckMeck[0].length; j++) {
-                if (x != i)
-                    System.out.print("\n");
-                System.out.print(BugHeckMeck[i][j] + " ");
-                x = i;
-            }
-        }*/
+
 
         ready = true;
         SpielWindow.change = false;
 
-        return BugHeckMeck;
+
+    }
+
+    public void Schiffzeichner(Graphics g, boolean f) {
+
+        fits = f ;
+        Schiffzeichner(g);
 
     }
 
 
     /**
      * @param g wird benötigt, sodass eine Variable des Typs Graphics existiert
-     * @return ob die Schiffe gezeichnet wurden
      */
-    public boolean Schiffzeichner(Graphics g) {
+    public void Schiffzeichner(Graphics g) {
 
         int[][] dummy;
 
-        if (SpielWindow.change && Fieldof.equals("Spieler")) Schiffteil();
-
+        if (Fieldof.equals("Spieler") || Fieldof.equals("Vorhersage")) Schiffteil();
 //            System.out.println("Schiffzeichner wurde aufgerufen");
 
         String Schiffdir = "Ich bin der String und ich bin ein Platzhalter";
@@ -167,8 +164,11 @@ public class SchiffPainter {
             case "Spieler" -> BugHeckMeck;
             case "GegnerKI" -> getEnemyPlacement;
             case "GegnerMensch" -> getEnemyPlacement;
+            //case "Vorhersage" -> Vorhersage;
             default -> BugHeckMeck;
         };
+
+        System.out.println( Fieldof );
 
 
         for (int y = 0; y < dummy.length; y++) {
@@ -222,8 +222,9 @@ public class SchiffPainter {
                         break;
 
                     default:
-                        System.out.println("Gamer, dass ist aber dick nicht Gut mein bester, das sollte nämlich nicht gehen");
-                        System.out.println("Es gibt also einen Fehler in der Schiffteil Methode");
+//                        System.out.println("Gamer, dass ist aber dick nicht Gut mein bester, das sollte nämlich nicht gehen");
+//                        System.out.println("Es gibt also einen Fehler in der Schiffteil Methode");
+                        Schiffdir = "src/Images/PokeTest32.jpg";
 
                 }
 
@@ -231,16 +232,17 @@ public class SchiffPainter {
                 if (dosmthng) {
                     Schiff = Bild.BildLoader(Schiffdir);
 
-                    Graphics2D d = Schiff.createGraphics() ;
-                    int transparency = 127; //0-255, 0 is invisible, 255 is opaque
-                    int colorMask = 0x00FFFFFF; //AARRGGBB
-                    int alphaShift = 24;
-                    for(int j = 0; j < Schiff.getHeight(); j++)
-                        for(int i = 0; i < Schiff.getWidth(); i++)
-                            Schiff.setRGB(x, y, (Schiff.getRGB(x, y) & colorMask) | (transparency << alphaShift));
+                    BufferedImage dummyImg ;
 
 
-                    g.drawImage(Schiff, (x * TileSize.Tile_Size + SizeofBorder),
+                    if(Fieldof.equals("Vorhersage")){
+                        dummyImg = colorpng(Schiff) ;
+                    } else {
+                        dummyImg = Schiff ;
+                    }
+
+
+                    g.drawImage(dummyImg, (x * TileSize.Tile_Size + SizeofBorder),
                             (y * TileSize.Tile_Size + SizeofBorder),
                             TileSize.Tile_Size,
                             TileSize.Tile_Size, null);
@@ -249,7 +251,58 @@ public class SchiffPainter {
             }
         }
 
-        return true;
+        counter = 0 ;
+
+    }
+
+    public void setPrediction(int y, int x) {
+
+        int size = TilePainter.groesse ;
+        boolean hor = TilePainter.horizontal ;
+
+        Vorhersage = new int[SpielWindow.field_size][SpielWindow.field_size];
+
+        for(int i = 0; i < size; i++){
+            if(x < SpielWindow.field_size && y < SpielWindow.field_size){
+                Vorhersage[x][y] = 3 ;
+                if(!hor){
+                    x++ ;
+                } else
+                    y++ ;
+            }
+        }
+        Schiffteil();
+
+    }
+
+    private static BufferedImage colorpng(BufferedImage image) {
+
+        BufferedImage copy = deepCopy(image);
+
+        int width = copy.getWidth();
+        int height = copy.getHeight();
+
+        System.out.println("Es wurden insgesamt " + counter++ + " Bilder bearbeitet/umgefärbt");
+
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                if (((copy.getRGB(x, y) >> 24) & 0xFF) != 0 ) {
+
+                    Color red = new Color(0.42f,0.0f,0.0f,0.42f);
+                    Color green = new Color(0.0f, 0.5f, 0.42f, 0.82f) ;
+                    if(fits) copy.setRGB(x, y,green.getRGB());
+                    else copy.setRGB(x,y,red.getRGB());
+                }
+            }
+        }
+        return copy;
+    }
+
+    static BufferedImage deepCopy(BufferedImage bi) {
+        ColorModel cm = bi.getColorModel();
+        boolean isAlphaPremultiplied = cm.isAlphaPremultiplied() ;
+        WritableRaster wr = bi.copyData(null) ;
+        return new BufferedImage(cm , wr, isAlphaPremultiplied, null) ;
     }
 
 

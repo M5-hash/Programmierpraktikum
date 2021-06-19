@@ -14,7 +14,7 @@ public class SpielWindow extends JPanel {
     public static boolean change = false;
     public static int field_size = 10;
     public static PlayingField playingField = new PlayingField(field_size);
-    public static TilePainter tile2 = new TilePainter(field_size, "GegnerKI");
+    //public static TilePainter tile2 = new TilePainter(field_size, "GegnerKI");
     public static TilePainter tile = new TilePainter(field_size, "Spieler");
     public static Zielhilfe Z = new Zielhilfe();
 
@@ -45,7 +45,7 @@ public class SpielWindow extends JPanel {
         JFrame frame = new JFrame("Schiffe versenken");
 
         frame.setSize(new Dimension(1920, 1080));
-        frame.setLocation(new Point(200, 20));
+        frame.setLocation(new Point(-2400 , 20));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
 
@@ -59,7 +59,7 @@ public class SpielWindow extends JPanel {
 
         //tile.setBounds(1000, 100, 20, 20);
         wahlstation.setBackground(new Color(0, 0, 0, 0));
-        tile2.setBounds(1200, 15, 600, 1000);
+        //tile2.setBounds(1200, 15, 600, 1000);
         tile.setBounds(15, 15, 600, 1000);
         wahlstation.setBounds(800, 25, 3 * TileSize.Tile_Size + TileSize.Tile_Size / 2 + 2, 8 * TileSize.Tile_Size + 2);
         Z.setBounds(15, 25, 60, 70);
@@ -68,7 +68,7 @@ public class SpielWindow extends JPanel {
 
         LayeredPanel.add(Bg, Integer.valueOf(0));
         LayeredPanel.add(tile, Integer.valueOf(1));
-        LayeredPanel.add(tile2, Integer.valueOf(1));
+        //LayeredPanel.add(tile2, Integer.valueOf(1));
         LayeredPanel.add(wahlstation, Integer.valueOf(1));
         LayeredPanel.add(Z, Integer.valueOf(2));
 
@@ -80,7 +80,7 @@ public class SpielWindow extends JPanel {
         LayeredPanel.setBounds(0, 0, TileSize.Tile_Size * SpielWindow.field_size, TileSize.Tile_Size * SpielWindow.field_size);
         TileSize.setTile_Size(frame.getHeight() / 14);
 
-        Timer timer = new Timer(100, new ActionListener() {
+        Timer timer = new Timer(85, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
@@ -107,7 +107,7 @@ public class SpielWindow extends JPanel {
 
                 Bg.setBounds(0, 0, frame.getWidth(), frame.getHeight());
                 tile.setBounds(xposFeld1, yposFeld1, Borderwidth, Borderwidth);
-                tile2.setBounds(1200, 15, Borderwidth, Borderwidth);
+                //tile2.setBounds(1200, 15, Borderwidth, Borderwidth);
                 LayeredPanel.setBounds(0, 0, frame.getWidth(), frame.getHeight());
                 wahlstation.setBounds(800, 25, 3 * TileSize.Tile_Size + TileSize.Tile_Size / 2 + 2, 8 * TileSize.Tile_Size + 2); //Ohne das + 2 werden die netten Striche um die Wahlstation nicht gezeichnet
 
