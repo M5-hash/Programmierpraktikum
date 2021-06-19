@@ -27,10 +27,9 @@ public class Zielhilfe extends JPanel {
     }
 
     /**
-     * @param g gibt Graphics Object weiter
+     * @param g     gibt Graphics Object weiter
      *
-     *
-     * TODO:    Wenn PosY = 1 schmiert das komplette Programm ab
+     *              Wandelt die int X & Y Position in ein Bilderkombination um
      */
     void BildRechner( Graphics g) {
 
@@ -78,7 +77,7 @@ public class Zielhilfe extends JPanel {
                     i++;
                 }
 
-                System.out.println(i);
+                //System.out.println(i);
 
                 int h = i ;
 
