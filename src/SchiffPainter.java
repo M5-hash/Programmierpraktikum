@@ -288,14 +288,47 @@ public class SchiffPainter {
             for (int y = 0; y < height; y++) {
                 if (((copy.getRGB(x, y) >> 24) & 0xFF) != 0 ) {
 
-                    Color red = new Color(0.42f,0.0f,0.0f,0.42f);
-                    Color green = new Color(0.0f, 0.5f, 0.42f, 0.82f) ;
-                    if(fits) copy.setRGB(x, y,green.getRGB());
-                    else copy.setRGB(x,y,red.getRGB());
+                    int pixel = copy.getRGB(x,y) ;
+
+                    float blue = (pixel) & 0xff ;
+                    float green = (pixel >> 8) & 0xff ;
+                    float red = (pixel >> 16) & 0xff ;
+
+                    System.out.println("Ergebnis aus getRGB : \nred: " + red + "blue: " + blue);
+
+
+
+
+
+                    if(fits){
+                        blue = blue / 510 ;     //Da nicht von 0 -> 255 erlaubt sondern von 0.0 -> 1.0 weitere Halbierung um die B Menge zu verringern/ es Grüner zu machen
+                        red = red / 510 ;       //Verdopplung ist zufällig gewählt und wird sich wahrscheinlich noch ändern (Ich nehme Vorschläge)
+
+                        System.out.println("\nred: " + red + "blue: " + blue);
+
+                        Color Cgreen = new Color(red, 0.42f, blue, 0.82f) ; //G und A zufällig gewählt
+
+                        copy.setRGB(x, y,Cgreen.getRGB());
+                    }
+                    else {
+
+                        green = green / 510;
+                        blue = blue / 510 ;
+
+                        Color Cred = new Color(0.5f,green ,blue ,0.62f); //Grün schlechter sichtbar als Rot --> höherer Alpha Wert
+
+                        copy.setRGB(x,y,Cred.getRGB());
+                    }
                 }
             }
         }
         return copy;
+    }
+
+    private static void splitRGB(int pixel){
+
+
+
     }
 
     static BufferedImage deepCopy(BufferedImage bi) {
