@@ -40,7 +40,7 @@ public class SchiffPainter {
     public SchiffPainter(String Feldvon) {
 
         Fieldof = Feldvon;
-        System.out.println(Fieldof);
+        //System.out.println(Fieldof);
 
         Schiffteil();
     }
@@ -135,7 +135,7 @@ public class SchiffPainter {
      */
     public void Schiffteil() {
 
-        System.out.println("Schiffteil wurde aufgerufen");
+        //System.out.println("Schiffteil wurde aufgerufen");
 
         int[][] Schiffe = SpielWindow.playingField.getField();
 
@@ -264,7 +264,7 @@ public class SchiffPainter {
             default -> BugHeckMeck;
         };
 
-        System.out.println(Fieldof);
+        //System.out.println(Fieldof);
 
 
         for (int y = 0; y < dummy.length; y++) {

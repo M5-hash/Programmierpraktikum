@@ -105,8 +105,8 @@ public class PlayingField {
             boolean yC = y - 1 < 0;
             boolean xP = x + 1 >= field.length;
             boolean yP = y + 1 >= field.length;
-            System.out.println("xC: " + xC + " ||| x - 1: " + (x-1)  + " <= 0");
-            System.out.println("yC: " + yC + " ||| y - 1: " + (y-1)  + " <= 0");
+            //.println("xC: " + xC + " ||| x - 1: " + (x-1)  + " <= 0");
+            //.println("yC: " + yC + " ||| y - 1: " + (y-1)  + " <= 0");
 
             if ((xC || yC || field[y - 1][x - 1] != 3)
                     && (yC || field[y - 1][x] != 3)
@@ -118,12 +118,12 @@ public class PlayingField {
                     && (yP || field[y + 1][x] != 3)
                     && (xP || yP || field[y + 1][x + 1] != 3)
             ) {
-                System.out.println("field[y][x]: " + field[y][x] + " (y: " + y + ")(x: " + x + ")");
+                //.println("field[y][x]: " + field[y][x] + " (y: " + y + ")(x: " + x + ")");
                 field[y][x] = 4;
             } else {
                 //Markierte Felder zurücksetzen, wenn Schiff nicht gesetzt werden darf
                 this.replaceNotfinal(0);
-                System.out.println(Arrays.deepToString(field).replace("]", "]\n"));
+                //.println(Arrays.deepToString(field).replace("]", "]\n"));
                 return false;
             }
 
@@ -139,7 +139,7 @@ public class PlayingField {
         if (set) {
             this.replaceNotfinal(3);
             this.ships++;
-            System.out.println(Arrays.deepToString(field).replace("]", "]\n"));
+            //.println(Arrays.deepToString(field).replace("]", "]\n"));
         }else{
             this.replaceNotfinal(0);
         }
@@ -324,12 +324,12 @@ public class PlayingField {
             spieler.setShip(3, 5, 3, false);
             spieler.setShip(2, 2, 6, true);
             spieler.setShip(2, 7, 8, false);
-            System.out.println(Arrays.deepToString(spieler.getField()).replace("]", "]\n"));
+            //.println(Arrays.deepToString(spieler.getField()).replace("]", "]\n"));
 
             ComPlayerEasy com = new ComPlayerEasy(10, new int[]{4, 3, 2, 2});
-            System.out.println(Arrays.deepToString(com.pf.getField()).replace("]", "]\n"));
+            //.println(Arrays.deepToString(com.pf.getField()).replace("]", "]\n"));
         }catch(Exception ex){
-            System.out.println(ex.getMessage());
+            //.println(ex.getMessage());
         }
         /*
         PlayingField pf = new PlayingField(10);
@@ -340,12 +340,12 @@ public class PlayingField {
 
         try {
             pf.saveGame(199191918, 0, false);
-            System.out.println("\nLaden:" + pf2.loadGame(199191918, false));
+            //.println("\nLaden:" + pf2.loadGame(199191918, false));
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            //.println(e.getMessage());
         }
 
-        System.out.println(Arrays.deepToString(pf2.field).replace("]", "]\n"));*/
+        //.println(Arrays.deepToString(pf2.field).replace("]", "]\n"));*/
     }
 
     /**
@@ -443,7 +443,7 @@ public class PlayingField {
 
         }
 
-        System.out.println(save);
+        //.println(save);
 
         return status;
     }

@@ -12,11 +12,11 @@ public class SpielWindow extends JPanel {
     Wahlstation wahlstation = new Wahlstation();
 
     public static boolean change = false;
-    public static int field_size = 10;
+    public static int field_size = 15;
     public static PlayingField playingField = new PlayingField(field_size);
     //public static TilePainter tile2 = new TilePainter(field_size, "GegnerKI");
     public static TilePainter tile = new TilePainter(field_size, "Spieler");
-    //public static Zielhilfe Z = new Zielhilfe();
+    public static Zielhilfe Z = new Zielhilfe();
 
     public static int getFramewidth() {
         return framewidth;
@@ -58,11 +58,11 @@ public class SpielWindow extends JPanel {
 
 
         //tile.setBounds(1000, 100, 20, 20);
-        //wahlstation.setBackground(new Color(0, 0, 0, 0));
+        wahlstation.setBackground(new Color(0, 0, 0, 0));
         //tile2.setBounds(1200, 15, 600, 1000);
         tile.setBounds(15, 15, 600, 1000);
         wahlstation.setBounds(800, 25, 3 * TileSize.Tile_Size + TileSize.Tile_Size / 2 + 2, 8 * TileSize.Tile_Size + 2);
-        //Z.setBounds(15, 25, 60, 70);
+        Z.setBounds(15, 25, 200, 120);
         Bg.setBounds(0, 0, frame.getWidth(), frame.getHeight());
 
 
@@ -70,7 +70,7 @@ public class SpielWindow extends JPanel {
         LayeredPanel.add(tile, Integer.valueOf(1));
         //LayeredPanel.add(tile2, Integer.valueOf(1));
         LayeredPanel.add(wahlstation, Integer.valueOf(1));
-        //LayeredPanel.add(Z, Integer.valueOf(2));
+        LayeredPanel.add(Z, Integer.valueOf(2));
 
         LayeredPanel.setBackground(Color.darkGray);
         LayeredPanel.setVisible(true);
@@ -130,8 +130,8 @@ public class SpielWindow extends JPanel {
         tile.repaint(); //Der beste Command, der von der Menschheit erfunden wurde
         tile.revalidate();
 
-//        Z.repaint();
-//        Z.revalidate();
+        Z.repaint();
+        Z.revalidate();
 
         wahlstation.repaint();
         wahlstation.revalidate();
