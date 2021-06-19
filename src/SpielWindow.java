@@ -45,7 +45,7 @@ public class SpielWindow extends JPanel {
         JFrame frame = new JFrame("Schiffe versenken");
 
         frame.setSize(new Dimension(1920, 1080));
-        frame.setLocation(new Point(-2400 , 20));
+        frame.setLocation(new Point(20 , 20));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
 
@@ -80,7 +80,7 @@ public class SpielWindow extends JPanel {
         LayeredPanel.setBounds(0, 0, TileSize.Tile_Size * SpielWindow.field_size, TileSize.Tile_Size * SpielWindow.field_size);
         TileSize.setTile_Size(frame.getHeight() / 14);
 
-        Timer timer = new Timer(85, new ActionListener() {
+        Timer timer = new Timer(110, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 

@@ -8,14 +8,14 @@ import java.util.ArrayList;
 
 public class SchiffPainter {
 
-    static ArrayList<BufferedImage> Finished = new ArrayList<>();              // Zwischenspeicher für bereits geladene Bilder
-    static ArrayList<String> Loaded = new ArrayList<>();                       // Speichert als String die Quellen der bereits geladenen Bilder ab
     public static int[][] BugHeckMeck = new int[SpielWindow.field_size][SpielWindow.field_size];
     public static boolean ready = false;
+    public static int counter;
+    static ArrayList<BufferedImage> Finished = new ArrayList<>();              // Zwischenspeicher für bereits geladene Bilder
+    static ArrayList<String> Loaded = new ArrayList<>();                       // Speichert als String die Quellen der bereits geladenen Bilder ab
+    static boolean fits = true;
     Bildloader Bild = new Bildloader();
     String Fieldof;
-    static boolean fits = true ;
-    public static int counter ;
     int[][] getEnemyPlacement =
             {{0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
                     , {0, 0, 8, 8, 8, 8, 0, 0, 0, 0}
@@ -31,25 +31,107 @@ public class SchiffPainter {
 
 
     /**
-     * @param Feldvon   gibt an für wenn die Schiffe gezeichnet werden
-     *                  "Spieler" = Spieler
-     *                  "GegnerKI" = Computer Gegner
-     *                  "GegnerMensch" = OnlineGegners / Menschlicher Gegner
-     *                  "Preview" = Feld wird verwendet um das setzen des Spieler besser darzustellen
+     * @param Feldvon gibt an für wenn die Schiffe gezeichnet werden
+     *                "Spieler" = Spieler
+     *                "GegnerKI" = Computer Gegner
+     *                "GegnerMensch" = OnlineGegners / Menschlicher Gegner
+     *                "Preview" = Feld wird verwendet um das setzen des Spieler besser darzustellen
      */
     public SchiffPainter(String Feldvon) {
 
         Fieldof = Feldvon;
-        System.out.println( Fieldof );
+        System.out.println(Fieldof);
 
         Schiffteil();
     }
 
+    static int fetchImg(String Schiffdir) {
+        if (counter > 0) {                                                        // Macht sicher, dass die zuladende Datei auch eine neue Datei ist. Falls die Datei schon einmal geladen wurde, wurde Sie gespeichert
+            for (int i = 0; i < Loaded.size(); i++) {// Aus diesem Speicher wird Sie nun wieder ausgelesen
+                String Stringaling = Schiffdir + fits;
+                if (Loaded.get(i).contentEquals(Stringaling)) {
+                    return i;
+                }
+            }
+        }
+        return -1;
+    }
 
     /**
-     *                  Wird verwendet um die Schiffe welche in Playingfield abgespeichert werden mit der richtigen Ausrichtung darzustellen
-     *
-     *                  wird auch in der Preview verwendet um eine richtige Ausrichtung der Schiffe zu garantieren
+     * @param image      Übergebenes BufferedImage
+     * @param Schiff_dir Übergibt den Pfad des Bildes
+     * @return Rückgabe des bearbeiteten BufferedImage
+     * <p>
+     * Verändert die Färbung, der in der Preview verwendeten BufferedImages, sodass diese direkt angeben, ob Sie gesetzt werden können
+     */
+    private static BufferedImage colorshiftpng(BufferedImage image, String Schiff_dir) {
+
+        BufferedImage copy = deepCopy(image);
+
+        int width = copy.getWidth();
+        int height = copy.getHeight();
+
+        System.out.println("Es wurden insgesamt " + counter + " Bilder bearbeitet/umgefärbt");
+
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                if (((copy.getRGB(x, y) >> 24) & 0xFF) != 0) {
+
+                    int pixel = copy.getRGB(x, y);
+
+                    float blue = (pixel) & 0xff;
+                    float green = (pixel >> 8) & 0xff;
+                    float red = (pixel >> 16) & 0xff;
+
+                    //System.out.println("Ergebnis aus getRGB : \nred: " + red + "blue: " + blue);
+
+
+                    if (fits) {
+                        blue = blue / 510;     //Da nicht von 0 -> 255 erlaubt sondern von 0.0 -> 1.0 weitere Halbierung um die B Menge zu verringern/ es Grüner zu machen
+                        red = red / 510;       //Verdopplung ist zufällig gewählt und wird sich wahrscheinlich noch ändern (Ich nehme Vorschläge)
+
+                        //System.out.println("\nred: " + red + "blue: " + blue);
+
+                        Color Cgreen = new Color(red, 0.42f, blue, 0.82f); //G und A zufällig gewählt
+
+                        copy.setRGB(x, y, Cgreen.getRGB());
+                    } else {
+
+                        green = green / 510;
+                        blue = blue / 510;
+
+                        Color Cred = new Color(0.5f, green, blue, 0.62f); //Grün schlechter sichtbar als Rot --> höherer Alpha Wert
+
+                        copy.setRGB(x, y, Cred.getRGB());
+                    }
+                }
+            }
+        }
+        String Stringaling = Schiff_dir + fits;
+
+        Loaded.add(counter, Stringaling);                                         // Fügt die Quelle dem Zwischenspeicher hinzu
+        Finished.add(counter, copy);                                             // Fügt das Bild dem Zwischenspeicher hinzu
+        counter++;
+        return copy;
+    }
+
+    /**
+     * @param bi Gibt zu klonendes Bild an die Methode weiter
+     * @return gibt das geklonte BufferedImage zurück
+     * <p>
+     * Methode garantiert, dass es sich um verschieden BufferedImage Objekte handelt
+     */
+    static BufferedImage deepCopy(BufferedImage bi) {
+        ColorModel cm = bi.getColorModel();
+        boolean isAlphaPremultiplied = cm.isAlphaPremultiplied();
+        WritableRaster wr = bi.copyData(null);
+        return new BufferedImage(cm, wr, isAlphaPremultiplied, null);
+    }
+
+    /**
+     * Wird verwendet um die Schiffe welche in Playingfield abgespeichert werden mit der richtigen Ausrichtung darzustellen
+     * <p>
+     * wird auch in der Preview verwendet um eine richtige Ausrichtung der Schiffe zu garantieren
      */
     public void Schiffteil() {
 
@@ -57,8 +139,8 @@ public class SchiffPainter {
 
         int[][] Schiffe = SpielWindow.playingField.getField();
 
-        if(Fieldof.equals("Vorhersage")){
-            Schiffe = Vorhersage ;
+        if (Fieldof.equals("Vorhersage")) {
+            Schiffe = Vorhersage;
         }
 
         /*
@@ -135,27 +217,26 @@ public class SchiffPainter {
     }
 
     /**
-     * @param g     Gibt Graphics Objekt weiter
-     * @param f     Gibt der Preview an, ob das Schiff gesetzt werden könnte
-     *
-     *              Wird nur von der Preview verwendet um gleichzeitig die Schiffzeichner Methode aufzurufen und
-     *              anzugeben ob das Schiff gesetzt werden könnte
+     * @param g Gibt Graphics Objekt weiter
+     * @param f Gibt der Preview an, ob das Schiff gesetzt werden könnte
+     *          <p>
+     *          Wird nur von der Preview verwendet um gleichzeitig die Schiffzeichner Methode aufzurufen und
+     *          anzugeben ob das Schiff gesetzt werden könnte
      */
     public void Schiffzeichner(Graphics g, boolean f) {
 
-        fits = f ;
+        fits = f;
         Schiffzeichner(g);
 
     }
 
-
     /**
      * @param g Gibt Graphics Objekt weiter
-     *
+     *          <p>
      *          Zeichnet die Schiffe wie sie durch das in Schiffteil() ermittelt Array vorgegeben werden (Feld von Spieler)
-     *
+     *          <p>
      *          Zeichnet was dem Spieler vom Feld seines Gegners bekannt ist (Feld von GegnerKi & GegnerMensch)
-     *
+     *          <p>
      *          Zeichnet die Schiffe wie sie durch das in Schiffteil() ermittelt Array vorgegeben werden, aber mit der
      *          weiteren Information ob diese dort überhaupt gesetzt werden dürfen (Feld von Preview)
      */
@@ -170,7 +251,7 @@ public class SchiffPainter {
         BufferedImage Schiff; //Nur ein Platzhalter, dass die IDE nicht weint
         boolean dosmthng = false;
 
-        int SizeofBorder = Math.max(18, TileSize.Tile_Size / 12) ;
+        int SizeofBorder = Math.max(18, TileSize.Tile_Size / 12);
 
 
         //System.out.println(TileSize.getFighting());
@@ -183,7 +264,7 @@ public class SchiffPainter {
             default -> BugHeckMeck;
         };
 
-        System.out.println( Fieldof );
+        System.out.println(Fieldof);
 
 
         for (int y = 0; y < dummy.length; y++) {
@@ -246,18 +327,17 @@ public class SchiffPainter {
 
                 if (dosmthng) {
                     Schiff = Bild.BildLoader(Schiffdir);
-                    BufferedImage dummyImg ;
+                    BufferedImage dummyImg;
 
-                    if(Fieldof.equals("Vorhersage")){
-                        int check = fetchImg(Schiffdir) ;
-                        if( check != -1)
-                        {
+                    if (Fieldof.equals("Vorhersage")) {
+                        int check = fetchImg(Schiffdir);
+                        if (check != -1) {
                             dummyImg = Finished.get(check);
-                        }else {
-                            dummyImg = colorshiftpng(Schiff, Schiffdir) ;
+                        } else {
+                            dummyImg = colorshiftpng(Schiff, Schiffdir);
                         }
-                    }else {
-                        dummyImg = Schiff ;
+                    } else {
+                        dummyImg = Schiff;
                     }
 
 
@@ -272,114 +352,30 @@ public class SchiffPainter {
 
     }
 
-    static int fetchImg(String Schiffdir){
-        if (counter > 0) {                                                        // Macht sicher, dass die zuladende Datei auch eine neue Datei ist. Falls die Datei schon einmal geladen wurde, wurde Sie gespeichert
-            for (int i = 0; i < Loaded.size(); i++) {// Aus diesem Speicher wird Sie nun wieder ausgelesen
-                String Stringaling = Schiffdir + fits;
-                if (Loaded.get(i).contentEquals(Stringaling)) {
-                    return i;
-                }
-            }
-        }
-        return  -1 ;
-    }
-
     /**
      * @param y Die y Postion des Tile über dem momentan die Maus hovert
      * @param x Die x Postion des Tiles über dem momentan die Maus hovert
-     *
-     * Da nur der Startpunkt des Schiffes übergeben wird, muss berechnet werden wo sich der ganze Rest des Schiffes befinden wird
+     *          <p>
+     *          Da nur der Startpunkt des Schiffes übergeben wird, muss berechnet werden wo sich der ganze Rest des Schiffes befinden wird
      */
     public void setPrediction(int y, int x) {
 
-        int size = TilePainter.groesse ;
-        boolean hor = TilePainter.horizontal ;
+        int size = TilePainter.groesse;
+        boolean hor = TilePainter.horizontal;
 
         Vorhersage = new int[SpielWindow.field_size][SpielWindow.field_size];
 
-        for(int i = 0; i < size; i++){
-            if(x < SpielWindow.field_size && y < SpielWindow.field_size){
-                Vorhersage[x][y] = 3 ;
-                if(!hor){
-                    x++ ;
+        for (int i = 0; i < size; i++) {
+            if (x < SpielWindow.field_size && y < SpielWindow.field_size) {
+                Vorhersage[x][y] = 3;
+                if (!hor) {
+                    x++;
                 } else
-                    y++ ;
+                    y++;
             }
         }
         Schiffteil();
 
-    }
-
-    /**
-     * @param image         Übergebenes BufferedImage
-     * @param Schiff_dir    Übergibt den Pfad des Bildes
-     * @return              Rückgabe des bearbeiteten BufferedImage
-     *
-     *                      Verändert die Färbung, der in der Preview verwendeten BufferedImages, sodass diese direkt angeben, ob Sie gesetzt werden können
-     */
-    private static BufferedImage colorshiftpng(BufferedImage image, String Schiff_dir) {
-
-        BufferedImage copy = deepCopy(image);
-
-        int width = copy.getWidth();
-        int height = copy.getHeight();
-
-        System.out.println("Es wurden insgesamt " + counter + " Bilder bearbeitet/umgefärbt");
-
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                if (((copy.getRGB(x, y) >> 24) & 0xFF) != 0 ) {
-
-                    int pixel = copy.getRGB(x,y) ;
-
-                    float blue = (pixel) & 0xff ;
-                    float green = (pixel >> 8) & 0xff ;
-                    float red = (pixel >> 16) & 0xff ;
-
-                    //System.out.println("Ergebnis aus getRGB : \nred: " + red + "blue: " + blue);
-
-
-                    if(fits){
-                        blue = blue / 510 ;     //Da nicht von 0 -> 255 erlaubt sondern von 0.0 -> 1.0 weitere Halbierung um die B Menge zu verringern/ es Grüner zu machen
-                        red = red / 510 ;       //Verdopplung ist zufällig gewählt und wird sich wahrscheinlich noch ändern (Ich nehme Vorschläge)
-
-                        //System.out.println("\nred: " + red + "blue: " + blue);
-
-                        Color Cgreen = new Color(red, 0.42f, blue, 0.82f) ; //G und A zufällig gewählt
-
-                        copy.setRGB(x, y,Cgreen.getRGB());
-                    }
-                    else {
-
-                        green = green / 510;
-                        blue = blue / 510 ;
-
-                        Color Cred = new Color(0.5f,green ,blue ,0.62f); //Grün schlechter sichtbar als Rot --> höherer Alpha Wert
-
-                        copy.setRGB(x,y,Cred.getRGB());
-                    }
-                }
-            }
-        }
-        String Stringaling = Schiff_dir + fits ;
-
-        Loaded.add(counter, Stringaling);                                         // Fügt die Quelle dem Zwischenspeicher hinzu
-        Finished.add(counter, copy);                                             // Fügt das Bild dem Zwischenspeicher hinzu
-        counter++;
-        return copy;
-    }
-
-    /**
-     * @param bi    Gibt zu klonendes Bild an die Methode weiter
-     * @return      gibt das geklonte BufferedImage zurück
-     *
-     * Methode garantiert, dass es sich um verschieden BufferedImage Objekte handelt
-     */
-    static BufferedImage deepCopy(BufferedImage bi) {
-        ColorModel cm = bi.getColorModel();
-        boolean isAlphaPremultiplied = cm.isAlphaPremultiplied() ;
-        WritableRaster wr = bi.copyData(null) ;
-        return new BufferedImage(cm , wr, isAlphaPremultiplied, null) ;
     }
 
 
