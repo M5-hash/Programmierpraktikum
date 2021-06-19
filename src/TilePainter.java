@@ -169,11 +169,14 @@ public class TilePainter extends JPanel implements MouseMotionListener {
         Ebene.DrawLayer(g);
         if (SchiffPainter.ready) {
             hier.Schiffzeichner(g);
-
+            //if(MovementHandler){
                 Predicted.setPrediction(PosX, PosY);
-            Predicted.Schiffzeichner(g, SpielWindow.playingField.checkShip(groesse, PosX, PosY, horizontal));
+                Predicted.Schiffzeichner(g, SpielWindow.playingField.checkShip(groesse, PosX, PosY, horizontal));
                 //Zielhilfe Z = new Zielhilfe(g) ;
                 MovementHandler = false ;
+
+            //}
+
 
         }
 
@@ -199,6 +202,8 @@ public class TilePainter extends JPanel implements MouseMotionListener {
 
             setPosX((e.getX() - TileSize.getSizeofBorder()) / TileSize.Tile_Size) ;
             setPosY((e.getY() - TileSize.getSizeofBorder()) / TileSize.Tile_Size) ;
+
+            //MovementHandler = true ;
 
 
         }
