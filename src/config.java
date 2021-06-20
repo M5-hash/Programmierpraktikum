@@ -6,11 +6,16 @@ public class config {
     public static int       INITIAL_WIDTH           = 656;
     public static int       INITIAL_HEIGHT          = 518;
 
+    // Spielwindow default size
+    public static int    GF_WIDTH                  = 1920;
+    public static int    GF_HEIGHT                 = 1080;
+
     // col row sizes
-    public static int       COL                     = INITIAL_WIDTH * 60 / 100;
-    public static int       C_GAP                   = INITIAL_WIDTH * 20 / 100;
-    public static int       ROW_INFO                = INITIAL_WIDTH * 25 / 100;
-    public static int       ROW                     = INITIAL_WIDTH * 15 / 100;
+    public static int       COL                     = (INITIAL_WIDTH * 20 / 100) - 10;
+    public static int       C_GAP                   = (INITIAL_WIDTH * 30 / 100) - 10;
+    public static int       ROW_INFO                = (INITIAL_HEIGHT * 33 / 100) - 10;
+    public static int       ROW                     = (INITIAL_HEIGHT * 10 / 100) - 10;
+    public static int       R_GAP                   = (INITIAL_HEIGHT * 2) / 100;
 
     // The difficulties of the game
     public static String    EASY_DIFFICULTY         = "Easy";
@@ -25,11 +30,11 @@ public class config {
     public static boolean   fullscreen              = false;
 
     // Information Strings
-    public static String[]  TextSingleplayer      = { "Please select the amount of ships you want for each ship.",
+    public static String[]  TextSingleplayer      = { "Please  select  the amount  of ships  you want for each ship.",
             "yo",
             "a"};
 
-    public static String[]  TextMulitplayer       = { "Please select the amount of ships you want for each ship.",
+    public static String[]  TextMulitplayer       = { "Please  select  the amount  of ships  you want for each ship.",
             "yo",
             ""};
 
@@ -45,7 +50,7 @@ public class config {
             "yoasdddddddddddddd",
             "aaaaaaaaaaaaaaaaaa"};
 
-    public static String[]  TextSize              = { "Please select the amount of ships you want for each ship.",
+    public static String[]  TextSize              = { "Please  select  the  amount  of  ships  you  want  for  each  ship.",
             "yoyoasddddddddddddddyoasdddddddddddddd",
             "yoasddddddddddddddyoasddddddddddddddyoasdddddddddddddd"};
 }

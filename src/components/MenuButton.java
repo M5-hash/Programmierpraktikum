@@ -2,50 +2,29 @@ package src.components;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.*;
+
+import static src.FontLoader.Pokemon;
 
 public class MenuButton extends JButton {
 
-    public static Font Pokemon;
-    public Image icon;
 
-    public MenuButton(String button_title, Image icon) {
+    public Image image;
+    public Icon icon;
+
+    public MenuButton(String button_title, Image image) throws IOException, FontFormatException {
         super();
 
-        this.icon = icon;
-
+        this.image = image;
+        icon = new ImageIcon(image);
         setText(button_title);
         setBorder(null);
         setFont(Pokemon);
-        setHorizontalTextPosition(CENTER);
+        setIcon(icon);
+        setOpaque(false);
+        setContentAreaFilled(false);
         setVerticalTextPosition(CENTER);
-        setIcon(resizeIcon());
-        //setIcon(icon);
-        addActionListener(e -> System.out.println(getSize()));
-
-//        try{
-//            File fontfile = new File("pokemon-font.ttf");
-//            if(fontfile.exists()){
-//                Pokemon = Font.createFont(Font.TRUETYPE_FONT, fontfile).deriveFont(30f);
-//                GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-//                ge.registerFont(Pokemon);
-//                System.out.println("not null");
-//            } else {
-//                System.out.println("File does not exist");
-//            }
-//        } catch (IOException | FontFormatException e) {
-//        }
-
-    }
-
-    public MenuButton(String button_title) {
-        super();
-
-        setText(button_title);
-        setBorder(null);
-        setFont(Pokemon);
         setHorizontalTextPosition(CENTER);
-        setVerticalTextPosition(CENTER);
-        setIcon(resizeIcon());
         addActionListener(e -> System.out.println(getSize()));
     }
 

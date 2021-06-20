@@ -10,13 +10,12 @@ public class MenuPanel extends JPanel {
 
     public MenuPanel(BufferedImage image){
         this.background = image;
-//        setOpaque(false);
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        g.drawImage(background, 0, 0, this);
+        g.drawImage(background, 0, 0, getWidth(), getHeight(), this);
     }
 }

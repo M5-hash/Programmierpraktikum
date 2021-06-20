@@ -4,11 +4,16 @@ import src.components.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
+
+import static src.config.*;
+import static src.config.ROW;
 
 
 public class MenuSingleplayer {
 
     GridBagLayout menuLayout;
+    GridLayout buttonPanelLayout;
     GridBagConstraints constraints;
     JButton buttonMenuStart;
     JButton buttonEasy;
@@ -16,16 +21,18 @@ public class MenuSingleplayer {
     JButton buttonHard;
     JButton buttonShipSize;
     JButton buttonQuitGame;
-    JPanel buttonDifficulties;
-    JPanel menuFiller;
+    JPanel menuSize;
+    JPanel menuInformation;
+    JPanel buttonPanel;
     JPanel menuPanel;
     JFrame menuFrame;
 
-    public MenuSingleplayer(int x, int y) {
+    public MenuSingleplayer(int x, int y) throws IOException, FontFormatException {
 
         menuLayout = new GridBagLayout();
+        menuLayout.columnWidths = new int[] {C_GAP, COL, COL, C_GAP};
+        menuLayout.rowHeights = new int[] {ROW_INFO, R_GAP, ROW, R_GAP, ROW, R_GAP, ROW, R_GAP, ROW, ROW};
         constraints = new GridBagConstraints();
-        constraints.anchor = GridBagConstraints.SOUTH;
 
         // Custom Frame
         menuFrame = new MenuFrame("Pokemon yo", x, y);
@@ -34,32 +41,26 @@ public class MenuSingleplayer {
         menuPanel = new MenuPanel(ImageLoader.getImage(ImageLoader.MENU_BG));
         menuPanel.setLayout(menuLayout);
 
-        menuFiller = new MenuPanelFiller();
-        makeConstraints(menuFiller, 0, 0, 7, 1, 0.4, 1.0, 5);
+        menuInformation = new MenuInformation(ImageLoader.getImage(ImageLoader.STARTMENU_BTN_TEXTFIELD_EICH), TextMulitplayer, menuFrame);
+        makeConstraints(menuInformation, 0, 0, 4);
 
-        menuFiller = new MenuPanelFiller();
-        makeConstraints(menuFiller, 0, 1, 1, 4, 0.6, 0.2, 5);
-
-        menuFiller = new MenuPanelFiller();
-        makeConstraints(menuFiller, 4, 1, 1, 4, 0.6, 0.2, 5);
-
-        buttonMenuStart = new MenuButton("MAIN MENU");
+        buttonMenuStart = new MenuButton("MAIN MENU", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
         buttonMenuStart.addActionListener(e -> {
             // Hide this window
             menuFrame.setVisible(false);
 
             // Create MenuMain and display it
-            new MenuStart(menuFrame.getX(), menuFrame.getY());
+            try {
+                new MenuStart(menuFrame.getX(), menuFrame.getY());
+            } catch (IOException | FontFormatException ioException) {
+                ioException.printStackTrace();
+            }
         });
-        makeConstraints(buttonMenuStart, 1, 1, 3, 1, 0.15, 0.6, 5);
+        makeConstraints(buttonMenuStart, 1, 2, 2);
 
-        GridLayout buttonDifficultiesLayout = new GridLayout(1,0);
-        buttonDifficultiesLayout.setHgap(5);
-        buttonDifficulties = new JPanel();
-        buttonDifficulties.setOpaque(false);
-        buttonDifficulties.setLayout(buttonDifficultiesLayout);
+        buttonPanel = new ButtonPanel();
 
-        buttonEasy = new MenuButton("EASY");
+        buttonEasy = new MenuButton("EASY", ImageLoader.getImage(ImageLoader.MENU_BUTTON2));
         buttonEasy.addActionListener(e -> {
             // Hide this window
             menuFrame.setVisible(false);
@@ -67,9 +68,9 @@ public class MenuSingleplayer {
             // Create MenuMain and display it
             new SpielWindow();
         });
-        buttonDifficulties.add(buttonEasy);
+        buttonPanel.add(buttonEasy);
 
-        buttonNormal = new MenuButton("NORMAL");
+        buttonNormal = new MenuButton("NORMAL", ImageLoader.getImage(ImageLoader.MENU_BUTTON2));
         buttonNormal.addActionListener(e -> {
             // Hide this window
             menuFrame.setVisible(false);
@@ -77,9 +78,9 @@ public class MenuSingleplayer {
             // Create MenuMain and display it
             new SpielWindow();
         });
-        buttonDifficulties.add(buttonNormal);
+        buttonPanel.add(buttonNormal);
 
-        buttonHard = new MenuButton("HARD");
+        buttonHard = new MenuButton("HARD", ImageLoader.getImage(ImageLoader.MENU_BUTTON2));
         buttonHard.addActionListener(e -> {
             // Hide this window
             menuFrame.setVisible(false);
@@ -87,26 +88,25 @@ public class MenuSingleplayer {
             // Create MenuMain and display it
             new SpielWindow();
         });
-        buttonDifficulties.add(buttonHard);
-        makeConstraints(buttonDifficulties, 1, 2, 3, 1, 0.15, 0.6, 5);
+        buttonPanel.add(buttonHard);
+        makeConstraints(buttonPanel, 1, 4, 2);
 
-        buttonShipSize = new MenuButton("POKEMON SIZE");
-        makeConstraints(buttonShipSize, 1, 3, 3, 1, 0.15, 0.6, 5);
+        buttonShipSize = new MenuButton("POKEMON SIZE", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
+        makeConstraints(buttonShipSize, 1, 6, 2);
 
         buttonQuitGame = new QuitButton();
-        makeConstraints(buttonQuitGame, 1, 4, 3, 1, 0.15, 0.6, 10);
+        makeConstraints(buttonQuitGame, 1, 8, 2);
 
         menuFrame.add(menuPanel);
     }
 
-    private void makeConstraints(JComponent comp, int gridx, int gridy, int gridwidth, int gridheight, double weighty, double weightx, int bottom) {
-        constraints.insets = new Insets(5, 5, bottom, 5);
+    private void makeConstraints(JComponent comp, int gridx, int gridy, int gridwidth) {
         constraints.gridx = gridx;
         constraints.gridy = gridy;
         constraints.gridwidth = gridwidth;
-        constraints.gridheight = gridheight;
-        constraints.weightx = weightx;
-        constraints.weighty = weighty;
+        constraints.gridheight = 1;
+        constraints.weightx = 0.1;
+        constraints.weighty = 0.1;
         constraints.fill = GridBagConstraints.BOTH;
         menuPanel.add(comp, constraints);
     }
