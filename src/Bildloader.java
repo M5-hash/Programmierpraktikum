@@ -32,7 +32,7 @@ public class Bildloader {
         try {                                                                   /*Immer wenn ein IOreader verwendet wird, braucht man ein try catch statement, welches dann eine Exception wirft*/
             img = ImageIO.read(new File(Bild_dir));
         } catch (IOException e) {
-            System.out.println("Bild konnte nicht geladen werden");
+            System.out.println("Bild konnte nicht geladen werden" + Bild_dir);
         }
 
         Loaded.add(counter, Bild_dir);                                         // Fügt die Quelle dem Zwischenspeicher hinzu

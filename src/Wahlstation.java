@@ -21,13 +21,14 @@ public class Wahlstation extends JPanel {
 
     public void Wahlstationpainter(Graphics g) {
 
-        int[][] SchiffWahl;
-
         Graphics2D g2 = (Graphics2D) g;
 
         int Boxheight = 8 * TileSize.Tile_Size;
         int fieldwidth = 3 * TileSize.Tile_Size + TileSize.Tile_Size / 2;
 
+        Image Bckgrnd = Bild.BildLoader("src/Images/BorderVert.png") ;
+
+        g.drawImage(Bckgrnd,0,0,fieldwidth ,Boxheight ,null ) ;
 
         g2.drawLine(0, 0, fieldwidth, 0); //Linie oben
         g2.drawLine(0, Boxheight, fieldwidth, Boxheight); //Linie unten
