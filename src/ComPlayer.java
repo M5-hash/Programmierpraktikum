@@ -6,10 +6,20 @@ import java.util.Random;
 
 public abstract class ComPlayer {
     protected PlayingField pf;
+
+    /**
+     * -1: Wasser
+     *
+     * 1: Treffer
+     * 2: Treffer versenkt
+     * 3: Schuss ohne Antwort
+     */
+    protected int[][] enemyField;
     protected int difficulty;
 
     public ComPlayer(int rows, int[] ships) throws Exception {
         pf = new PlayingField(rows);
+        enemyField = new int[rows][rows];
         setShips(ships);
     }
 
@@ -19,10 +29,24 @@ public abstract class ComPlayer {
     }
 
     /**
+     * Wrapper für die gameover Methode von PlayingField
+     */
+    public boolean gameover() {
+        return this.pf.gameover();
+    }
+
+    /**
+     * Wrapper für die isShot Methode von PlayingField
+     */
+    public int isShot(int x, int y) throws Exception {
+        return this.pf.isShot(x, y);
+    }
+
+    /**
      * Platzieren aller Computer-Schiffe
      *
      * @param possibleShips Array mit den Schiffsgrößen. (Bsp.: {4,3,3,2}, Ein Vierer-Schiff, zwei Dreier-Schiffe und ein Zweier-Schiff)
-     * @throws Exception    Wenn es einen Fehler beim Platzieren gab. Sollte solange der Algorithmus richtig ist, nicht auftreten.
+     * @throws Exception Wenn es einen Fehler beim Platzieren gab. Sollte solange der Algorithmus richtig ist, nicht auftreten.
      */
     private void setShips(int[] possibleShips) throws Exception {
         for (int shipLength : possibleShips) {
@@ -38,8 +62,8 @@ public abstract class ComPlayer {
      * Die Stelle ist Zufall, aber es wird ein Algorithmus verwendet,
      * sodass man bei vielen Platzierten Schiffen nicht zu oft nach einer freien Stelle suchen muss.
      *
-     * @param length    Länge des zu platzierenden Schiffes
-     * @return  new int[]{ X-Koordinate, Y-Koordinate, Horizontal (1) bzw Vertikal (0) }
+     * @param length Länge des zu platzierenden Schiffes
+     * @return new int[]{ X-Koordinate, Y-Koordinate, Horizontal (1) bzw Vertikal (0) }
      * @throws Exception
      */
     private int[] getRandomPossibleShip(int length) throws Exception {
@@ -85,4 +109,7 @@ public abstract class ComPlayer {
     private void loadGame(long id) throws FileNotFoundException {
         //pf.loadGame(id, true);
     }
+
+    public abstract int[] doNextShot() throws Exception;
+    public abstract void didHit(int hit) throws Exception;
 }
