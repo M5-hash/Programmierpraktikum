@@ -2,7 +2,7 @@ package src;
 
 public class TileSize {                         //Die Dimesionen der Tiles
 
-    public static int Tile_Size = 32;
+    public static int Tile_Size = 24;
 
 
 

@@ -89,9 +89,9 @@ public class Tile extends JPanel {
 
                     Image = Bild.BildLoader("src/Images/PokeTest.jpg*");
 
-                    g.drawImage(Image, (x * TileSize.Tile_Size) + SizeofBorder,                  //ok das ist jetzt blöd zu erklären
-                            (y * TileSize.Tile_Size) + SizeofBorder,                           //Es wird ein Viereck zwischen diesen 2 Punkten aufgeschlagen, die ersten 2 sind das linke obere ende
-                            TileSize.Tile_Size,                      //die anderen 2 sind das rechte untere ende. Es handelt sich hierbei um das Ziel
+                    g.drawImage(Image, (x * TileSize.Tile_Size) + SizeofBorder,                         //ok das ist jetzt blöd zu erklären
+                            (y * TileSize.Tile_Size) + SizeofBorder,                                    //Es wird ein Viereck zwischen diesen 2 Punkten aufgeschlagen, die ersten 2 sind das linke obere ende
+                            TileSize.Tile_Size,                                                            //die anderen 2 sind das rechte untere ende. Es handelt sich hierbei um das Ziel
                             TileSize.Tile_Size, null);
 
                 }

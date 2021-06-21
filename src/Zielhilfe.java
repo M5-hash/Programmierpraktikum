@@ -22,8 +22,6 @@ public class Zielhilfe extends JPanel {
             BildRechner(g);
         }
 
-
-
     }
 
     /**
@@ -33,12 +31,8 @@ public class Zielhilfe extends JPanel {
      */
     void BildRechner( Graphics g) {
 
-        //System.out.println("Die paintComponent wurde aufgerufen");
-
         PosX = TilePainter.getPosX() + 1;
         PosY = TilePainter.getPosY() + 1;
-
-        //System.out.println(PosX + PosY);
 
         int i = 0;
         int Bildercounter = 1 ;
@@ -52,14 +46,10 @@ public class Zielhilfe extends JPanel {
         Zahl = Bild.BildLoader("src/Images/PokX.png");
         g.drawImage(Zahl,0,0,TileSize.Tile_Size, TileSize.Tile_Size, null);
 
-
         Zahl = Bild.BildLoader("src/Images/PokY.png");
         g.drawImage(Zahl,0,TileSize.Tile_Size,TileSize.Tile_Size, TileSize.Tile_Size, null);
 
-
         while (notfinished) {
-
-            //System.out.println(Inbetweener);
 
             if (Inbetweener == 1) {
                 Zahldir = "src/Images/1.jpg";
@@ -76,8 +66,6 @@ public class Zielhilfe extends JPanel {
                 while ((Inbetweener - Exponent(10, i)) > 0) {
                     i++;
                 }
-
-                //System.out.println(i);
 
                 int h = i ;
 
@@ -140,14 +128,9 @@ public class Zielhilfe extends JPanel {
                             break ;
 
                         default:
-
-                            //Zahldir = "src/Image/Stop";
                             break;
 
-
                     }
-
-
 
                     Zahl = Bild.BildLoader(Zahldir);
 

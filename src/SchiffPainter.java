@@ -16,6 +16,7 @@ public class SchiffPainter {
     static boolean fits = true;
     Bildloader Bild = new Bildloader();
     String Fieldof;
+    String IsitRed = "";
     int[][] getEnemyPlacement =
             {{0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
                     , {0, 0, 8, 8, 8, 8, 0, 0, 0, 0}
@@ -277,32 +278,32 @@ public class SchiffPainter {
                         break;
 
                     case 1:
-                        Schiffdir = "src/Images/Vorne32true.png";
+                        Schiffdir = "src/Images/Vorne32true" + IsitRed + ".png";
                         dosmthng = true;
                         break;
 
                     case 2:
-                        Schiffdir = "src/Images/Vorne32false.png";
+                        Schiffdir = "src/Images/Vorne32false" + IsitRed + ".png";
                         dosmthng = true;
                         break;
 
                     case 3:
-                        Schiffdir = "src/Images/Mitte32true.png";
+                        Schiffdir = "src/Images/Mitte32true" + IsitRed + ".png";
                         dosmthng = true;
                         break;
 
                     case 4:
-                        Schiffdir = "src/Images/Mitte32false.png";
+                        Schiffdir = "src/Images/Mitte32false" + IsitRed + ".png";
                         dosmthng = true;
                         break;
 
                     case 5:
-                        Schiffdir = "src/Images/Hinten32true.png";
+                        Schiffdir = "src/Images/Hinten32true" + IsitRed + ".png";
                         dosmthng = true;
                         break;
 
                     case 6:
-                        Schiffdir = "src/Images/Hinten32false.png";
+                        Schiffdir = "src/Images/Hinten32false" + IsitRed + ".png";
                         dosmthng = true;
                         break;
 
@@ -378,5 +379,51 @@ public class SchiffPainter {
 
     }
 
+    /**
+     * @param x
+     * @param y TODO Diese Mehtode und somit une visuelles Feedback beim löschen implementieren
+     */
+    public void changetored(int x, int y) {
+
+        IsitRed = "Rot";
+
+    }
+
+
+    public void Pokemonpicker() {
+
+        BufferedImage PokemonBild = Bild.BildLoader("src/Images/PokemonTileSet");
+
+        if (Fieldof.equals("Spieler")) {
+
+            for (int y = 0; y < SpielWindow.field_size; y++) {                                // Wird nur gebraucht, falls wir alle TileFrames in einem Bild ablegen wollen (TileSet), da in diesem Fall Zeilenumsprünge benötigt werden
+                for (int x = 0; x < SpielWindow.field_size; x++) {
+
+                    int SizeofBorder = Math.max(18, TileSize.Tile_Size / 12);
+
+                    int index = (counter % 32);        //Höhe & Breite per Tile 80 //(Feld[SpielWindow.field_size][SpielWindow.field_size] +
+                    int yOffset = 0;
+
+                    if (index > (PokemonBild.getWidth() / 80) - 1) {                      // Da das Tileset nicht nur horizontal ausgerichtet ist, muss jedes mal wenn die rechte Seite des TileSets erreicht wurde unsere source
+                        while ((index > (PokemonBild.getWidth() / 80) - 1)) {             // Wieder an die linke Seite des Bildes verschoben werden
+                            index = index - (PokemonBild.getWidth() / 80);
+                            yOffset++;                                              //Aber um eine Zeile nach unten verschoben
+                        }
+                    }
+
+//                    g.drawImage(PokemonBild, (x * TileSize.Tile_Size) + SizeofBorder,                  //ok das ist jetzt blöd zu erklären
+//                            (y * TileSize.Tile_Size) + SizeofBorder,                           //Es wird ein Viereck zwischen diesen 2 Punkten aufgeschlagen, die ersten 2 sind das linke obere ende
+//                            ((x + 1) * TileSize.Tile_Size) + SizeofBorder,                      //die anderen 2 sind das rechte untere ende. Es handelt sich hierbei um das Ziel
+//                            ((y + 1) * TileSize.Tile_Size) + SizeofBorder,
+//                            index * 80,                                         //Es wird ein Viereck zwischen diesen 2 Punkten aufgeschlagen, die ersten 2 sind das linke obere ende
+//                            yOffset * 80,                                       //die anderen 2 sind das rechte untere ende. Es handelt sich hierbei um die Quelle, da die Source und das ausgegebene
+//                            (index + 1) * 80,                                   //gleich groß sein sollen sind die Variablen nahezu identisch
+//                            (yOffset + 1) * 80,
+//                            null);
+                }
+            }
+        }
+
+    }
 
 }

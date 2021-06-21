@@ -12,6 +12,7 @@ public class TilePainter extends JPanel implements MouseMotionListener {
 
     public static int groesse = 3;
     String field ;
+    boolean deleting ;
     public static boolean horizontal = true;
     public static int AnzSchiffe = 0;
     public static int PosX = 0;
@@ -169,7 +170,7 @@ public class TilePainter extends JPanel implements MouseMotionListener {
         Ebene.DrawLayer(g);
         if (SchiffPainter.ready) {
             hier.Schiffzeichner(g);
-            //if(MovementHandler){
+            //if(!deleting){
                 Predicted.setPrediction(PosX, PosY);
                 Predicted.Schiffzeichner(g, SpielWindow.playingField.checkShip(groesse, PosX, PosY, horizontal));
                 //Zielhilfe Z = new Zielhilfe(g) ;
@@ -202,6 +203,14 @@ public class TilePainter extends JPanel implements MouseMotionListener {
 
             setPosX((e.getX() - TileSize.getSizeofBorder()) / TileSize.Tile_Size) ;
             setPosY((e.getY() - TileSize.getSizeofBorder()) / TileSize.Tile_Size) ;
+
+//            if(deleting){
+//                int[][] fieldcheck = SpielWindow.playingField.getField();
+//
+//                if(fieldcheck[PosX][PosY] != 0){
+//                    Predicted.changetored(PosX, PosY);
+//                }
+//            }
 
             //MovementHandler = true ;
 
