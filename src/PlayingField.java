@@ -186,7 +186,7 @@ public class PlayingField {
             headX--;
         }
 
-        return new int[]{headY, headX};
+        return new int[]{headX, headY};
     }
 
     /**
@@ -274,7 +274,6 @@ public class PlayingField {
     private void markShipDestroyed(int x, int y, boolean horizontal) throws Exception {
         checkCoordinatesInField(x, y);
 
-        //Hier ist gefühlt ne Menge doppelter Code im Vergleich zu isShipDestroyed und das find ich hässlich :)
         this.ships--;
 
         int xOffset = 0;
@@ -324,15 +323,24 @@ public class PlayingField {
             spieler.setShip(2, 7, 8, false);
             System.out.println(Arrays.deepToString(spieler.getField()).replace("]", "]\n"));
 
+            spieler.isShot(5, 3);
+
             ComPlayerEasy com = new ComPlayerEasy(10, new int[]{4, 3, 2, 2});
             System.out.println(Arrays.deepToString(com.pf.getField()).replace("]", "]\n"));
 
-            for (int i = 0; i < 20; i++) {
+            /*for (int i = 0; i < 20; i++) {
                 int[] xy = com.doNextShot();
 
                 spieler.isShot(xy[0], xy[1]);
             }
             System.out.println(Arrays.deepToString(spieler.getField()).replace("]", "]\n"));
+            */
+            while (!spieler.gameover()) {
+                int[] xy = com.doNextShot();
+
+                spieler.isShot(xy[0], xy[1]);
+                System.out.println(Arrays.deepToString(spieler.getField()).replace("]", "]\n"));
+            }
 
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
