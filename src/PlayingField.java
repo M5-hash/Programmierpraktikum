@@ -105,8 +105,6 @@ public class PlayingField {
             boolean yC = y - 1 < 0;
             boolean xP = x + 1 >= field.length;
             boolean yP = y + 1 >= field.length;
-            //.println("xC: " + xC + " ||| x - 1: " + (x-1)  + " <= 0");
-            //.println("yC: " + yC + " ||| y - 1: " + (y-1)  + " <= 0");
 
             if ((xC || yC || field[y - 1][x - 1] != 3)
                     && (yC || field[y - 1][x] != 3)
@@ -118,12 +116,12 @@ public class PlayingField {
                     && (yP || field[y + 1][x] != 3)
                     && (xP || yP || field[y + 1][x + 1] != 3)
             ) {
-                //.println("field[y][x]: " + field[y][x] + " (y: " + y + ")(x: " + x + ")");
+                System.out.println("field[y][x]: " + field[y][x] + " (y: " + y + ")(x: " + x + ")");
                 field[y][x] = 4;
             } else {
                 //Markierte Felder zurücksetzen, wenn Schiff nicht gesetzt werden darf
                 this.replaceNotfinal(0);
-                //.println(Arrays.deepToString(field).replace("]", "]\n"));
+                System.out.println(Arrays.deepToString(field).replace("]", "]\n"));
                 return false;
             }
 
@@ -139,8 +137,8 @@ public class PlayingField {
         if (set) {
             this.replaceNotfinal(3);
             this.ships++;
-            //.println(Arrays.deepToString(field).replace("]", "]\n"));
-        }else{
+            System.out.println(Arrays.deepToString(field).replace("]", "]\n"));
+        } else {
             this.replaceNotfinal(0);
         }
         return true;
@@ -149,7 +147,7 @@ public class PlayingField {
     /**
      * Wrapper von setShipWithCheck.
      * Setzt ein Schiff, wenn erlaubt.
-     *
+     * <p>
      * param siehe setShipIntern
      * return siehe setShipIntern
      */
@@ -160,7 +158,7 @@ public class PlayingField {
     /**
      * Wrapper von setShipWithCheck.
      * Prüft ob ein Schiff an übergebene Stelle gesetzt werden darf.
-     *
+     * <p>
      * param siehe setShipIntern
      * return siehe setShipIntern
      */
@@ -324,12 +322,20 @@ public class PlayingField {
             spieler.setShip(3, 5, 3, false);
             spieler.setShip(2, 2, 6, true);
             spieler.setShip(2, 7, 8, false);
-            //.println(Arrays.deepToString(spieler.getField()).replace("]", "]\n"));
+            System.out.println(Arrays.deepToString(spieler.getField()).replace("]", "]\n"));
 
             ComPlayerEasy com = new ComPlayerEasy(10, new int[]{4, 3, 2, 2});
-            //.println(Arrays.deepToString(com.pf.getField()).replace("]", "]\n"));
-        }catch(Exception ex){
-            //.println(ex.getMessage());
+            System.out.println(Arrays.deepToString(com.pf.getField()).replace("]", "]\n"));
+
+            for (int i = 0; i < 20; i++) {
+                int[] xy = com.doNextShot();
+
+                spieler.isShot(xy[0], xy[1]);
+            }
+            System.out.println(Arrays.deepToString(spieler.getField()).replace("]", "]\n"));
+
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
         }
         /*
         PlayingField pf = new PlayingField(10);
@@ -340,18 +346,18 @@ public class PlayingField {
 
         try {
             pf.saveGame(199191918, 0, false);
-            //.println("\nLaden:" + pf2.loadGame(199191918, false));
+            System.out.println("\nLaden:" + pf2.loadGame(199191918, false));
         } catch (IOException e) {
-            //.println(e.getMessage());
+            System.out.println(e.getMessage());
         }
 
-        //.println(Arrays.deepToString(pf2.field).replace("]", "]\n"));*/
+        System.out.println(Arrays.deepToString(pf2.field).replace("]", "]\n"));*/
     }
 
     /**
      * Wrapper für saveGame (Ohne com Angabe)
      */
-    public void saveGame(long id, int status) throws IOException{
+    public void saveGame(long id, int status) throws IOException {
         this.saveGame(id, status, false);
     }
 
@@ -443,7 +449,7 @@ public class PlayingField {
 
         }
 
-        //.println(save);
+        System.out.println(save);
 
         return status;
     }

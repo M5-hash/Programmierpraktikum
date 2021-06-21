@@ -6,10 +6,12 @@ import java.util.Random;
 
 public abstract class ComPlayer {
     protected PlayingField pf;
+    protected int[][] enemyField;
     protected int difficulty;
 
     public ComPlayer(int rows, int[] ships) throws Exception {
         pf = new PlayingField(rows);
+        enemyField = new int[rows][rows];
         setShips(ships);
     }
 
@@ -85,4 +87,6 @@ public abstract class ComPlayer {
     private void loadGame(long id) throws FileNotFoundException {
         //pf.loadGame(id, true);
     }
+
+    public abstract int[] doNextShot();
 }
