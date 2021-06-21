@@ -21,10 +21,21 @@ public abstract class ComPlayer {
     }
 
     /**
+     * Wrapper für die gameover Methode von PlayingField
+     *
+     * @return Boolean
+     * true: Computer hat verloren
+     * false: Computer ist noch am Leben
+     */
+    public boolean gameover() {
+        return this.pf.gameover();
+    }
+
+    /**
      * Platzieren aller Computer-Schiffe
      *
      * @param possibleShips Array mit den Schiffsgrößen. (Bsp.: {4,3,3,2}, Ein Vierer-Schiff, zwei Dreier-Schiffe und ein Zweier-Schiff)
-     * @throws Exception    Wenn es einen Fehler beim Platzieren gab. Sollte solange der Algorithmus richtig ist, nicht auftreten.
+     * @throws Exception Wenn es einen Fehler beim Platzieren gab. Sollte solange der Algorithmus richtig ist, nicht auftreten.
      */
     private void setShips(int[] possibleShips) throws Exception {
         for (int shipLength : possibleShips) {
@@ -40,8 +51,8 @@ public abstract class ComPlayer {
      * Die Stelle ist Zufall, aber es wird ein Algorithmus verwendet,
      * sodass man bei vielen Platzierten Schiffen nicht zu oft nach einer freien Stelle suchen muss.
      *
-     * @param length    Länge des zu platzierenden Schiffes
-     * @return  new int[]{ X-Koordinate, Y-Koordinate, Horizontal (1) bzw Vertikal (0) }
+     * @param length Länge des zu platzierenden Schiffes
+     * @return new int[]{ X-Koordinate, Y-Koordinate, Horizontal (1) bzw Vertikal (0) }
      * @throws Exception
      */
     private int[] getRandomPossibleShip(int length) throws Exception {
