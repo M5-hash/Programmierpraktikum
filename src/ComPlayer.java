@@ -22,13 +22,16 @@ public abstract class ComPlayer {
 
     /**
      * Wrapper für die gameover Methode von PlayingField
-     *
-     * @return Boolean
-     * true: Computer hat verloren
-     * false: Computer ist noch am Leben
      */
     public boolean gameover() {
         return this.pf.gameover();
+    }
+
+    /**
+     * Wrapper für die isShot Methode von PlayingField
+     */
+    public int isShot(int x, int y) throws Exception {
+        return this.pf.isShot(x, y);
     }
 
     /**
