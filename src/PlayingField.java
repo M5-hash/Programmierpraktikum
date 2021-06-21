@@ -205,7 +205,7 @@ public class PlayingField {
         int horizontal = 0; //int statt bool, wegen int-Array Rückgabe
 
         //Überprüfen ob rechts vom Schiff ein weiteres Teil. Dann ist das Schiff Horizontal ausgelegt, sonst Vertikal
-        if (x + 1 < field.length && field[y][x + 1] > 0 && this.field[y][x + 1] < 4) {
+        if (data[0] + 1 < field.length && field[data[1]][data[0] + 1] > 0 && this.field[data[1]][data[0] + 1] < 4) {
             horizontal = 1;
         }
 
@@ -310,7 +310,7 @@ public class PlayingField {
         }
 
         //Überprüfen ob nach zerstörten Schiffsteilen Wasser
-        return this.field[y + yOffset][x + xOffset] == 0 || this.field[y + yOffset][x + xOffset] == 5;
+        return y + yOffset >= this.field.length || x + xOffset >= this.field.length || this.field[y + yOffset][x + xOffset] == 0 || this.field[y + yOffset][x + xOffset] == 5;
     }
 
     //TODO entfernen, bei Release-Version. Nur zum testen
@@ -344,6 +344,11 @@ public class PlayingField {
 
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            ex.printStackTrace(pw);
+            String sStackTrace = sw.toString(); // stack trace as a string
+            System.out.println(sStackTrace);
         }
         /*
         PlayingField pf = new PlayingField(10);
