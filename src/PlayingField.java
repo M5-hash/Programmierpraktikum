@@ -169,20 +169,21 @@ public class PlayingField {
     /**
      * Ermittelt Schiffskopf eines Schiffsteils und gibt die Koordinaten zurück
      *
+     * @param field Das Feld auf dem der Schiffskopf gesucht werden soll
      * @param x X-Koordinate des zu überprüfenden Teiles
      * @param y Y-Koordinate des zu überprüfenden Teiles
      * @return Gibt X und Y Koordinate vom Kopf eines Schiffes zurück
      */
-    private int[] getHeadOfShip(int x, int y) throws Exception {
-        checkCoordinatesInField(x, y);
+    private static int[] getHeadOfShip(int[][] field, int x, int y) throws Exception {
+        PlayingField.checkCoordinatesInFieldStatic(field ,x, y);
 
         int headX = x;
         int headY = y;
 
-        while (headY - 1 > 0 && this.field[headY - 1][headX] > 0 && this.field[headY - 1][headX] < 4) {
+        while (headY - 1 >= 0 && field[headY - 1][headX] > 0 && field[headY - 1][headX] < 4) {
             headY--;
         }
-        while (headX - 1 > 0 && this.field[headY][headX - 1] > 0 && this.field[headY][headX - 1] < 4) {
+        while (headX - 1 >= 0 && field[headY][headX - 1] > 0 && field[headY][headX - 1] < 4) {
             headX--;
         }
 
@@ -192,6 +193,7 @@ public class PlayingField {
     /**
      * Wrapper für getHeadOfShip mit zusätzlicher Ermittlung der Ausrichtung des Schiffes
      *
+     * @param field Das Feld auf dem der Schiffskopf gesucht werden soll
      * @param x X-Koordinate des zu überprüfenden Teiles
      * @param y Y-Koordinate des zu überprüfenden Teiles
      * @return Rückgabe von Int-Array:
@@ -200,16 +202,23 @@ public class PlayingField {
      * [2] 1 == Horizontal, 0 == Vertikal
      * @throws Exception, wenn x/y auserhalb des Spielfeldes
      */
-    public int[] getDirHeadOfShip(int x, int y) throws Exception {
-        int[] data = getHeadOfShip(x, y);
+    public static int[] getDirHeadOfShipStatic(int[][] field, int x, int y) throws Exception{
+        int[] data = PlayingField.getHeadOfShip(field, x, y);
         int horizontal = 0; //int statt bool, wegen int-Array Rückgabe
 
         //Überprüfen ob rechts vom Schiff ein weiteres Teil. Dann ist das Schiff Horizontal ausgelegt, sonst Vertikal
-        if (data[0] + 1 < field.length && field[data[1]][data[0] + 1] > 0 && this.field[data[1]][data[0] + 1] < 4) {
+        if (data[0] + 1 < field.length && field[data[1]][data[0] + 1] > 0 && field[data[1]][data[0] + 1] < 4) {
             horizontal = 1;
         }
 
         return new int[]{data[0], data[1], horizontal};
+    }
+
+    /**
+     * Non-Static Wrapper für getDirHeadOfShipStatic
+     */
+    public int[] getDirHeadOfShip(int x, int y) throws Exception {
+        return PlayingField.getDirHeadOfShipStatic(this.field, x, y);
     }
 
     /**
@@ -311,60 +320,6 @@ public class PlayingField {
 
         //Überprüfen ob nach zerstörten Schiffsteilen Wasser
         return y + yOffset >= this.field.length || x + xOffset >= this.field.length || this.field[y + yOffset][x + xOffset] == 0 || this.field[y + yOffset][x + xOffset] == 5;
-    }
-
-    //TODO entfernen, bei Release-Version. Nur zum testen
-    public static void main(String[] args) {
-        try {
-            PlayingField spieler = new PlayingField(10);
-            spieler.setShip(4, 1, 1, true);
-            spieler.setShip(3, 5, 3, false);
-            spieler.setShip(2, 2, 6, true);
-            spieler.setShip(2, 7, 8, false);
-            System.out.println(Arrays.deepToString(spieler.getField()).replace("]", "]\n"));
-
-            spieler.isShot(5, 3);
-
-            ComPlayerEasy com = new ComPlayerEasy(10, new int[]{4, 3, 2, 2});
-            System.out.println(Arrays.deepToString(com.pf.getField()).replace("]", "]\n"));
-
-            /*for (int i = 0; i < 20; i++) {
-                int[] xy = com.doNextShot();
-
-                spieler.isShot(xy[0], xy[1]);
-            }
-            System.out.println(Arrays.deepToString(spieler.getField()).replace("]", "]\n"));
-            */
-            while (!spieler.gameover()) {
-                int[] xy = com.doNextShot();
-
-                spieler.isShot(xy[0], xy[1]);
-                System.out.println(Arrays.deepToString(spieler.getField()).replace("]", "]\n"));
-            }
-
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
-            StringWriter sw = new StringWriter();
-            PrintWriter pw = new PrintWriter(sw);
-            ex.printStackTrace(pw);
-            String sStackTrace = sw.toString(); // stack trace as a string
-            System.out.println(sStackTrace);
-        }
-        /*
-        PlayingField pf = new PlayingField(10);
-        PlayingField pf2 = new PlayingField();
-
-        pf.setShip(3, 4, 4, true);
-        pf.setShip(4, 0, 0, false);
-
-        try {
-            pf.saveGame(199191918, 0, false);
-            System.out.println("\nLaden:" + pf2.loadGame(199191918, false));
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
-
-        System.out.println(Arrays.deepToString(pf2.field).replace("]", "]\n"));*/
     }
 
     /**
@@ -499,9 +454,75 @@ public class PlayingField {
      * @param y Y-Koordinate
      * @throws Exception, wenn X/Y Koordinate nicht im Spielfeld
      */
-    private void checkCoordinatesInField(int x, int y) throws Exception {
-        if (x < 0 || x >= this.field.length || y < 0 || y > this.field.length) {
+    public static void checkCoordinatesInFieldStatic(int[][] field, int x, int y) throws Exception{
+        if (x < 0 || x >= field.length || y < 0 || y > field.length) {
             throw new Exception("Die angegebenen Koordinaten befinden sich nicht im Spielfeld");
         }
     }
+
+    /**
+     * Non-Static Wrapper für checkCoordinatesInFieldStatic
+     */
+    private void checkCoordinatesInField(int x, int y) throws Exception {
+        PlayingField.checkCoordinatesInFieldStatic(this.field, x, y);
+    }
+
+
+
+    //TODO entfernen, bei Release-Version. Nur zum testen
+    public static void main(String[] args) {
+        try {
+            PlayingField spieler = new PlayingField(10);
+            spieler.setShip(4, 1, 1, true);
+            spieler.setShip(3, 5, 3, false);
+            spieler.setShip(2, 2, 6, true);
+            spieler.setShip(2, 7, 8, false);
+            System.out.println(Arrays.deepToString(spieler.getField()).replace("]", "]\n"));
+
+            //ComPlayerEasy com = new ComPlayerEasy(10, new int[]{4, 3, 2, 2});
+            ComPlayerNormal com = new ComPlayerNormal(10, new int[]{4, 3, 2, 2});
+            System.out.println(Arrays.deepToString(com.pf.getField()).replace("]", "]\n"));
+
+            /*for (int i = 0; i < 20; i++) {
+                int[] xy = com.doNextShot();
+
+                spieler.isShot(xy[0], xy[1]);
+            }
+            System.out.println(Arrays.deepToString(spieler.getField()).replace("]", "]\n"));
+            */
+            while (!spieler.gameover()) {
+                int[] xy = com.doNextShot();
+
+                com.didHit(spieler.isShot(xy[0], xy[1]));
+                System.out.println(Arrays.deepToString(spieler.getField()).replace("]", "]\n"));
+            }
+
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            ex.printStackTrace(pw);
+            String sStackTrace = sw.toString(); // stack trace as a string
+            System.out.println(sStackTrace);
+        }
+
+
+        /*
+        PlayingField pf = new PlayingField(10);
+        PlayingField pf2 = new PlayingField();
+
+        pf.setShip(3, 4, 4, true);
+        pf.setShip(4, 0, 0, false);
+
+        try {
+            pf.saveGame(199191918, 0, false);
+            System.out.println("\nLaden:" + pf2.loadGame(199191918, false));
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+
+        System.out.println(Arrays.deepToString(pf2.field).replace("]", "]\n"));*/
+    }
+
+
 }

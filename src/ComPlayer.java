@@ -6,6 +6,14 @@ import java.util.Random;
 
 public abstract class ComPlayer {
     protected PlayingField pf;
+
+    /**
+     * -1: Wasser
+     *
+     * 1: Treffer
+     * 2: Treffer versenkt
+     * 3: Schuss ohne Antwort
+     */
     protected int[][] enemyField;
     protected int difficulty;
 
@@ -102,5 +110,6 @@ public abstract class ComPlayer {
         //pf.loadGame(id, true);
     }
 
-    public abstract int[] doNextShot();
+    public abstract int[] doNextShot() throws Exception;
+    public abstract void didHit(int hit) throws Exception;
 }

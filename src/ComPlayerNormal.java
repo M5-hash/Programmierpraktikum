@@ -1,5 +1,7 @@
 package src;
 
+import java.util.Arrays;
+
 /**
  * Computer-Spieler mit Schwierigkeitsgrad Normal
  * Schüsse sind so lange zufällig platziert, bis ein Schiff erwischt wird.
@@ -7,7 +9,6 @@ package src;
  */
 public class ComPlayerNormal extends ComPlayer {
     private int[] lastCoords = null;
-    private int last = 0;
 
     public ComPlayerNormal(int rows, int[] ships) throws Exception {
         super(rows, ships);
@@ -15,21 +16,27 @@ public class ComPlayerNormal extends ComPlayer {
     }
 
     @Override
-    public int[] doNextShot() {
+    public int[] doNextShot() throws Exception {
         int[] hit = this.findHit();
+        int[] next = null;
 
-        if(hit == null){
+        if (hit == null) {
             //Schach-Pattern schießen
-            int[] next = this.findNextCheckPattern();
-        }else{
+            next = this.findNextCheckPattern();
+        } else {
+            System.out.println("TEST");
             //Abgeschossenes, nicht zerstörtes Schiff existiert.
-
+            next = this.findNextPotentialShip(hit[0], hit[1]);
         }
 
-        return new int[0];
+        //3: Schuss ohne Antwort
+        this.enemyField[next[1]][next[0]] = 3;
+        this.lastCoords = next;
+
+        return next;
     }
 
-    private int[] findNextCheckPattern(){
+    private int[] findNextCheckPattern() throws Exception {
         for (int y = 0; y < this.enemyField.length; y++) {
             for (int x = 0; x < this.enemyField.length; x++) {
                 boolean xC = x - 1 < 0;
@@ -37,28 +44,82 @@ public class ComPlayerNormal extends ComPlayer {
                 boolean xP = x + 1 >= this.enemyField.length;
                 boolean yP = y + 1 >= this.enemyField.length;
 
-                if(this.enemyField[y][x] == 0
-                && (xC || this.enemyField[y][x-1] == 0)
-                && (xP || this.enemyField[y][x+1] == 0)
-                && (yC || this.enemyField[y-1][x] == 0)
-                && (yP || this.enemyField[y+1][x] == 0)
-                ){
+                if (this.enemyField[y][x] == 0
+                        && (xC || this.enemyField[y][x - 1] == 0 || this.enemyField[y][x - 1] == 4)
+                        && (xP || this.enemyField[y][x + 1] == 0 || this.enemyField[y][x + 1] == 4)
+                        && (yC || this.enemyField[y - 1][x] == 0 || this.enemyField[y - 1][x] == 4)
+                        && (yP || this.enemyField[y + 1][x] == 0 || this.enemyField[y + 1][x] == 4)
+                ) {
                     return new int[]{x, y};
                 }
 
             }
         }
 
-        return null;
+        throw new Exception("findNextCheckPattern: Fehler beim Ermitteln des nächsten Schachfeld-Schuss.");
     }
 
-    private int[] findHit(){
+    private int[] findHit() {
         for (int y = 0; y < this.enemyField.length; y++) {
             for (int x = 0; x < this.enemyField.length; x++) {
-                if(this.enemyField[y][x] == 1){
+                if (this.enemyField[y][x] == 1) {
                     return new int[]{x, y};
                 }
             }
+        }
+
+        return null;
+    }
+
+    private int[] findNextPotentialShip(int x, int y) throws Exception {
+        boolean horizontal;
+
+        //Rechts oder Links abgeschossenes Schiffsteil => Horizontal
+        if((x - 1 >= 0 && this.enemyField[y][x-1] == 1) || (x + 1 < this.enemyField.length && this.enemyField[y][x+1] == 1)) horizontal = true;
+        //Oben oder Unten abgeschossenes Schiffsteil => Vertikal
+        else if((y - 1 >= 0 && this.enemyField[y-1][x] == 1) || (y + 1 < this.enemyField.length && this.enemyField[y+1][x] == 1)) horizontal = false;
+        //Wenn Kein Schiffsteil daneben, überprüfen ob ein nicht abgeschossenes Feld in der horizontalen Nähe
+        else if((x - 1 >= 0 && this.enemyField[y][x - 1] == 0) || (x + 1 < this.enemyField.length && this.enemyField[y][x+1] == 0)) horizontal = true;
+        //Keine andere Möglichkeit als Vertikal
+        else horizontal = false;
+
+        int[] possibleShot = null;
+        if (horizontal) {
+            //Links überprüfen
+            possibleShot = potentialShipNeighboringField(x, y, -1, 0);
+            if (possibleShot != null) return possibleShot;
+
+            //Rechts überprüfen
+            possibleShot = potentialShipNeighboringField(x, y, 1, 0);
+            if (possibleShot != null) return possibleShot;
+        } else {
+            //Oben überprüfen
+            possibleShot = potentialShipNeighboringField(x, y, 0, -1);
+            if (possibleShot != null) return possibleShot;
+
+            //Unten überprüfen
+            possibleShot = potentialShipNeighboringField(x, y, 0, 1);
+            if (possibleShot != null) return possibleShot;
+        }
+
+        throw new Exception("findNextPotentialShip, Fehler beim Berechnen des nächsten abzuschießenden Schiff-Feldes");
+    }
+
+    private int[] potentialShipNeighboringField(int x, int y, int xOff, int yOff) {
+        //In Richtung xOff/yOff überprüfen
+        while (x >= 0 && x < this.enemyField.length
+                && y >= 0 && y < this.enemyField.length
+                && this.enemyField[y][x] == 1
+        ) {
+            x += xOff;
+            y += yOff;
+        }
+
+        //Existiert noch ein Wasserfeld?
+        if (x >= 0 && x < this.enemyField.length
+                && y >= 0 && y < this.enemyField.length
+                && this.enemyField[y][x] == 0) {
+            return new int[]{x, y};
         }
 
         return null;
@@ -84,14 +145,111 @@ public class ComPlayerNormal extends ComPlayer {
                 break;
             case 1: //Treffer
                 this.enemyField[y][x] = 1;
-
+                this.markNotImportant(x + 1, y + 1, 4);
+                this.markNotImportant(x + 1, y - 1, 4);
+                this.markNotImportant(x - 1, y + 1, 4);
+                this.markNotImportant(x - 1, y - 1, 4);
                 break;
             case 2: //Treffer versenkt
-                this.enemyField[y][x] = 2;
+                //Zuerst mit 1 markieren, für den Algorithmus der das komplette Schiff und Umgebung mit 2 markiert
+                this.enemyField[y][x] = 1;
 
+                //Komplettes Schiff mit 2 Markieren
+                boolean first = true;
+                int[] xyh = PlayingField.getDirHeadOfShipStatic(this.enemyField, x, y);
+                x = xyh[0];
+                y = xyh[1];
+                while (y < this.enemyField.length && x < this.enemyField.length && this.enemyField[y][x] == 1) {
+                    this.enemyField[y][x] = 2;
+
+                    if (xyh[2] == 1) { //Horizontal
+                        //Beim ersten Schiffsteil, die Felder links davon markieren.
+                        //Da direkt an einem anderen Schiff kein zweites platziert werden darf
+                        //
+                        // 4 .. ..
+                        // 4 2  ..
+                        // 4 .. ..
+                        // ^
+                        if (first) {
+                            first = false;
+                            this.markNotImportant(x - 1, y, 4);
+                            this.markNotImportant(x - 1, y - 1, 4);
+                            this.markNotImportant(x - 1, y + 1, 4);
+                        }
+
+                        //Felder über und unter dem Schiffsfeld markieren
+                        //
+                        // .. 4 ..
+                        // .. 2 ..
+                        // .. 4 ..
+                        //    ^
+                        this.markNotImportant(x, y - 1, 4);
+                        this.markNotImportant(x, y + 1, 4);
+
+                        //Beim letzten Schiffsteil, die drei Felder rechts davon markieren
+                        //
+                        // .. 4 4
+                        // .. 2 4
+                        // .. 4 4
+                        //      ^
+                        if (x + 1 < this.enemyField.length && this.enemyField[y][x + 1] != 1) {
+                            this.markNotImportant(x + 1, y, 4);
+                            this.markNotImportant(x + 1, y - 1, 4);
+                            this.markNotImportant(x + 1, y + 1, 4);
+                        }
+
+                        //Weiter nach rechts
+                        x++;
+                    } else {//Vertikal
+                        //Beim ersten Schiffsteil, die Felder darüber markieren
+                        //
+                        // 4  4  4 <-
+                        // .. 2  ..
+                        // .. .. ..
+                        if (first) {
+                            first = false;
+                            this.markNotImportant(x, y - 1, 4);
+                            this.markNotImportant(x + 1, y - 1, 4);
+                            this.markNotImportant(x - 1, y - 1, 4);
+                        }
+
+                        //Felder rechts und links von dem Schiffsfeld markieren
+                        //
+                        // .. .. ..
+                        // 4  2  4 <-
+                        // .. .. ..
+                        this.markNotImportant(x - 1, y, 4);
+                        this.markNotImportant(x + 1, y, 4);
+
+                        //Beim letzten Schiffsteil, die drei Felder darunter markieren
+                        //
+                        // .. .. ..
+                        // 4  2  4
+                        // 4  4  4 <-
+                        if (y + 1 < this.enemyField.length && this.enemyField[y + 1][x] != 1) {
+                            this.markNotImportant(x, y + 1, 4);
+                            this.markNotImportant(x - 1, y + 1, 4);
+                            this.markNotImportant(x + 1, y + 1, 4);
+                        }
+
+                        //Weiter nach unten
+                        y++;
+                    }
+                }
                 break;
             default:
                 throw new Exception("Parameter (" + hit + ") nicht im Bereich von 0 bis 2");
         }
+
+        System.out.println("ENEMY:");
+        System.out.println(Arrays.deepToString(this.enemyField).replace("]", "]\n"));
+    }
+
+    private void markNotImportant(int x, int y, int val) {
+        if (x < 0 || x >= this.enemyField.length) return;
+        if (y < 0 || y >= this.enemyField.length) return;
+        if(this.enemyField[y][x] == -1) return;
+
+        this.enemyField[y][x] = val;
     }
 }

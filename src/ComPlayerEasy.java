@@ -43,4 +43,11 @@ public class ComPlayerEasy extends ComPlayer {
 
         return new int[]{x, y};
     }
+
+    @Override
+    public void didHit(int hit) throws Exception {
+        //Do nothing
+        //Methode ist in ComPlayer abstract, da ComPlayerNormal diese verwendet
+        //und wir durch diese leere Implementierung beim Verwenden der Klasse nicht zwischen Easy und Normal unterscheiden müssen
+    }
 }
