@@ -480,7 +480,8 @@ public class PlayingField {
             System.out.println(Arrays.deepToString(spieler.getField()).replace("]", "]\n"));
 
             //ComPlayerEasy com = new ComPlayerEasy(10, new int[]{4, 3, 2, 2});
-            ComPlayerNormal com = new ComPlayerNormal(10, new int[]{4, 3, 2, 2});
+            PlayingField comPF = new PlayingField(10);
+            ComPlayer com = new ComPlayerNormal(comPF, new int[]{4, 3, 2, 2});
             System.out.println(Arrays.deepToString(com.pf.getField()).replace("]", "]\n"));
 
             /*for (int i = 0; i < 20; i++) {

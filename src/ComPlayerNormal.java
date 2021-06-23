@@ -1,6 +1,10 @@
 package src;
 
+import java.sql.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Computer-Spieler mit Schwierigkeitsgrad Normal
@@ -9,10 +13,24 @@ import java.util.Arrays;
  */
 public class ComPlayerNormal extends ComPlayer {
     private int[] lastCoords = null;
+    /**
+     * Liste mit Reihenfolge der abzuschießenden Reihen.
+     * Liste statt Array um shuffle zu nutzen.
+     */
+    private List<Integer> rowSeq = null;
 
-    public ComPlayerNormal(int rows, int[] ships) throws Exception {
-        super(rows, ships);
+    public ComPlayerNormal(PlayingField pf, int[] ships) throws Exception {
+        super(pf, ships);
+        this.setRowSeq(pf.getField().length);
         this.difficulty = 1;
+    }
+
+    private void setRowSeq(int rows) {
+        this.rowSeq = new ArrayList<Integer>();
+        for (int i = 0; i < rows; i++){
+            this.rowSeq.add(i);
+        }
+        Collections.shuffle(rowSeq);
     }
 
     @Override
@@ -37,6 +55,8 @@ public class ComPlayerNormal extends ComPlayer {
     }
 
     private int[] findNextCheckPattern() throws Exception {
+        //int
+
         for (int y = 0; y < this.enemyField.length; y++) {
             for (int x = 0; x < this.enemyField.length; x++) {
                 boolean xC = x - 1 < 0;
