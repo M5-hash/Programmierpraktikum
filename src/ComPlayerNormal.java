@@ -18,6 +18,7 @@ public class ComPlayerNormal extends ComPlayer {
      * Liste statt Array um shuffle zu nutzen.
      */
     private List<Integer> rowSeq = null;
+    private int nextRow = -1;
 
     public ComPlayerNormal(PlayingField pf, int[] ships) throws Exception {
         super(pf, ships);
@@ -27,7 +28,7 @@ public class ComPlayerNormal extends ComPlayer {
 
     private void setRowSeq(int rows) {
         this.rowSeq = new ArrayList<Integer>();
-        for (int i = 0; i < rows; i++){
+        for (int i = 0; i < rows; i++) {
             this.rowSeq.add(i);
         }
         Collections.shuffle(rowSeq);
@@ -55,8 +56,29 @@ public class ComPlayerNormal extends ComPlayer {
     }
 
     private int[] findNextCheckPattern() throws Exception {
-        //int
+        if (this.nextRow < 0) {
+            this.nextRow = this.rowSeq.indexOf(Collections.min(this.rowSeq));
 
+            //Wenn nurnoch Elemente mit der max Priorität existieren, darf eigentlich kein ungefundenes Schiff mehr existieren
+            if (this.nextRow >= this.enemyField.length) {
+                throw new Exception("findNextCheckPattern: Fehler beim Ermitteln des nächsten Schachfeld-Schuss.");
+            }
+        }
+
+        //x alternierend mit 0 oder 1 beginnen
+        //und jeweils ein Feld überspringen (x = x+2)
+        for (int x = this.nextRow % 2; x < this.enemyField.length; x = x + 2) {
+            if (this.enemyField[this.nextRow][x] == 0) {
+                return new int[]{x, this.nextRow};
+            }
+        }
+
+        //Keine Möglichkeiten mehr in dieser row
+        //row Priorität auf max setzen und nächste Row überprüfen
+        this.rowSeq.set(this.nextRow, this.enemyField.length);
+        this.nextRow = -1;
+        return this.findNextCheckPattern();
+        /*
         for (int y = 0; y < this.enemyField.length; y++) {
             for (int x = 0; x < this.enemyField.length; x++) {
                 boolean xC = x - 1 < 0;
@@ -74,9 +96,7 @@ public class ComPlayerNormal extends ComPlayer {
                 }
 
             }
-        }
-
-        throw new Exception("findNextCheckPattern: Fehler beim Ermitteln des nächsten Schachfeld-Schuss.");
+        }*/
     }
 
     private int[] findHit() {
@@ -95,12 +115,15 @@ public class ComPlayerNormal extends ComPlayer {
         boolean horizontal;
 
         //Rechts oder Links abgeschossenes Schiffsteil => Horizontal
-        if((x - 1 >= 0 && this.enemyField[y][x-1] == 1) || (x + 1 < this.enemyField.length && this.enemyField[y][x+1] == 1)) horizontal = true;
-        //Oben oder Unten abgeschossenes Schiffsteil => Vertikal
-        else if((y - 1 >= 0 && this.enemyField[y-1][x] == 1) || (y + 1 < this.enemyField.length && this.enemyField[y+1][x] == 1)) horizontal = false;
-        //Wenn Kein Schiffsteil daneben, überprüfen ob ein nicht abgeschossenes Feld in der horizontalen Nähe
-        else if((x - 1 >= 0 && this.enemyField[y][x - 1] == 0) || (x + 1 < this.enemyField.length && this.enemyField[y][x+1] == 0)) horizontal = true;
-        //Keine andere Möglichkeit als Vertikal
+        if ((x - 1 >= 0 && this.enemyField[y][x - 1] == 1) || (x + 1 < this.enemyField.length && this.enemyField[y][x + 1] == 1))
+            horizontal = true;
+            //Oben oder Unten abgeschossenes Schiffsteil => Vertikal
+        else if ((y - 1 >= 0 && this.enemyField[y - 1][x] == 1) || (y + 1 < this.enemyField.length && this.enemyField[y + 1][x] == 1))
+            horizontal = false;
+            //Wenn Kein Schiffsteil daneben, überprüfen ob ein nicht abgeschossenes Feld in der horizontalen Nähe
+        else if ((x - 1 >= 0 && this.enemyField[y][x - 1] == 0) || (x + 1 < this.enemyField.length && this.enemyField[y][x + 1] == 0))
+            horizontal = true;
+            //Keine andere Möglichkeit als Vertikal
         else horizontal = false;
 
         int[] possibleShot = null;
@@ -268,7 +291,7 @@ public class ComPlayerNormal extends ComPlayer {
     private void markNotImportant(int x, int y, int val) {
         if (x < 0 || x >= this.enemyField.length) return;
         if (y < 0 || y >= this.enemyField.length) return;
-        if(this.enemyField[y][x] == -1) return;
+        if (this.enemyField[y][x] == -1) return;
 
         this.enemyField[y][x] = val;
     }
