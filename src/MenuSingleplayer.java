@@ -6,7 +6,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.io.IOException;
+
 import static src.config.*;
 import static src.config.ROW;
 
@@ -30,9 +33,12 @@ public class MenuSingleplayer {
     public MenuSingleplayer(JFrame menuFrame, JPanel menuMain) throws IOException, FontFormatException {
         this.menuFrame = menuFrame;
 
+        INITIAL_WIDTH = menuFrame.getWidth();
+        INITIAL_HEIGHT = menuFrame.getHeight();
+
         menuLayout = new GridBagLayout();
-        menuLayout.columnWidths = new int[] {C_GAP, COL, COL, C_GAP};
-        menuLayout.rowHeights = new int[] {ROW_INFO, R_GAP, ROW, R_GAP, ROW, R_GAP, ROW, R_GAP, ROW, ROW};
+        menuLayout.columnWidths = new int[]{C_GAP, COL, COL, C_GAP};
+        menuLayout.rowHeights = new int[]{ROW_INFO, R_GAP, ROW, R_GAP, ROW, R_GAP, ROW, R_GAP, ROW, ROW};
         constraints = new GridBagConstraints();
 
         // Content Panel
@@ -58,7 +64,7 @@ public class MenuSingleplayer {
         buttonEasy.addActionListener(e -> {
             // Hide this window
             menuPanel.setVisible(false);
-
+            menuFrame.dispose();
             // Create SpielWindow and display it
             try {
                 new SpielWindow(menuFrame, menuPanel);
@@ -72,6 +78,7 @@ public class MenuSingleplayer {
         buttonNormal.addActionListener(e -> {
             // Hide this window
             menuPanel.setVisible(false);
+            menuFrame.dispose();
 
             // Create MenuMain and display it
             try {
@@ -86,7 +93,7 @@ public class MenuSingleplayer {
         buttonHard.addActionListener(e -> {
             // Hide this window
             menuPanel.setVisible(false);
-
+            menuFrame.dispose();
             // Create MenuMain and display it
             try {
                 new SpielWindow(menuFrame, menuPanel);
@@ -113,6 +120,26 @@ public class MenuSingleplayer {
         makeConstraints(buttonQuitGame, 1, 8, 2);
 
         menuFrame.add(menuPanel);
+
+        menuFrame.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                INITIAL_WIDTH = menuFrame.getWidth();
+                INITIAL_HEIGHT = menuFrame.getHeight();
+
+                COL = (INITIAL_WIDTH * 20 / 100) - 10;
+                C_GAP = (INITIAL_WIDTH * 30 / 100) - 10;
+                ROW_INFO = (INITIAL_HEIGHT * 33 / 100) - 10;
+                ROW = (INITIAL_HEIGHT * 10 / 100) - 10;
+                R_GAP = (INITIAL_HEIGHT * 2) / 100;
+
+                menuLayout.columnWidths = new int[]{C_GAP, COL, COL, C_GAP};
+                menuLayout.rowHeights = new int[]{ROW_INFO, R_GAP, ROW, R_GAP, ROW, R_GAP, ROW, R_GAP, ROW, ROW};
+
+                menuPanel.revalidate();
+                menuPanel.repaint();
+            }
+        });
     }
 
     private void makeConstraints(JComponent comp, int gridx, int gridy, int gridwidth) {

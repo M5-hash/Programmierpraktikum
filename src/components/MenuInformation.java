@@ -52,9 +52,6 @@ public class MenuInformation extends JPanel {
         timer.start();
     }
 
-    public MenuInformation(BufferedImage image, String textSize, JPanel menuShipSize) {
-    }
-
     Timer timer = new Timer(80, new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
