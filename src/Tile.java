@@ -8,6 +8,11 @@ import java.util.Random;
 public class Tile extends JPanel {
 
     public static int field_size;
+
+    public static boolean isFightstart() {
+        return fightstart;
+    }
+
     static boolean fightstart = false;
     private static int counter = 0;
     private final Bildloader Bild = new Bildloader();
