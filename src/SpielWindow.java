@@ -6,6 +6,7 @@ import src.components.QuitButton;
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
+import java.util.Arrays;
 
 import static src.config.*;
 
@@ -17,6 +18,15 @@ public class SpielWindow extends JPanel {
     public static TilePainter tile2 = new TilePainter(field_size, "GegnerKI");
     public static TilePainter tile = new TilePainter(field_size, "Spieler");
     public static Zielhilfe Z = new Zielhilfe();
+    public static ComPlayer Com;
+
+    static {
+        try {
+            Com = new ComPlayerNormal(new PlayingField(field_size), new int[] {3,3,3,4});
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     public static int framewidth = 0;
     public static int frameheigth = 0;
@@ -99,6 +109,8 @@ public class SpielWindow extends JPanel {
             System.out.println("Du hast delete gedrückt");
             System.out.println(tile.deleting);
             tile.switchDeleting();
+            System.out.println(Arrays.deepToString(Com.pf.getField()).replace("]", "]\n"));
+            System.out.println(Arrays.deepToString(SchiffPainter.getEnemyPlacement).replace("]", "]\n"));
             System.out.println(tile.deleting);
 
         });
@@ -114,8 +126,8 @@ public class SpielWindow extends JPanel {
         });
 
 
-        //tile2.setBounds(1200, 15, 600, 1000);
-        //tile2.setBounds(1200, 15, Borderwidth, Borderwidth);
+        tile2.setBounds(1200, 15, 600, 1000);
+
 
         LayeredPanel.add(gamePanel, Integer.valueOf(1));
         LayeredPanel.add(Bg, Integer.valueOf(0));
@@ -150,6 +162,7 @@ public class SpielWindow extends JPanel {
             LayeredPanel.setBounds(0, 0, frame.getWidth(), frame.getHeight());
             Bg.setBounds(0, 0, frame.getWidth(), frame.getHeight());
             tile.setBounds(framewidth / 8, frameheigth / 4, TileSize.Tile_Size * field_size + Borderwidth, TileSize.Tile_Size * field_size + Borderwidth);
+            tile2.setBounds(framewidth * 5 / 8, frameheigth / 4, TileSize.Tile_Size * field_size + Borderwidth, TileSize.Tile_Size * field_size + Borderwidth);
             Z.setBounds(15, 25,TileSize.Tile_Size * 3 , TileSize.Tile_Size * 2);
             //tile2.setBounds(1200, 15, Borderwidth, Borderwidth);
             wahlstation.setBounds((framewidth / 2) - (TileSize.Tile_Size * 3 + TileSize.Tile_Size / 2) / 2, frameheigth / 2 - 4 * TileSize.Tile_Size , 3 * TileSize.Tile_Size + TileSize.Tile_Size / 2 + 2, 8 * TileSize.Tile_Size + 2); //Ohne das + 2 werden die netten Striche um die Wahlstation nicht gezeichnet
