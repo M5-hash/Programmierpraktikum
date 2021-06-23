@@ -25,7 +25,7 @@ class Client extends Com_base {
 
         String[] in_size = Receive().split(" ");
         if (in_size[0].equals("size")) {
-            PlayingField pf = new PlayingField(Integer.parseInt(in_size[1]));
+            this.pf = new PlayingField(Integer.parseInt(in_size[1]));
 
             Send("done");
 
@@ -34,7 +34,7 @@ class Client extends Com_base {
             Send("done");
         }
         else if(in_size[0].equals("load")){
-            PlayingField pf = new PlayingField(0);
+            this.pf = new PlayingField(0);
             pf.loadGame(Long.valueOf(in_size[1]));
         }
 

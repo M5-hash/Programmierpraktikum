@@ -28,7 +28,7 @@ class Server extends Com_base {
 
 
         if(start_mode.equals("setup")){
-            PlayingField pf = new PlayingField(in_size);
+            this.pf = new PlayingField(in_size);
             Send("size "+ in_size);
             if(Receive().equals("done")){
                 Send("ships " + in_ships);
@@ -38,7 +38,7 @@ class Server extends Com_base {
             }
         }
         else{
-            PlayingField pf = new PlayingField(0);
+            this.pf = new PlayingField(0);
             pf.loadGame(Long.valueOf(start_mode.split(" ")[1]));
         }
 

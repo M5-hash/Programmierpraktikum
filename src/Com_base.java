@@ -15,7 +15,7 @@ public abstract class Com_base {
     protected BufferedReader usr;
     protected String line;
     protected boolean setup;
-
+    public PlayingField pf;
 
     public Com_base(){
         this.port = 50000;
@@ -55,7 +55,7 @@ public abstract class Com_base {
         return true;
     }
 
-    protected String message_check(String in){
+    protected void message_check(String in) throws Exception{
 
         String message = "";
         String [] holder = in.split(" ");
@@ -63,17 +63,23 @@ public abstract class Com_base {
             int x = Integer.parseInt(holder[1]);
             int y = Integer.parseInt(holder[2]);
 
-            //Ist shot hit?   mit x und y
+            int hit = pf.isShot(x, y);
+            if(hit == 0){
+                //gui enabler true
+            }
+            else if(hit == 1 || hit == 2){
+                Send("done");
+                message_check(Receive());
+            }
         }
 
         else if(holder[0].equals("save")){
-            //Spiel speichern
+            //saveGame
         }
 
         else if(holder[0].equals("done")){
-            //enable play
+            //gui enabler true
         }
-        return message;
     }
 
     protected int[] ship_array(String [] in_ships){
