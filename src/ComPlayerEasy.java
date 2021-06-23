@@ -7,8 +7,8 @@ import java.util.Random;
  * Schüsse komplett zufällig (Getroffene Ziele werden nicht beachtet)
  */
 public class ComPlayerEasy extends ComPlayer {
-    public ComPlayerEasy(int rows, int[] ships) throws Exception {
-        super(rows, ships);
+    public ComPlayerEasy(PlayingField pf, int[] ships) throws Exception {
+        super(pf, ships);
         this.difficulty = 0;
     }
 
