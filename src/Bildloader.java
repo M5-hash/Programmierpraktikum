@@ -13,7 +13,6 @@ public class Bildloader {
     static ArrayList<String> Loaded = new ArrayList<>();                       // Speichert als String die Quellen der bereits geladenen Bilder ab
 
 
-
     /**
      * @param Bild_dir gibt die zu ladende Datei an
      * @return img Das gewollte image
@@ -22,7 +21,7 @@ public class Bildloader {
 
 
         if (counter > 0) {                                                        // Macht sicher, dass die zuladende Datei auch eine neue Datei ist. Falls die Datei schon einmal geladen wurde, wurde Sie gespeichert
-            for (int i = 0; i < Loaded.size(); i++) {                           // Aus diesem Speicher wird Sie nun wieder asugelesen
+            for (int i = 0; i < Loaded.size(); i++) {                           // Aus diesem Speicher wird Sie nun wieder ausgelesen
                 if (Loaded.get(i).contentEquals(Bild_dir)) {
                     return Finished.get(i);
                 }
@@ -33,7 +32,7 @@ public class Bildloader {
         try {                                                                   /*Immer wenn ein IOreader verwendet wird, braucht man ein try catch statement, welches dann eine Exception wirft*/
             img = ImageIO.read(new File(Bild_dir));
         } catch (IOException e) {
-            System.out.println("Bild konnte nicht geladen werden");
+            System.out.println("Bild konnte nicht geladen werden" + Bild_dir);
         }
 
         Loaded.add(counter, Bild_dir);                                         // Fügt die Quelle dem Zwischenspeicher hinzu

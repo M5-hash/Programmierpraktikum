@@ -1,15 +1,24 @@
 package src;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.awt.image.ColorModel;
+import java.awt.image.WritableRaster;
+import java.util.ArrayList;
 
 public class SchiffPainter {
 
-    private int[][] SchiffPos;
     public static int[][] BugHeckMeck = new int[SpielWindow.field_size][SpielWindow.field_size];
-    //public static int[][] BugHeckdummy = new int[SpielWindow.field_size][SpielWindow.field_size];      Hatte drüber nachgedacht, dass nicht jedesmal ohne Änderung das nette Schiffzeichner aufgerufen wird
     public static boolean ready = false;
+    public static int counter;
+    static ArrayList<BufferedImage> Finished = new ArrayList<>();              // Zwischenspeicher für bereits geladene Bilder
+    static ArrayList<String> Loaded = new ArrayList<>();                       // Speichert als String die Quellen der bereits geladenen Bilder ab
+    static boolean fits = true;
     Bildloader Bild = new Bildloader();
-    int[][] getEnemyPlacement = {{0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+    String Fieldof;
+    String IsitRed = "";
+    int[][] getEnemyPlacement =
+            {{0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
                     , {0, 0, 8, 8, 8, 8, 0, 0, 0, 0}
                     , {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
                     , {0, 0, 0, 0, 0, 7, 7, 7, 0, 0}
@@ -19,66 +28,121 @@ public class SchiffPainter {
                     , {0, 8, 8, 0, 0, 8, 0, 0, 0, 0}
                     , {0, 8, 8, 0, 0, 8, 0, 0, 0, 0}
                     , {0, 8, 8, 0, 0, 0, 0, 0, 0, 0}};
+    int[][] Vorhersage = new int[SpielWindow.field_size][SpielWindow.field_size];
 
 
-    public SchiffPainter() {
+    /**
+     * @param Feldvon gibt an für wenn die Schiffe gezeichnet werden
+     *                "Spieler" = Spieler
+     *                "GegnerKI" = Computer Gegner
+     *                "GegnerMensch" = OnlineGegners / Menschlicher Gegner
+     *                "Preview" = Feld wird verwendet um das setzen des Spieler besser darzustellen
+     */
+    public SchiffPainter(String Feldvon) {
+
+        Fieldof = Feldvon;
+        //System.out.println(Fieldof);
+
         Schiffteil();
     }
 
-    private boolean Enemyplacement() {
-
-        for (int[] schiffPo : SchiffPos) {
-            for (int j = 0; j < SchiffPos[0].length; j++) {
-                switch (schiffPo[j]) {
-                    case 0:                                             //An dieser position befindet sich kein Schiff bzw. Schiffteil
-                        break;
-                    case 1:                                             //Hier befindet sich ein zerstörtes Schiffteil
-                        drawEntity(1);
-                    case 2:                                             //Hier befindet ein zerstörtes Schiff
-                        drawEntity(2);
-                    case 3:                                             //Hier befindet sich ein intaktes Schiffteil
-                        drawEntity(3);
-
-                    default:                                        //Invalid Entry mein Gamer, dass sollte aber nicht vorkommen.
-                        System.out.println("Invalid entry");
-                        return false;
+    static int fetchImg(String Schiffdir) {
+        if (counter > 0) {                                                        // Macht sicher, dass die zuladende Datei auch eine neue Datei ist. Falls die Datei schon einmal geladen wurde, wurde Sie gespeichert
+            for (int i = 0; i < Loaded.size(); i++) {// Aus diesem Speicher wird Sie nun wieder ausgelesen
+                String Stringaling = Schiffdir + fits;
+                if (Loaded.get(i).contentEquals(Stringaling)) {
+                    return i;
                 }
             }
         }
-        return true;
+        return -1;
     }
 
-    private void drawEntity(int Ship) {
-        //Bildloader
+    /**
+     * @param image      Übergebenes BufferedImage
+     * @param Schiff_dir Übergibt den Pfad des Bildes
+     * @return Rückgabe des bearbeiteten BufferedImage
+     * <p>
+     * Verändert die Färbung, der in der Preview verwendeten BufferedImages, sodass diese direkt angeben, ob Sie gesetzt werden können
+     */
+    private static BufferedImage colorshiftpng(BufferedImage image, String Schiff_dir) {
 
+        BufferedImage copy = deepCopy(image);
+
+        int width = copy.getWidth();
+        int height = copy.getHeight();
+
+        System.out.println("Es wurden insgesamt " + counter + " Bilder bearbeitet/umgefärbt");
+
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                if (((copy.getRGB(x, y) >> 24) & 0xFF) != 0) {
+
+                    int pixel = copy.getRGB(x, y);
+
+                    float blue = (pixel) & 0xff;
+                    float green = (pixel >> 8) & 0xff;
+                    float red = (pixel >> 16) & 0xff;
+
+                    //System.out.println("Ergebnis aus getRGB : \nred: " + red + "blue: " + blue);
+
+
+                    if (fits) {
+                        blue = blue / 510;     //Da nicht von 0 -> 255 erlaubt sondern von 0.0 -> 1.0 weitere Halbierung um die B Menge zu verringern/ es Grüner zu machen
+                        red = red / 510;       //Verdopplung ist zufällig gewählt und wird sich wahrscheinlich noch ändern (Ich nehme Vorschläge)
+
+                        //System.out.println("\nred: " + red + "blue: " + blue);
+
+                        Color Cgreen = new Color(red, 0.42f, blue, 0.82f); //G und A zufällig gewählt
+
+                        copy.setRGB(x, y, Cgreen.getRGB());
+                    } else {
+
+                        green = green / 510;
+                        blue = blue / 510;
+
+                        Color Cred = new Color(0.5f, green, blue, 0.62f); //Grün schlechter sichtbar als Rot --> höherer Alpha Wert
+
+                        copy.setRGB(x, y, Cred.getRGB());
+                    }
+                }
+            }
+        }
+        String Stringaling = Schiff_dir + fits;
+
+        Loaded.add(counter, Stringaling);                                         // Fügt die Quelle dem Zwischenspeicher hinzu
+        Finished.add(counter, copy);                                             // Fügt das Bild dem Zwischenspeicher hinzu
+        counter++;
+        return copy;
     }
 
-    /*
-     * Ermittelt, wo beim Schiff es sich um das Bug(Vorne) oder Heck(Hinten) handelt, um so das richtige Image zu wählen, sodass die Aesthetic passt.
-     *
-     * Das Array wir mit getField() besorgt
-     *
-     * */
+    /**
+     * @param bi Gibt zu klonendes Bild an die Methode weiter
+     * @return gibt das geklonte BufferedImage zurück
+     * <p>
+     * Methode garantiert, dass es sich um verschieden BufferedImage Objekte handelt
+     */
+    static BufferedImage deepCopy(BufferedImage bi) {
+        ColorModel cm = bi.getColorModel();
+        boolean isAlphaPremultiplied = cm.isAlphaPremultiplied();
+        WritableRaster wr = bi.copyData(null);
+        return new BufferedImage(cm, wr, isAlphaPremultiplied, null);
+    }
 
+    /**
+     * Wird verwendet um die Schiffe welche in Playingfield abgespeichert werden mit der richtigen Ausrichtung darzustellen
+     * <p>
+     * wird auch in der Preview verwendet um eine richtige Ausrichtung der Schiffe zu garantieren
+     */
+    public void Schiffteil() {
 
-    public int[][] Schiffteil() {
-
-        System.out.println("Schiffteil wurde aufgerufen");
+        //System.out.println("Schiffteil wurde aufgerufen");
 
         int[][] Schiffe = SpielWindow.playingField.getField();
 
-
-        /*int x = 0;                                                 //Nur zur Ausgabe in der Konsole muss man irgendwann wieder wegmachen
-        for (int i = 0; i < Schiffe.length; i++) {
-            for (int j = 0; j < Schiffe[0].length; j++) {
-                if (x != i)
-                    System.out.print("\n");
-                System.out.print(Schiffe[i][j] + " ");
-                x = i;
-            }
-        }*/
-
-//        int[][] BugHeckMeck = new int[SpielWindow.field_size][SpielWindow.field_size];
+        if (Fieldof.equals("Vorhersage")) {
+            Schiffe = Vorhersage;
+        }
 
         /*
          * Werte für BugHeckMeck:
@@ -145,128 +209,221 @@ public class SchiffPainter {
 
             }
         }
-        /*int x = 0;                                                 //Nur zur Ausgabe in der Konsole muss man irgendwann wieder wegmachen
-        for (int i = 0; i < BugHeckMeck.length; i++) {
-            for (int j = 0; j < BugHeckMeck[0].length; j++) {
-                if (x != i)
-                    System.out.print("\n");
-                System.out.print(BugHeckMeck[i][j] + " ");
-                x = i;
-            }
-        }*/
+
 
         ready = true;
         SpielWindow.change = false;
 
-        return BugHeckMeck;
 
     }
 
+    /**
+     * @param g Gibt Graphics Objekt weiter
+     * @param f Gibt der Preview an, ob das Schiff gesetzt werden könnte
+     *          <p>
+     *          Wird nur von der Preview verwendet um gleichzeitig die Schiffzeichner Methode aufzurufen und
+     *          anzugeben ob das Schiff gesetzt werden könnte
+     */
+    public void Schiffzeichner(Graphics g, boolean f) {
+
+        fits = f;
+        Schiffzeichner(g);
+
+    }
 
     /**
-     * @param g wird benötigt, sodass eine Variable des Typs Graphics existiert
-     * @return ob die Schiffe gezeichnet wurden
+     * @param g Gibt Graphics Objekt weiter
+     *          <p>
+     *          Zeichnet die Schiffe wie sie durch das in Schiffteil() ermittelt Array vorgegeben werden (Feld von Spieler)
+     *          <p>
+     *          Zeichnet was dem Spieler vom Feld seines Gegners bekannt ist (Feld von GegnerKi & GegnerMensch)
+     *          <p>
+     *          Zeichnet die Schiffe wie sie durch das in Schiffteil() ermittelt Array vorgegeben werden, aber mit der
+     *          weiteren Information ob diese dort überhaupt gesetzt werden dürfen (Feld von Preview)
      */
-    public boolean Schiffzeichner(Graphics g) {
+    public void Schiffzeichner(Graphics g) {
 
-        int[][] dummy ;
-        int field = 0;
-        if (SpielWindow.change) Schiffteil();
+        int[][] dummy;
 
+        if (Fieldof.equals("Spieler") || Fieldof.equals("Vorhersage")) Schiffteil();
 //            System.out.println("Schiffzeichner wurde aufgerufen");
 
         String Schiffdir = "Ich bin der String und ich bin ein Platzhalter";
-        Image Schiff; //Nur ein Platzhalter, dass die IDE nicht weint
+        BufferedImage Schiff; //Nur ein Platzhalter, dass die IDE nicht weint
         boolean dosmthng = false;
 
-        while (field <= TileSize.getFighting()) {
-
-            //System.out.println(TileSize.getFighting());
-
-            if(field == 0){
-                dummy = BugHeckMeck ;
-            } else
-                dummy = getEnemyPlacement ;
-
-            for (int y = 0; y < dummy.length; y++) {
-                for (int x = 0; x < dummy[0].length; x++) {
+        int SizeofBorder = Math.max(18, TileSize.Tile_Size / 12);
 
 
-                    switch (dummy[y][x]) {
+        //System.out.println(TileSize.getFighting());
 
-                        case 0:
-                            break;
+        dummy = switch (Fieldof) {
+            case "Spieler" -> BugHeckMeck;
+            case "GegnerKI" -> getEnemyPlacement;
+            case "GegnerMensch" -> getEnemyPlacement;
+            //case "Vorhersage" -> Vorhersage;
+            default -> BugHeckMeck;
+        };
 
-                        case 1:
-                            Schiffdir = "src/Images/Vorne32true.png";
-                            dosmthng = true;
-                            break;
+        //System.out.println(Fieldof);
 
-                        case 2:
-                            Schiffdir = "src/Images/Vorne32false.png";
-                            dosmthng = true;
-                            break;
 
-                        case 3:
-                            Schiffdir = "src/Images/Mitte32true.png";
-                            dosmthng = true;
-                            break;
+        for (int y = 0; y < dummy.length; y++) {
+            for (int x = 0; x < dummy[0].length; x++) {
 
-                        case 4:
-                            Schiffdir = "src/Images/Mitte32false.png";
-                            dosmthng = true;
-                            break;
 
-                        case 5:
-                            Schiffdir = "src/Images/Hinten32true.png";
-                            dosmthng = true;
-                            break;
+                switch (dummy[y][x]) {
 
-                        case 6:
-                            Schiffdir = "src/Images/Hinten32false.png";
-                            dosmthng = true;
-                            break;
+                    case 0:
+                        break;
 
-                        case 7:
-                            Schiffdir = "src/Images/EinX2.png";
-                            dosmthng = true;
-                            break;
+                    case 1:
+                        Schiffdir = "src/Images/Vorne32true" + IsitRed + ".png";
+                        dosmthng = true;
+                        break;
 
-                        case 8:
-                            Schiffdir = "src/Images/Nebel.png";
-                            dosmthng = true;
-                            //System.out.println("Ich wurde aufgerufen");
-                            break;
+                    case 2:
+                        Schiffdir = "src/Images/Vorne32false" + IsitRed + ".png";
+                        dosmthng = true;
+                        break;
 
-                        default:
-                            System.out.println("Gamer, dass ist aber dick nicht Gut mein bester, das sollte nämlich nicht gehen");
-                            System.out.println("Es gibt also einen Fehler in der Schiffteil Methode");
+                    case 3:
+                        Schiffdir = "src/Images/Mitte32true" + IsitRed + ".png";
+                        dosmthng = true;
+                        break;
 
-                    }
+                    case 4:
+                        Schiffdir = "src/Images/Mitte32false" + IsitRed + ".png";
+                        dosmthng = true;
+                        break;
 
-                    int displacement = field * (Tile.field_size * TileSize.Tile_Size + Math.max(60, 120 % TileSize.Tile_Size));
+                    case 5:
+                        Schiffdir = "src/Images/Hinten32true" + IsitRed + ".png";
+                        dosmthng = true;
+                        break;
 
-                    if (dosmthng) {
-                        Schiff = Bild.BildLoader(Schiffdir);
+                    case 6:
+                        Schiffdir = "src/Images/Hinten32false" + IsitRed + ".png";
+                        dosmthng = true;
+                        break;
 
-                        g.drawImage(Schiff, (x * TileSize.Tile_Size + Tile.side_gapl + displacement),
-                                (y * TileSize.Tile_Size + Tile.top_gap),
-                                TileSize.Tile_Size,
-                                TileSize.Tile_Size, null);
-                        dosmthng = false;
-                    }
+                    case 7:
+                        Schiffdir = "src/Images/EinX2.png";
+                        dosmthng = true;
+                        break;
 
+                    case 8:
+                        Schiffdir = "src/Images/PokeTest32.jpg";
+                        dosmthng = true;
+                        //System.out.println("Ich wurde aufgerufen");
+                        break;
+
+                    default:
+                        System.out.println("Gamer, dass ist aber dick nicht Gut mein bester, das sollte nämlich nicht gehen");
+                        System.out.println("Es gibt also einen Fehler in der Schiffteil Methode");
+                        Schiffdir = "src/Images/PokeTest32.jpg";
 
                 }
 
-            }
-            field++ ;
 
+                if (dosmthng) {
+                    Schiff = Bild.BildLoader(Schiffdir);
+                    BufferedImage dummyImg;
+
+                    if (Fieldof.equals("Vorhersage")) {
+                        int check = fetchImg(Schiffdir);
+                        if (check != -1) {
+                            dummyImg = Finished.get(check);
+                        } else {
+                            dummyImg = colorshiftpng(Schiff, Schiffdir);
+                        }
+                    } else {
+                        dummyImg = Schiff;
+                    }
+
+
+                    g.drawImage(dummyImg, (x * TileSize.Tile_Size + SizeofBorder),
+                            (y * TileSize.Tile_Size + SizeofBorder),
+                            TileSize.Tile_Size,
+                            TileSize.Tile_Size, null);
+                    dosmthng = false;
+                }
+            }
         }
 
-        return true;
+    }
+
+    /**
+     * @param y Die y Postion des Tile über dem momentan die Maus hovert
+     * @param x Die x Postion des Tiles über dem momentan die Maus hovert
+     *          <p>
+     *          Da nur der Startpunkt des Schiffes übergeben wird, muss berechnet werden wo sich der ganze Rest des Schiffes befinden wird
+     */
+    public void setPrediction(int y, int x) {
+
+        int size = TilePainter.groesse;
+        boolean hor = TilePainter.horizontal;
+
+        Vorhersage = new int[SpielWindow.field_size][SpielWindow.field_size];
+
+        for (int i = 0; i < size; i++) {
+            if (x < SpielWindow.field_size && y < SpielWindow.field_size) {
+                Vorhersage[x][y] = 3;
+                if (!hor) {
+                    x++;
+                } else
+                    y++;
+            }
+        }
+        Schiffteil();
+
+    }
+
+    /**
+     * @param x
+     * @param y TODO Diese Mehtode und somit une visuelles Feedback beim löschen implementieren
+     */
+    public void changetored(int x, int y) {
+
+        IsitRed = "Rot";
+
     }
 
 
+    public void Pokemonpicker() {
+
+        BufferedImage PokemonBild = Bild.BildLoader("src/Images/PokemonTileSet");
+
+        if (Fieldof.equals("Spieler")) {
+
+            for (int y = 0; y < SpielWindow.field_size; y++) {                                // Wird nur gebraucht, falls wir alle TileFrames in einem Bild ablegen wollen (TileSet), da in diesem Fall Zeilenumsprünge benötigt werden
+                for (int x = 0; x < SpielWindow.field_size; x++) {
+
+                    int SizeofBorder = Math.max(18, TileSize.Tile_Size / 12);
+
+                    int index = (counter % 32);        //Höhe & Breite per Tile 80 //(Feld[SpielWindow.field_size][SpielWindow.field_size] +
+                    int yOffset = 0;
+
+                    if (index > (PokemonBild.getWidth() / 80) - 1) {                      // Da das Tileset nicht nur horizontal ausgerichtet ist, muss jedes mal wenn die rechte Seite des TileSets erreicht wurde unsere source
+                        while ((index > (PokemonBild.getWidth() / 80) - 1)) {             // Wieder an die linke Seite des Bildes verschoben werden
+                            index = index - (PokemonBild.getWidth() / 80);
+                            yOffset++;                                              //Aber um eine Zeile nach unten verschoben
+                        }
+                    }
+
+//                    g.drawImage(PokemonBild, (x * TileSize.Tile_Size) + SizeofBorder,                  //ok das ist jetzt blöd zu erklären
+//                            (y * TileSize.Tile_Size) + SizeofBorder,                           //Es wird ein Viereck zwischen diesen 2 Punkten aufgeschlagen, die ersten 2 sind das linke obere ende
+//                            ((x + 1) * TileSize.Tile_Size) + SizeofBorder,                      //die anderen 2 sind das rechte untere ende. Es handelt sich hierbei um das Ziel
+//                            ((y + 1) * TileSize.Tile_Size) + SizeofBorder,
+//                            index * 80,                                         //Es wird ein Viereck zwischen diesen 2 Punkten aufgeschlagen, die ersten 2 sind das linke obere ende
+//                            yOffset * 80,                                       //die anderen 2 sind das rechte untere ende. Es handelt sich hierbei um die Quelle, da die Source und das ausgegebene
+//                            (index + 1) * 80,                                   //gleich groß sein sollen sind die Variablen nahezu identisch
+//                            (yOffset + 1) * 80,
+//                            null);
+                }
+            }
+        }
+
+    }
 
 }

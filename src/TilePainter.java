@@ -1,134 +1,162 @@
 package src;
 
+//import src.Images.Zielhilfe;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 
-import static src.TileSize.xRightEnd;
-
 public class TilePainter extends JPanel implements MouseMotionListener {
 
     public static int groesse = 3;
+    String field ;
+    boolean deleting ;
     public static boolean horizontal = true;
     public static int AnzSchiffe = 0;
-
+    public static int PosX = 0;
+    public static int PosY = 0;
+    public static boolean Onfirstfield = false;
     private final Tile Ebene;
-    SchiffPainter h = new SchiffPainter();
-
-    public TilePainter(int Feldgroesse) {
-        Ebene = new Tile(Feldgroesse);
-
-        addMouseMotionListener(this);
-
-        addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                if (e.getButton() == MouseEvent.BUTTON1) {
-                    int x = e.getX();
-                    int y = e.getY();
+    SchiffPainter hier ;
+    SchiffPainter Predicted ;
+    boolean MovementHandler ;
 
 
-                    /*Die Position auf dem Feld wird durch diese Funktion berechnet, anstatt das nur die aktuelle Position in Pixeln zurückgegeben wird.
-                     *
-                     * Erzeugt dabei die Parameter yFeld und xFeld
-                     *
-                     * y-Feld: (y - top_gap) / TileSize.tile_height
-                     * x-Feld: (x - sidegapl) / TileSize.tile_width
-                     *
-                     * */
+    /**
+     * @param Feldgroesse   gibt Groesse des Feldes vor
+     * @param Feldvon       gibt an für wen des Feld ist
+     *
+     *                      Konstruktor für TilePainter, welches das Felder an sich durch Tile aufruft
+     *
+     *                      Übernimmt die Inputs des Spielers gibt diese wenn nötig an andere Methoden weiter
+     */
+    public TilePainter(int Feldgroesse, String Feldvon) {
+        Ebene = new Tile(Feldgroesse, Feldvon);
+        field = Feldvon ;
+        hier = new SchiffPainter(Feldvon);
+        Predicted = new SchiffPainter("Vorhersage") ;
 
-                    if (!Tile.fightstart) {
-                        if (Onfirstfield(e)) {
-                            int yFeld = ((y - Tile.top_gap) / TileSize.Tile_Size);
-                            int xFeld = ((x - Tile.side_gapl) / TileSize.Tile_Size);
+            if(Feldvon.equals("Spieler")) addMouseMotionListener(this);
 
-                            System.out.println("Die Position auf der Y-Achse beträgt:" + yFeld + "\nDie Postion auf der X-Achse beträgt:" + xFeld);
+            addMouseListener(new MouseAdapter() {
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    if (e.getButton() == MouseEvent.BUTTON1) {
+                        int x = e.getX();
+                        int y = e.getY();
 
-                            if (SpielWindow.change = SpielWindow.playingField.setShip(groesse, xFeld, yFeld, horizontal))
-                                AnzSchiffe++;//Lässt die Schiffzeichnen Methode wissen, on es zu einer Änderung gekommen ist
+
+                        /*Die Position auf dem Feld wird durch diese Funktion berechnet, anstatt das nur die aktuelle Position in Pixeln zurückgegeben wird.
+                         *
+                         * Erzeugt dabei die Parameter yFeld und xFeld
+                         *
+                         * y-Feld: (y - top_gap) / TileSize.tile_height
+                         * x-Feld: (x - sidegapl) / TileSize.tile_width
+                         *
+                         * */
+
+                        if (!Tile.fightstart && Feldvon.equals("Spieler")) {
+
+                            setOnfirstfield(e);
+
+
+
+                            if (Onfirstfield) {
+
+
+                                int yFeld = ((y - TileSize.getSizeofBorder())/ TileSize.Tile_Size);
+                                int xFeld = ((x - TileSize.getSizeofBorder())/ TileSize.Tile_Size);
+
+                                System.out.println("Die Position auf der Y-Achse beträgt:" + yFeld + "\nDie Postion auf der X-Achse beträgt:" + xFeld);
+
+                                if (SpielWindow.change = SpielWindow.playingField.setShip(groesse, xFeld, yFeld, horizontal)) {
+                                    AnzSchiffe++;
+
+                                }
+                                //Lässt die Schiffzeichnen Methode wissen, on es zu einer Änderung gekommen ist
+                            }
                         } else {
 
-                            if (x >= TileSize.getxRightEnd() + TileSize.getFieldBox_gap() + TileSize.Tile_Size / 2                                                                 //Bereich in dem man klicken muss um sein Schiff auf die Groesse 5 zu setzen
-                                    && x <= xRightEnd + TileSize.getFieldBox_gap() + TileSize.Tile_Size / 2 + TileSize.Tile_Size
-                                    && y >= Tile.top_gap + TileSize.getHalfheightField() - TileSize.getHalfheightBox() + TileSize.Tile_Size / 2
-                                    && y <= Tile.top_gap + TileSize.getHalfheightField() - TileSize.getHalfheightBox() + TileSize.Tile_Size / 2 + 5 * TileSize.Tile_Size) {
-                                groesse = 5;
-                                System.out.println("Die Größe wurde auf 5 gesetzt");
-                            }
-
-                            if (x >= xRightEnd + TileSize.getFieldBox_gap() + TileSize.Tile_Size * 2                                                                 //Bereich in dem man klicken muss um sein Schiff auf die Groesse 4 zu setzen
-                                    && x <= xRightEnd + TileSize.getFieldBox_gap() + TileSize.Tile_Size * 2 + TileSize.Tile_Size
-                                    && y >= Tile.top_gap + TileSize.getHalfheightField() - TileSize.getHalfheightBox() + TileSize.Tile_Size / 2
-                                    && y <= Tile.top_gap + TileSize.getHalfheightField() - TileSize.getHalfheightBox() + TileSize.Tile_Size / 2 + 4 * TileSize.Tile_Size) {
-                                groesse = 4;
-                                System.out.println("Die Größe wurde auf 4 gesetzt");
-                            }
-
-                            if (x >= xRightEnd + TileSize.getFieldBox_gap() + TileSize.Tile_Size * 2                                                                 //Bereich in dem man klicken muss um sein Schiff auf die Groesse 3 zu setzen
-                                    && x <= xRightEnd + TileSize.getFieldBox_gap() + TileSize.Tile_Size * 2 + TileSize.Tile_Size
-                                    && y >= Tile.top_gap + TileSize.getHalfheightField() + TileSize.getHalfheightBox() - (TileSize.Tile_Size * 7) / 2
-                                    && y <= Tile.top_gap + TileSize.getHalfheightField() + TileSize.getHalfheightBox() - (TileSize.Tile_Size * 7) / 2 + 3 * TileSize.Tile_Size) {
-                                groesse = 3;
-                                System.out.println("Die Größe wurde auf 3 gesetzt");
-                            }
-
-                            if (x >= xRightEnd + TileSize.getFieldBox_gap() + TileSize.Tile_Size / 2                                                                 //Bereich in dem man klicken muss um sein Schiff auf die Groesse 2 zu setzen
-                                    && x <= xRightEnd + TileSize.getFieldBox_gap() + TileSize.Tile_Size / 2 + TileSize.Tile_Size
-                                    && y >= Tile.top_gap + TileSize.getHalfheightField() + TileSize.getHalfheightBox() - (TileSize.Tile_Size * 5) / 2
-                                    && y <= Tile.top_gap + TileSize.getHalfheightField() + TileSize.getHalfheightBox() - (TileSize.Tile_Size * 5) / 2 + 2 * TileSize.Tile_Size) {
-                                groesse = 2;
-                                System.out.println("Die Größe wurde auf 2 gesetzt");
+                            if (Feldvon.equals("GegnerKI") || Feldvon.equals("GegnerMensch")) {
+                                try {
+                                    SpielWindow.playingField.isShot(x, y); //Hier muss die KI playingfield rein, aber die existiert momentan noch nicht
+                                    System.out.println("Es wurde geschossen auf X: " + x + " Y: " + y);
+                                } catch (Exception exception) {
+                                    exception.printStackTrace();
+                                }
                             }
                         }
-                    } else {
-                        System.out.println("Ich bin in die else gekommen, sonst passiert hier aber noch wenig");
-                        System.out.println(TileSize.getDisplacement());
-                        if (x > TileSize.getDisplacement() + Tile.side_gapl && x < Tile.field_size * TileSize.Tile_Size + Tile.side_gapl + TileSize.getDisplacement() && y > Tile.top_gap && y < Tile.top_gap + x * TileSize.Tile_Size) {
-                            try {
-                                SpielWindow.playingField.isShot(x, y);
-                                System.out.println("Es wurde geschossen auf X: " + x + " Y: " + y);
-                            } catch (Exception exception) {
-                                exception.printStackTrace();
-                            }
-                        }
+
                     }
 
-                    //xRightEnd + TileSize.getFieldBox_gap() + TileSize.Tile_Width / 2
+                }
+            });
+
+            /*
+             * Erlaubt es dem Nutzer mit der rechten Maustaste zwischen einem vertikal und horizontal ausgerichteten Schiff zu wechseln
+             * @param
+             *
+             * */
+            addMouseListener(new MouseAdapter() {
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    if (e.getButton() == MouseEvent.BUTTON3) {
+                        horizontal = !horizontal;
+                        System.out.println("Es wurden " + AnzSchiffe + " platziert");
+                    }
 
                 }
+            });
 
-            }
-        });
+            addMouseListener(new MouseAdapter() {
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    if (e.getButton() == MouseEvent.BUTTON2) {
+                        Tile.fightstart = !Tile.fightstart;
+                        TileSize.setFighting(Tile.fightstart ? 1 : 0);
+                        System.out.println("Der Kampf hat begonnen");
+                    }
 
-        /*
-         * Erlaubt es dem Nutzer mit der rechten Maustaste zwischen einem vertikal und horizontal ausgerichteten Schiff zu wechseln
-         * @param
-         *
-         * */
-        addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                if (e.getButton() == MouseEvent.BUTTON3) {
-                    horizontal = !horizontal;
-                    System.out.println("Es wurden " + AnzSchiffe + " platziert");
                 }
+            });
 
-            }
-        });
 
-        addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                if (e.getButton() == MouseEvent.BUTTON2) {
-                    Tile.fightstart = !Tile.fightstart;
-                    TileSize.setFighting(Tile.fightstart ? 1 : 0);
-                    System.out.println("Der Kampf hat begonnen");
-                }
+    }
 
-            }
-        });
+    public static boolean getOnfirstfield() {
+        return Onfirstfield;
+    }
+
+    /**
+     * @param e gibt MoueseEvent weiter
+     *
+     *          Überprüft ob die Maus sich momentan auf dem Spielfeld befindet
+     */
+    public void setOnfirstfield(MouseEvent e) {
+
+        int x = e.getX();
+        int y = e.getY();
+
+
+        Onfirstfield = x > TileSize.getSizeofBorder() && x < Tile.field_size * TileSize.Tile_Size + TileSize.getSizeofBorder() && y > TileSize.getSizeofBorder() && y < TileSize.getSizeofBorder() + SpielWindow.field_size * TileSize.Tile_Size;
+    }
+
+    public static int getPosX() {
+        return PosX;
+    }
+
+    public static void setPosX(int posX) {
+        PosX = posX;
+    }
+
+    public static int getPosY() {
+        return PosY;
+    }
+
+    public static void setPosY(int posY) {
+        PosY = posY;
     }
 
     /**
@@ -141,42 +169,54 @@ public class TilePainter extends JPanel implements MouseMotionListener {
         super.paintComponent(g);
         Ebene.DrawLayer(g);
         if (SchiffPainter.ready) {
-            h.Schiffzeichner(g);
-            if (!Tile.fightstart) {
+            hier.Schiffzeichner(g);
+            //if(!deleting){
+                Predicted.setPrediction(PosX, PosY);
+                Predicted.Schiffzeichner(g, SpielWindow.playingField.checkShip(groesse, PosX, PosY, horizontal));
+                //Zielhilfe Z = new Zielhilfe(g) ;
+                MovementHandler = false ;
 
-            }
+            //}
 
 
         }
 
     }
-        @Override
-        public void mouseDragged(MouseEvent e){
 
-        }
+    @Override
+    public void mouseDragged(MouseEvent e) {
 
-        public boolean Onfirstfield (MouseEvent e){
+    }
 
-            int x = e.getX();
-            int y = e.getY();
+    /**
+     * @param e gibt MouseEvent weiter
+     *
+     *          setzt die Pos Variablen auf das Tile auf dem sich die Maus momentan befindet
+     */
+    @Override
+    public void mouseMoved(MouseEvent e) {
 
+        setOnfirstfield(e);
+        boolean changed = true ;//PosX != ((e.getX() - TileSize.getSizeofBorder()) / TileSize.Tile_Size) || PosY != (e.getY() - TileSize.getSizeofBorder()) / TileSize.Tile_Size;
 
-            if (x > Tile.side_gapl && x < Tile.field_size * TileSize.Tile_Size + Tile.side_gapl && y > Tile.top_gap && y < Tile.top_gap + x * TileSize.Tile_Size)
-                return true;
-            else return false;
-        }
+        if(Onfirstfield){
 
-        @Override
-        public void mouseMoved (MouseEvent e){
+            setPosX((e.getX() - TileSize.getSizeofBorder()) / TileSize.Tile_Size) ;
+            setPosY((e.getY() - TileSize.getSizeofBorder()) / TileSize.Tile_Size) ;
 
-            /*int xPos = e.getX() / Tile.field_size;
-            int yPos = e.getY() / Tile.field_size;
+//            if(deleting){
+//                int[][] fieldcheck = SpielWindow.playingField.getField();
+//
+//                if(fieldcheck[PosX][PosY] != 0){
+//                    Predicted.changetored(PosX, PosY);
+//                }
+//            }
 
-            if (Onfirstfield(e)) {
-                //Hellseher(xPos, yPos);
-            }*/
+            //MovementHandler = true ;
 
 
         }
     }
+
+}
 

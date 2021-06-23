@@ -11,9 +11,18 @@ public class PlayingField {
      * 2 = Komplett zerstört
      * 3 = Normales Schiffsteil
      * 4 = Geplantes Schiffsteil, noch nicht gesetzt
+     * 5 = Wasser abgeschossen
      */
     private int[][] field;
     private int ships = 0;
+
+    /**
+     * 0 = Kein Computerspieler-Spiel
+     * 1 = Computerspieler Einfach
+     * 2 = Computerspieler Mittel
+     * 3 = Computerspieler Schwer
+     */
+    private int com = 0;
 
     /**
      * Gibt zurück wie viel % des Spielfeldes mit Schiffen gefüllt ist
@@ -33,6 +42,12 @@ public class PlayingField {
      */
     public PlayingField(int rows) {
         this.initField(rows);
+    }
+
+    /**
+     * Leerer-Konstruktor, um ein PlayingField zu erstellen, welches seine Daten über this.loadGame erhält
+     */
+    public PlayingField() {
     }
 
     /**
@@ -59,15 +74,18 @@ public class PlayingField {
     }
 
     /**
-     * Setzen eines Schiffes auf das Spielfeld und die davorige Überprüfung ob das Schiff überhaupt dorthin platziert werden darf
+     * Setzen eines Schiffes auf das Spielfeld und die davorige Überprüfung ob das Schiff überhaupt dorthin platziert werden darf.
+     * Wenn set auf false, dann wird nur zurückgegeben ob das Schiff gesetzt werden darf, oder nicht
      *
      * @param length     Schifflänge
      * @param x          X-Koordinate vom Schiffkopf
      * @param y          Y-Koordinate vom Schiffkopf
      * @param horizontal In welcher Richtung vom Schiffskopf der Rest des Schiffes ist
+     * @param set        True: Schiff wird paltziert, wenn erlaubt
+     *                   False: Es wird nur zurückgegeben, ob das Schiff überhaupt dort paltziert werden darfs
      * @return True = Schiff gesetzt, False = Schiff durfte nicht gesetzt werden
      */
-    public boolean setShip(int length, int x, int y, boolean horizontal) {
+    private boolean setShipIntern(int length, int x, int y, boolean horizontal, boolean set) {
         for (int i = 0; i < length; i++) {
             //Überprüfen ob das zu besetzende Feld erlaubt ist
             //Nicht innerhalb des Spielfeldes
@@ -83,10 +101,10 @@ public class PlayingField {
             // x-1 y+1 | x y+1 | x+1 y+1
             //
             //xC, yC: Wenn an Spielfeldgrenze, erlauben
-            boolean xC = x - 1 <= 0;
-            boolean yC = y - 1 <= 0;
-            boolean xP = x + 1 >= field.length - 1;
-            boolean yP = y + 1 >= field.length - 1;
+            boolean xC = x - 1 < 0;
+            boolean yC = y - 1 < 0;
+            boolean xP = x + 1 >= field.length;
+            boolean yP = y + 1 >= field.length;
 
             if ((xC || yC || field[y - 1][x - 1] != 3)
                     && (yC || field[y - 1][x] != 3)
@@ -98,7 +116,7 @@ public class PlayingField {
                     && (yP || field[y + 1][x] != 3)
                     && (xP || yP || field[y + 1][x + 1] != 3)
             ) {
-                System.out.println(field[y][x]);
+                System.out.println("field[y][x]: " + field[y][x] + " (y: " + y + ")(x: " + x + ")");
                 field[y][x] = 4;
             } else {
                 //Markierte Felder zurücksetzen, wenn Schiff nicht gesetzt werden darf
@@ -116,38 +134,66 @@ public class PlayingField {
         }
 
         //Schiffmarkierung auf Schiff setzen
-        this.replaceNotfinal(3);
-        this.ships++;
-        System.out.println(Arrays.deepToString(field).replace("]", "]\n"));
+        if (set) {
+            this.replaceNotfinal(3);
+            this.ships++;
+            System.out.println(Arrays.deepToString(field).replace("]", "]\n"));
+        } else {
+            this.replaceNotfinal(0);
+        }
         return true;
+    }
+
+    /**
+     * Wrapper von setShipWithCheck.
+     * Setzt ein Schiff, wenn erlaubt.
+     * <p>
+     * param siehe setShipIntern
+     * return siehe setShipIntern
+     */
+    public boolean setShip(int length, int x, int y, boolean horizontal) {
+        return setShipIntern(length, x, y, horizontal, true);
+    }
+
+    /**
+     * Wrapper von setShipWithCheck.
+     * Prüft ob ein Schiff an übergebene Stelle gesetzt werden darf.
+     * <p>
+     * param siehe setShipIntern
+     * return siehe setShipIntern
+     */
+    public boolean checkShip(int length, int x, int y, boolean horizontal) {
+        return setShipIntern(length, x, y, horizontal, false);
     }
 
     /**
      * Ermittelt Schiffskopf eines Schiffsteils und gibt die Koordinaten zurück
      *
+     * @param field Das Feld auf dem der Schiffskopf gesucht werden soll
      * @param x X-Koordinate des zu überprüfenden Teiles
      * @param y Y-Koordinate des zu überprüfenden Teiles
      * @return Gibt X und Y Koordinate vom Kopf eines Schiffes zurück
      */
-    private int[] getHeadOfShip(int x, int y) throws Exception {
-        checkCoordinatesInField(x, y);
+    private static int[] getHeadOfShip(int[][] field, int x, int y) throws Exception {
+        PlayingField.checkCoordinatesInFieldStatic(field ,x, y);
 
         int headX = x;
         int headY = y;
 
-        while (headY - 1 > 0 && this.field[headY - 1][headX] > 0 && this.field[headY - 1][headX] < 4) {
+        while (headY - 1 >= 0 && field[headY - 1][headX] > 0 && field[headY - 1][headX] < 4) {
             headY--;
         }
-        while (headX - 1 > 0 && this.field[headY][headX - 1] > 0 && this.field[headY][headX - 1] < 4) {
+        while (headX - 1 >= 0 && field[headY][headX - 1] > 0 && field[headY][headX - 1] < 4) {
             headX--;
         }
 
-        return new int[]{headY, headX};
+        return new int[]{headX, headY};
     }
 
     /**
      * Wrapper für getHeadOfShip mit zusätzlicher Ermittlung der Ausrichtung des Schiffes
      *
+     * @param field Das Feld auf dem der Schiffskopf gesucht werden soll
      * @param x X-Koordinate des zu überprüfenden Teiles
      * @param y Y-Koordinate des zu überprüfenden Teiles
      * @return Rückgabe von Int-Array:
@@ -156,16 +202,23 @@ public class PlayingField {
      * [2] 1 == Horizontal, 0 == Vertikal
      * @throws Exception, wenn x/y auserhalb des Spielfeldes
      */
-    public int[] getDirHeadOfShip(int x, int y) throws Exception {
-        int[] data = getHeadOfShip(x, y);
+    public static int[] getDirHeadOfShipStatic(int[][] field, int x, int y) throws Exception{
+        int[] data = PlayingField.getHeadOfShip(field, x, y);
         int horizontal = 0; //int statt bool, wegen int-Array Rückgabe
 
         //Überprüfen ob rechts vom Schiff ein weiteres Teil. Dann ist das Schiff Horizontal ausgelegt, sonst Vertikal
-        if (x + 1 < field.length && field[x + 1][y] > 0 && this.field[x + 1][y] < 4) {
+        if (data[0] + 1 < field.length && field[data[1]][data[0] + 1] > 0 && field[data[1]][data[0] + 1] < 4) {
             horizontal = 1;
         }
 
         return new int[]{data[0], data[1], horizontal};
+    }
+
+    /**
+     * Non-Static Wrapper für getDirHeadOfShipStatic
+     */
+    public int[] getDirHeadOfShip(int x, int y) throws Exception {
+        return PlayingField.getDirHeadOfShipStatic(this.field, x, y);
     }
 
     /**
@@ -203,7 +256,9 @@ public class PlayingField {
     public int isShot(int x, int y) throws Exception {
         checkCoordinatesInField(x, y);
 
-        if (this.field[y][x] == 3) {
+        if (this.field[y][x] == 0) {
+            this.field[y][x] = 5;
+        } else if (this.field[y][x] == 3) {
             this.field[y][x] = 1;
 
             int[] data = getDirHeadOfShip(x, y);
@@ -228,7 +283,6 @@ public class PlayingField {
     private void markShipDestroyed(int x, int y, boolean horizontal) throws Exception {
         checkCoordinatesInField(x, y);
 
-        //Hier ist gefühlt ne Menge doppelter Code im Vergleich zu isShipDestroyed und das find ich hässlich :)
         this.ships--;
 
         int xOffset = 0;
@@ -236,7 +290,7 @@ public class PlayingField {
 
         //Nach rechts bzw nach unten
         while (x + xOffset < this.field.length && y + yOffset < this.field.length
-                && this.field[y + yOffset][x + xOffset] != 0) {
+                && this.field[y + yOffset][x + xOffset] != 0 && this.field[y + yOffset][x + xOffset] != 5) {
             this.field[y + yOffset][x + xOffset] = 2;
 
             if (horizontal) xOffset++;
@@ -265,23 +319,21 @@ public class PlayingField {
         }
 
         //Überprüfen ob nach zerstörten Schiffsteilen Wasser
-        return this.field[y + yOffset][x + xOffset] == 0;
+        return y + yOffset >= this.field.length || x + xOffset >= this.field.length || this.field[y + yOffset][x + xOffset] == 0 || this.field[y + yOffset][x + xOffset] == 5;
     }
 
-    public static void main(String[] args) {
-        PlayingField pf = new PlayingField(10);
+    /**
+     * Wrapper für saveGame (Ohne com Angabe)
+     */
+    public void saveGame(long id, int status) throws IOException {
+        this.saveGame(id, status, false);
+    }
 
-        pf.setShip(3, 4, 4, true);
-        pf.setShip(4, 0, 0, false);
-
-        try {
-            pf.saveGame(199191918, 0);
-            System.out.println("\nLaden:" + pf.loadGame(199191918));
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
-
-        System.out.println(Arrays.deepToString(pf.field).replace("]", "]\n"));
+    /**
+     * Wrapper für loadGame (Ohne com Angabe)
+     */
+    public int loadGame(long id) throws FileNotFoundException {
+        return this.loadGame(id, false);
     }
 
     /**
@@ -293,7 +345,8 @@ public class PlayingField {
      *               2 = Gegner darf schießen
      * @throws IOException Wenn Problem beim Datei beschreiben
      */
-    public void saveGame(int id, int status) throws IOException {
+    //TODO ComputerGegner, in Spieler-Datei Schwierigkeitsgrad von Com, in Com-Datei (Auswahl mit extra Param) Spielfeld vom Com
+    public void saveGame(long id, int status, boolean com) throws IOException {
         //Saves-Ordner erstellen
         File directory = new File("." + File.separator + "Saves");
         if (!directory.exists()) directory.mkdir();
@@ -325,9 +378,12 @@ public class PlayingField {
      * 0 = Schiffe setzen
      * 1 = Spieler darf schießen
      * 2 = Gegner darf schießen
+     * 3 = Computer-Gegner-Spiel & Schiffe setzen
+     * 4 = Computer-Gegner-Spiel & Spieler darf schißen (Computer darf schießen
      * @throws FileNotFoundException Wenn die Spielstand-Datei nicht existiert
      */
-    public int loadGame(int id) throws FileNotFoundException {
+    //TODO ComputerGegner, in Spieler-Datei Schwierigkeitsgrad von Com, in Com-Datei (Auswahl mit extra Param) Spielfeld vom Com
+    public int loadGame(long id, boolean com) throws FileNotFoundException {
         File f = new File("." + File.separator + "Saves" + File.separator + id + "_save.txt");
         Scanner s = new Scanner(f);
 
@@ -355,7 +411,7 @@ public class PlayingField {
                 this.field[i][j] = Integer.parseInt("" + cArr[k++]);
             }
         }
-        int i = 0, j = 0;
+
         for (char c : save.toCharArray()) {
             if (status == -1) status = c;
 
@@ -398,9 +454,75 @@ public class PlayingField {
      * @param y Y-Koordinate
      * @throws Exception, wenn X/Y Koordinate nicht im Spielfeld
      */
-    private void checkCoordinatesInField(int x, int y) throws Exception {
-        if (x < 0 || x >= this.field.length || y < 0 || y > this.field.length) {
+    public static void checkCoordinatesInFieldStatic(int[][] field, int x, int y) throws Exception{
+        if (x < 0 || x >= field.length || y < 0 || y > field.length) {
             throw new Exception("Die angegebenen Koordinaten befinden sich nicht im Spielfeld");
         }
     }
+
+    /**
+     * Non-Static Wrapper für checkCoordinatesInFieldStatic
+     */
+    private void checkCoordinatesInField(int x, int y) throws Exception {
+        PlayingField.checkCoordinatesInFieldStatic(this.field, x, y);
+    }
+
+
+
+    //TODO entfernen, bei Release-Version. Nur zum testen
+    public static void main(String[] args) {
+        try {
+            PlayingField spieler = new PlayingField(10);
+            spieler.setShip(4, 1, 1, true);
+            spieler.setShip(3, 5, 3, false);
+            spieler.setShip(2, 2, 6, true);
+            spieler.setShip(2, 7, 8, false);
+            System.out.println(Arrays.deepToString(spieler.getField()).replace("]", "]\n"));
+
+            //ComPlayerEasy com = new ComPlayerEasy(10, new int[]{4, 3, 2, 2});
+            ComPlayerNormal com = new ComPlayerNormal(10, new int[]{4, 3, 2, 2});
+            System.out.println(Arrays.deepToString(com.pf.getField()).replace("]", "]\n"));
+
+            /*for (int i = 0; i < 20; i++) {
+                int[] xy = com.doNextShot();
+
+                spieler.isShot(xy[0], xy[1]);
+            }
+            System.out.println(Arrays.deepToString(spieler.getField()).replace("]", "]\n"));
+            */
+            while (!spieler.gameover()) {
+                int[] xy = com.doNextShot();
+
+                com.didHit(spieler.isShot(xy[0], xy[1]));
+                System.out.println(Arrays.deepToString(spieler.getField()).replace("]", "]\n"));
+            }
+
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            ex.printStackTrace(pw);
+            String sStackTrace = sw.toString(); // stack trace as a string
+            System.out.println(sStackTrace);
+        }
+
+
+        /*
+        PlayingField pf = new PlayingField(10);
+        PlayingField pf2 = new PlayingField();
+
+        pf.setShip(3, 4, 4, true);
+        pf.setShip(4, 0, 0, false);
+
+        try {
+            pf.saveGame(199191918, 0, false);
+            System.out.println("\nLaden:" + pf2.loadGame(199191918, false));
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+
+        System.out.println(Arrays.deepToString(pf2.field).replace("]", "]\n"));*/
+    }
+
+
 }

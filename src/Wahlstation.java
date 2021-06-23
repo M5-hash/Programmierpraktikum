@@ -2,63 +2,41 @@ package src;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class Wahlstation extends JPanel {
 
-        public void paintComponent(Graphics g) {
+    Bildloader Bild = new Bildloader();
 
-                super.paintComponent(g);
-                if (SchiffPainter.ready) {
-                        if (!Tile.fightstart) {
-                                Wahlstation(g);
+    public void paintComponent(Graphics g) {
 
-                        }
-
-
-                }
-
+        super.paintComponent(g);
+        if (SchiffPainter.ready) {
+            if (!Tile.fightstart) {
+                Wahlstationpainter(g);
+            }
         }
+    }
 
-        Bildloader Bild = new Bildloader();
+    public void Wahlstationpainter(Graphics g) {
 
-        public void Wahlstation(Graphics g) {
-
-        int[][] SchiffWahl;
-
-
-        //int[] Usable =
         Graphics2D g2 = (Graphics2D) g;
 
-        int xRightEnd = Tile.side_gapl + SpielWindow.field_size * TileSize.Tile_Size;
-        int halfheightField = (SpielWindow.field_size * TileSize.Tile_Size) / 2;
         int Boxheight = 8 * TileSize.Tile_Size;
         int fieldwidth = 3 * TileSize.Tile_Size + TileSize.Tile_Size / 2;
-        int FieldBox_gap = Math.max(60, 120 % TileSize.Tile_Size);
 
-        /*int x1 = TileSize.xRightEnd + TileSize.FieldBox_gap;
-        int y1 = Tile.top_gap + TileSize.halfheightField + TileSize.halfBoxheight;
-        int x2 = x1 + TileSize.fieldwidth;
-        int y2 = Tile.top_gap + TileSize.halfheightField - TileSize.halfBoxheight;
+        Image Bckgrnd = Bild.BildLoader("src/Images/BorderVert.png") ;
 
-        g2.drawLine(x1, y1, x2, y1);
-        g2.drawLine(x1, y2, x2, y2);
-        g2.drawLine(x1, y1, x1, y2);
-        g2.drawLine(x2, y2, x2, y1);*/
+        g.drawImage(Bckgrnd,0,0,fieldwidth ,Boxheight ,null ) ;
 
-
-//        g2.drawLine(xRightEnd + FieldBox_gap, Tile.top_gap + halfheightField + halfBoxheight, xRightEnd + FieldBox_gap + fieldwidth, Tile.top_gap + halfheightField + halfBoxheight);
-//        g2.drawLine(xRightEnd + FieldBox_gap, Tile.top_gap + halfheightField - halfBoxheight, xRightEnd + FieldBox_gap + fieldwidth, Tile.top_gap + halfheightField - halfBoxheight);
-//        g2.drawLine(xRightEnd + FieldBox_gap, Tile.top_gap + halfheightField + halfBoxheight, xRightEnd + FieldBox_gap, Tile.top_gap + halfheightField - halfBoxheight);
-//        g2.drawLine(xRightEnd + FieldBox_gap + fieldwidth, Tile.top_gap + halfheightField - halfBoxheight, xRightEnd + FieldBox_gap + fieldwidth, Tile.top_gap + halfheightField + halfBoxheight);
-
-        g2.drawLine(0,0,fieldwidth, 0); //Linie oben
-        g2.drawLine(0, Boxheight, fieldwidth, Boxheight) ; //Linie unten
-        g2.drawLine(0,0,0,Boxheight ); //Linie links
-        g2.drawLine(fieldwidth,0,fieldwidth, Boxheight); //Linie rechts
+        g2.drawLine(0, 0, fieldwidth, 0); //Linie oben
+        g2.drawLine(0, Boxheight, fieldwidth, Boxheight); //Linie unten
+        g2.drawLine(0, 0, 0, Boxheight); //Linie links
+        g2.drawLine(fieldwidth, 0, fieldwidth, Boxheight); //Linie rechts
 
         Image Schiff = Bild.BildLoader("src/Images/Vorne32false.png");
 
-        //switch[] (Usable)
 
         g.drawImage(Schiff, TileSize.Tile_Size / 2,
                 TileSize.Tile_Size / 2,
@@ -80,5 +58,63 @@ public class Wahlstation extends JPanel {
                 TileSize.Tile_Size,
                 TileSize.Tile_Size, null);
 
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if (e.getButton() == MouseEvent.BUTTON1) {
+                    int x = e.getX();
+                    int y = e.getY();
+
+
+                    /*Die Position auf dem Feld wird durch diese Funktion berechnet, anstatt das nur die aktuelle Position in Pixeln zurückgegeben wird.
+                     *
+                     * Erzeugt dabei die Parameter yFeld und xFeld
+                     *
+                     * y-Feld: (y - top_gap) / TileSize.tile_height
+                     * x-Feld: (x - sidegapl) / TileSize.tile_width
+                     *
+                     * */
+
+                    if (!Tile.fightstart) {
+
+                        if (x >= TileSize.Tile_Size / 2                                                                 //Bereich in dem man klicken muss um sein Schiff auf die Groesse 5 zu setzen
+                                && x <= TileSize.Tile_Size / 2 + TileSize.Tile_Size
+                                && y >= TileSize.Tile_Size / 2
+                                && y <= TileSize.Tile_Size / 2 + 5 * TileSize.Tile_Size) {
+                            TilePainter.groesse = 5;
+                            System.out.println("Die Größe wurde auf 5 gesetzt");
+                        }
+
+                        if (x >= TileSize.Tile_Size * 2                                                                 //Bereich in dem man klicken muss um sein Schiff auf die Groesse 4 zu setzen
+                                && x <= TileSize.Tile_Size * 2 + TileSize.Tile_Size
+                                && y >= TileSize.Tile_Size / 2
+                                && y <= TileSize.Tile_Size / 2 + 4 * TileSize.Tile_Size) {
+                            TilePainter.groesse = 4;
+                            System.out.println("Die Größe wurde auf 4 gesetzt");
+                        }
+
+                        if (x >= TileSize.Tile_Size * 2                                                                 //Bereich in dem man klicken muss um sein Schiff auf die Groesse 3 zu setzen
+                                && x <= TileSize.Tile_Size * 2 + TileSize.Tile_Size
+                                && y >= Boxheight - (TileSize.Tile_Size * 7) / 2
+                                && y <= Boxheight - (TileSize.Tile_Size * 7) / 2 + 3 * TileSize.Tile_Size) {
+                            TilePainter.groesse = 3;
+                            System.out.println("Die Größe wurde auf 3 gesetzt");
+                        }
+
+                        if (x >= TileSize.Tile_Size / 2                                                                 //Bereich in dem man klicken muss um sein Schiff auf die Groesse 2 zu setzen
+                                && x <= TileSize.Tile_Size / 2 + TileSize.Tile_Size
+                                && y >= Boxheight - (TileSize.Tile_Size * 5) / 2
+                                && y <= Boxheight - (TileSize.Tile_Size * 5) / 2 + 2 * TileSize.Tile_Size) {
+                            TilePainter.groesse = 2;
+                            System.out.println("Die Größe wurde auf 2 gesetzt");
+                        }
+
+                    }
+                }
+            }
+
+        });
+
     }
+
 }
