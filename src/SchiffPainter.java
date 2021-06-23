@@ -14,6 +14,7 @@ public class SchiffPainter {
     static ArrayList<BufferedImage> Finished = new ArrayList<>();              // Zwischenspeicher für bereits geladene Bilder
     static ArrayList<String> Loaded = new ArrayList<>();                       // Speichert als String die Quellen der bereits geladenen Bilder ab
     static boolean fits = true;
+    int[][] Pokemon = SpielWindow.playingField.getField();
     Bildloader Bild = new Bildloader();
     String Fieldof;
     String IsitRed = "";
@@ -381,7 +382,7 @@ public class SchiffPainter {
 
     /**
      * @param x
-     * @param y TODO Diese Mehtode und somit une visuelles Feedback beim löschen implementieren
+     * @param y TODO Diese Methode und somit une visuelles Feedback beim löschen implementieren
      */
     public void changetored(int x, int y) {
 
@@ -390,40 +391,48 @@ public class SchiffPainter {
     }
 
 
-    public void Pokemonpicker() {
+    public void Pokemonpicker(Graphics g) {
 
-        BufferedImage PokemonBild = Bild.BildLoader("src/Images/PokemonTileSet");
+        BufferedImage PokemonBild = Bild.BildLoader("src/Images/PokemonTileSetremove.png");
 
         if (Fieldof.equals("Spieler")) {
+            int SizeofBorder = Math.max(18, TileSize.Tile_Size / 12);
 
-            for (int y = 0; y < SpielWindow.field_size; y++) {                                // Wird nur gebraucht, falls wir alle TileFrames in einem Bild ablegen wollen (TileSet), da in diesem Fall Zeilenumsprünge benötigt werden
-                for (int x = 0; x < SpielWindow.field_size; x++) {
+            for (int y = 0; y < Pokemon.length; y++) {
+                for (int x = 0; x < Pokemon[0].length; x++) {
 
-                    int SizeofBorder = Math.max(18, TileSize.Tile_Size / 12);
 
-                    int index = (counter % 32);        //Höhe & Breite per Tile 80 //(Feld[SpielWindow.field_size][SpielWindow.field_size] +
+                    int index = 200;        //Höhe & Breite per Tile 80 //(Feld[SpielWindow.field_size][SpielWindow.field_size] +
                     int yOffset = 0;
 
                     if (index > (PokemonBild.getWidth() / 80) - 1) {                      // Da das Tileset nicht nur horizontal ausgerichtet ist, muss jedes mal wenn die rechte Seite des TileSets erreicht wurde unsere source
                         while ((index > (PokemonBild.getWidth() / 80) - 1)) {             // Wieder an die linke Seite des Bildes verschoben werden
-                            index = index - (PokemonBild.getWidth() / 80);
-                            yOffset++;                                              //Aber um eine Zeile nach unten verschoben
+                            index = (int) (Math.random() * 24);
+                            yOffset = (int) (Math.random() * 25);                                              //Aber um eine Zeile nach unten verschoben
                         }
                     }
 
-//                    g.drawImage(PokemonBild, (x * TileSize.Tile_Size) + SizeofBorder,                  //ok das ist jetzt blöd zu erklären
-//                            (y * TileSize.Tile_Size) + SizeofBorder,                           //Es wird ein Viereck zwischen diesen 2 Punkten aufgeschlagen, die ersten 2 sind das linke obere ende
-//                            ((x + 1) * TileSize.Tile_Size) + SizeofBorder,                      //die anderen 2 sind das rechte untere ende. Es handelt sich hierbei um das Ziel
-//                            ((y + 1) * TileSize.Tile_Size) + SizeofBorder,
-//                            index * 80,                                         //Es wird ein Viereck zwischen diesen 2 Punkten aufgeschlagen, die ersten 2 sind das linke obere ende
-//                            yOffset * 80,                                       //die anderen 2 sind das rechte untere ende. Es handelt sich hierbei um die Quelle, da die Source und das ausgegebene
-//                            (index + 1) * 80,                                   //gleich groß sein sollen sind die Variablen nahezu identisch
-//                            (yOffset + 1) * 80,
-//                            null);
+                    if (Pokemon[y][x] != 0) {
+
+                        g.drawImage(PokemonBild, (x * TileSize.Tile_Size + SizeofBorder),
+                                (y * TileSize.Tile_Size + SizeofBorder),
+                                (x + 1) * TileSize.Tile_Size + SizeofBorder,
+                                (y + 1) * TileSize.Tile_Size + SizeofBorder,
+                                index * 80,                                         //Es wird ein Viereck zwischen diesen 2 Punkten aufgeschlagen, die ersten 2 sind das linke obere ende
+                                yOffset * 80,                                       //die anderen 2 sind das rechte untere ende. Es handelt sich hierbei um die Quelle, da die Source und das ausgegebene
+                                (index + 1) * 80,                                   //gleich groß sein sollen sind die Variablen nahezu identisch
+                                (yOffset + 1) * 80,
+                                null);
+
+
+
+                    }
+
                 }
             }
         }
 
     }
+
 
 }

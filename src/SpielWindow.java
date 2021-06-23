@@ -59,7 +59,7 @@ public class SpielWindow extends JPanel {
         wahlstation.setBounds((framewidth / 2) - (TileSize.Tile_Size * 3 + TileSize.Tile_Size / 2) / 2, frameheigth / 2 - 4 * TileSize.Tile_Size , 3 * TileSize.Tile_Size + TileSize.Tile_Size / 2 + 2, 8 * TileSize.Tile_Size + 2); //Ohne das + 2 werden die netten Striche um die Wahlstation nicht gezeichnet
         wahlstation.setOpaque(false);
 
-        tile.setBounds(framewidth / 4, framewidth / 4, framewidth / 4, framewidth / 4);
+        //tile.setBounds(framewidth / 4, framewidth / 4, framewidth / 4, framewidth / 4);
 
         gameLayout = new GridLayout(0,1);
         gameLayout.setVgap(5);
@@ -121,10 +121,8 @@ public class SpielWindow extends JPanel {
 
         frame.add(LayeredPanel);
 
-        TileSize.setTile_Size(frame.getHeight() / 14);
 
         Timer timer = new Timer(110, e -> {
-
             int Borderwidth = 2 * Math.max(18, TileSize.Tile_Size / 8) ;
             double dbframeheigth = frame.getHeight();
             double dbframewidth = frame.getWidth();
@@ -133,7 +131,8 @@ public class SpielWindow extends JPanel {
             //TODO rework put check in resizer as very small and very big fieldsizes mess everything up
             if (framewidth != frame.getWidth()) {
                 framewidth = frame.getWidth();
-                TileSize.setTile_Size(((framewidth / 4) - Borderwidth) / field_size);
+                TileSize.setTile_Size(((framewidth - Borderwidth) / 4) / field_size);
+
 
             }
 //            else if (frameheigth != frame.getHeight()) {
@@ -143,14 +142,19 @@ public class SpielWindow extends JPanel {
 
             LayeredPanel.setBounds(0, 0, frame.getWidth(), frame.getHeight());
             Bg.setBounds(0, 0, frame.getWidth(), frame.getHeight());
-            tile.setBounds(framewidth / 8, frameheigth / 4, framewidth / 4, framewidth / 4);
+            tile.setBounds(framewidth / 8, frameheigth / 4, TileSize.Tile_Size * field_size + Borderwidth, TileSize.Tile_Size * field_size + Borderwidth);
             Z.setBounds(15, 25,TileSize.Tile_Size * 3 , TileSize.Tile_Size * 2);
             //tile2.setBounds(1200, 15, Borderwidth, Borderwidth);
             wahlstation.setBounds((framewidth / 2) - (TileSize.Tile_Size * 3 + TileSize.Tile_Size / 2) / 2, frameheigth / 2 - 4 * TileSize.Tile_Size , 3 * TileSize.Tile_Size + TileSize.Tile_Size / 2 + 2, 8 * TileSize.Tile_Size + 2); //Ohne das + 2 werden die netten Striche um die Wahlstation nicht gezeichnet
             Fertig.setBounds((framewidth / 2) - (TileSize.Tile_Size * 3 + TileSize.Tile_Size / 2) / 2, frameheigth / 2 + 5 * TileSize.Tile_Size , 120,50);
             gamePanel.setBounds(framewidth* 45 / 100, frameheigth / 3, framewidth / 10, frameheigth / 3 );
 
-            repaintAll();
+            boolean Rechnungpasst = (tile.getWidth() ==  (TileSize.Tile_Size * field_size + Borderwidth)) ;
+
+            System.out.println("Die Werte stimmen überein : " + Rechnungpasst);
+
+
+                    repaintAll();
             Bg.repaint();
             Bg.revalidate();
 

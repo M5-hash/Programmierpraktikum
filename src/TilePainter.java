@@ -81,7 +81,9 @@ public class TilePainter extends JPanel implements MouseMotionListener {
 
                             if (Feldvon.equals("GegnerKI") || Feldvon.equals("GegnerMensch")) {
                                 try {
-                                    SpielWindow.playingField.isShot(x, y); //Hier muss die KI playingfield rein, aber die existiert momentan noch nicht
+//                                    SpielWindow.Com.isShot(x, y); //Hier muss die KI playingfield rein, aber die existiert momentan noch nicht
+//                                    SpielWindow.Com.doNextShot();
+
                                     System.out.println("Es wurde geschossen auf X: " + x + " Y: " + y);
                                 } catch (Exception exception) {
                                     exception.printStackTrace();
@@ -169,10 +171,11 @@ public class TilePainter extends JPanel implements MouseMotionListener {
         super.paintComponent(g);
         Ebene.DrawLayer(g);
         if (SchiffPainter.ready) {
-            hier.Schiffzeichner(g);
+            //hier.Schiffzeichner(g);
             //if(!deleting){
                 Predicted.setPrediction(PosX, PosY);
                 Predicted.Schiffzeichner(g, SpielWindow.playingField.checkShip(groesse, PosX, PosY, horizontal));
+                hier.Pokemonpicker(g);
                 //Zielhilfe Z = new Zielhilfe(g) ;
                 MovementHandler = false ;
 
@@ -203,6 +206,8 @@ public class TilePainter extends JPanel implements MouseMotionListener {
 
             setPosX((e.getX() - TileSize.getSizeofBorder()) / TileSize.Tile_Size) ;
             setPosY((e.getY() - TileSize.getSizeofBorder()) / TileSize.Tile_Size) ;
+
+
 
 //            if(deleting){
 //                int[][] fieldcheck = SpielWindow.playingField.getField();
