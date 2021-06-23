@@ -23,6 +23,41 @@ public class TilePainter extends JPanel implements MouseMotionListener {
     SchiffPainter Predicted;
     boolean placeable = false;
     boolean MovementHandler;
+
+
+
+    /**
+     * @param g Man brauch für nahezu alles ein Object des Typs Graphics, deswegen gibt es hier eins.
+     *          <p>
+     *          Hier werden alle Methoden aufgerufen, welche etwas Zeichnen.
+     *
+     *          TODO Theme check mit einarbeiten, den gibt es bis jetzt leider noch nicht
+     */
+    public void paintComponent(Graphics g) {
+
+        super.paintComponent(g);
+        Ebene.DrawLayer(g);
+        if (SchiffPainter.ready) {
+            //hier.Schiffzeichner(g);
+            if (MovementHandler) {
+                Predicted.setPrediction(PosX, PosY);
+                placeable =  SpielWindow.playingField.checkShip(groesse, PosX, PosY, horizontal) ;
+                Predicted.Schiffzeichner(g,placeable);
+            } else {
+                Predicted.Schiffzeichner(g, placeable);
+            }
+            hier.Pokemonpicker(g);
+            MovementHandler = false;
+
+            //}
+
+
+        }
+
+    }
+
+
+
     /**
      * @param Feldgroesse gibt Groesse des Feldes vor
      * @param Feldvon     gibt an für wen des Feld ist
@@ -69,13 +104,16 @@ public class TilePainter extends JPanel implements MouseMotionListener {
 
                             System.out.println("Die Position auf der Y-Achse beträgt:" + yFeld + "\nDie Postion auf der X-Achse beträgt:" + xFeld);
 
-                            if (SpielWindow.change = SpielWindow.playingField.setShip(groesse, xFeld, yFeld, horizontal)) {
+                            if (SpielWindow.change = SpielWindow.playingField.setShip(groesse, xFeld, yFeld, horizontal && !deleting && !Tile.isFightstart())) {
                                 AnzSchiffe++;
 
                             }
-                            if (Tile.isFightstart() && deleting) {
+                            if (!Tile.isFightstart() && deleting) {
+
+                                System.out.println("Wir sind in die deleting if gekommen");
+
                                 try {
-                                    SpielWindow.playingField.deleteShip(xFeld, yFeld);
+                                    SpielWindow.playingField.deleteShip(yFeld, xFeld);
                                 } catch (Exception exception) {
                                     exception.printStackTrace();
                                 }
@@ -111,6 +149,7 @@ public class TilePainter extends JPanel implements MouseMotionListener {
             public void mousePressed(MouseEvent e) {
                 if (e.getButton() == MouseEvent.BUTTON3) {
                     horizontal = !horizontal;
+                    MovementHandler = true ;
                     System.out.println("Es wurden " + AnzSchiffe + " platziert");
                 }
 
@@ -170,35 +209,7 @@ public class TilePainter extends JPanel implements MouseMotionListener {
         this.deleting = !this.deleting;
     }
 
-    /**
-     * @param g Man brauch für nahezu alles ein Object des Typs Graphics, deswegen gibt es hier eins.
-     *          <p>
-     *          Hier werden alle Methoden aufgerufen, welche etwas Zeichnen.
-     */
-    public void paintComponent(Graphics g) {
 
-        super.paintComponent(g);
-        Ebene.DrawLayer(g);
-        if (SchiffPainter.ready) {
-            //hier.Schiffzeichner(g);
-            //if(!deleting){
-            if (MovementHandler) {
-                Predicted.setPrediction(PosX, PosY);
-                placeable =  SpielWindow.playingField.checkShip(groesse, PosX, PosY, horizontal) ;
-                Predicted.Schiffzeichner(g,placeable);
-            } else {
-                Predicted.Schiffzeichner(g, placeable);
-            }
-            hier.Pokemonpicker(g);
-            //Zielhilfe Z = new Zielhilfe(g) ;
-            MovementHandler = false;
-
-            //}
-
-
-        }
-
-    }
 
     @Override
     public void mouseDragged(MouseEvent e) {
