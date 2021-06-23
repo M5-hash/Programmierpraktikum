@@ -26,8 +26,8 @@ public class MenuOptions {
     JPanel menuPanel;
     JFrame menuFrame;
 
-    public MenuOptions(int x, int y) throws IOException, FontFormatException {
-        menuFrame = new MenuFrame("Pokemon - Multiplayer", x, y);
+    public MenuOptions(JFrame menuFrame, JPanel menuMain) throws IOException, FontFormatException {
+        this.menuFrame = menuFrame;
 
         INITIAL_HEIGHT = menuFrame.getHeight();
         INITIAL_WIDTH = menuFrame.getWidth();
@@ -39,28 +39,21 @@ public class MenuOptions {
 
         constraints = new GridBagConstraints();
 
-        menuPanel = new MenuPanel(ImageLoader.getImage(ImageLoader.MENU_BG));
+        menuPanel = new CustomPanel(ImageLoader.getImage(ImageLoader.STARTMENU_BG));
         menuPanel.setLayout(menuLayout);
 
-        menuSize = new MenuShipSize(menuPanel);
-
         menuInformation = new MenuInformation(ImageLoader.getImage(ImageLoader.STARTMENU_BTN_TEXTFIELD_EICH), TextOptions, menuFrame);
-        makeConstraints(menuInformation, 0, 0, 4, 1);
+        makeConstraints(menuInformation, 0, 0, 4);
 
         buttonMenuStart = new MenuButton("MAIN MENU", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
         buttonMenuStart.addActionListener(e -> {
             // Hide this window
-            menuFrame.setVisible(false);
-//            menuFrame.dispose();
+            menuPanel.setVisible(false);
 
             // Create MenuMain and display it
-            try {
-                new MenuStart(menuFrame.getX(), menuFrame.getY());
-            } catch (IOException | FontFormatException ioException) {
-                ioException.printStackTrace();
-            }
+            menuMain.setVisible(true);
         });
-        makeConstraints(buttonMenuStart, 1, 2, 2, 1);
+        makeConstraints(buttonMenuStart, 1, 2, 2);
 
         buttonPanel = new ButtonPanel();
 
@@ -77,6 +70,7 @@ public class MenuOptions {
                 fullscreen = true;
                 System.out.println("Fullscreen active");
             } else {
+                fullscreen = false;
                 System.out.println("Fullscreen inactive");
             }
         });
@@ -96,7 +90,7 @@ public class MenuOptions {
             System.out.println("Frame height: " + GF_HEIGHT);
         });
         buttonPanel.add(cbResolutions);
-        makeConstraints(buttonPanel, 1, 4, 2, 1);
+        makeConstraints(buttonPanel, 1, 4, 2);
 
         buttonPanel = new ButtonPanel();
 
@@ -112,22 +106,28 @@ public class MenuOptions {
 
         buttonShipSize = new MenuButton("Size", ImageLoader.getImage(ImageLoader.MENU_BUTTON3));
         buttonShipSize.addActionListener(e -> {
+            menuPanel.setVisible(false);
 
+            try {
+                new MenuShipSize(menuFrame, menuPanel);
+            } catch (IOException | FontFormatException ioException) {
+                ioException.printStackTrace();
+            }
         });
         buttonPanel.add(buttonShipSize);
-        makeConstraints(buttonPanel, 1, 6, 2, 1);
+        makeConstraints(buttonPanel, 1, 6, 2);
 
         buttonQuitGame = new QuitButton();
-        makeConstraints(buttonQuitGame, 1, 8, 2, 1);
+        makeConstraints(buttonQuitGame, 1, 8, 2);
 
         menuFrame.add(menuPanel);
     }
 
-    private void makeConstraints(JComponent comp, int gridx, int gridy, int gridwidth, int gridheight) {
+    private void makeConstraints(JComponent comp, int gridx, int gridy, int gridwidth) {
         constraints.gridx = gridx;
         constraints.gridy = gridy;
         constraints.gridwidth = gridwidth;
-        constraints.gridheight = gridheight;
+        constraints.gridheight = 1;
         constraints.weightx = 0.1;
         constraints.weighty = 0.1;
         constraints.fill = GridBagConstraints.BOTH;

@@ -4,8 +4,9 @@ import src.components.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
-
 import static src.config.*;
 import static src.config.ROW;
 
@@ -13,7 +14,6 @@ import static src.config.ROW;
 public class MenuSingleplayer {
 
     GridBagLayout menuLayout;
-    GridLayout buttonPanelLayout;
     GridBagConstraints constraints;
     JButton buttonMenuStart;
     JButton buttonEasy;
@@ -27,18 +27,16 @@ public class MenuSingleplayer {
     JPanel menuPanel;
     JFrame menuFrame;
 
-    public MenuSingleplayer(int x, int y) throws IOException, FontFormatException {
+    public MenuSingleplayer(JFrame menuFrame, JPanel menuMain) throws IOException, FontFormatException {
+        this.menuFrame = menuFrame;
 
         menuLayout = new GridBagLayout();
         menuLayout.columnWidths = new int[] {C_GAP, COL, COL, C_GAP};
         menuLayout.rowHeights = new int[] {ROW_INFO, R_GAP, ROW, R_GAP, ROW, R_GAP, ROW, R_GAP, ROW, ROW};
         constraints = new GridBagConstraints();
 
-        // Custom Frame
-        menuFrame = new MenuFrame("Pokemon yo", x, y);
-
         // Content Panel
-        menuPanel = new MenuPanel(ImageLoader.getImage(ImageLoader.MENU_BG));
+        menuPanel = new CustomPanel(ImageLoader.getImage(ImageLoader.STARTMENU_BG));
         menuPanel.setLayout(menuLayout);
 
         menuInformation = new MenuInformation(ImageLoader.getImage(ImageLoader.STARTMENU_BTN_TEXTFIELD_EICH), TextMulitplayer, menuFrame);
@@ -47,14 +45,10 @@ public class MenuSingleplayer {
         buttonMenuStart = new MenuButton("MAIN MENU", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
         buttonMenuStart.addActionListener(e -> {
             // Hide this window
-            menuFrame.setVisible(false);
+            menuPanel.setVisible(false);
 
             // Create MenuMain and display it
-            try {
-                new MenuStart(menuFrame.getX(), menuFrame.getY());
-            } catch (IOException | FontFormatException ioException) {
-                ioException.printStackTrace();
-            }
+            menuMain.setVisible(true);
         });
         makeConstraints(buttonMenuStart, 1, 2, 2);
 
@@ -63,35 +57,56 @@ public class MenuSingleplayer {
         buttonEasy = new MenuButton("EASY", ImageLoader.getImage(ImageLoader.MENU_BUTTON2));
         buttonEasy.addActionListener(e -> {
             // Hide this window
-            menuFrame.setVisible(false);
+            menuPanel.setVisible(false);
 
-            // Create MenuMain and display it
-            new SpielWindow();
+            // Create SpielWindow and display it
+            try {
+                new SpielWindow(menuFrame, menuPanel);
+            } catch (IOException | FontFormatException ioException) {
+                ioException.printStackTrace();
+            }
         });
         buttonPanel.add(buttonEasy);
 
         buttonNormal = new MenuButton("NORMAL", ImageLoader.getImage(ImageLoader.MENU_BUTTON2));
         buttonNormal.addActionListener(e -> {
             // Hide this window
-            menuFrame.setVisible(false);
+            menuPanel.setVisible(false);
 
             // Create MenuMain and display it
-            new SpielWindow();
+            try {
+                new SpielWindow(menuFrame, menuPanel);
+            } catch (IOException | FontFormatException ioException) {
+                ioException.printStackTrace();
+            }
         });
         buttonPanel.add(buttonNormal);
 
         buttonHard = new MenuButton("HARD", ImageLoader.getImage(ImageLoader.MENU_BUTTON2));
         buttonHard.addActionListener(e -> {
             // Hide this window
-            menuFrame.setVisible(false);
+            menuPanel.setVisible(false);
 
             // Create MenuMain and display it
-            new SpielWindow();
+            try {
+                new SpielWindow(menuFrame, menuPanel);
+            } catch (IOException | FontFormatException ioException) {
+                ioException.printStackTrace();
+            }
         });
         buttonPanel.add(buttonHard);
         makeConstraints(buttonPanel, 1, 4, 2);
 
         buttonShipSize = new MenuButton("POKEMON SIZE", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
+        buttonShipSize.addActionListener(e -> {
+            menuPanel.setVisible(false);
+
+            try {
+                new MenuShipSize(menuFrame, menuPanel);
+            } catch (IOException | FontFormatException ioException) {
+                ioException.printStackTrace();
+            }
+        });
         makeConstraints(buttonShipSize, 1, 6, 2);
 
         buttonQuitGame = new QuitButton();

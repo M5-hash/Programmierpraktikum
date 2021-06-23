@@ -2,6 +2,8 @@ package src.components;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.*;
 
 import static src.FontLoader.Pokemon;
@@ -20,19 +22,25 @@ public class MenuButton extends JButton {
         setText(button_title);
         setBorder(null);
         setFont(Pokemon);
-        setIcon(icon);
+//        setIcon(icon);
         setOpaque(false);
+        setFocusPainted(false);
         setContentAreaFilled(false);
         setVerticalTextPosition(CENTER);
         setHorizontalTextPosition(CENTER);
-        addActionListener(e -> System.out.println(getSize()));
+        addActionListener(e -> {
+            System.out.println("-------------------");
+            System.out.println(button_title);
+            System.out.println("Höhe des Buttons beträgt: " + getHeight());
+            System.out.println("Breite des Buttons beträgt: " + getWidth());
+            System.out.println("X Position: " + getX());
+            System.out.println("Y Position: " + getY());
+        });
     }
 
-    private Icon resizeIcon() {
-//        Image newimg = icon.getScaledInstance(width, height, Image.SCALE_SMOOTH);
-//        Icon scaledIcon = new ImageIcon(icon);
-//        //setIcon(resizeIcon());
-//        return scaledIcon;
-        return null;
+    @Override
+    protected void paintComponent(Graphics g) {
+        g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
+        super.paintComponent(g);
     }
 }

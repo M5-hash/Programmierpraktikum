@@ -1,16 +1,16 @@
 package src.components;
 
-import src.MenuShipSize;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 
+import static src.FontLoader.Pokemon;
+
 public class MenuInformation extends JPanel {
     int j = 0;
-    String[] text;
+    String text;
 
     Image bgImage;
 
@@ -18,7 +18,7 @@ public class MenuInformation extends JPanel {
     GridBagConstraints constraints;
     JTextArea displayText;
 
-    public MenuInformation(Image bgDisplayText, String[] text, JFrame menuFrame){
+    public MenuInformation(Image bgDisplayText, String text, JFrame menuFrame){
         this.bgImage = bgDisplayText;
         this.text = text;
 
@@ -38,7 +38,6 @@ public class MenuInformation extends JPanel {
         constraints.gridx = 1;
         constraints.gridy = 1;
 
-        System.out.println(text.length);
         setLayout(contentLayout);
         setOpaque(false);
 
@@ -47,22 +46,20 @@ public class MenuInformation extends JPanel {
         displayText.setWrapStyleWord(true);
         displayText.setBackground(new Color(248,248,248));
         displayText.setEditable(false);
-        displayText.setFont(new Font("PKMN RBYGSC", Font.PLAIN,12));
+        displayText.setFont(Pokemon);
         add(displayText, constraints);
 
         timer.start();
     }
 
-    public MenuInformation(BufferedImage image, String[] textSize, MenuShipSize menuShipSize) {
-
+    public MenuInformation(BufferedImage image, String textSize, JPanel menuShipSize) {
     }
 
     Timer timer = new Timer(80, new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
 
-            int i = 0;
-            char[] character = text[i].toCharArray();
+            char[] character = text.toCharArray();
             int arrayNumber = character.length;
 
             String addedCharacter;
@@ -74,7 +71,6 @@ public class MenuInformation extends JPanel {
             j++;
             if(j == arrayNumber){
                 j = 0;
-                i++;
                 timer.stop();
             }
 

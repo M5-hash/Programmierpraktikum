@@ -18,6 +18,7 @@ public class MenuMultiplayer {
     JButton buttonJoin;
     JButton buttonShipSize;
     JButton buttonQuitGame;
+    JPanel menuFiller;
     JPanel getIP;
     JPanel menuSize;
     JPanel menuInformation;
@@ -25,9 +26,8 @@ public class MenuMultiplayer {
     JPanel menuPanel;
     JFrame menuFrame;
 
-    public MenuMultiplayer(int x, int y) throws IOException, FontFormatException {
-
-        menuFrame = new MenuFrame("Pokemon - Multiplayer", x, y);
+    public MenuMultiplayer(JFrame menuFrame, JPanel menuMain) throws IOException, FontFormatException {
+        this.menuFrame = menuFrame;
 
         INITIAL_HEIGHT = menuFrame.getHeight();
         INITIAL_WIDTH = menuFrame.getWidth();
@@ -39,10 +39,8 @@ public class MenuMultiplayer {
 
         constraints = new GridBagConstraints();
 
-        menuPanel = new MenuPanel(ImageLoader.getImage(ImageLoader.MENU_BG));
-        menuPanel.setLayout(menuLayout);
-
-        menuSize = new MenuShipSize(menuPanel);
+        this.menuPanel = new CustomPanel(ImageLoader.getImage(ImageLoader.STARTMENU_BG));
+        this.menuPanel.setLayout(menuLayout);
 
         menuInformation = new MenuInformation(ImageLoader.getImage(ImageLoader.STARTMENU_BTN_TEXTFIELD_EICH), TextMulitplayer, menuFrame);
         makeConstraints(menuInformation, 0, 0, 4, 1);
@@ -50,12 +48,11 @@ public class MenuMultiplayer {
         buttonMenuStart = new MenuButton("MAIN MENU", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
         buttonMenuStart.addActionListener(e -> {
             // Hide this window
-            menuFrame.setVisible(false);
-//            menuFrame.dispose();
+            menuPanel.setVisible(false);
 
             // Create MenuMain and display it
             try {
-                new MenuStart(menuFrame.getX(), menuFrame.getY());
+                new MenuStart(menuFrame);
             } catch (IOException | FontFormatException ioException) {
                 ioException.printStackTrace();
             }
@@ -78,7 +75,13 @@ public class MenuMultiplayer {
 
         buttonShipSize = new MenuButton("Size", ImageLoader.getImage(ImageLoader.MENU_BUTTON3));
         buttonShipSize.addActionListener(e -> {
+            menuPanel.setVisible(false);
 
+            try {
+                new MenuShipSize(menuFrame, menuPanel);
+            } catch (IOException | FontFormatException ioException) {
+                ioException.printStackTrace();
+            }
         });
         buttonPanel.add(buttonShipSize);
         makeConstraints(buttonPanel, 1, 6, 2, 1);
@@ -86,7 +89,7 @@ public class MenuMultiplayer {
         buttonQuitGame = new QuitButton();
         makeConstraints(buttonQuitGame, 1, 8, 2, 1);
 
-        menuFrame.add(menuPanel);
+        menuFrame.add(this.menuPanel);
     }
 
     private void makeConstraints(JComponent comp, int gridx, int gridy, int gridwidth, int gridheight) {

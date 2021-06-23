@@ -6,106 +6,102 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 
+import static src.config.*;
+
 public class MenuStart {
 
-    int x = 0;
-    int y = 0;
-
-    GridBagLayout menuLayout;
-    GridBagConstraints constraints;
-    JButton buttonMenuSingleplayer;
-    JButton buttonMenuMultiplayer;
-    JButton buttonMenuOptions;
-    JButton buttonQuitGame;
-    JPanel menuFiller;
-    JPanel menuPanel;
-    JFrame menuFrame;
+    GridBagConstraints  constraints;
+    GridBagLayout       menuLayout;
+    JButton             buttonMenuSingleplayer;
+    JButton             buttonMenuMultiplayer;
+    JButton             buttonMenuOptions;
+    JButton             buttonQuitGame;
+    JPanel              menuFiller;
+    JPanel              menuPanel;
+    JFrame              menuFrame;
 
     public MenuStart() throws IOException, FontFormatException {
-
-        makeComponent();
+        // Custom Frame
+        menuFrame = new MenuFrame();
+        makeComponents();
     }
 
-    public MenuStart(int x, int y) throws IOException, FontFormatException {
-        this.x = x;
-        this.y = y;
-        makeComponent();
+    public MenuStart(JFrame menuFrame) throws IOException, FontFormatException {
+        this.menuFrame = menuFrame;
+        makeComponents();
     }
 
-    private void makeComponent() throws IOException, FontFormatException {
+    private void makeComponents() throws IOException, FontFormatException {
         menuLayout = new GridBagLayout();
+        menuLayout.columnWidths = new int[]{C_GAP, COL, COL, C_GAP};
+        menuLayout.rowHeights = new int[]{ROW_INFO, R_GAP, ROW, R_GAP, ROW, R_GAP, ROW, R_GAP, ROW, ROW};
         constraints = new GridBagConstraints();
 
-        // Custom Frame
-        menuFrame = new MenuFrame("Pokemon yo", x, y);
-
         // Content Panel
-        menuPanel = new MenuPanel(ImageLoader.getImage(ImageLoader.STARTMENU_BG));
+        menuPanel = new CustomPanel(ImageLoader.getImage(ImageLoader.STARTMENU_BG));
         menuPanel.setLayout(menuLayout);
 
         menuFiller = new MenuPanelFiller();
-        makeConstraints(menuFiller, 0 , 1.0, 0.5);
+        makeConstraints(menuFiller, 0, 0 , 4);
 
         //The Buttons
         buttonMenuSingleplayer = new MenuButton("SINGLEPLAYER", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
         buttonMenuSingleplayer.addActionListener(e -> {
             // Hide this window
-            menuFrame.setVisible(false);
-            menuFrame.dispose();
+            menuPanel.setVisible(false);
 
             // Create new singleplayer menu
             try {
-                new MenuSingleplayer(menuFrame.getX(), menuFrame.getY());
+                new MenuSingleplayer(menuFrame, menuPanel);
             } catch (IOException | FontFormatException ioException) {
                 ioException.printStackTrace();
             }
         });
-        makeConstraints(buttonMenuSingleplayer, 1, 0.4, 0.1);
+        makeConstraints(buttonMenuSingleplayer, 1, 2, 2);
 
         buttonMenuMultiplayer = new MenuButton("MULTIPLAYER", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
         buttonMenuMultiplayer.addActionListener(e -> {
             // Hide this window
-            menuFrame.setVisible(false);
-//            menuFrame.dispose();
+            menuPanel.setVisible(false);
 
             // Create new singleplayer menu
+
             try {
-                new MenuMultiplayer(menuFrame.getX(), menuFrame.getY());
+                new MenuMultiplayer(menuFrame, menuPanel);
             } catch (IOException | FontFormatException ioException) {
                 ioException.printStackTrace();
             }
         });
-        makeConstraints(buttonMenuMultiplayer, 2, 0.4, 0.1);
+        makeConstraints(buttonMenuMultiplayer, 1, 4, 2);
 
         buttonMenuOptions = new MenuButton("OPTIONS", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
         buttonMenuOptions.addActionListener(e -> {
             // Hide this window
-            menuFrame.setVisible(false);
-            menuFrame.dispose();
+            menuPanel.setVisible(false);
 
             // Create new singleplayer menu
             try {
-                new MenuOptions(menuFrame.getX(), menuFrame.getY());
+                new MenuOptions(menuFrame, menuPanel);
             } catch (IOException | FontFormatException ioException) {
                 ioException.printStackTrace();
             }
         });
-        makeConstraints(buttonMenuOptions, 3, 0.4, 0.1);
+        makeConstraints(buttonMenuOptions, 1, 6, 2);
 
         buttonQuitGame = new QuitButton();
-        makeConstraints(buttonQuitGame,4, 0.4, 0.1);
+        makeConstraints(buttonQuitGame, 1, 8, 2);
 
         menuFrame.add(menuPanel);
     }
 
-    private void makeConstraints(JComponent comp, int gridy, double weightx, double weighty) {
-        constraints.gridx = 0;
-        constraints.gridy = gridy;
-        constraints.gridwidth = 1;
-        constraints.gridheight = 1;
-        constraints.weightx = weightx;
-        constraints.weighty = 0;
-        constraints.fill = GridBagConstraints.BOTH;
+    private void makeConstraints(JComponent comp, int gridx, int gridy, int gridwidth) {
+        constraints.fill        = GridBagConstraints.BOTH;
+        constraints.gridheight  = 1;
+        constraints.gridwidth   = gridwidth;
+        constraints.gridx       = gridx;
+        constraints.gridy       = gridy;
+        constraints.weightx     = 0.5;
+        constraints.weighty     = 0.1;
         menuPanel.add(comp, constraints);
     }
 }
