@@ -8,28 +8,42 @@ import java.util.ArrayList;
 
 public class SchiffPainter {
 
+
+    /**
+     * Haenle seine Tabelle
+     * <p>
+     * 0 = Wasser
+     * 1 = Abgeschossenes Schiffsteil
+     * 2 = Komplett zerstört
+     * 3 = Normales Schiffsteil
+     * 4 = Geplantes Schiffsteil, noch nicht gesetzt
+     * 5 = Wasser abgeschossen
+     */
+
     public static int[][] BugHeckMeck = new int[SpielWindow.field_size][SpielWindow.field_size];
     public static boolean ready = false;
     public static int counter;
+    public static int[][] getEnemyPlacement =
+            {{8, 8, 8, 8, 8, 8, 8, 8, 8, 8}
+                    , {8, 8, 8, 8, 8, 8, 8, 8, 8, 8}
+                    , {8, 8, 8, 8, 8, 8, 8, 8, 8, 8}
+                    , {8, 8, 8, 8, 8, 8, 8, 8, 8, 8}
+                    , {8, 8, 8, 8, 8, 8, 8, 8, 8, 8}
+                    , {8, 8, 8, 8, 8, 8, 8, 8, 8, 8}
+                    , {8, 8, 8, 8, 8, 8, 8, 8, 8, 8}
+                    , {8, 8, 8, 8, 8, 8, 8, 8, 8, 8}
+                    , {8, 8, 8, 8, 8, 8, 8, 8, 8, 8}
+                    , {8, 8, 8, 8, 8, 8, 8, 8, 8, 8}};
+    static boolean change = false;
     static ArrayList<BufferedImage> Finished = new ArrayList<>();              // Zwischenspeicher für bereits geladene Bilder
     static ArrayList<String> Loaded = new ArrayList<>();                       // Speichert als String die Quellen der bereits geladenen Bilder ab
     static boolean fits = true;
+    static int[][] saveTest;
+    int[][] Pokemon = SpielWindow.playingField.getField();
     Bildloader Bild = new Bildloader();
     String Fieldof;
     String IsitRed = "";
-    int[][] getEnemyPlacement =
-            {{0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
-                    , {0, 0, 8, 8, 8, 8, 0, 0, 0, 0}
-                    , {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
-                    , {0, 0, 0, 0, 0, 7, 7, 7, 0, 0}
-                    , {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
-                    , {0, 0, 0, 0, 0, 8, 0, 0, 0, 0}
-                    , {0, 8, 8, 0, 0, 8, 0, 0, 0, 0}
-                    , {0, 8, 8, 0, 0, 8, 0, 0, 0, 0}
-                    , {0, 8, 8, 0, 0, 8, 0, 0, 0, 0}
-                    , {0, 8, 8, 0, 0, 0, 0, 0, 0, 0}};
     int[][] Vorhersage = new int[SpielWindow.field_size][SpielWindow.field_size];
-
 
     /**
      * @param Feldvon gibt an für wenn die Schiffe gezeichnet werden
@@ -44,6 +58,23 @@ public class SchiffPainter {
         //System.out.println(Fieldof);
 
         Schiffteil();
+    }
+
+    public static void setGetEnemyPlacement(int x, int y) {
+
+        SchiffPainter.getEnemyPlacement[y][x] = SpielWindow.Com.pf.getField()[y][x] + 9;
+
+        if (SpielWindow.Com.pf.getField()[y][x] == 2) {
+
+            for (int i = 0; i < SpielWindow.Com.pf.getField().length; i++) {
+                for (int j = 0; j < SpielWindow.Com.pf.getField()[0].length; j++) {
+                    if (SpielWindow.Com.pf.getField()[j][i] == 2) {
+                        SchiffPainter.getEnemyPlacement[j][i] = 11;
+                    }
+                }
+            }
+        }
+        change = true;
     }
 
     static int fetchImg(String Schiffdir) {
@@ -255,7 +286,6 @@ public class SchiffPainter {
         int SizeofBorder = Math.max(18, TileSize.Tile_Size / 12);
 
 
-        //System.out.println(TileSize.getFighting());
 
         dummy = switch (Fieldof) {
             case "Spieler" -> BugHeckMeck;
@@ -264,9 +294,6 @@ public class SchiffPainter {
             //case "Vorhersage" -> Vorhersage;
             default -> BugHeckMeck;
         };
-
-        //System.out.println(Fieldof);
-
 
         for (int y = 0; y < dummy.length; y++) {
             for (int x = 0; x < dummy[0].length; x++) {
@@ -313,12 +340,46 @@ public class SchiffPainter {
                         break;
 
                     case 8:
-                        Schiffdir = "src/Images/PokeTest32.jpg";
-                        dosmthng = true;
-                        //System.out.println("Ich wurde aufgerufen");
                         break;
 
+
+                    case 9:
+                        Schiffdir = "src/Images/0.jpg";
+                        dosmthng = true;
+                        break;
+
+                    case 10:
+                        Schiffdir = "src/Images/1.jpg";
+                        dosmthng = true;
+                        //ausgegrauter Pokeball
+                        break;
+
+
+                    case 11:
+                        Schiffdir = "src/Images/2.jpg";
+                        dosmthng = true;
+                        //ausgegrauter Pokeball mit roter Umrandung ?
+                        break;
+
+                    case 12:
+                        //Sollte es nicht geben
+                        break;
+
+
+                    case 13:
+                        //Sollte es nicht geben
+                        break;
+
+
+                    case 14:
+                        Schiffdir = "src/Images/5.jpg";
+                        dosmthng = true;
+                        //Pflanze oder so ein Scheiß der das darstellen soll
+                        break;
+
+
                     default:
+                        System.out.println(dummy[y][x]);
                         System.out.println("Gamer, dass ist aber dick nicht Gut mein bester, das sollte nämlich nicht gehen");
                         System.out.println("Es gibt also einen Fehler in der Schiffteil Methode");
                         Schiffdir = "src/Images/PokeTest32.jpg";
@@ -350,6 +411,7 @@ public class SchiffPainter {
                 }
             }
         }
+        change = false;
 
     }
 
@@ -381,7 +443,7 @@ public class SchiffPainter {
 
     /**
      * @param x
-     * @param y TODO Diese Mehtode und somit une visuelles Feedback beim löschen implementieren
+     * @param y TODO Diese Methode und somit une visuelles Feedback beim löschen implementieren
      */
     public void changetored(int x, int y) {
 
@@ -390,40 +452,47 @@ public class SchiffPainter {
     }
 
 
-    public void Pokemonpicker() {
+    public void Pokemonpicker(Graphics g) {
 
-        BufferedImage PokemonBild = Bild.BildLoader("src/Images/PokemonTileSet");
+        BufferedImage PokemonBild = Bild.BildLoader("src/Images/PokemonTileSetremove.png");
 
         if (Fieldof.equals("Spieler")) {
+            int SizeofBorder = Math.max(18, TileSize.Tile_Size / 12);
 
-            for (int y = 0; y < SpielWindow.field_size; y++) {                                // Wird nur gebraucht, falls wir alle TileFrames in einem Bild ablegen wollen (TileSet), da in diesem Fall Zeilenumsprünge benötigt werden
-                for (int x = 0; x < SpielWindow.field_size; x++) {
+            for (int y = 0; y < Pokemon.length; y++) {
+                for (int x = 0; x < Pokemon[0].length; x++) {
 
-                    int SizeofBorder = Math.max(18, TileSize.Tile_Size / 12);
 
-                    int index = (counter % 32);        //Höhe & Breite per Tile 80 //(Feld[SpielWindow.field_size][SpielWindow.field_size] +
+                    int index = 200;        //Höhe & Breite per Tile 80 //(Feld[SpielWindow.field_size][SpielWindow.field_size] +
                     int yOffset = 0;
 
                     if (index > (PokemonBild.getWidth() / 80) - 1) {                      // Da das Tileset nicht nur horizontal ausgerichtet ist, muss jedes mal wenn die rechte Seite des TileSets erreicht wurde unsere source
                         while ((index > (PokemonBild.getWidth() / 80) - 1)) {             // Wieder an die linke Seite des Bildes verschoben werden
-                            index = index - (PokemonBild.getWidth() / 80);
-                            yOffset++;                                              //Aber um eine Zeile nach unten verschoben
+                            index = (int) (Math.random() * 24);
+                            yOffset = (int) (Math.random() * 25);                                              //Aber um eine Zeile nach unten verschoben
                         }
                     }
 
-//                    g.drawImage(PokemonBild, (x * TileSize.Tile_Size) + SizeofBorder,                  //ok das ist jetzt blöd zu erklären
-//                            (y * TileSize.Tile_Size) + SizeofBorder,                           //Es wird ein Viereck zwischen diesen 2 Punkten aufgeschlagen, die ersten 2 sind das linke obere ende
-//                            ((x + 1) * TileSize.Tile_Size) + SizeofBorder,                      //die anderen 2 sind das rechte untere ende. Es handelt sich hierbei um das Ziel
-//                            ((y + 1) * TileSize.Tile_Size) + SizeofBorder,
-//                            index * 80,                                         //Es wird ein Viereck zwischen diesen 2 Punkten aufgeschlagen, die ersten 2 sind das linke obere ende
-//                            yOffset * 80,                                       //die anderen 2 sind das rechte untere ende. Es handelt sich hierbei um die Quelle, da die Source und das ausgegebene
-//                            (index + 1) * 80,                                   //gleich groß sein sollen sind die Variablen nahezu identisch
-//                            (yOffset + 1) * 80,
-//                            null);
+                    if (Pokemon[y][x] != 0) {
+
+                        g.drawImage(PokemonBild, (x * TileSize.Tile_Size + SizeofBorder),
+                                (y * TileSize.Tile_Size + SizeofBorder),
+                                (x + 1) * TileSize.Tile_Size + SizeofBorder,
+                                (y + 1) * TileSize.Tile_Size + SizeofBorder,
+                                index * 80,                                         //Es wird ein Viereck zwischen diesen 2 Punkten aufgeschlagen, die ersten 2 sind das linke obere ende
+                                yOffset * 80,                                       //die anderen 2 sind das rechte untere ende. Es handelt sich hierbei um die Quelle, da die Source und das ausgegebene
+                                (index + 1) * 80,                                   //gleich groß sein sollen sind die Variablen nahezu identisch
+                                (yOffset + 1) * 80,
+                                null);
+
+
+                    }
+
                 }
             }
         }
 
     }
+
 
 }

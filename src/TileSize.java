@@ -20,11 +20,11 @@ public class TileSize {                         //Die Dimesionen der Tiles
         if (!Tile.fightstart)
             if (tile_Size != 0) {
                 Tile_Size = tile_Size;
-            } else {
-                if (tile_Size * 3 / 4 != 0) {
-                    Tile_Size = tile_Size * 3 / 4;
-                }
-            }
+            } //else {
+//                if (tile_Size * 3 / 4 != 0) {
+//                    Tile_Size = tile_Size * 3 / 4;
+//                }
+//            }
     }
 
     public static int getSizeofBorder() {

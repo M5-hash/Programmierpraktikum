@@ -17,12 +17,14 @@ public abstract class ComPlayer {
     protected int[][] enemyField;
     protected int difficulty;
 
-    public ComPlayer(int rows, int[] ships) throws Exception {
-        pf = new PlayingField(rows);
-        enemyField = new int[rows][rows];
+    //public ComPlayer(int rows, int[] ships) throws Exception {
+    public ComPlayer(PlayingField pf, int[] ships) throws Exception {
+        this.pf = pf;
+        enemyField = new int[pf.getField().length][pf.getField().length];
         setShips(ships);
     }
 
+    //TODO laden überarbeiten
     public ComPlayer(long id) throws FileNotFoundException {
         pf = new PlayingField();
         this.loadGame(id);

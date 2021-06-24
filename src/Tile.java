@@ -8,6 +8,11 @@ import java.util.Random;
 public class Tile extends JPanel {
 
     public static int field_size;
+
+    public static boolean isFightstart() {
+        return fightstart;
+    }
+
     static boolean fightstart = false;
     private static int counter = 0;
     private final Bildloader Bild = new Bildloader();
@@ -87,7 +92,7 @@ public class Tile extends JPanel {
                 }
                 if (Fieldof.equals("GegnerKI") || Fieldof.equals("GegnerMensch")) {
 
-                    Image = Bild.BildLoader("src/Images/PokeTest.jpg*");
+                    Image = Bild.BildLoader("src/Images/PokeTest.jpg");
 
                     g.drawImage(Image, (x * TileSize.Tile_Size) + SizeofBorder,                         //ok das ist jetzt blöd zu erklären
                             (y * TileSize.Tile_Size) + SizeofBorder,                                    //Es wird ein Viereck zwischen diesen 2 Punkten aufgeschlagen, die ersten 2 sind das linke obere ende
