@@ -91,9 +91,8 @@ public class TilePainter extends JPanel implements MouseMotionListener {
                         if (Feldvon.equals("GegnerKI") || Feldvon.equals("GegnerMensch")) {
                             try {
                                 SpielWindow.Com.isShot(xFeld , yFeld );
-                                hier.setGetEnemyPlacement(xFeld, yFeld);
+                                SchiffPainter.setGetEnemyPlacement(xFeld, yFeld);
                                     //SpielWindow.Com.doNextShot();
-                                //SchiffPainter.getEnemyPlacement[yFeld][xFeld] = 7;
 
                                 System.out.println("Es wurde geschossen auf X: " + xFeld + " Y: " + yFeld);
                             } catch (Exception exception) {

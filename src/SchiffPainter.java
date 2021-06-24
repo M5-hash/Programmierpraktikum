@@ -11,7 +11,7 @@ public class SchiffPainter {
 
     /**
      * Haenle seine Tabelle
-     *
+     * <p>
      * 0 = Wasser
      * 1 = Abgeschossenes Schiffsteil
      * 2 = Komplett zerstört
@@ -23,10 +23,6 @@ public class SchiffPainter {
     public static int[][] BugHeckMeck = new int[SpielWindow.field_size][SpielWindow.field_size];
     public static boolean ready = false;
     public static int counter;
-    static boolean change = false ;
-
-
-
     public static int[][] getEnemyPlacement =
             {{8, 8, 8, 8, 8, 8, 8, 8, 8, 8}
                     , {8, 8, 8, 8, 8, 8, 8, 8, 8, 8}
@@ -38,23 +34,7 @@ public class SchiffPainter {
                     , {8, 8, 8, 8, 8, 8, 8, 8, 8, 8}
                     , {8, 8, 8, 8, 8, 8, 8, 8, 8, 8}
                     , {8, 8, 8, 8, 8, 8, 8, 8, 8, 8}};
-
-    public static void setGetEnemyPlacement(int x, int y) {
-
-        SchiffPainter.getEnemyPlacement[y][x] = SpielWindow.Com.pf.getField()[x][y] + 9;
-
-        for (int i = 0; i < SpielWindow.Com.pf.getField().length; i++) {
-            for (int j = 0; j < SpielWindow.Com.pf.getField()[0].length; j++) {
-                if(SpielWindow.Com.pf.getField()[j][i] == 2){
-                    SchiffPainter.getEnemyPlacement[i][j] = 11;
-                }
-            }
-        }
-
-        change = true ;
-        System.out.println("EnemyPlacement wurde geupdatet");
-    }
-
+    static boolean change = false;
     static ArrayList<BufferedImage> Finished = new ArrayList<>();              // Zwischenspeicher für bereits geladene Bilder
     static ArrayList<String> Loaded = new ArrayList<>();                       // Speichert als String die Quellen der bereits geladenen Bilder ab
     static boolean fits = true;
@@ -64,7 +44,6 @@ public class SchiffPainter {
     String Fieldof;
     String IsitRed = "";
     int[][] Vorhersage = new int[SpielWindow.field_size][SpielWindow.field_size];
-
 
     /**
      * @param Feldvon gibt an für wenn die Schiffe gezeichnet werden
@@ -79,6 +58,23 @@ public class SchiffPainter {
         //System.out.println(Fieldof);
 
         Schiffteil();
+    }
+
+    public static void setGetEnemyPlacement(int x, int y) {
+
+        SchiffPainter.getEnemyPlacement[y][x] = SpielWindow.Com.pf.getField()[y][x] + 9;
+
+        if (SpielWindow.Com.pf.getField()[y][x] == 2) {
+
+            for (int i = 0; i < SpielWindow.Com.pf.getField().length; i++) {
+                for (int j = 0; j < SpielWindow.Com.pf.getField()[0].length; j++) {
+                    if (SpielWindow.Com.pf.getField()[j][i] == 2) {
+                        SchiffPainter.getEnemyPlacement[j][i] = 11;
+                    }
+                }
+            }
+        }
+        change = true;
     }
 
     static int fetchImg(String Schiffdir) {
@@ -290,11 +286,6 @@ public class SchiffPainter {
         int SizeofBorder = Math.max(18, TileSize.Tile_Size / 12);
 
 
-        //System.out.println(TileSize.getFighting());
-
-//        if(Fieldof.equals("GegnerKI") && saveTest != SpielWindow.Com.enemyField){
-//            System.out.println(Arrays.deepToString(SpielWindow.Com.enemyField).replace("]", "]\n"));
-//        }
 
         dummy = switch (Fieldof) {
             case "Spieler" -> BugHeckMeck;
@@ -306,13 +297,6 @@ public class SchiffPainter {
 
         for (int y = 0; y < dummy.length; y++) {
             for (int x = 0; x < dummy[0].length; x++) {
-
-                if(dummy[y][x] > 9 &&  change){
-                    System.out.println(y );
-                    System.out.println( x);
-                    System.out.println("beträgt: " + dummy[y][x]);
-                }
-
 
 
                 switch (dummy[y][x]) {
@@ -360,19 +344,19 @@ public class SchiffPainter {
 
 
                     case 9:
-                        Schiffdir = "src/Images/0.jpg" ;
+                        Schiffdir = "src/Images/0.jpg";
                         dosmthng = true;
                         break;
 
                     case 10:
-                        Schiffdir = "src/Images/1.jpg" ;
+                        Schiffdir = "src/Images/1.jpg";
                         dosmthng = true;
                         //ausgegrauter Pokeball
                         break;
 
 
                     case 11:
-                        Schiffdir = "src/Images/2.jpg" ;
+                        Schiffdir = "src/Images/2.jpg";
                         dosmthng = true;
                         //ausgegrauter Pokeball mit roter Umrandung ?
                         break;
@@ -388,7 +372,7 @@ public class SchiffPainter {
 
 
                     case 14:
-                        Schiffdir = "src/Images/5.jpg" ;
+                        Schiffdir = "src/Images/5.jpg";
                         dosmthng = true;
                         //Pflanze oder so ein Scheiß der das darstellen soll
                         break;
@@ -427,7 +411,7 @@ public class SchiffPainter {
                 }
             }
         }
-        change = false ;
+        change = false;
 
     }
 
