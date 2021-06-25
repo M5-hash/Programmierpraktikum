@@ -26,11 +26,6 @@ public class MenuStart {
         makeComponents();
     }
 
-    public MenuStart(JFrame menuFrame) throws IOException, FontFormatException {
-        this.menuFrame = menuFrame;
-        makeComponents();
-    }
-
     private void makeComponents() throws IOException, FontFormatException {
         menuLayout = new GridBagLayout();
         menuLayout.columnWidths = new int[]{C_GAP, COL, COL, C_GAP};

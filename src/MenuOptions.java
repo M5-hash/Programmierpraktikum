@@ -32,6 +32,12 @@ public class MenuOptions {
         INITIAL_HEIGHT = menuFrame.getHeight();
         INITIAL_WIDTH = menuFrame.getWidth();
 
+
+        COL = (INITIAL_WIDTH * 20 / 100) - 10;
+        C_GAP = (INITIAL_WIDTH * 30 / 100) - 10;
+        ROW_INFO = (INITIAL_HEIGHT * 33 / 100) - 10;
+        ROW = (INITIAL_HEIGHT * 10 / 100) - 10;
+        R_GAP = (INITIAL_HEIGHT * 2) / 100;
         menuLayout = new GridBagLayout();
         menuLayout.columnWidths = new int[] {C_GAP, COL, COL, C_GAP};
         menuLayout.rowHeights = new int[] {ROW_INFO, R_GAP, ROW, R_GAP, ROW, R_GAP, ROW, R_GAP, ROW, ROW};
@@ -109,7 +115,7 @@ public class MenuOptions {
             menuPanel.setVisible(false);
 
             try {
-                new MenuShipSize(menuFrame, menuPanel);
+                new MenuSize(menuFrame, menuPanel);
             } catch (IOException | FontFormatException ioException) {
                 ioException.printStackTrace();
             }

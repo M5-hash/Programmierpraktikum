@@ -1,6 +1,7 @@
 package src.components;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,7 +21,7 @@ public class MenuButton extends JButton {
         this.image = image;
         icon = new ImageIcon(image);
         setText(button_title);
-        setBorder(null);
+        setBorder(new LineBorder(Color.darkGray));
         setFont(Pokemon);
 //        setIcon(icon);
         setOpaque(false);

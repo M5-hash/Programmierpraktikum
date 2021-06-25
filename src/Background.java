@@ -20,7 +20,7 @@ public class Background extends JPanel {
 
         img = Bild.BildLoader("src/Images/theme_1_background.jpg");
 
-        g.drawImage(img, 0, 0, SpielWindow.framewidth, SpielWindow.frameheigth, null);
+        g.drawImage(img, 0, 0, getWidth(), getHeight(), null);
 
     }
 }

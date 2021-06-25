@@ -18,8 +18,8 @@ public class SpielWindow extends JPanel {
     public static TilePainter tile = new TilePainter(field_size, "Spieler");
     public static Zielhilfe Z = new Zielhilfe();
 
-    public static int framewidth = 0;
-    public static int frameheigth = 0;
+    public int menuFramewidth;
+    public int menuFrameheigth;
 
     String Feldvon = "Spieler"; //"GegnerKI" "GegnerMensch"
 
@@ -33,38 +33,36 @@ public class SpielWindow extends JPanel {
     Wahlstation wahlstation;
     JButton Fertig;
     JButton Delete;
+    Timer timer;
 
-    public SpielWindow(JFrame frame, JPanel menuMain) throws IOException, FontFormatException {
-
-        System.out.println("ich bin das spielwindow");
+    public SpielWindow(JFrame menuFrame, JPanel menuMain) throws IOException, FontFormatException {
 
         if(fullscreen){
-            frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-            frame.setUndecorated(true);
+            menuFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+            menuFrame.setUndecorated(true);
         }
-        frame.setSize(GF_WIDTH, GF_HEIGHT);
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+        menuFrame.setSize(GF_WIDTH, GF_HEIGHT);
+        menuFrame.setResizable(true);
+        menuFrame.setLocationRelativeTo(null);
+        menuFrame.setVisible(true);
 
-        frameheigth = frame.getHeight();
-        framewidth = frame.getWidth();
+        menuFrameheigth = menuFrame.getHeight();
+        menuFramewidth = menuFrame.getWidth();
 
         LayeredPanel = new JLayeredPane();
-        LayeredPanel.setBounds(0, 0, frame.getWidth(), frame.getHeight());
+        LayeredPanel.setBounds(0, 0, menuFrame.getWidth(), menuFrame.getHeight());
 
         Bg = new Background();
-        Bg.setBounds(0, 0, frame.getWidth(), frame.getHeight());
+        Bg.setBounds(0, 0, menuFrame.getWidth(), menuFrame.getHeight());
 
         wahlstation = new Wahlstation();
-        wahlstation.setBounds((framewidth / 2) - (TileSize.Tile_Size * 3 + TileSize.Tile_Size / 2) / 2, frameheigth / 2 - 4 * TileSize.Tile_Size , 3 * TileSize.Tile_Size + TileSize.Tile_Size / 2 + 2, 8 * TileSize.Tile_Size + 2); //Ohne das + 2 werden die netten Striche um die Wahlstation nicht gezeichnet
+        wahlstation.setBounds((menuFramewidth / 2) - (TileSize.Tile_Size * 3 + TileSize.Tile_Size / 2) / 2, menuFrameheigth / 2 - 4 * TileSize.Tile_Size , 3 * TileSize.Tile_Size + TileSize.Tile_Size / 2 + 2, 8 * TileSize.Tile_Size + 2); //Ohne das + 2 werden die netten Striche um die Wahlstation nicht gezeichnet
         wahlstation.setOpaque(false);
-
-        //tile.setBounds(framewidth / 4, framewidth / 4, framewidth / 4, framewidth / 4);
 
         gameLayout = new GridLayout(0,1);
         gameLayout.setVgap(5);
         gamePanel = new JPanel();
-        gamePanel.setBounds(framewidth* 45 / 100, frameheigth / 3, framewidth / 10, frameheigth / 3);
+        gamePanel.setBounds(menuFramewidth* 45 / 100, menuFrameheigth / 3, menuFramewidth / 10, menuFrameheigth / 3);
         gamePanel.setOpaque(false);
         gamePanel.setLayout(gameLayout);
         gamePanel.setVisible(false);
@@ -73,8 +71,9 @@ public class SpielWindow extends JPanel {
         buttonMenuStart.addActionListener(e -> {
             // Hide this window
             gamePanel.setVisible(false);
-            frame.dispose();
-
+            menuFramewidth = INITIAL_WIDTH;
+            menuFrameheigth = INITIAL_HEIGHT;
+            menuFrame.dispose();
             // Create MenuMain and display it
             try {
                 new MenuStart();
@@ -119,61 +118,57 @@ public class SpielWindow extends JPanel {
         LayeredPanel.add(Fertig, Integer.valueOf(1));
         LayeredPanel.add(Delete,Integer.valueOf(1));
 
-        frame.add(LayeredPanel);
+        menuFrame.add(LayeredPanel);
 
 
-        Timer timer = new Timer(110, e -> {
+        timer = new Timer(200, e -> {
             int Borderwidth = 2 * Math.max(18, TileSize.Tile_Size / 8) ;
-            double dbframeheigth = frame.getHeight();
-            double dbframewidth = frame.getWidth();
-            int TileSizer = (int) (dbframewidth * 0.30) / field_size;
+            double dbmenuFrameheigth = menuFrame.getHeight();
+            double dbmenuFramewidth = menuFrame.getWidth();
+            int TileSizer = (int) (dbmenuFramewidth * 0.30) / field_size;
 
             //TODO rework put check in resizer as very small and very big fieldsizes mess everything up
-            if (framewidth != frame.getWidth()) {
-                framewidth = frame.getWidth();
-                TileSize.setTile_Size(((framewidth - Borderwidth) / 4) / field_size);
-
-
+            if (menuFramewidth != menuFrame.getWidth()) {
+                menuFramewidth = menuFrame.getWidth();
+                TileSize.setTile_Size(((menuFramewidth - Borderwidth) / 4) / field_size);
             }
-//            else if (frameheigth != frame.getHeight()) {
-//                frameheigth = frame.getHeight();
-//                TileSize.setTile_Size(((framewidth / 4) - Borderwidth) / field_size);
-//            }
+            else if (menuFrameheigth != menuFrame.getHeight()) {
+                menuFrameheigth = menuFrame.getHeight();
+                TileSize.setTile_Size(((menuFramewidth / 4) - Borderwidth) / field_size);
+            }
 
-            LayeredPanel.setBounds(0, 0, frame.getWidth(), frame.getHeight());
-            Bg.setBounds(0, 0, frame.getWidth(), frame.getHeight());
-            tile.setBounds(framewidth / 8, frameheigth / 4, TileSize.Tile_Size * field_size + Borderwidth, TileSize.Tile_Size * field_size + Borderwidth);
+            LayeredPanel.setBounds(0, 0, menuFrame.getWidth(), menuFrame.getHeight());
+            Bg.setBounds(0, 0, menuFramewidth, menuFrameheigth);
+            tile.setBounds(menuFramewidth / 8, menuFrameheigth / 4, TileSize.Tile_Size * field_size + Borderwidth, TileSize.Tile_Size * field_size + Borderwidth);
             Z.setBounds(15, 25,TileSize.Tile_Size * 3 , TileSize.Tile_Size * 2);
             //tile2.setBounds(1200, 15, Borderwidth, Borderwidth);
-            wahlstation.setBounds((framewidth / 2) - (TileSize.Tile_Size * 3 + TileSize.Tile_Size / 2) / 2, frameheigth / 2 - 4 * TileSize.Tile_Size , 3 * TileSize.Tile_Size + TileSize.Tile_Size / 2 + 2, 8 * TileSize.Tile_Size + 2); //Ohne das + 2 werden die netten Striche um die Wahlstation nicht gezeichnet
-            Fertig.setBounds((framewidth / 2) - (TileSize.Tile_Size * 3 + TileSize.Tile_Size / 2) / 2, frameheigth / 2 + 5 * TileSize.Tile_Size , 120,50);
-            gamePanel.setBounds(framewidth* 45 / 100, frameheigth / 3, framewidth / 10, frameheigth / 3 );
+            wahlstation.setBounds((menuFramewidth / 2) - (TileSize.Tile_Size * 3 + TileSize.Tile_Size / 2) / 2, menuFrameheigth / 2 - 4 * TileSize.Tile_Size , 3 * TileSize.Tile_Size + TileSize.Tile_Size / 2 + 2, 8 * TileSize.Tile_Size + 2); //Ohne das + 2 werden die netten Striche um die Wahlstation nicht gezeichnet
+            Fertig.setBounds((menuFramewidth / 2) - (TileSize.Tile_Size * 3 + TileSize.Tile_Size / 2) / 2, menuFrameheigth / 2 + 5 * TileSize.Tile_Size , 120,50);
+            gamePanel.setBounds(menuFramewidth* 45 / 100, menuFrameheigth / 3, menuFramewidth / 10, menuFrameheigth / 3 );
 
             boolean Rechnungpasst = (tile.getWidth() ==  (TileSize.Tile_Size * field_size + Borderwidth)) ;
 
             System.out.println("Die Werte stimmen überein : " + Rechnungpasst);
 
-
-                    repaintAll();
+            repaintAll();
             Bg.repaint();
             Bg.revalidate();
-
         });
         timer.start();
     }
 
     void repaintAll() {
 
-//        gamePanel.repaint();
-//        gamePanel.revalidate();
-//
-//        tile.repaint(); //Der beste Command, der von der Menschheit erfunden wurde
-//        tile.revalidate();
-//
-//        Z.repaint();
-//        Z.revalidate();
-//
-//        wahlstation.repaint();
-//        wahlstation.revalidate();
+        gamePanel.repaint();
+        gamePanel.revalidate();
+
+        tile.repaint(); //Der beste Command, der von der Menschheit erfunden wurde
+        tile.revalidate();
+
+        Z.repaint();
+        Z.revalidate();
+
+        wahlstation.repaint();
+        wahlstation.revalidate();
       }
 }

@@ -29,17 +29,24 @@ public class config {
     public static String    selectedTheme           = "";
     public static boolean   fullscreen              = false;
 
+    // Slider sizes
+    public static int       fieldsize               = 10;
+    public static int       size2                   = 1;
+    public static int       size3                   = 1;
+    public static int       size4                   = 1;
+    public static int       size5                   = 1;
+
     // Information Strings
-    public static String  TextSingleplayer        =  "You  can  select  fullscreen  mode  and  resoltion  here." + "\n" + "You  can  also  select  the  size  Pokemons  by  clicking  the  size  button.";
+    public static String  TextSingleplayer          =  "You  can  select  fullscreen  mode  and  resoltion  here." + "\n" + "You  can  also  select  the  size  Pokemons  by  clicking  the  size  button.";
 
-    public static String  TextMulitplayer         =  "Please  select  the amount  of ships  you want for each ship.";
+    public static String  TextMulitplayer           =  "Please  select  the amount  of ships  you want for each ship.";
 
-    public static String  TextOptions             =  "You  can  select  fullscreen  mode  and  resoltion  here." + "\n" + "You  can  also  select  the  size  Pokemons  by  clicking  the  size  button.";
+    public static String  TextOptions               =  "You  can  select  fullscreen  mode  and  resoltion  here." + "\n" + "You  can  also  select  the  size  Pokemons  by  clicking  the  size  button.";
 
-    public static String  TextHost                =  "Please select the amount of ships you want for each ship.";
+    public static String  TextHost                  =  "Please select the amount of ships you want for each ship.";
 
-    public static String  TextGame                =  "Please select the amount of ships you want for each ship.";
+    public static String  TextGame                  =  "Please select the amount of ships you want for each ship.";
 
 
-    public static String  TextSize                =  "Please  select  the  amount  of  ships  you  want  for  each  ship.";
+    public static String  TextSize                  =  "Please  select  the  amount  of  ships  you  want  for  each  ship.";
 }
