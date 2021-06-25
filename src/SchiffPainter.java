@@ -7,6 +7,7 @@ import java.awt.image.WritableRaster;
 import java.util.ArrayList;
 
 import static src.config.fieldsize;
+import static src.Tile.field_size;
 
 public class SchiffPainter {
 
@@ -25,17 +26,9 @@ public class SchiffPainter {
     public static int[][] BugHeckMeck = new int[fieldsize][fieldsize];
     public static boolean ready = false;
     public static int counter;
-    public static int[][] getEnemyPlacement =
-            {{8, 8, 8, 8, 8, 8, 8, 8, 8, 8}
-                    , {8, 8, 8, 8, 8, 8, 8, 8, 8, 8}
-                    , {8, 8, 8, 8, 8, 8, 8, 8, 8, 8}
-                    , {8, 8, 8, 8, 8, 8, 8, 8, 8, 8}
-                    , {8, 8, 8, 8, 8, 8, 8, 8, 8, 8}
-                    , {8, 8, 8, 8, 8, 8, 8, 8, 8, 8}
-                    , {8, 8, 8, 8, 8, 8, 8, 8, 8, 8}
-                    , {8, 8, 8, 8, 8, 8, 8, 8, 8, 8}
-                    , {8, 8, 8, 8, 8, 8, 8, 8, 8, 8}
-                    , {8, 8, 8, 8, 8, 8, 8, 8, 8, 8}};
+    public static int[][] getEnemyPlacement ;
+
+
     static boolean change = false;
     static ArrayList<BufferedImage> Finished = new ArrayList<>();              // Zwischenspeicher für bereits geladene Bilder
     static ArrayList<String> Loaded = new ArrayList<>();                       // Speichert als String die Quellen der bereits geladenen Bilder ab
@@ -57,9 +50,26 @@ public class SchiffPainter {
     public SchiffPainter(String Feldvon) {
 
         Fieldof = Feldvon;
+        initgetEnemyPlacement();
         //System.out.println(Fieldof);
 
         Schiffteil();
+    }
+
+    void initgetEnemyPlacement() {
+
+        getEnemyPlacement = new int[field_size][field_size] ;
+
+
+        for (int i = 0; i < field_size; i++) {
+            for (int j = 0; j < field_size; j++) {
+
+                getEnemyPlacement[i][j] = 8 ;
+
+
+                }
+            }
+
     }
 
     public static void setGetEnemyPlacement(int x, int y) {
