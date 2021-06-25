@@ -18,8 +18,8 @@ public class config {
     public static int       R_GAP                   = (INITIAL_HEIGHT * 2) / 100;
 
     // The difficulties of the game
-    public static String    EASY_DIFFICULTY         = "Easy";
-    public static String    NORMAL_DIFFICULTY       = "Normal";
+    public static int       EASY_DIFFICULTY         = 0;
+    public static int       NORMAL_DIFFICULTY       = 1;
     public static boolean   KI                      = false;
 
     // The string array for options
