@@ -8,21 +8,21 @@ import java.awt.*;
 import java.io.IOException;
 import java.util.Arrays;
 
+import static src.Tile.field_size;
 import static src.config.*;
 
 public class SpielWindow extends JPanel {
 
     public static boolean change = false;
-    public static int field_size = 10;
-    public static PlayingField playingField = new PlayingField(field_size);
-    public static TilePainter tile2 = new TilePainter(field_size, "GegnerKI");
-    public static TilePainter tile = new TilePainter(field_size, "Spieler");
+    public static PlayingField playingField = new PlayingField(fieldsize);
+    public static TilePainter tile2 = new TilePainter(fieldsize, "GegnerKI");
+    public static TilePainter tile = new TilePainter(fieldsize, "Spieler");
     public static Zielhilfe Z = new Zielhilfe();
     public static ComPlayer Com;
 
     static {
         try {
-            Com = new ComPlayerNormal(new PlayingField(field_size), new int[] {3,3,3,4});
+            Com = new ComPlayerNormal(new PlayingField(fieldsize), new int[] {3,3,3,4});
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -33,9 +33,7 @@ public class SpielWindow extends JPanel {
 
     String Feldvon = "Spieler"; //"GegnerKI" "GegnerMensch"
 
-
-
-    public SpielWindow(JFrame frame, JPanel menuMain) throws IOException, FontFormatException {
+    public SpielWindow(JFrame frame, JPanel menuMain, boolean KI) throws IOException, FontFormatException {
 
         JLayeredPane LayeredPanel;
         JPanel Bg;
@@ -48,13 +46,13 @@ public class SpielWindow extends JPanel {
         JButton Fertig;
         JButton Delete;
 
-
         if(fullscreen){
             frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
             frame.setUndecorated(true);
         }
         frame.setSize(GF_WIDTH, GF_HEIGHT);
         frame.setLocationRelativeTo(null);
+        frame.setResizable(true);
         frame.setVisible(true);
 
         frameheigth = frame.getHeight();
@@ -125,9 +123,7 @@ public class SpielWindow extends JPanel {
 
         });
 
-
         tile2.setBounds(1200, 15, 600, 1000);
-
 
         LayeredPanel.add(gamePanel, Integer.valueOf(1));
         LayeredPanel.add(Bg, Integer.valueOf(0));
@@ -152,7 +148,6 @@ public class SpielWindow extends JPanel {
                 framewidth = frame.getWidth();
                 TileSize.setTile_Size(((framewidth - Borderwidth) / 4) / field_size);
 
-
             }
             else if (frameheigth != frame.getHeight()) {
                 frameheigth = frame.getHeight();
@@ -169,7 +164,6 @@ public class SpielWindow extends JPanel {
             Fertig.setBounds((framewidth / 2) - (TileSize.Tile_Size * 3 + TileSize.Tile_Size / 2) / 2, frameheigth / 2 + 5 * TileSize.Tile_Size , 120,50);
             Delete.setBounds((framewidth / 2) - (TileSize.Tile_Size * 3 + TileSize.Tile_Size / 2) / 2, 120, 120,50);
             gamePanel.setBounds(framewidth* 45 / 100, frameheigth / 3, framewidth / 10, frameheigth / 3 );
-
 
             repaintAll();
             Bg.repaint();

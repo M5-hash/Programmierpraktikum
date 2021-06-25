@@ -181,6 +181,16 @@ public class PanelSize extends JPanel{
         buttonApply.addActionListener(e -> {
             menuPanel.setVisible(false);
 
+            fieldsize = menuSlider1.getValue();
+            size2 = menuSlider2.getValue();
+            size3 = menuSlider3.getValue();
+            size4 = menuSlider4.getValue();
+            size5 = menuSlider5.getValue();
+            System.out.println(fieldsize);
+            System.out.println(size2);
+            System.out.println(size3);
+            System.out.println(size4);
+            System.out.println(size5);
             previousPanel.setVisible(true);
         });
         buttonPanel.add(buttonApply);
@@ -188,7 +198,6 @@ public class PanelSize extends JPanel{
         buttonCancel = new MenuButton("CANCEL", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
         buttonCancel.addActionListener(e -> {
             menuPanel.setVisible(false);
-
 
 
             previousPanel.setVisible(true);

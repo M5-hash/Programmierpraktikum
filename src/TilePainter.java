@@ -8,6 +8,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 
+import static src.config.fieldsize;
+
 public class TilePainter extends JPanel implements MouseMotionListener {
 
     public static int groesse = 3;
@@ -153,7 +155,7 @@ public class TilePainter extends JPanel implements MouseMotionListener {
         int y = e.getY();
 
 
-        Onfirstfield = x > TileSize.getSizeofBorder() && x < Tile.field_size * TileSize.Tile_Size + TileSize.getSizeofBorder() && y > TileSize.getSizeofBorder() && y < TileSize.getSizeofBorder() + SpielWindow.field_size * TileSize.Tile_Size;
+        Onfirstfield = x > TileSize.getSizeofBorder() && x < Tile.field_size * TileSize.Tile_Size + TileSize.getSizeofBorder() && y > TileSize.getSizeofBorder() && y < TileSize.getSizeofBorder() + fieldsize * TileSize.Tile_Size;
     }
 
     public static int getPosX() {
@@ -239,8 +241,6 @@ public class TilePainter extends JPanel implements MouseMotionListener {
 //            }
 
             MovementHandler = true;
-
-
         }
     }
 

@@ -6,6 +6,8 @@ import java.awt.image.ColorModel;
 import java.awt.image.WritableRaster;
 import java.util.ArrayList;
 
+import static src.config.fieldsize;
+
 public class SchiffPainter {
 
 
@@ -20,7 +22,7 @@ public class SchiffPainter {
      * 5 = Wasser abgeschossen
      */
 
-    public static int[][] BugHeckMeck = new int[SpielWindow.field_size][SpielWindow.field_size];
+    public static int[][] BugHeckMeck = new int[fieldsize][fieldsize];
     public static boolean ready = false;
     public static int counter;
     public static int[][] getEnemyPlacement =
@@ -43,7 +45,7 @@ public class SchiffPainter {
     Bildloader Bild = new Bildloader();
     String Fieldof;
     String IsitRed = "";
-    int[][] Vorhersage = new int[SpielWindow.field_size][SpielWindow.field_size];
+    int[][] Vorhersage = new int[fieldsize][fieldsize];
 
     /**
      * @param Feldvon gibt an für wenn die Schiffe gezeichnet werden
@@ -216,11 +218,11 @@ public class SchiffPainter {
 
                     if (i != 0 && Schiffe[i - 1][j] != 0)
                         x1 = true;
-                    if (i != (SpielWindow.field_size - 1) && Schiffe[i + 1][j] != 0)
+                    if (i != (fieldsize - 1) && Schiffe[i + 1][j] != 0)
                         x2 = true;
                     if (j != 0 && Schiffe[i][j - 1] != 0)
                         y1 = true;
-                    if (j != (SpielWindow.field_size - 1) && Schiffe[i][j + 1] != 0)
+                    if (j != (fieldsize - 1) && Schiffe[i][j + 1] != 0)
                         y2 = true;
 
                     if (!x1 && !x2 && !y1 && y2)
@@ -426,10 +428,10 @@ public class SchiffPainter {
         int size = TilePainter.groesse;
         boolean hor = TilePainter.horizontal;
 
-        Vorhersage = new int[SpielWindow.field_size][SpielWindow.field_size];
+        Vorhersage = new int[fieldsize][fieldsize];
 
         for (int i = 0; i < size; i++) {
-            if (x < SpielWindow.field_size && y < SpielWindow.field_size) {
+            if (x < fieldsize && y < fieldsize) {
                 Vorhersage[x][y] = 3;
                 if (!hor) {
                     x++;

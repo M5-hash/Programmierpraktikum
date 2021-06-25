@@ -20,7 +20,7 @@ public class config {
     // The difficulties of the game
     public static String    EASY_DIFFICULTY         = "Easy";
     public static String    NORMAL_DIFFICULTY       = "Normal";
-    public static String    HARD_DIFFICULTY         = "Hard";
+    public static boolean   KI                      = false;
 
     // The string array for options
     public static String[]  Resolutions             = {"Resolution", "2560x1440","1920x1200","1920x1080","1680x1050","1440x900","1366x768","1280x720","1280x800","1024x768","800x600","640x480"};
@@ -37,16 +37,40 @@ public class config {
     public static int       size5                   = 1;
 
     // Information Strings
-    public static String  TextSingleplayer          =  "You  can  select  fullscreen  mode  and  resoltion  here." + "\n" + "You  can  also  select  the  size  Pokemons  by  clicking  the  size  button.";
+    public static String  TextSingleplayer          =  """
+            You  can  select  fullscreen  mode  and  resolution  here.
 
-    public static String  TextMulitplayer           =  "Please  select  the amount  of ships  you want for each ship.";
+            You  can  also  select  the  size  of the  Pokemon's\s
+            by  clicking  the  size  button.""";
 
-    public static String  TextOptions               =  "You  can  select  fullscreen  mode  and  resoltion  here." + "\n" + "You  can  also  select  the  size  Pokemons  by  clicking  the  size  button.";
+    public static String  TextMulitplayer           =  """
+            You  can  select  fullscreen  mode  and  resolution  here.
 
-    public static String  TextHost                  =  "Please select the amount of ships you want for each ship.";
+            You  can  also  select  the  size  of the  Pokemon's\s
+            by  clicking  the  size  button.""";
 
-    public static String  TextGame                  =  "Please select the amount of ships you want for each ship.";
+    public static String  TextOptions               = """
+            You  can  select  fullscreen  mode  and  resolution  here.
+
+            You  can  also  select  the  size  of the  Pokemon's\s
+            by  clicking  the  size  button.""";
+
+    public static String  TextHost                  =  """
+            You  can  select  fullscreen  mode  and  resolution  here.
+
+            You  can  also  select  the  size  of the  Pokemon's\s
+            by  clicking  the  size  button.""";
+
+    public static String  TextGame                  =  """
+            You  can  select  fullscreen  mode  and  resolution  here.
+
+            You  can  also  select  the  size  of the  Pokemon's\s
+            by  clicking  the  size  button.""";
 
 
-    public static String  TextSize                  =  "Please  select  the  amount  of  ships  you  want  for  each  ship.";
+    public static String  TextSize                  =  """
+            You  can  select  fullscreen  mode  and  resolution  here.
+
+            You  can  also  select  the  size  of the  Pokemon's\s
+            by  clicking  the  size  button.""";
 }

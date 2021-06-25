@@ -4,8 +4,6 @@ import src.components.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.io.IOException;
 
 import static src.config.*;
@@ -57,21 +55,21 @@ public class MenuSingleplayer {
 
         buttonPanel = new ButtonPanel();
 
-        buttonEasy = new MenuButton("EASY", ImageLoader.getImage(ImageLoader.MENU_BUTTON2));
+        buttonEasy = new MenuButton("EASY", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
         buttonEasy.addActionListener(e -> {
             // Hide this window
             menuPanel.setVisible(false);
             menuFrame.dispose();
             // Create SpielWindow and display it
             try {
-                new SpielWindow(menuFrame, menuPanel);
+                new SpielWindow(menuFrame, menuPanel, KI);
             } catch (IOException | FontFormatException ioException) {
                 ioException.printStackTrace();
             }
         });
         buttonPanel.add(buttonEasy);
 
-        buttonNormal = new MenuButton("NORMAL", ImageLoader.getImage(ImageLoader.MENU_BUTTON2));
+        buttonNormal = new MenuButton("NORMAL", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
         buttonNormal.addActionListener(e -> {
             // Hide this window
             menuPanel.setVisible(false);
@@ -79,29 +77,16 @@ public class MenuSingleplayer {
 
             // Create MenuMain and display it
             try {
-                new SpielWindow(menuFrame, menuPanel);
+                new SpielWindow(menuFrame, menuPanel, KI);
             } catch (IOException | FontFormatException ioException) {
                 ioException.printStackTrace();
             }
         });
         buttonPanel.add(buttonNormal);
 
-        buttonHard = new MenuButton("HARD", ImageLoader.getImage(ImageLoader.MENU_BUTTON2));
-        buttonHard.addActionListener(e -> {
-            // Hide this window
-            menuPanel.setVisible(false);
-            menuFrame.dispose();
-            // Create MenuMain and display it
-            try {
-                new SpielWindow(menuFrame, menuPanel);
-            } catch (IOException | FontFormatException ioException) {
-                ioException.printStackTrace();
-            }
-        });
-        buttonPanel.add(buttonHard);
         makeConstraints(buttonPanel, 1, 4, 2);
 
-        buttonShipSize = new MenuButton("POKEMON SIZE", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
+        buttonShipSize = new MenuButton("SIZE", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
         buttonShipSize.addActionListener(e -> {
             menuPanel.setVisible(false);
 

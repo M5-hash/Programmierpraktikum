@@ -20,7 +20,6 @@ public class MenuOptions {
     JComboBox<String> cbThemes;
     JButton buttonShipSize;
     JButton buttonQuitGame;
-    JPanel menuSize;
     JPanel menuInformation;
     JPanel buttonPanel;
     JPanel menuPanel;
@@ -28,10 +27,6 @@ public class MenuOptions {
 
     public MenuOptions(JFrame menuFrame, JPanel menuMain) throws IOException, FontFormatException {
         this.menuFrame = menuFrame;
-
-        INITIAL_HEIGHT = menuFrame.getHeight();
-        INITIAL_WIDTH = menuFrame.getWidth();
-
 
         COL = (INITIAL_WIDTH * 20 / 100) - 10;
         C_GAP = (INITIAL_WIDTH * 30 / 100) - 10;

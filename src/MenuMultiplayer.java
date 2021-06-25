@@ -3,26 +3,20 @@ package src;
 import src.components.*;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.IOException;
-
 import static src.config.*;
 
 
 public class MenuMultiplayer {
 
     GridBagLayout menuLayout;
-    GridLayout buttonPanelLayout;
     GridBagConstraints constraints;
     JButton buttonMenuStart;
     JButton buttonMenuHost;
     JButton buttonJoin;
     JButton buttonShipSize;
     JButton buttonQuitGame;
-    JPanel menuFiller;
     JPanel getIP;
-    JPanel menuSize;
     JPanel menuInformation;
     JPanel buttonPanel;
     JPanel menuPanel;
@@ -30,10 +24,6 @@ public class MenuMultiplayer {
 
     public MenuMultiplayer(JFrame menuFrame, JPanel menuMain) throws IOException, FontFormatException {
         this.menuFrame = menuFrame;
-
-        INITIAL_HEIGHT = menuFrame.getHeight();
-        INITIAL_WIDTH = menuFrame.getWidth();
-
 
         COL = (INITIAL_WIDTH * 20 / 100) - 10;
         C_GAP = (INITIAL_WIDTH * 30 / 100) - 10;
@@ -65,7 +55,7 @@ public class MenuMultiplayer {
 
         buttonPanel = new ButtonPanel();
 
-        buttonJoin = new MenuButton("JOIN GAME", ImageLoader.getImage(ImageLoader.MENU_BUTTON3));
+        buttonJoin = new MenuButton("JOIN GAME", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
         buttonJoin.addActionListener(e -> {
             String[] options = new String[] {"Player", "Computer", "Cancel"};
             ImageIcon icon = new ImageIcon("");
@@ -77,16 +67,17 @@ public class MenuMultiplayer {
                 menuFrame.dispose();
                 // Create SpielWindow and display it
                 try {
-                    new SpielWindow(menuFrame, menuPanel);
+                    new SpielWindow(menuFrame, menuPanel, KI);
                 } catch (IOException | FontFormatException ioException) {
                     ioException.printStackTrace();
                 }
             } else if (x == 1){
+                KI = true;
                 menuPanel.setVisible(false);
                 menuFrame.dispose();
                 // Create SpielWindow and display it
                 try {
-                    new SpielWindow(menuFrame, menuPanel);
+                    new SpielWindow(menuFrame, menuPanel, KI);
                 } catch (IOException | FontFormatException ioException) {
                     ioException.printStackTrace();
                 }
@@ -96,7 +87,7 @@ public class MenuMultiplayer {
         });
         buttonPanel.add(buttonJoin);
 
-        buttonMenuHost = new MenuButton("HOST GAME", ImageLoader.getImage(ImageLoader.MENU_BUTTON3));
+        buttonMenuHost = new MenuButton("HOST GAME", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
         buttonMenuHost.addActionListener(e -> {
             String[] options = new String[] {"Player", "Computer", "Cancel"};
             ImageIcon icon = new ImageIcon("");
@@ -108,7 +99,7 @@ public class MenuMultiplayer {
                 menuFrame.dispose();
                 // Create SpielWindow and display it
                 try {
-                    new SpielWindow(menuFrame, menuPanel);
+                    new SpielWindow(menuFrame, menuPanel, KI);
                 } catch (IOException | FontFormatException ioException) {
                     ioException.printStackTrace();
                 }
@@ -117,7 +108,7 @@ public class MenuMultiplayer {
                 menuFrame.dispose();
                 // Create SpielWindow and display it
                 try {
-                    new SpielWindow(menuFrame, menuPanel);
+                    new SpielWindow(menuFrame, menuPanel, KI);
                 } catch (IOException | FontFormatException ioException) {
                     ioException.printStackTrace();
                 }
@@ -133,7 +124,7 @@ public class MenuMultiplayer {
         getIP = new Textfield("Enter IP");
         buttonPanel.add(getIP);
 
-        buttonShipSize = new MenuButton("Size", ImageLoader.getImage(ImageLoader.MENU_BUTTON3));
+        buttonShipSize = new MenuButton("Size", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
         buttonShipSize.addActionListener(e -> {
             menuPanel.setVisible(false);
 
