@@ -3,10 +3,10 @@ package src.components;
 import src.ImageLoader;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 import static src.FontLoader.Pokemon;
 
@@ -14,14 +14,14 @@ public class Textfield extends JPanel {
 
     JTextField textField;
 
-    public Textfield(){
+    public Textfield(String text){
 
         setOpaque(false);
         setLayout(new BorderLayout());
-        textField = new JTextField("ENTER IP");
+        textField = new JTextField(text);
         textField.setHorizontalAlignment(SwingConstants.CENTER);
-        textField.setBorder(null);
         textField.setOpaque(false);
+        textField.setBorder(new LineBorder(Color.black));
         textField.setFont(Pokemon);
         textField.addMouseListener(new MouseAdapter() {
             @Override
@@ -36,6 +36,6 @@ public class Textfield extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawImage(ImageLoader.getImage(ImageLoader.MENU_BUTTON3), 0, 0, this);
+        g.drawImage(ImageLoader.getImage(ImageLoader.MENU_BUTTON), 0, 0, getWidth(), getHeight(), this);
     }
 }
