@@ -7,8 +7,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 import java.util.Arrays;
-
-import static src.Tile.field_size;
 import static src.config.*;
 
 public class SpielWindow extends JPanel {
@@ -141,23 +139,23 @@ public class SpielWindow extends JPanel {
             int Borderwidth = 2 * Math.max(18, TileSize.Tile_Size / 8) ;
             int dbframeheigth = frame.getHeight();
             int dbframewidth = frame.getWidth();
-            int TileSizer = (int) (dbframewidth * 0.30) / field_size;
+            int TileSizer = (int) (dbframewidth * 0.30) / fieldsize;
 
             //TODO rework put check in resizer as very small and very big fieldsizes mess everything up
             if (framewidth != frame.getWidth()) {
                 framewidth = frame.getWidth();
-                TileSize.setTile_Size(((framewidth - Borderwidth) / 4) / field_size);
+                TileSize.setTile_Size(((framewidth - Borderwidth) / 4) / fieldsize);
 
             }
             else if (frameheigth != frame.getHeight()) {
                 frameheigth = frame.getHeight();
-                TileSize.setTile_Size(((framewidth / 4) - Borderwidth) / field_size);
+                TileSize.setTile_Size(((framewidth / 4) - Borderwidth) / fieldsize);
             }
 
             LayeredPanel.setBounds(0, 0, frame.getWidth(), frame.getHeight());
             Bg.setBounds(0, 0, frame.getWidth(), frame.getHeight());
-            tile.setBounds(framewidth / 8, frameheigth / 4, TileSize.Tile_Size * field_size + Borderwidth, TileSize.Tile_Size * field_size + Borderwidth);
-            tile2.setBounds(framewidth * 5 / 8, frameheigth / 4, TileSize.Tile_Size * field_size + Borderwidth, TileSize.Tile_Size * field_size + Borderwidth);
+            tile.setBounds(framewidth / 8, frameheigth / 4, TileSize.Tile_Size * fieldsize + Borderwidth, TileSize.Tile_Size * fieldsize + Borderwidth);
+            tile2.setBounds(framewidth * 5 / 8, frameheigth / 4, TileSize.Tile_Size * fieldsize + Borderwidth, TileSize.Tile_Size * fieldsize + Borderwidth);
             Z.setBounds(15, 25,TileSize.Tile_Size * 3 , TileSize.Tile_Size * 2);
             //tile2.setBounds(1200, 15, Borderwidth, Borderwidth);
             wahlstation.setBounds((framewidth / 2) - (TileSize.Tile_Size * 3 + TileSize.Tile_Size / 2) / 2, frameheigth / 2 - 4 * TileSize.Tile_Size , 3 * TileSize.Tile_Size + TileSize.Tile_Size / 2 + 2, 8 * TileSize.Tile_Size + 2); //Ohne das + 2 werden die netten Striche um die Wahlstation nicht gezeichnet
