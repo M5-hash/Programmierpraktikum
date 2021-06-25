@@ -61,19 +61,19 @@ public class PanelSize extends JPanel{
         menuSlidername1.setFont(Pokemon.deriveFont(11f));
         makeConstraints(menuSlidername1, 1, 1, 1, 1);
 
-        menuSlidername2 = new JLabel("<html><body>   Size  1<br>Pokemon</body></html>");
+        menuSlidername2 = new JLabel("<html><body>   Size  2<br>Pokemon</body></html>");
         menuSlidername2.setFont(Pokemon.deriveFont(11f));
         makeConstraints(menuSlidername2, 1, 2, 1, 1);
 
-        menuSlidername3 = new JLabel("<html><body>   Size 2<br>Pokemon</body></html>");
+        menuSlidername3 = new JLabel("<html><body>   Size 3<br>Pokemon</body></html>");
         menuSlidername3.setFont(Pokemon.deriveFont(11f));
         makeConstraints(menuSlidername3, 1, 3, 1, 1);
 
-        menuSlidername4 = new JLabel("<html><body>   Size 3<br>Pokemon</body></html>");
+        menuSlidername4 = new JLabel("<html><body>   Size 4<br>Pokemon</body></html>");
         menuSlidername4.setFont(Pokemon.deriveFont(11f));
         makeConstraints(menuSlidername4, 1, 4, 1, 1);
 
-        menuSlidername5 = new JLabel("<html><body>   Size 4<br>Pokemon</body></html>");
+        menuSlidername5 = new JLabel("<html><body>   Size 5<br>Pokemon</body></html>");
         menuSlidername5.setFont(Pokemon.deriveFont(11f));
         makeConstraints(menuSlidername5, 1, 5, 1, 1);
 
@@ -153,6 +153,7 @@ public class PanelSize extends JPanel{
         makeConstraints(textField5, 2, 5, 1, 1);
 
         menuSlider1 = new SliderSize();
+        menuSlider1.setMinimum(5);
         menuSlider1.setValue(fieldsize);
         menuSlider1.addChangeListener(e -> textField1.setText(String.valueOf(menuSlider1.getValue())));
         makeConstraints(menuSlider1, 3, 1, 1,1);
