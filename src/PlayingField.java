@@ -1,8 +1,10 @@
 package src;
 
-import java.io.*;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.Arrays;
-import java.util.Scanner;
 
 public class PlayingField {
     /**
@@ -14,13 +16,23 @@ public class PlayingField {
      * 5 = Wasser abgeschossen
      */
     private int[][] field;
+
+    /**
+     * Siehe field, mit Abweichung:
+     * 3: Schuss ohne Antwort
+     * 4: Schiff kann dort nicht sein
+     */
+    private int[][] fieldEnemy;
+
+    /**
+     * Anzahl der platzierten und noch ganzen Schiffe
+     */
     private int ships = 0;
 
     /**
      * 0 = Kein Computerspieler-Spiel
      * 1 = Computerspieler Einfach
      * 2 = Computerspieler Mittel
-     * 3 = Computerspieler Schwer
      */
     private int com = 0;
 
@@ -41,7 +53,8 @@ public class PlayingField {
      * @param rows - Höhe und Breite des Spielfeldes
      */
     public PlayingField(int rows) {
-        this.initField(rows);
+        this.field = new int[rows][rows];
+        this.fieldEnemy = new int[rows][rows];
     }
 
     /**
@@ -51,26 +64,32 @@ public class PlayingField {
     }
 
     /**
-     * Erzeugt/Initialisiert das Spielfeld-Array
-     *
-     * @param rows Breite und Länge
-     */
-    private void initField(int rows) {
-        field = new int[rows][rows];
-        for (int y = 0; y < rows; y++) {
-            for (int x = 0; x < rows; x++) {
-                field[y][x] = 0;
-            }
-        }
-    }
-
-    /**
      * field-Getter
      *
      * @return Gibt field zurück
      */
     public int[][] getField() {
         return this.field;
+    }
+
+    /**
+     * fieldEnemy-Getter
+     *
+     * @return Gibt fieldEnemy zurück
+     */
+    public int[][] getFieldEnemy() {
+        return this.fieldEnemy;
+    }
+
+    /**
+     * fieldEnemy-Setter
+     *
+     * @param x   X-Koordinate bzw. Index 2
+     * @param y   Y-Koordinate bzw. Index 1
+     * @param val Value welches in fieldEnemy geschrieben werden soll
+     */
+    public void setFieldEnemy(int x, int y, int val) {
+        this.fieldEnemy[y][x] = val;
     }
 
     /**
@@ -121,7 +140,7 @@ public class PlayingField {
             } else {
                 //Markierte Felder zurücksetzen, wenn Schiff nicht gesetzt werden darf
                 this.replaceNotfinal(0);
-                System.out.println(Arrays.deepToString(field).replace("]", "]\n"));
+                //System.out.println(Arrays.deepToString(field).replace("]", "]\n"));
                 return false;
             }
 
@@ -137,7 +156,7 @@ public class PlayingField {
         if (set) {
             this.replaceNotfinal(3);
             this.ships++;
-            System.out.println(Arrays.deepToString(field).replace("]", "]\n"));
+            //System.out.println(Arrays.deepToString(field).replace("]", "]\n"));
         } else {
             this.replaceNotfinal(0);
         }
@@ -170,12 +189,12 @@ public class PlayingField {
      * Ermittelt Schiffskopf eines Schiffsteils und gibt die Koordinaten zurück
      *
      * @param field Das Feld auf dem der Schiffskopf gesucht werden soll
-     * @param x X-Koordinate des zu überprüfenden Teiles
-     * @param y Y-Koordinate des zu überprüfenden Teiles
+     * @param x     X-Koordinate des zu überprüfenden Teiles
+     * @param y     Y-Koordinate des zu überprüfenden Teiles
      * @return Gibt X und Y Koordinate vom Kopf eines Schiffes zurück
      */
     private static int[] getHeadOfShip(int[][] field, int x, int y) throws Exception {
-        PlayingField.checkCoordinatesInFieldStatic(field ,x, y);
+        PlayingField.checkCoordinatesInFieldStatic(field, x, y);
 
         int headX = x;
         int headY = y;
@@ -194,15 +213,15 @@ public class PlayingField {
      * Wrapper für getHeadOfShip mit zusätzlicher Ermittlung der Ausrichtung des Schiffes
      *
      * @param field Das Feld auf dem der Schiffskopf gesucht werden soll
-     * @param x X-Koordinate des zu überprüfenden Teiles
-     * @param y Y-Koordinate des zu überprüfenden Teiles
+     * @param x     X-Koordinate des zu überprüfenden Teiles
+     * @param y     Y-Koordinate des zu überprüfenden Teiles
      * @return Rückgabe von Int-Array:
      * [0] X-Koordinate vom Kopf
      * [1] Y-Koordinate vom Kopf
      * [2] 1 == Horizontal, 0 == Vertikal
      * @throws Exception, wenn x/y auserhalb des Spielfeldes
      */
-    public static int[] getDirHeadOfShipStatic(int[][] field, int x, int y) throws Exception{
+    public static int[] getDirHeadOfShipStatic(int[][] field, int x, int y) throws Exception {
         int[] data = PlayingField.getHeadOfShip(field, x, y);
         int horizontal = 0; //int statt bool, wegen int-Array Rückgabe
 
@@ -271,6 +290,111 @@ public class PlayingField {
         }
 
         return 0;
+    }
+
+    /**
+     * Nach einem Schuss auf den Gegner, um diesen in PlayingField zu markieren
+     * und um weitere Informationen zu berechnen
+     *
+     * @param hit 0: Wasser
+     *            1: Treffer
+     *            2: Treffer versenkt
+     */
+    public void didHit(int hit, int x, int y) throws Exception {
+        switch (hit) {
+            case 0 -> //Wasser erwischt
+                    //0 zu -1, da 0 bereits unbeschossenes Feld ist
+                    this.fieldEnemy[y][x] = 5;
+            case 1 -> { //Treffer
+                this.fieldEnemy[y][x] = 1;
+                this.markNotImportant(x + 1, y + 1);
+                this.markNotImportant(x + 1, y - 1);
+                this.markNotImportant(x - 1, y + 1);
+                this.markNotImportant(x - 1, y - 1);
+            }
+            case 2 -> { //Treffer versenkt
+                //Zuerst mit 1 markieren, für den Algorithmus der das komplette Schiff und Umgebung mit 2 markiert
+                this.fieldEnemy[y][x] = 1;
+
+                //Komplettes Schiff mit 2 Markieren
+                int[] xyh = PlayingField.getDirHeadOfShipStatic(this.fieldEnemy, x, y);
+                markEnemyShipDestroyed(xyh[0], xyh[1], xyh[2] == 1);
+            }
+            default -> throw new Exception("Parameter (" + hit + ") nicht im Bereich von 0 bis 2");
+        }
+
+        //System.out.println("didHit:");
+        //System.out.println(Arrays.deepToString(this.fieldEnemy).replace("]", "]\n"));
+    }
+
+    /**
+     * Gegnerschiff als zerstört markieren und dabei alle Felder die kein Schiff mehr sein können auch markieren
+     *
+     * @param x          X-Koordinate
+     * @param y          Y-Koordinate
+     * @param horizontal True: Schiff ist Horizontal, False: Schiff ist Vertikal
+     */
+    private void markEnemyShipDestroyed(int x, int y, boolean horizontal) {
+        //Komplettes Schiff mit 2 Markieren
+        boolean first = true;
+
+        while (y < this.fieldEnemy.length && x < this.fieldEnemy.length && this.fieldEnemy[y][x] == 1) {
+            this.fieldEnemy[y][x] = 2;
+
+            //Beim ersten Schiffsteil, die Felder links/darüber davon markieren.
+            //Da direkt an einem anderen Schiff kein zweites platziert werden darf
+            //          ||
+            // 4 .. ..  || 4  4  4 <-
+            // 4 2  ..  || .. 2  ..
+            // 4 .. ..  || .. .. ..
+            // ^        ||
+            if (first) {
+                first = false;
+                this.markNotImportant(horizontal ? x - 1 : x, horizontal ? y : y - 1);
+                this.markNotImportant(horizontal ? x - 1 : x + 1, y - 1);
+                this.markNotImportant(x - 1, horizontal ? y + 1 : y - 1);
+            }
+
+            //Felder über und unter dem Schiffsfeld markieren
+            //          ||
+            // .. 4 ..  || .. .. ..
+            // .. 2 ..  || 4  2  4 <-
+            // .. 4 ..  || .. .. ..
+            //    ^     ||
+            this.markNotImportant(horizontal ? x : x - 1, horizontal ? y - 1 : y);
+            this.markNotImportant(horizontal ? x : x + 1, horizontal ? y + 1 : y);
+
+            //Beim letzten Schiffsteil, die drei Felder rechts davon markieren
+            //          ||
+            // .. 4 4   || .. .. ..
+            // .. 2 4   || 4  2  4
+            // .. 4 4   || 4  4  4 <-
+            //      ^   ||
+            if (horizontal ?
+                    x + 1 < this.fieldEnemy.length && this.fieldEnemy[y][x+1] != 1 :
+                    y + 1 < this.fieldEnemy.length && this.fieldEnemy[y+1][x] != 1) {
+                this.markNotImportant(horizontal ? x + 1 : x, horizontal ? y : y + 1);
+                this.markNotImportant(horizontal ? x + 1 : x - 1, horizontal ? y - 1 : y + 1);
+                this.markNotImportant(x + 1, y + 1);
+            }
+
+            //Weiter nach rechts
+            if (horizontal) x++;
+            else y++;
+        }
+    }
+
+    /**
+     * fieldEnemy-Felder mit val markieren mit zusätzlichen Sicherheitsmaßnahmen
+     *  @param x   X-Koordinate
+     * @param y   Y-Koordinate
+     */
+    private void markNotImportant(int x, int y) {
+        if (x < 0 || x >= this.fieldEnemy.length) return;
+        if (y < 0 || y >= this.fieldEnemy.length) return;
+        if (this.fieldEnemy[y][x] == 5) return;
+
+        this.fieldEnemy[y][x] = 4;
     }
 
     /**
@@ -347,6 +471,7 @@ public class PlayingField {
      */
     //TODO ComputerGegner, in Spieler-Datei Schwierigkeitsgrad von Com, in Com-Datei (Auswahl mit extra Param) Spielfeld vom Com
     public void saveGame(long id, int status, boolean com) throws IOException {
+        /*
         //Saves-Ordner erstellen
         File directory = new File("." + File.separator + "Saves");
         if (!directory.exists()) directory.mkdir();
@@ -368,6 +493,8 @@ public class PlayingField {
         //Daten in Datei schreiben
         bw.write(save);
         bw.close();
+
+         */
     }
 
     /**
@@ -384,6 +511,7 @@ public class PlayingField {
      */
     //TODO ComputerGegner, in Spieler-Datei Schwierigkeitsgrad von Com, in Com-Datei (Auswahl mit extra Param) Spielfeld vom Com
     public int loadGame(long id, boolean com) throws FileNotFoundException {
+        /*
         File f = new File("." + File.separator + "Saves" + File.separator + id + "_save.txt");
         Scanner s = new Scanner(f);
 
@@ -420,6 +548,8 @@ public class PlayingField {
         System.out.println(save);
 
         return status;
+         */
+        return 0;
     }
 
     /**
@@ -454,7 +584,7 @@ public class PlayingField {
      * @param y Y-Koordinate
      * @throws Exception, wenn X/Y Koordinate nicht im Spielfeld
      */
-    public static void checkCoordinatesInFieldStatic(int[][] field, int x, int y) throws Exception{
+    public static void checkCoordinatesInFieldStatic(int[][] field, int x, int y) throws Exception {
         if (x < 0 || x >= field.length || y < 0 || y > field.length) {
             throw new Exception("Die angegebenen Koordinaten befinden sich nicht im Spielfeld");
         }
@@ -468,37 +598,30 @@ public class PlayingField {
     }
 
 
-
     //TODO entfernen, bei Release-Version. Nur zum testen
     public static void main(String[] args) {
         try {
-            PlayingField spieler = new PlayingField(10);
-            //spieler.setShip(4, 1, 1, true);
-            //spieler.setShip(3, 5, 3, false);
-            spieler.setShip(2, 2, 6, true);
-            spieler.setShip(2, 7, 8, false);
-            spieler.deleteShip(2, 6);
-            System.out.println(Arrays.deepToString(spieler.getField()).replace("]", "]\n"));
+            ComPlayer c1 = new ComPlayerNormal(new PlayingField(10), new int[]{3, 2});
+            ComPlayer c2 = new ComPlayerNormal(new PlayingField(10), new int[]{3, 2});
 
-            //ComPlayerEasy com = new ComPlayerEasy(10, new int[]{4, 3, 2, 2});
-            PlayingField comPF = new PlayingField(10);
-            ComPlayer com = new ComPlayerNormal(comPF, new int[]{4, 2, 2, 2});
-            System.out.println(Arrays.deepToString(com.pf.getField()).replace("]", "]\n"));
+            while (!c1.gameover() && !c2.gameover()) {
+                int[] xy = c1.doNextShot();
+                c1.didHit(c2.isShot(xy[0], xy[1]));
+                System.out.println("C2-Feld:");
+                System.out.println(Arrays.deepToString(c2.pf.getField()).replace("]", "]\n"));
+                System.out.println("C1-2enemFeld");
+                System.out.println(Arrays.deepToString(c1.pf.getFieldEnemy()).replace("]", "]\n"));
 
-            /*for (int i = 0; i < 20; i++) {
-                int[] xy = com.doNextShot();
-
-                spieler.isShot(xy[0], xy[1]);
-            }
-            System.out.println(Arrays.deepToString(spieler.getField()).replace("]", "]\n"));
-            */
-            while (!spieler.gameover()) {
-                int[] xy = com.doNextShot();
-
-                com.didHit(spieler.isShot(xy[0], xy[1]));
-                System.out.println(Arrays.deepToString(spieler.getField()).replace("]", "]\n"));
+                xy = c2.doNextShot();
+                c2.didHit(c1.isShot(xy[0], xy[1]));
+                System.out.println("C1-Feld:");
+                System.out.println(Arrays.deepToString(c1.pf.getField()).replace("]", "]\n"));
+                System.out.println("C2-1enemFeld");
+                System.out.println(Arrays.deepToString(c2.pf.getFieldEnemy()).replace("]", "]\n"));
             }
 
+            if (c1.gameover()) System.out.println("Computer 2 hat gewonnen");
+            if (c2.gameover()) System.out.println("Computer 1 hat gewonnen");
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
             StringWriter sw = new StringWriter();
@@ -507,23 +630,6 @@ public class PlayingField {
             String sStackTrace = sw.toString(); // stack trace as a string
             System.out.println(sStackTrace);
         }
-
-
-        /*
-        PlayingField pf = new PlayingField(10);
-        PlayingField pf2 = new PlayingField();
-
-        pf.setShip(3, 4, 4, true);
-        pf.setShip(4, 0, 0, false);
-
-        try {
-            pf.saveGame(199191918, 0, false);
-            System.out.println("\nLaden:" + pf2.loadGame(199191918, false));
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
-
-        System.out.println(Arrays.deepToString(pf2.field).replace("]", "]\n"));*/
     }
 
 

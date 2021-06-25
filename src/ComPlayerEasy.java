@@ -24,16 +24,16 @@ public class ComPlayerEasy extends ComPlayer {
     @Override
     public int[] doNextShot() {
         Random rand = new Random();
-        int rows = this.enemyField.length;
+        int rows = this.pf.getFieldEnemy().length;
         int x = rand.nextInt(rows);
         int y = rand.nextInt(rows);
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < rows; j++) {
-                if (enemyField[y][x] == 0) {
+                if (this.pf.getFieldEnemy()[y][x] == 0) {
                     //Einfaches Markieren mit 1, da ein leichter Computer einfach
                     //nur zufällig Felder abschießt und nicht auf getroffene Schiffsteile achtet
-                    enemyField[y][x] = 1;
+                    this.pf.getFieldEnemy()[y][x] = 1;
                     return new int[]{x, y};
                 }
                 x = (x + 1) % rows;
