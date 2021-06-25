@@ -6,6 +6,7 @@ import src.components.QuitButton;
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
+import java.util.Arrays;
 
 import static src.config.*;
 
@@ -14,55 +15,67 @@ public class SpielWindow extends JPanel {
     public static boolean change = false;
     public static int field_size = 10;
     public static PlayingField playingField = new PlayingField(field_size);
-    //public static TilePainter tile2 = new TilePainter(field_size, "GegnerKI");
+    public static TilePainter tile2 = new TilePainter(field_size, "GegnerKI");
     public static TilePainter tile = new TilePainter(field_size, "Spieler");
     public static Zielhilfe Z = new Zielhilfe();
+    public static ComPlayer Com;
 
-    public int menuFramewidth;
-    public int menuFrameheigth;
+    static {
+        try {
+            Com = new ComPlayerNormal(new PlayingField(field_size), new int[] {3,3,3,4});
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static int framewidth = 0;
+    public static int frameheigth = 0;
 
     String Feldvon = "Spieler"; //"GegnerKI" "GegnerMensch"
 
-    JLayeredPane LayeredPanel;
-    JPanel Bg;
-    JPanel gamePanel;
-    GridLayout gameLayout;
-    JButton buttonMenuStart;
-    JButton buttonMenuOptions;
-    JButton buttonQuitGame;
-    Wahlstation wahlstation;
-    JButton Fertig;
-    JButton Delete;
-    Timer timer;
 
-    public SpielWindow(JFrame menuFrame, JPanel menuMain) throws IOException, FontFormatException {
+
+    public SpielWindow(JFrame frame, JPanel menuMain) throws IOException, FontFormatException {
+
+        JLayeredPane LayeredPanel;
+        JPanel Bg;
+        JPanel gamePanel;
+        GridLayout gameLayout;
+        JButton buttonMenuStart;
+        JButton buttonMenuOptions;
+        JButton buttonQuitGame;
+        Wahlstation wahlstation;
+        JButton Fertig;
+        JButton Delete;
+
 
         if(fullscreen){
-            menuFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-            menuFrame.setUndecorated(true);
+            frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+            frame.setUndecorated(true);
         }
-        menuFrame.setSize(GF_WIDTH, GF_HEIGHT);
-        menuFrame.setResizable(true);
-        menuFrame.setLocationRelativeTo(null);
-        menuFrame.setVisible(true);
+        frame.setSize(GF_WIDTH, GF_HEIGHT);
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
 
-        menuFrameheigth = menuFrame.getHeight();
-        menuFramewidth = menuFrame.getWidth();
+        frameheigth = frame.getHeight();
+        framewidth = frame.getWidth();
 
         LayeredPanel = new JLayeredPane();
-        LayeredPanel.setBounds(0, 0, menuFrame.getWidth(), menuFrame.getHeight());
+        LayeredPanel.setBounds(0, 0, frame.getWidth(), frame.getHeight());
 
         Bg = new Background();
-        Bg.setBounds(0, 0, menuFrame.getWidth(), menuFrame.getHeight());
+        Bg.setBounds(0, 0, frame.getWidth(), frame.getHeight());
 
         wahlstation = new Wahlstation();
-        wahlstation.setBounds((menuFramewidth / 2) - (TileSize.Tile_Size * 3 + TileSize.Tile_Size / 2) / 2, menuFrameheigth / 2 - 4 * TileSize.Tile_Size , 3 * TileSize.Tile_Size + TileSize.Tile_Size / 2 + 2, 8 * TileSize.Tile_Size + 2); //Ohne das + 2 werden die netten Striche um die Wahlstation nicht gezeichnet
+        wahlstation.setBounds((framewidth / 2) - (TileSize.Tile_Size * 3 + TileSize.Tile_Size / 2) / 2, frameheigth / 2 - 4 * TileSize.Tile_Size , 3 * TileSize.Tile_Size + TileSize.Tile_Size / 2 + 2, 8 * TileSize.Tile_Size + 2); //Ohne das + 2 werden die netten Striche um die Wahlstation nicht gezeichnet
         wahlstation.setOpaque(false);
+
+        //tile.setBounds(framewidth / 4, framewidth / 4, framewidth / 4, framewidth / 4);
 
         gameLayout = new GridLayout(0,1);
         gameLayout.setVgap(5);
         gamePanel = new JPanel();
-        gamePanel.setBounds(menuFramewidth* 45 / 100, menuFrameheigth / 3, menuFramewidth / 10, menuFrameheigth / 3);
+        gamePanel.setBounds(framewidth* 45 / 100, frameheigth / 3, framewidth / 10, frameheigth / 3);
         gamePanel.setOpaque(false);
         gamePanel.setLayout(gameLayout);
         gamePanel.setVisible(false);
@@ -71,9 +84,8 @@ public class SpielWindow extends JPanel {
         buttonMenuStart.addActionListener(e -> {
             // Hide this window
             gamePanel.setVisible(false);
-            menuFramewidth = INITIAL_WIDTH;
-            menuFrameheigth = INITIAL_HEIGHT;
-            menuFrame.dispose();
+            frame.dispose();
+
             // Create MenuMain and display it
             try {
                 new MenuStart();
@@ -92,6 +104,17 @@ public class SpielWindow extends JPanel {
         Z.setOpaque(false);
         Z.setBounds(15, 25,TileSize.Tile_Size * 3 , TileSize.Tile_Size * 2);
 
+        Delete = new MenuButton("Delete", ImageLoader.getImage(ImageLoader.MENU_BUTTON2)) ;
+        Delete.addActionListener(l -> {
+            System.out.println("Du hast delete gedrückt");
+            System.out.println(tile.deleting);
+            tile.switchDeleting();
+            System.out.println(Arrays.deepToString(Com.pf.getField()).replace("]", "]\n"));
+            System.out.println(Arrays.deepToString(SchiffPainter.getEnemyPlacement).replace("]", "]\n"));
+            System.out.println(tile.deleting);
+
+        });
+
         Fertig = new MenuButton("Start", ImageLoader.getImage(ImageLoader.MENU_BUTTON2) ) ;
         Fertig.addActionListener(l -> {
 
@@ -101,74 +124,73 @@ public class SpielWindow extends JPanel {
             gamePanel.setVisible(true);
 
         });
-        Delete = new MenuButton("Delete", ImageLoader.getImage(ImageLoader.MENU_BUTTON2)) ;
-        Delete.addActionListener(l -> {
 
-        });
 
-        //tile2.setBounds(1200, 15, 600, 1000);
-        //tile2.setBounds(1200, 15, Borderwidth, Borderwidth);
+        tile2.setBounds(1200, 15, 600, 1000);
+
 
         LayeredPanel.add(gamePanel, Integer.valueOf(1));
         LayeredPanel.add(Bg, Integer.valueOf(0));
         LayeredPanel.add(tile, Integer.valueOf(1));
-        //LayeredPanel.add(tile2, Integer.valueOf(1));
+        LayeredPanel.add(tile2, Integer.valueOf(1));
         LayeredPanel.add(wahlstation, Integer.valueOf(1));
         LayeredPanel.add(Z, Integer.valueOf(1));
         LayeredPanel.add(Fertig, Integer.valueOf(1));
         LayeredPanel.add(Delete,Integer.valueOf(1));
 
-        menuFrame.add(LayeredPanel);
+        frame.add(LayeredPanel);
 
 
-        timer = new Timer(200, e -> {
+        Timer timer = new Timer(110, e -> {
             int Borderwidth = 2 * Math.max(18, TileSize.Tile_Size / 8) ;
-            double dbmenuFrameheigth = menuFrame.getHeight();
-            double dbmenuFramewidth = menuFrame.getWidth();
-            int TileSizer = (int) (dbmenuFramewidth * 0.30) / field_size;
+            int dbframeheigth = frame.getHeight();
+            int dbframewidth = frame.getWidth();
+            int TileSizer = (int) (dbframewidth * 0.30) / field_size;
 
             //TODO rework put check in resizer as very small and very big fieldsizes mess everything up
-            if (menuFramewidth != menuFrame.getWidth()) {
-                menuFramewidth = menuFrame.getWidth();
-                TileSize.setTile_Size(((menuFramewidth - Borderwidth) / 4) / field_size);
+            if (framewidth != frame.getWidth()) {
+                framewidth = frame.getWidth();
+                TileSize.setTile_Size(((framewidth - Borderwidth) / 4) / field_size);
+
+
             }
-            else if (menuFrameheigth != menuFrame.getHeight()) {
-                menuFrameheigth = menuFrame.getHeight();
-                TileSize.setTile_Size(((menuFramewidth / 4) - Borderwidth) / field_size);
+            else if (frameheigth != frame.getHeight()) {
+                frameheigth = frame.getHeight();
+                TileSize.setTile_Size(((framewidth / 4) - Borderwidth) / field_size);
             }
 
-            LayeredPanel.setBounds(0, 0, menuFrame.getWidth(), menuFrame.getHeight());
-            Bg.setBounds(0, 0, menuFramewidth, menuFrameheigth);
-            tile.setBounds(menuFramewidth / 8, menuFrameheigth / 4, TileSize.Tile_Size * field_size + Borderwidth, TileSize.Tile_Size * field_size + Borderwidth);
+            LayeredPanel.setBounds(0, 0, frame.getWidth(), frame.getHeight());
+            Bg.setBounds(0, 0, frame.getWidth(), frame.getHeight());
+            tile.setBounds(framewidth / 8, frameheigth / 4, TileSize.Tile_Size * field_size + Borderwidth, TileSize.Tile_Size * field_size + Borderwidth);
+            tile2.setBounds(framewidth * 5 / 8, frameheigth / 4, TileSize.Tile_Size * field_size + Borderwidth, TileSize.Tile_Size * field_size + Borderwidth);
             Z.setBounds(15, 25,TileSize.Tile_Size * 3 , TileSize.Tile_Size * 2);
             //tile2.setBounds(1200, 15, Borderwidth, Borderwidth);
-            wahlstation.setBounds((menuFramewidth / 2) - (TileSize.Tile_Size * 3 + TileSize.Tile_Size / 2) / 2, menuFrameheigth / 2 - 4 * TileSize.Tile_Size , 3 * TileSize.Tile_Size + TileSize.Tile_Size / 2 + 2, 8 * TileSize.Tile_Size + 2); //Ohne das + 2 werden die netten Striche um die Wahlstation nicht gezeichnet
-            Fertig.setBounds((menuFramewidth / 2) - (TileSize.Tile_Size * 3 + TileSize.Tile_Size / 2) / 2, menuFrameheigth / 2 + 5 * TileSize.Tile_Size , 120,50);
-            gamePanel.setBounds(menuFramewidth* 45 / 100, menuFrameheigth / 3, menuFramewidth / 10, menuFrameheigth / 3 );
+            wahlstation.setBounds((framewidth / 2) - (TileSize.Tile_Size * 3 + TileSize.Tile_Size / 2) / 2, frameheigth / 2 - 4 * TileSize.Tile_Size , 3 * TileSize.Tile_Size + TileSize.Tile_Size / 2 + 2, 8 * TileSize.Tile_Size + 2); //Ohne das + 2 werden die netten Striche um die Wahlstation nicht gezeichnet
+            Fertig.setBounds((framewidth / 2) - (TileSize.Tile_Size * 3 + TileSize.Tile_Size / 2) / 2, frameheigth / 2 + 5 * TileSize.Tile_Size , 120,50);
+            Delete.setBounds((framewidth / 2) - (TileSize.Tile_Size * 3 + TileSize.Tile_Size / 2) / 2, 120, 120,50);
+            gamePanel.setBounds(framewidth* 45 / 100, frameheigth / 3, framewidth / 10, frameheigth / 3 );
 
-            boolean Rechnungpasst = (tile.getWidth() ==  (TileSize.Tile_Size * field_size + Borderwidth)) ;
-
-            System.out.println("Die Werte stimmen überein : " + Rechnungpasst);
 
             repaintAll();
             Bg.repaint();
             Bg.revalidate();
+
         });
         timer.start();
     }
 
     void repaintAll() {
 
-        gamePanel.repaint();
-        gamePanel.revalidate();
-
-        tile.repaint(); //Der beste Command, der von der Menschheit erfunden wurde
-        tile.revalidate();
-
-        Z.repaint();
-        Z.revalidate();
-
-        wahlstation.repaint();
-        wahlstation.revalidate();
+//        gamePanel.repaint();
+//        gamePanel.revalidate();
+//
+//        tile.repaint(); //Der beste Command, der von der Menschheit erfunden wurde
+//        tile.revalidate();
+//
+//        Z.repaint();
+//        Z.revalidate();
+//
+//        wahlstation.repaint();
+//        wahlstation.revalidate();
       }
 }

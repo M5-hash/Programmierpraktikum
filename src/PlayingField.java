@@ -235,7 +235,7 @@ public class PlayingField {
         int yOffset = 0;
 
         while (data[0] + xOffset < this.field.length && data[1] + yOffset < this.field.length
-                && this.field[data[1] + yOffset][data[0] + xOffset] == 1) {
+                && this.field[data[1] + yOffset][data[0] + xOffset] == 3) {
 
             this.field[data[1] + yOffset][data[0] + xOffset] = 0;
 
@@ -475,8 +475,9 @@ public class PlayingField {
             PlayingField spieler = new PlayingField(10);
             //spieler.setShip(4, 1, 1, true);
             //spieler.setShip(3, 5, 3, false);
-            //spieler.setShip(2, 2, 6, true);
+            spieler.setShip(2, 2, 6, true);
             spieler.setShip(2, 7, 8, false);
+            spieler.deleteShip(2, 6);
             System.out.println(Arrays.deepToString(spieler.getField()).replace("]", "]\n"));
 
             //ComPlayerEasy com = new ComPlayerEasy(10, new int[]{4, 3, 2, 2});
