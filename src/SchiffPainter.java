@@ -7,7 +7,6 @@ import java.awt.image.WritableRaster;
 import java.util.ArrayList;
 
 import static src.config.fieldsize;
-import static src.Tile.field_size;
 
 public class SchiffPainter {
 
@@ -58,11 +57,11 @@ public class SchiffPainter {
 
     void initgetEnemyPlacement() {
 
-        getEnemyPlacement = new int[field_size][field_size] ;
+        getEnemyPlacement = new int[fieldsize][fieldsize] ;
 
 
-        for (int i = 0; i < field_size; i++) {
-            for (int j = 0; j < field_size; j++) {
+        for (int i = 0; i < fieldsize; i++) {
+            for (int j = 0; j < fieldsize; j++) {
 
                 getEnemyPlacement[i][j] = 8 ;
 

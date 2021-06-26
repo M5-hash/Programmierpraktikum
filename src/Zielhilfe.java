@@ -11,11 +11,10 @@ public class Zielhilfe extends JPanel {
     static int PosX  = 5;
     static int PosY = 5;
 
-
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-
+        setOpaque(false);
         boolean change = PosX != TilePainter.getPosX() ||PosY != TilePainter.getPosY() ;
 
         if(change && TilePainter.getOnfirstfield()){
