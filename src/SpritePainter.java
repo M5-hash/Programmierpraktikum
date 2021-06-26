@@ -24,7 +24,7 @@ public class SpritePainter {
      */
 
     public static int[][] BugHeckMeck = new int[fieldsize][fieldsize];
-    public static boolean ready = false;
+    public static boolean ready = false;//
     public static int counter;
     public static int[][] getEnemyPlacement;
 
