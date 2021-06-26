@@ -15,6 +15,7 @@ public class Zielhilfe extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        setOpaque(false);
 
         boolean change = PosX != TilePainter.getPosX() ||PosY != TilePainter.getPosY() ;
 
