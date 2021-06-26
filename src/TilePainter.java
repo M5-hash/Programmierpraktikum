@@ -80,8 +80,9 @@ public class TilePainter extends JPanel implements MouseMotionListener {
 
                             System.out.println("Die Position auf der Y-Achse beträgt:" + yFeld + "\nDie Postion auf der X-Achse beträgt:" + xFeld);
 
-                            if (SpielWindow.change = SpielWindow.playingField.setShip(groesse, xFeld, yFeld, horizontal) && !deleting && !Tile.isFightstart()) {
-                                AnzSchiffe++;
+                            if (!deleting && !Tile.isFightstart()) {
+                                SpielWindow.change = SpielWindow.playingField.setShip(groesse, xFeld, yFeld, horizontal);
+                                        AnzSchiffe++;
 
                             }
                             if (!Tile.isFightstart() && deleting) {
@@ -201,7 +202,7 @@ public class TilePainter extends JPanel implements MouseMotionListener {
             } else {
                 Predicted.Schiffzeichner(g, placeable);
             }
-            hier.Pokemonpicker(g);
+            //hier.Pokemonpicker(g);
             MovementHandler = false;
 
             //}

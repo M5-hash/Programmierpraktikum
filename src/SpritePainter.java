@@ -346,7 +346,7 @@ public class SpritePainter {
                             break;
 
                         case 6:
-                            Schiffdir = "src/Images/Hinten32false" + IsHit + ".png";
+                            Schiffdir = "src/Images/Hinten32falsetrue" + IsHit + ".png";
                             dosmthng = true;
                             break;
 

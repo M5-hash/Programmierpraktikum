@@ -12,7 +12,7 @@ public class Wahlstation extends JPanel {
     public void paintComponent(Graphics g) {
 
         super.paintComponent(g);
-        if (SchiffPainter.ready) {
+        if (SpritePainter.ready) {
             if (!Tile.fightstart) {
                 Wahlstationpainter(g);
             }
