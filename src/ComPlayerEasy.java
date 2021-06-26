@@ -1,5 +1,6 @@
 package src;
 
+import java.io.FileNotFoundException;
 import java.util.Random;
 
 /**
@@ -10,6 +11,16 @@ public class ComPlayerEasy extends ComPlayer {
     public ComPlayerEasy(PlayingField pf) throws Exception {
         super(pf);
         this.pf.setCom(1);
+    }
+
+    public ComPlayerEasy(long id) throws FileNotFoundException {
+        super();
+        this.loadGame(id);
+    }
+
+    public ComPlayerEasy(String file) throws  FileNotFoundException{
+        super();
+        this.loadGame(file);
     }
 
     /**

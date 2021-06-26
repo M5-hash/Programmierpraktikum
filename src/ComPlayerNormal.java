@@ -1,5 +1,6 @@
 package src;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -24,6 +25,16 @@ public class ComPlayerNormal extends ComPlayer {
         this.setRowSeq(pf.getField().length);
     }
 
+    public ComPlayerNormal(long id) throws FileNotFoundException {
+        super();
+        this.loadGame(id);
+    }
+
+    public ComPlayerNormal(String file) throws  FileNotFoundException{
+        super();
+        this.loadGame(file);
+    }
+
     private void setRowSeq(int rows) {
         this.rowSeq = new ArrayList<Integer>();
         for (int i = 0; i < rows; i++) {
@@ -32,16 +43,28 @@ public class ComPlayerNormal extends ComPlayer {
         Collections.shuffle(rowSeq);
     }
 
-    public int[] getLastCoords(){
-        return this.lastCoords;
+    public void setRowSeq(List<Integer> val){
+        this.rowSeq = val;
     }
 
     public List<Integer> getRowSeq(){
         return this.rowSeq;
     }
 
+    public int[] getLastCoords(){
+        return this.lastCoords;
+    }
+
+    public void setLastCoords(int[] val){
+        this.lastCoords = val;
+    }
+
     public int getNextRow(){
         return this.nextRow;
+    }
+
+    public void setNextRow(int val){
+        this.nextRow = val;
     }
 
     @Override

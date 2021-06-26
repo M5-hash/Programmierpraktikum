@@ -13,10 +13,8 @@ public abstract class ComPlayer {
         setShips(pf.getAllowedShips());
     }
 
-    //TODO laden überarbeiten
-    public ComPlayer(long id) throws FileNotFoundException {
-        //pf = new PlayingField();
-        this.loadGame(id);
+    public ComPlayer() throws FileNotFoundException {
+        pf = new PlayingField();
     }
 
     /**
@@ -102,8 +100,19 @@ public abstract class ComPlayer {
      * @param id
      * @throws FileNotFoundException
      */
-    private void loadGame(long id) throws FileNotFoundException {
-        //pf.loadGame(id, true);
+    protected boolean loadGame(long id) throws FileNotFoundException {
+        return pf.loadGame(id, this);
+    }
+    protected boolean loadGame(String file) throws FileNotFoundException {
+        return pf.loadGame(file, this);
+    }
+
+    public void saveGame(long id) throws IOException {
+        this.pf.saveGame(id, this);
+    }
+
+    public void saveGame(String file) throws IOException {
+        this.pf.saveGame(file, this);
     }
 
     public abstract int[] doNextShot() throws Exception;

@@ -1,9 +1,9 @@
 package src;
 
 import java.io.*;
-import java.util.Arrays;
-import java.util.UUID;
+import java.util.*;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 public class PlayingField {
     /**
@@ -635,6 +635,9 @@ public class PlayingField {
         }
         s = s.substring(0, s.length() - 1) + "\n";
 
+        //field.length
+        s += this.field.length + "\n";
+
         //field
         s += this.getSaveString2DArray(this.field);
 
@@ -672,25 +675,45 @@ public class PlayingField {
     }
 
     /**
+     * Wrapper für loadGame ohne com Angabe
+     *
+     * @param id ID der Speicherdatei, welche z.B. beim Netzwerkspiel vom Server beim Speichern zugeteilt wird
+     * @return True: Laden war erfolgreich, False: Laden war nicht erfolgreich
+     * @throws FileNotFoundException Kein Zugriff auf den Temp Ordner
+     */
+    public boolean loadGame(long id) throws FileNotFoundException {
+        return this.loadGame(id, null);
+    }
+
+    /**
+     * Wrapper für loadGame ohne com Angabe
+     *
+     * @param file Absoluter Pfad der Speicherdatei
+     * @return True: Laden war erfolgreich, False: Laden war nicht erfolgreich
+     * @throws FileNotFoundException Kein Zugriff auf den Temp Ordner
+     */
+    public boolean loadGame(String file) throws FileNotFoundException {
+        return this.loadGame(file, null);
+    }
+
+    /**
      * loadGame-Getter mit ID, statt Dateipfad und Dateinamen
      *
      * @param id ID der Speicherdatei, welche z.B. beim Netzwerkspiel vom Server beim Speichern zugeteilt wird
      * @return True: Laden war erfolgreich, False: Laden war nicht erfolgreich
      */
-    public boolean loadGame(long id) {
+    public boolean loadGame(long id, ComPlayer com) throws FileNotFoundException {
         String f = System.getProperty("java.io.tmpdir") + File.separator + "SchiffeVersenkenHSAalenSaves";
 
         //SchiffeVersenkenHSAalenSaves-Ordner überprüfen
         File directory = new File(f);
         if (!directory.exists()) return false;
 
-        //Speicherdatei erstellen bzw überschreiben
+        //File-Objekt erstellen
         File file = new File(f + File.separator + id + "_save.txt");
 
         //Mit Dateinamen jetzt das Spiel laden
-        this.loadGame(file.getAbsolutePath());
-
-        return true;
+        return this.loadGame(file.getAbsolutePath(), com);
     }
 
     /**
@@ -698,8 +721,84 @@ public class PlayingField {
      *
      * @param file Absoluter Pfad und Dateinamen
      */
-    public void loadGame(String file) {
-        System.out.println("TODO, Spielstand laden: " + file);
+    public boolean loadGame(String file, ComPlayer com) throws FileNotFoundException {
+        //Prüfen ob die Datei existiert
+        File f = new File(file);
+        if (!f.exists()) return false;
+
+        Scanner s = new Scanner(f);
+
+        //com
+        this.com = s.nextInt();
+        s.skip("\n");
+
+        if (this.com == 2) {
+            ComPlayerNormal c = (ComPlayerNormal) com;
+
+            //lastCoords
+            String str = s.nextLine();
+            c.setLastCoords(Stream.of(str.split(","))
+                    .mapToInt(Integer::parseInt)
+                    .toArray());
+
+            //rowSeq
+            str = s.nextLine();
+            List<Integer> l = new ArrayList<Integer>();
+            for (Integer i : Stream.of(str.split(",")).mapToInt(Integer::parseInt).toArray()) {
+                l.add(i);
+            }
+            c.setRowSeq(l);
+
+            //nextRow
+            c.setNextRow(s.nextInt());
+            s.skip("\n");
+        }
+
+        //isServer
+        this.isServer = s.nextInt() == 1;
+        s.skip("\n");
+
+        //status
+        this.status = s.nextInt();
+        s.skip("\n");
+
+        //ships
+        this.ships = s.nextInt();
+        s.skip("\n");
+
+        //allowedShips
+        String str = s.nextLine();
+        this.allowedShips = Stream.of(str.split(","))
+                .mapToInt(Integer::parseInt)
+                .toArray();
+
+        //field.length
+        int fieldLen = s.nextInt();
+        s.skip("\n");
+
+        //field
+        this.field = this.saveStringTo2DArray(s.nextLine(), fieldLen);
+
+        //fieldEnemy
+        this.fieldEnemy = this.saveStringTo2DArray(s.nextLine(), fieldLen);
+
+        s.close();
+
+        return true;
+    }
+
+    private int[][] saveStringTo2DArray(String line, int len) {
+        int[][] l = new int[len][len];
+
+        int i = 0;
+        for (int y = 0; y < len; y++) {
+            for (int x = 0; x < len; x++) {
+                //Char zu Int Umwandlung
+                l[y][x] = line.charAt(i++) - '0';
+            }
+        }
+
+        return l;
     }
 
     //TODO entfernen, bei Release-Version. Nur zum testen
@@ -707,12 +806,18 @@ public class PlayingField {
         try {
             int[] allowedships = new int[]{3, 2};
 
+
             ComPlayer c1 = new ComPlayerNormal(new PlayingField(10, allowedships, true));
             ComPlayer c2 = new ComPlayerNormal(new PlayingField(10, allowedships, false));
-
             int i = 0;
+            long l = 5836008514751432134L;
+            long l2 = 4836008514751432134L;
+            do {
+                if(i > 0){
+                    c1 = new ComPlayerNormal(l);
+                    c2 = new ComPlayerNormal(l2);
+                }
 
-            while (i < 15 && !c1.gameover() && !c2.gameover()) {
                 int[] xy = c1.doNextShot();
                 c1.didHit(c2.isShot(xy[0], xy[1]));
                 System.out.println("C2-Feld:");
@@ -728,15 +833,13 @@ public class PlayingField {
                 System.out.println(Arrays.deepToString(c2.pf.getFieldEnemy()).replace("]", "]\n"));
 
                 i++;
-            }
+                if (c1.gameover()) System.out.println("Computer 2 hat gewonnen");
+                if (c2.gameover()) System.out.println("Computer 1 hat gewonnen");
 
-            long l = 5836008514751432134L;
-            c1.pf.saveGame(l, c1);
+                c1.saveGame(l);
+                c2.saveGame(l2);
+            }while (!c1.gameover() && !c2.gameover());
 
-            c1.pf.loadGame(l);
-
-            if (c1.gameover()) System.out.println("Computer 2 hat gewonnen");
-            if (c2.gameover()) System.out.println("Computer 1 hat gewonnen");
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
             StringWriter sw = new StringWriter();
