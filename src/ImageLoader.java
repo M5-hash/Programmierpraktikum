@@ -37,10 +37,9 @@ public class ImageLoader {
         image[STARTMENU_BTN_TEXTFIELD]      = ImageIO.read(new File("assets/THEME_POKEMON_SM_BG.png"));
         image[STARTMENU_BTN_TEXTFIELD_EICH] = ImageIO.read(new File("assets/textfeld_eich.png"));
         image[MENU_BUTTON]                  = ImageIO.read(new File("assets/button2.png"));
-        image[MENU_BUTTON2]                 = ImageIO.read(new File("assets/button3.png"));
-        image[MENU_BUTTON3]                 = ImageIO.read(new File("assets/button4.png"));
+        image[MENU_BUTTON2]                 = ImageIO.read(new File("assets/button21.png"));
         image[FRAME_ICON]                   = ImageIO.read(new File("assets/Pokeball.png"));
-        image[OPTIONS_BACKGROUND]                   = ImageIO.read(new File("assets/OptionsBackground.png"));
+        image[OPTIONS_BACKGROUND]           = ImageIO.read(new File("assets/OptionsBackground.png"));
     }
 
     public static BufferedImage getImage(int id) {

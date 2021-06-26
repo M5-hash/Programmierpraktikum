@@ -3,9 +3,6 @@ package src.components;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.*;
 
 import static src.FontLoader.Pokemon;
 
@@ -13,17 +10,18 @@ public class MenuButton extends JButton {
 
 
     public Image image;
+    public Image disabledImage;
     public Icon icon;
 
-    public MenuButton(String button_title, Image image) throws IOException, FontFormatException {
+    public MenuButton(String button_title, Image image) {
         super();
 
         this.image = image;
         icon = new ImageIcon(image);
         setText(button_title);
         setBorder(new LineBorder(Color.darkGray));
+        setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         setFont(Pokemon);
-//        setIcon(icon);
         setOpaque(false);
         setFocusPainted(false);
         setContentAreaFilled(false);
@@ -37,11 +35,15 @@ public class MenuButton extends JButton {
             System.out.println("X Position: " + getX());
             System.out.println("Y Position: " + getY());
         });
+
+        disabledImage = GrayFilter.createDisabledImage(image);
     }
 
     @Override
     protected void paintComponent(Graphics g) {
-        g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
-        super.paintComponent(g);
+            g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
+            super.paintComponent(g);
     }
+
+
 }

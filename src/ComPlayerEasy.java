@@ -7,9 +7,9 @@ import java.util.Random;
  * Schüsse komplett zufällig (Getroffene Ziele werden nicht beachtet)
  */
 public class ComPlayerEasy extends ComPlayer {
-    public ComPlayerEasy(PlayingField pf) throws Exception {
-        super(pf);
-        this.pf.setCom(1);
+    public ComPlayerEasy(PlayingField pf, int[] ships) throws Exception {
+        super(pf, ships);
+        this.difficulty = 0;
     }
 
     /**
@@ -24,16 +24,16 @@ public class ComPlayerEasy extends ComPlayer {
     @Override
     public int[] doNextShot() {
         Random rand = new Random();
-        int rows = this.pf.getFieldEnemy().length;
+        int rows = this.enemyField.length;
         int x = rand.nextInt(rows);
         int y = rand.nextInt(rows);
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < rows; j++) {
-                if (this.pf.getFieldEnemy()[y][x] == 0) {
+                if (enemyField[y][x] == 0) {
                     //Einfaches Markieren mit 1, da ein leichter Computer einfach
                     //nur zufällig Felder abschießt und nicht auf getroffene Schiffsteile achtet
-                    this.pf.getFieldEnemy()[y][x] = 1;
+                    enemyField[y][x] = 1;
                     return new int[]{x, y};
                 }
                 x = (x + 1) % rows;

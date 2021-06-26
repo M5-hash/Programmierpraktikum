@@ -21,8 +21,8 @@ public class TilePainter extends JPanel implements MouseMotionListener {
     private final Tile Ebene;
     String field;
     boolean deleting;
-    SpritePainter hier;
-    SpritePainter Predicted;
+    SchiffPainter hier;
+    SchiffPainter Predicted;
     boolean placeable = false;
     boolean MovementHandler;
 
@@ -38,12 +38,9 @@ public class TilePainter extends JPanel implements MouseMotionListener {
     public TilePainter(int Feldgroesse, String Feldvon) {
         Ebene = new Tile(Feldgroesse, Feldvon);
         field = Feldvon;
-        hier = new SpritePainter(Feldvon);
-
-
-
+        hier = new SchiffPainter(Feldvon);
         if (Feldvon.equals("Spieler")) {
-            Predicted = new SpritePainter("Vorhersage");
+            Predicted = new SchiffPainter("Vorhersage");
         }
 
 
@@ -80,9 +77,8 @@ public class TilePainter extends JPanel implements MouseMotionListener {
 
                             System.out.println("Die Position auf der Y-Achse beträgt:" + yFeld + "\nDie Postion auf der X-Achse beträgt:" + xFeld);
 
-                            if (!deleting && !Tile.isFightstart()) {
-                                SpielWindow.change = SpielWindow.playingField.setShip(groesse, xFeld, yFeld, horizontal);
-                                        AnzSchiffe++;
+                            if (SpielWindow.change = SpielWindow.playingField.setShip(groesse, xFeld, yFeld, horizontal && !deleting && !Tile.isFightstart())) {
+                                AnzSchiffe++;
 
                             }
                             if (!Tile.isFightstart() && deleting) {
@@ -94,14 +90,11 @@ public class TilePainter extends JPanel implements MouseMotionListener {
                             }
                         }
 
-                        if (Tile.isFightstart() && Feldvon.equals("GegnerKI") || Feldvon.equals("GegnerMensch")) {
-
+                        if (Feldvon.equals("GegnerKI") || Feldvon.equals("GegnerMensch")) {
                             try {
-                                SpielWindow.playingField.didHit(SpielWindow.Com.isShot(xFeld, yFeld), xFeld, yFeld);
-                                int[] Feld = SpielWindow.Com.doNextShot();
-                                SpielWindow.Com.didHit(SpielWindow.playingField.isShot(Feld[0], Feld[1]));
-
-                                //SpielWindow.Com.doNextShot();
+                                SpielWindow.Com.isShot(xFeld , yFeld );
+                                SchiffPainter.setGetEnemyPlacement(xFeld, yFeld);
+                                    //SpielWindow.Com.doNextShot();
 
                                 System.out.println("Es wurde geschossen auf X: " + xFeld + " Y: " + yFeld);
                             } catch (Exception exception) {
@@ -193,7 +186,7 @@ public class TilePainter extends JPanel implements MouseMotionListener {
         super.paintComponent(g);
         Ebene.DrawLayer(g);
         hier.Schiffzeichner(g);
-        if (SpritePainter.ready && field.equals("Spieler")) {
+        if (SchiffPainter.ready && field.equals("Spieler")) {
 
             if (MovementHandler) {
                 Predicted.setPrediction(PosX, PosY);
@@ -202,7 +195,7 @@ public class TilePainter extends JPanel implements MouseMotionListener {
             } else {
                 Predicted.Schiffzeichner(g, placeable);
             }
-            //hier.Pokemonpicker(g);
+            hier.Pokemonpicker(g);
             MovementHandler = false;
 
             //}

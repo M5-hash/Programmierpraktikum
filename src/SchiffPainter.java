@@ -6,10 +6,9 @@ import java.awt.image.ColorModel;
 import java.awt.image.WritableRaster;
 import java.util.ArrayList;
 
-import static src.Tile.field_size;
 import static src.config.fieldsize;
 
-public class SpritePainter {
+public class SchiffPainter {
 
 
     /**
@@ -26,7 +25,7 @@ public class SpritePainter {
     public static int[][] BugHeckMeck = new int[fieldsize][fieldsize];
     public static boolean ready = false;
     public static int counter;
-    public static int[][] getEnemyPlacement;
+    public static int[][] getEnemyPlacement ;
 
 
     static boolean change = false;
@@ -34,10 +33,10 @@ public class SpritePainter {
     static ArrayList<String> Loaded = new ArrayList<>();                       // Speichert als String die Quellen der bereits geladenen Bilder ab
     static boolean fits = true;
     static int[][] saveTest;
-    int[][] Pokemon = new int[field_size][field_size];;
+    int[][] Pokemon = SpielWindow.playingField.getField();
     Bildloader Bild = new Bildloader();
     String Fieldof;
-    String IsHit = "" ;
+    String IsitRed = "";
     int[][] Vorhersage = new int[fieldsize][fieldsize];
 
     /**
@@ -47,13 +46,46 @@ public class SpritePainter {
      *                "GegnerMensch" = OnlineGegners / Menschlicher Gegner
      *                "Preview" = Feld wird verwendet um das setzen des Spieler besser darzustellen
      */
-    public SpritePainter(String Feldvon) {
+    public SchiffPainter(String Feldvon) {
 
         Fieldof = Feldvon;
-        updatePokemen();
+        initgetEnemyPlacement();
         //System.out.println(Fieldof);
 
         Schiffteil();
+    }
+
+    void initgetEnemyPlacement() {
+
+        getEnemyPlacement = new int[fieldsize][fieldsize] ;
+
+
+        for (int i = 0; i < fieldsize; i++) {
+            for (int j = 0; j < fieldsize; j++) {
+
+                getEnemyPlacement[i][j] = 8 ;
+
+
+                }
+            }
+
+    }
+
+    public static void setGetEnemyPlacement(int x, int y) {
+
+        SchiffPainter.getEnemyPlacement[y][x] = SpielWindow.Com.pf.getField()[y][x] + 9;
+
+        if (SpielWindow.Com.pf.getField()[y][x] == 2) {
+
+            for (int i = 0; i < SpielWindow.Com.pf.getField().length; i++) {
+                for (int j = 0; j < SpielWindow.Com.pf.getField()[0].length; j++) {
+                    if (SpielWindow.Com.pf.getField()[j][i] == 2) {
+                        SchiffPainter.getEnemyPlacement[j][i] = 11;
+                    }
+                }
+            }
+        }
+        change = true;
     }
 
     static int fetchImg(String Schiffdir) {
@@ -139,27 +171,6 @@ public class SpritePainter {
         return new BufferedImage(cm, wr, isAlphaPremultiplied, null);
     }
 
-    void updatePokemen() {
-
-        for (int i = 0; i < field_size; i++) {
-            for (int j = 0; j < field_size; j++) {
-
-
-                if(Pokemon[i][j] != 0 && SpielWindow.playingField.getField()[i][j] == 0){
-                    Pokemon[i][j] = SpielWindow.playingField.getField()[i][j];
-                } else
-                    if(Pokemon[i][j] == 0 && SpielWindow.playingField.getField()[i][j] == 3) {
-
-                        Pokemon[i][j] = -1 ;
-
-                }
-
-
-            }
-        }
-
-    }
-
     /**
      * Wird verwendet um die Schiffe welche in Playingfield abgespeichert werden mit der richtigen Ausrichtung darzustellen
      * <p>
@@ -206,7 +217,7 @@ public class SpritePainter {
 
         for (int i = 0; i < Schiffe.length; i++) {
             for (int j = 0; j < Schiffe[0].length; j++) {
-                if (Schiffe[i][j] == 3 ||Schiffe[i][j] == 1) {
+                if (Schiffe[i][j] == 3) {
 
                     x1 = false;
                     x2 = false;
@@ -271,13 +282,10 @@ public class SpritePainter {
      *          <p>
      *          Zeichnet die Schiffe wie sie durch das in Schiffteil() ermittelt Array vorgegeben werden, aber mit der
      *          weiteren Information ob diese dort überhaupt gesetzt werden dürfen (Feld von Preview)
-     *
-     *          TODO zeichne deine zerstörten Schiffe Tom
      */
     public void Schiffzeichner(Graphics g) {
 
         int[][] dummy;
-        int Person = 1;
 
         if (Fieldof.equals("Spieler") || Fieldof.equals("Vorhersage")) Schiffteil();
 //            System.out.println("Schiffzeichner wurde aufgerufen");
@@ -289,117 +297,104 @@ public class SpritePainter {
         int SizeofBorder = Math.max(18, TileSize.Tile_Size / 12);
 
 
-        switch (Fieldof) {
-            case "Spieler" -> {
-                dummy = BugHeckMeck;
-                Person = 1;
-            }
-            case "GegnerKI" -> {
-                dummy = SpielWindow.playingField.getFieldEnemy();
-                Person = 2;
-            }
-            case "GegnerMensch" -> {
-                dummy = getEnemyPlacement;
-                Person = 3;
-                //case "Vorhersage" -> Vorhersage;
-            }
-            default -> dummy = BugHeckMeck;
-        }
+
+        dummy = switch (Fieldof) {
+            case "Spieler" -> BugHeckMeck;
+            case "GegnerKI" -> getEnemyPlacement;
+            case "GegnerMensch" -> getEnemyPlacement;
+            //case "Vorhersage" -> Vorhersage;
+            default -> BugHeckMeck;
+        };
 
         for (int y = 0; y < dummy.length; y++) {
             for (int x = 0; x < dummy[0].length; x++) {
 
 
-                if (Person == 1) {
+                switch (dummy[y][x]) {
 
-                    //IsHit = SpielWindow.playingField.getField()[y][x] == 1;
+                    case 0:
+                        break;
+
+                    case 1:
+                        Schiffdir = "src/Images/Vorne32true" + IsitRed + ".png";
+                        dosmthng = true;
+                        break;
+
+                    case 2:
+                        Schiffdir = "src/Images/Vorne32false" + IsitRed + ".png";
+                        dosmthng = true;
+                        break;
+
+                    case 3:
+                        Schiffdir = "src/Images/Mitte32true" + IsitRed + ".png";
+                        dosmthng = true;
+                        break;
+
+                    case 4:
+                        Schiffdir = "src/Images/Mitte32false" + IsitRed + ".png";
+                        dosmthng = true;
+                        break;
+
+                    case 5:
+                        Schiffdir = "src/Images/Hinten32true" + IsitRed + ".png";
+                        dosmthng = true;
+                        break;
+
+                    case 6:
+                        Schiffdir = "src/Images/Hinten32false" + IsitRed + ".png";
+                        dosmthng = true;
+                        break;
+
+                    case 7:
+                        Schiffdir = "src/Images/EinX2.png";
+                        dosmthng = true;
+                        break;
+
+                    case 8:
+                        break;
 
 
-                    switch (dummy[y][x]) {
+                    case 9:
+                        Schiffdir = "src/Images/0.jpg";
+                        dosmthng = true;
+                        break;
 
-                        case 0:
-                            break;
+                    case 10:
+                        Schiffdir = "src/Images/1.jpg";
+                        dosmthng = true;
+                        //ausgegrauter Pokeball
+                        break;
 
-                        case 1:
-                            Schiffdir = "src/Images/Vorne32true" + IsHit + ".png";
-                            dosmthng = true;
-                            break;
 
-                        case 2:
-                            Schiffdir = "src/Images/Vorne32false" + IsHit + ".png";
-                            dosmthng = true;
-                            break;
+                    case 11:
+                        Schiffdir = "src/Images/2.jpg";
+                        dosmthng = true;
+                        //ausgegrauter Pokeball mit roter Umrandung ?
+                        break;
 
-                        case 3:
-                            Schiffdir = "src/Images/Mitte32true" + IsHit + ".png";
-                            dosmthng = true;
-                            break;
+                    case 12:
+                        //Sollte es nicht geben
+                        break;
 
-                        case 4:
-                            Schiffdir = "src/Images/Mitte32false" + IsHit + ".png";
-                            dosmthng = true;
-                            break;
 
-                        case 5:
-                            Schiffdir = "src/Images/Hinten32true" + IsHit + ".png";
-                            dosmthng = true;
-                            break;
+                    case 13:
+                        //Sollte es nicht geben
+                        break;
 
-                        case 6:
-                            Schiffdir = "src/Images/Hinten32falsetrue" + IsHit + ".png";
-                            dosmthng = true;
-                            break;
 
-                        default:
-                            System.out.println(dummy[y][x]);
-                            System.out.println("Gamer, dass ist aber dick nicht Gut mein bester, das sollte nämlich nicht gehen");
-                            System.out.println("Es gibt also einen Fehler in der Schiffteil Methode");
-                            Schiffdir = "src/Images/PokeTest32.jpg";
+                    case 14:
+                        Schiffdir = "src/Images/5.jpg";
+                        dosmthng = true;
+                        //Pflanze oder so ein Scheiß der das darstellen soll
+                        break;
 
-                    }
-                }
 
-                if (Person == 2) {
-                    switch (dummy[y][x]) {
-                        /**
-                         * Haenle seine Tabelle
-                         * <p>
-                         * 0 = Wasser
-                         * 1 = Abgeschossenes Schiffsteil
-                         * 2 = Komplett zerstört
-                         * 3 = Normales Schiffsteil
-                         * 4 = Geplantes Schiffsteil, noch nicht gesetzt
-                         * 5 = Wasser abgeschossen
-                         */
+                    default:
+                        System.out.println(dummy[y][x]);
+                        System.out.println("Gamer, dass ist aber dick nicht Gut mein bester, das sollte nämlich nicht gehen");
+                        System.out.println("Es gibt also einen Fehler in der Schiffteil Methode");
+                        Schiffdir = "src/Images/PokeTest32.jpg";
 
-                        case 0:
-                            break;
-
-                        case 1:
-                            Schiffdir = "src/Images/1.png";
-                            dosmthng = true;
-                            //Normaler Pokeball (kein Pokemon mehr)
-                            break;
-
-                        case 2:
-                            Schiffdir = "src/Images/2.png";
-                            dosmthng = true;
-                            //ausgegrauter Pokeball (Das ganze Schiff zerstört)
-                            break;
-
-                        case 3:
-                            //Sollte es nicht geben
-                            break;
-
-                        case 4:
-                            //Schiff kann dort nicht sein
-
-                        case 5:
-                            Schiffdir = "src/Images/5.png";
-                            dosmthng = true;
-                            break;
-                        //Schiff war dort nicht
-                    }
                 }
 
 
@@ -457,6 +452,17 @@ public class SpritePainter {
 
     }
 
+    /**
+     * @param x
+     * @param y TODO Diese Methode und somit une visuelles Feedback beim löschen implementieren
+     */
+    public void changetored(int x, int y) {
+
+        IsitRed = "Rot";
+
+    }
+
+
     public void Pokemonpicker(Graphics g) {
 
         BufferedImage PokemonBild = Bild.BildLoader("src/Images/PokemonTileSetremove.png");
@@ -464,23 +470,17 @@ public class SpritePainter {
         if (Fieldof.equals("Spieler")) {
             int SizeofBorder = Math.max(18, TileSize.Tile_Size / 12);
 
-            updatePokemen();
-
-            for (int y = 0; y < SpielWindow.playingField.getField().length; y++) {
-                for (int x = 0; x < SpielWindow.playingField.getField()[0].length; x++) {
-
-                    if (Pokemon[y][x] == -1 ) {
-                        Pokemon[y][x] = (int) (Math.random() * 608);
-                    }
+            for (int y = 0; y < Pokemon.length; y++) {
+                for (int x = 0; x < Pokemon[0].length; x++) {
 
 
-                    int index = Pokemon[y][x];        //Höhe & Breite per Tile 80 //(Feld[SpielWindow.field_size][SpielWindow.field_size] +
+                    int index = 200;        //Höhe & Breite per Tile 80 //(Feld[SpielWindow.field_size][SpielWindow.field_size] +
                     int yOffset = 0;
 
                     if (index > (PokemonBild.getWidth() / 80) - 1) {                      // Da das Tileset nicht nur horizontal ausgerichtet ist, muss jedes mal wenn die rechte Seite des TileSets erreicht wurde unsere source
                         while ((index > (PokemonBild.getWidth() / 80) - 1)) {             // Wieder an die linke Seite des Bildes verschoben werden
-                            index = index - (PokemonBild.getWidth() / 80);
-                            yOffset++;                                              //Aber um eine Zeile nach unten verschoben
+                            index = (int) (Math.random() * 24);
+                            yOffset = (int) (Math.random() * 25);                                              //Aber um eine Zeile nach unten verschoben
                         }
                     }
 
