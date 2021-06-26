@@ -89,11 +89,6 @@ public abstract class ComPlayer {
         throw new Exception("Fehler beim ermitteln der Computer-Schiff-Platzierungen!");
     }
 
-    private void saveGame() throws IOException {
-        String file = "";
-        this.pf.saveGame("", this);
-    }
-
     /**
      * Laden der Computer-Spieler-Sicht
      *
