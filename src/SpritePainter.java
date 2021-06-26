@@ -37,7 +37,7 @@ public class SpritePainter {
     int[][] Pokemon = new int[field_size][field_size];;
     Bildloader Bild = new Bildloader();
     String Fieldof;
-    String IsHit = "" ;
+    boolean IsHit = false ;
     int[][] Vorhersage = new int[fieldsize][fieldsize];
 
     /**
@@ -312,7 +312,7 @@ public class SpritePainter {
 
                 if (Person == 1) {
 
-                    //IsHit = SpielWindow.playingField.getField()[y][x] == 1;
+                    IsHit = SpielWindow.playingField.getField()[y][x] == 1;
 
 
                     switch (dummy[y][x]) {
@@ -346,7 +346,7 @@ public class SpritePainter {
                             break;
 
                         case 6:
-                            Schiffdir = "src/Images/Hinten32falsetrue" + IsHit + ".png";
+                            Schiffdir = "src/Images/Hinten32false" + IsHit + ".png";
                             dosmthng = true;
                             break;
 
