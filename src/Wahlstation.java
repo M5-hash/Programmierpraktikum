@@ -10,9 +10,9 @@ public class Wahlstation extends JPanel {
     Bildloader Bild = new Bildloader();
 
     public void paintComponent(Graphics g) {
-
+        setOpaque(false);
         super.paintComponent(g);
-        if (SpritePainter.ready) {
+        if (SchiffPainter.ready) {
             if (!Tile.fightstart) {
                 Wahlstationpainter(g);
             }
