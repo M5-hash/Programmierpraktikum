@@ -7,8 +7,6 @@ import src.components.QuitButton;
 import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
@@ -18,7 +16,7 @@ import static src.config.*;
 public class SpielWindow extends JPanel {
 
     public static boolean change = false;
-    public static PlayingField playingField = new PlayingField(fieldsize);
+    public static PlayingField playingField = new PlayingField(fieldsize,new int[]{3, 3, 3, 4}, true);
     public static TilePainter tile2 = new TilePainter(fieldsize, "GegnerKI");
     public static TilePainter tile = new TilePainter(fieldsize, "Spieler");
     public static Zielhilfe Z = new Zielhilfe();
@@ -26,7 +24,7 @@ public class SpielWindow extends JPanel {
 
     static {
         try {
-            Com = new ComPlayerNormal(new PlayingField(fieldsize), new int[]{3, 3, 3, 4});
+            Com = new ComPlayerNormal(new PlayingField(fieldsize, new int[]{3, 3, 3, 4}, false));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -142,7 +140,8 @@ public class SpielWindow extends JPanel {
             System.out.println(tile.deleting);
             tile.switchDeleting();
             System.out.println(Arrays.deepToString(Com.pf.getField()).replace("]", "]\n"));
-            System.out.println(Arrays.deepToString(SchiffPainter.getEnemyPlacement).replace("]", "]\n"));
+            System.out.println(Arrays.deepToString(SpielWindow.playingField.getFieldEnemy()).replace("]", "]\n"));
+            //System.out.println(Arrays.deepToString(SpielWindow.playingField.getField()).replace("]", "]\n"));
             System.out.println(tile.deleting);
 
         });
