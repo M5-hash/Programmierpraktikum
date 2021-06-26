@@ -25,8 +25,8 @@ public class MenuMultiplayer {
     public MenuMultiplayer(JFrame menuFrame, JPanel menuMain) throws IOException, FontFormatException {
         this.menuFrame = menuFrame;
 
-        COL = (INITIAL_WIDTH * 22 / 100) - 10;
-        C_GAP = (INITIAL_WIDTH * 28 / 100) - 10;
+        COL = (INITIAL_WIDTH * 20 / 100) - 10;
+        C_GAP = (INITIAL_WIDTH * 30 / 100) - 10;
         ROW_INFO = (INITIAL_HEIGHT * 33 / 100) - 10;
         ROW = (INITIAL_HEIGHT * 10 / 100) - 10;
         R_GAP = (INITIAL_HEIGHT * 2) / 100;
@@ -121,10 +121,10 @@ public class MenuMultiplayer {
 
         buttonPanel = new ButtonPanel();
 
-        getIP = new Textfield("ENTER IP");
+        getIP = new Textfield("Enter IP");
         buttonPanel.add(getIP);
 
-        buttonShipSize = new MenuButton("SIZE", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
+        buttonShipSize = new MenuButton("Size", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
         buttonShipSize.addActionListener(e -> {
             menuPanel.setVisible(false);
 

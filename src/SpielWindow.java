@@ -5,13 +5,9 @@ import src.components.MenuButton;
 import src.components.QuitButton;
 
 import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.FileFilter;
 import java.io.IOException;
 import java.util.Arrays;
 
@@ -20,7 +16,7 @@ import static src.config.*;
 public class SpielWindow extends JPanel {
 
     public static boolean change = false;
-    public static PlayingField playingField = new PlayingField(fieldsize);
+    public static PlayingField playingField = new PlayingField(fieldsize,new int[]{3, 3, 3, 4}, true);
     public static TilePainter tile2 = new TilePainter(fieldsize, "GegnerKI");
     public static TilePainter tile = new TilePainter(fieldsize, "Spieler");
     public static Zielhilfe Z = new Zielhilfe();
@@ -28,7 +24,7 @@ public class SpielWindow extends JPanel {
 
     static {
         try {
-            Com = new ComPlayerNormal(new PlayingField(fieldsize), new int[]{3, 3, 3, 4});
+            Com = new ComPlayerNormal(new PlayingField(fieldsize, new int[]{3, 3, 3, 4}, false));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -46,14 +42,13 @@ public class SpielWindow extends JPanel {
         JPanel gamePanel;
         GridLayout gameLayout;
         JButton buttonMenuStart;
-        JButton buttonRestart;
+        JButton buttonMenuOptions;
         JButton buttonSaveGame;
         JButton buttonLoadGame;
-        JButton buttonMenuOptions;
         JButton buttonQuitGame;
         Wahlstation wahlstation;
-        JButton buttonReady;
-        JButton buttonDelete;
+        JButton Fertig;
+        JButton Delete;
 
         if (fullscreen) {
             frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -67,44 +62,27 @@ public class SpielWindow extends JPanel {
         frameheigth = frame.getHeight();
         framewidth = frame.getWidth();
 
-        LayeredPanel      = new JLayeredPane();
-        Bg                = new Background();
-        wahlstation       = new Wahlstation();
-        gameLayout        = new GridLayout(0, 1);
-        buttonDelete      = new MenuButton("DELETE",       ImageLoader.getImage(ImageLoader.MENU_BUTTON));
-        buttonReady       = new MenuButton("START GAME",   ImageLoader.getImage(ImageLoader.MENU_BUTTON));
-        buttonMenuStart   = new MenuButton("MAIN MENU",    ImageLoader.getImage(ImageLoader.MENU_BUTTON));
-        buttonRestart     = new MenuButton("RESTART GAME", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
-        buttonSaveGame    = new MenuButton("SAVE GAME",    ImageLoader.getImage(ImageLoader.MENU_BUTTON));
-        buttonLoadGame    = new MenuButton("LOAD GAME",    ImageLoader.getImage(ImageLoader.MENU_BUTTON));
-        buttonMenuOptions = new MenuButton("OPTIONS",      ImageLoader.getImage(ImageLoader.MENU_BUTTON));
-        buttonQuitGame    = new QuitButton();
-        gamePanel         = new JPanel();
+        LayeredPanel = new JLayeredPane();
+        LayeredPanel.setBounds(0, 0, frame.getWidth(), frame.getHeight());
 
-//        wahlstation.setOpaque(false);
+        Bg = new Background();
+        Bg.setBounds(0, 0, frame.getWidth(), frame.getHeight());
 
+        wahlstation = new Wahlstation();
+        wahlstation.setBounds((framewidth / 2) - (TileSize.Tile_Size * 3 + TileSize.Tile_Size / 2) / 2, frameheigth / 2 - 4 * TileSize.Tile_Size, 3 * TileSize.Tile_Size + TileSize.Tile_Size / 2 + 2, 8 * TileSize.Tile_Size + 2); //Ohne das + 2 werden die netten Striche um die Wahlstation nicht gezeichnet
+        wahlstation.setOpaque(false);
+
+        //tile.setBounds(framewidth / 4, framewidth / 4, framewidth / 4, framewidth / 4);
+
+        gameLayout = new GridLayout(0, 1);
         gameLayout.setVgap(5);
+        gamePanel = new JPanel();
         gamePanel.setBounds(framewidth * 45 / 100, frameheigth / 3, framewidth / 20, frameheigth / 3);
         gamePanel.setOpaque(false);
         gamePanel.setLayout(gameLayout);
         gamePanel.setVisible(false);
 
-        buttonReady.addActionListener(l -> {
-
-            Tile.fightstart = !Tile.fightstart;
-            buttonReady.setVisible(false);
-            buttonDelete.setVisible(false);
-            gamePanel.setVisible(true);
-        });
-        buttonDelete.addActionListener(e -> {
-
-            System.out.println("Du hast delete gedrückt");
-            System.out.println(tile.deleting);
-            tile.switchDeleting();
-            System.out.println(Arrays.deepToString(Com.pf.getField()).replace("]", "]\n"));
-            System.out.println(Arrays.deepToString(SchiffPainter.getEnemyPlacement).replace("]", "]\n"));
-            System.out.println(tile.deleting);
-        });
+        buttonMenuStart = new MenuButton("MAIN MENU", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
         buttonMenuStart.addActionListener(e -> {
             // Hide this window
             gamePanel.setVisible(false);
@@ -117,18 +95,13 @@ public class SpielWindow extends JPanel {
                 ioException.printStackTrace();
             }
         });
-        buttonRestart.addActionListener(e -> {
-            buttonReady.setVisible(true);
-            buttonDelete.setVisible(true);
-            gamePanel.setVisible(false);
-        });
+        gamePanel.add(buttonMenuStart);
+
+        buttonSaveGame = new MenuButton("SAVE GAME", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
         buttonSaveGame.addActionListener(e -> {
             JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
             jfc.setDialogTitle("Choose a directory to save your file: ");
-            jfc.setFileSelectionMode(JFileChooser.FILES_ONLY);
-            jfc.setDialogTitle("Sava a File");
-            FileNameExtensionFilter filter = new FileNameExtensionFilter("Text File", "txt");
-            jfc.setFileFilter(filter);
+            jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
             int returnValue = jfc.showSaveDialog(null);
             if (returnValue == JFileChooser.APPROVE_OPTION) {
@@ -137,31 +110,53 @@ public class SpielWindow extends JPanel {
                 }
             }
         });
+        gamePanel.add(buttonSaveGame);
+
+        buttonLoadGame = new MenuButton("LOAD GAME", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
         buttonLoadGame.addActionListener(e -> {
             JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
 
             int returnValue = jfc.showOpenDialog(null);
-            if (returnValue == JFileChooser.APPROVE_OPTION) {
+            if (returnValue == JFileChooser.APPROVE_OPTION) ;
+            {
                 File selectedFile = jfc.getSelectedFile();
                 System.out.println(selectedFile.getAbsolutePath());
             }
         });
-
-        gamePanel.add(buttonMenuStart);
-        gamePanel.add(buttonRestart);
-        gamePanel.add(buttonSaveGame);
         gamePanel.add(buttonLoadGame);
+
+        buttonMenuOptions = new MenuButton("OPTIONS", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
         gamePanel.add(buttonMenuOptions);
+
+        buttonQuitGame = new QuitButton();
         gamePanel.add(buttonQuitGame);
 
-        LayeredPanel.setBounds(0, 0, frame.getWidth(), frame.getHeight());
-        Bg.          setBounds(0, 0, frame.getWidth(), frame.getHeight());
-        tile.        setBounds(framewidth * 13 / 100, frameheigth * 25 / 100, TileSize.Tile_Size * fieldsize + 2 * Math.max(18, TileSize.Tile_Size / 8), TileSize.Tile_Size * fieldsize + 2 * Math.max(18, TileSize.Tile_Size / 8));
-        tile2.       setBounds(framewidth * 63 / 100, frameheigth * 25 / 100, TileSize.Tile_Size * fieldsize + 2 * Math.max(18, TileSize.Tile_Size / 8), TileSize.Tile_Size * fieldsize + 2 * Math.max(18, TileSize.Tile_Size / 8));
-        wahlstation. setBounds(framewidth * 46 / 100, frameheigth * 25 / 100, 3 * TileSize.Tile_Size + TileSize.Tile_Size / 2 + 2, 8 * TileSize.Tile_Size + 2); //Ohne das + 2 werden die netten Striche um die Wahlstation nicht gezeichnet
-        buttonReady. setBounds(framewidth * 46 / 100, frameheigth * 59 / 100, framewidth * 8 / 100, frameheigth * 5  / 100);
-        buttonDelete.setBounds(framewidth * 46 / 100, frameheigth * 65 / 100, framewidth * 8 / 100, frameheigth * 5  / 100);
-        gamePanel.   setBounds(framewidth * 46 / 100, frameheigth * 33 / 100, framewidth * 8 / 100, frameheigth * 33 / 100);
+        Z.setOpaque(false);
+        Z.setBounds(15, 25, TileSize.Tile_Size * 3, TileSize.Tile_Size * 2);
+
+        Delete = new MenuButton("DELETE", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
+        Delete.addActionListener(l -> {
+            System.out.println("Du hast delete gedrückt");
+            System.out.println(tile.deleting);
+            tile.switchDeleting();
+            System.out.println(Arrays.deepToString(Com.pf.getField()).replace("]", "]\n"));
+            System.out.println(Arrays.deepToString(SpielWindow.playingField.getFieldEnemy()).replace("]", "]\n"));
+            //System.out.println(Arrays.deepToString(SpielWindow.playingField.getField()).replace("]", "]\n"));
+            System.out.println(tile.deleting);
+
+        });
+
+        Fertig = new MenuButton("START GAME", ImageLoader.getImage(ImageLoader.MENU_BUTTON2));
+        Fertig.addActionListener(l -> {
+
+            Tile.fightstart = !Tile.fightstart;
+            Fertig.setVisible(false);
+            Delete.setVisible(false);
+            gamePanel.setVisible(true);
+
+        });
+
+        tile2.setBounds(1200, 15, 600, 1000);
 
         LayeredPanel.add(gamePanel, Integer.valueOf(1));
         LayeredPanel.add(Bg, Integer.valueOf(0));
@@ -169,8 +164,8 @@ public class SpielWindow extends JPanel {
         LayeredPanel.add(tile2, Integer.valueOf(1));
         LayeredPanel.add(wahlstation, Integer.valueOf(1));
         LayeredPanel.add(Z, Integer.valueOf(1));
-        LayeredPanel.add(buttonReady, Integer.valueOf(1));
-        LayeredPanel.add(buttonDelete, Integer.valueOf(1));
+        LayeredPanel.add(Fertig, Integer.valueOf(1));
+        LayeredPanel.add(Delete, Integer.valueOf(1));
 
         frame.add(LayeredPanel);
 
@@ -192,18 +187,35 @@ public class SpielWindow extends JPanel {
             }
 
             LayeredPanel.setBounds(0, 0, frame.getWidth(), frame.getHeight());
-            Bg.          setBounds(0, 0, frame.getWidth(), frame.getHeight());
-            tile.        setBounds(framewidth * 13 / 100, frameheigth * 25 / 100, TileSize.Tile_Size * fieldsize + Borderwidth, TileSize.Tile_Size * fieldsize + Borderwidth);
-            tile2.       setBounds(framewidth * 63 / 100, frameheigth * 25 / 100, TileSize.Tile_Size * fieldsize + Borderwidth, TileSize.Tile_Size * fieldsize + Borderwidth);
-            Z.           setBounds(framewidth * 13 / 100 + Borderwidth / 2, frameheigth * 17 / 100, TileSize.Tile_Size * 3, frameheigth * 8 / 100);
-            wahlstation. setBounds(framewidth * 46 / 100, frameheigth / 4, 3 * TileSize.Tile_Size + TileSize.Tile_Size / 2 + 2, 8 * TileSize.Tile_Size + 2); //Ohne das + 2 werden die netten Striche um die Wahlstation nicht gezeichnet
-            buttonReady. setBounds(framewidth * 46 / 100, frameheigth * 59 / 100, framewidth * 8 / 100, frameheigth * 5  / 100);
-            buttonDelete.setBounds(framewidth * 46 / 100, frameheigth * 65 / 100, framewidth * 8 / 100, frameheigth * 5  / 100);
-            gamePanel.   setBounds(framewidth * 46 / 100, frameheigth * 33 / 100, framewidth * 8 / 100, frameheigth * 33 / 100);
-
+            Bg.setBounds(0, 0, frame.getWidth(), frame.getHeight());
+            tile.setBounds(framewidth / 8, frameheigth / 4, TileSize.Tile_Size * fieldsize + Borderwidth, TileSize.Tile_Size * fieldsize + Borderwidth);
+            tile2.setBounds(framewidth * 5 / 8, frameheigth / 4, TileSize.Tile_Size * fieldsize + Borderwidth, TileSize.Tile_Size * fieldsize + Borderwidth);
+            Z.setBounds(15, 25, TileSize.Tile_Size * 3, TileSize.Tile_Size * 2);
+            //tile2.setBounds(1200, 15, Borderwidth, Borderwidth);
+            wahlstation.setBounds((framewidth / 2) - (TileSize.Tile_Size * 3 + TileSize.Tile_Size / 2) / 2, frameheigth / 2 - 4 * TileSize.Tile_Size, 3 * TileSize.Tile_Size + TileSize.Tile_Size / 2 + 2, 8 * TileSize.Tile_Size + 2); //Ohne das + 2 werden die netten Striche um die Wahlstation nicht gezeichnet
+            Fertig.setBounds((framewidth / 2) - (TileSize.Tile_Size * 3 + TileSize.Tile_Size / 2) / 2, frameheigth / 2 + 5 * TileSize.Tile_Size, 120, 50);
+            Delete.setBounds((framewidth / 2) - (TileSize.Tile_Size * 3 + TileSize.Tile_Size / 2) / 2, 120, 120, 50);
+            gamePanel.setBounds(framewidth * 46 / 100, frameheigth / 3, framewidth * 8 / 100, frameheigth / 3);
+            repaintAll();
             Bg.repaint();
             Bg.revalidate();
+
         });
         timer.start();
+    }
+
+    void repaintAll() {
+
+//        gamePanel.repaint();
+//        gamePanel.revalidate();
+//
+//        tile.repaint(); //Der beste Command, der von der Menschheit erfunden wurde
+//        tile.revalidate();
+//
+//        Z.repaint();
+//        Z.revalidate();
+//
+//        wahlstation.repaint();
+//        wahlstation.revalidate();
     }
 }

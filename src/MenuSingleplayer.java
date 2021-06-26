@@ -26,8 +26,8 @@ public class MenuSingleplayer {
     public MenuSingleplayer(JFrame menuFrame, JPanel menuMain) throws IOException, FontFormatException {
         this.menuFrame = menuFrame;
 
-        COL = (INITIAL_WIDTH * 22 / 100) - 10;
-        C_GAP = (INITIAL_WIDTH * 28 / 100) - 10;
+        COL = (INITIAL_WIDTH * 20 / 100) - 10;
+        C_GAP = (INITIAL_WIDTH * 30 / 100) - 10;
         ROW_INFO = (INITIAL_HEIGHT * 33 / 100) - 10;
         ROW = (INITIAL_HEIGHT * 10 / 100) - 10;
         R_GAP = (INITIAL_HEIGHT * 2) / 100;
@@ -40,7 +40,7 @@ public class MenuSingleplayer {
         menuPanel = new CustomPanel(ImageLoader.getImage(ImageLoader.STARTMENU_BG));
         menuPanel.setLayout(menuLayout);
 
-        menuInformation = new MenuInformation(ImageLoader.getImage(ImageLoader.STARTMENU_BTN_TEXTFIELD_EICH), TextSingleplayer, menuFrame);
+        menuInformation = new MenuInformation(ImageLoader.getImage(ImageLoader.STARTMENU_BTN_TEXTFIELD_EICH), TextMulitplayer, menuFrame);
         makeConstraints(menuInformation, 0, 0, 4);
 
         buttonMenuStart = new MenuButton("MAIN MENU", ImageLoader.getImage(ImageLoader.MENU_BUTTON));

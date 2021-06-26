@@ -11,10 +11,11 @@ public class Zielhilfe extends JPanel {
     static int PosX  = 5;
     static int PosY = 5;
 
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        setOpaque(false);
+
         boolean change = PosX != TilePainter.getPosX() ||PosY != TilePainter.getPosY() ;
 
         if(change && TilePainter.getOnfirstfield()){
@@ -51,7 +52,7 @@ public class Zielhilfe extends JPanel {
         while (notfinished) {
 
             if (Inbetweener == 1) {
-                Zahldir = "src/Images/1.jpg";
+                Zahldir = "src/Images/1.png";
 
                 Zahl = Bild.BildLoader(Zahldir);
 
@@ -80,47 +81,47 @@ public class Zielhilfe extends JPanel {
                     switch (laeufer) {
 
                         case 0:
-                            Zahldir = "src/Images/0.jpg";
+                            Zahldir = "src/Images/0.png";
                             break;
 
                         case 1:
-                            Zahldir = "src/Images/1.jpg";
+                            Zahldir = "src/Images/1.png";
                             break;
 
                         case 2:
-                            Zahldir = "src/Images/2.jpg";
+                            Zahldir = "src/Images/2.png";
                             break;
 
                         case 3:
-                            Zahldir = "src/Images/3.jpg";
+                            Zahldir = "src/Images/3.png";
                             break;
 
                         case 4:
-                            Zahldir = "src/Images/4.jpg";
+                            Zahldir = "src/Images/4.png";
                             break;
 
                         case 5:
-                            Zahldir = "src/Images/5.jpg";
+                            Zahldir = "src/Images/5.png";
                             break;
 
                         case 6:
-                            Zahldir = "src/Images/6.jpg";
+                            Zahldir = "src/Images/6.png";
                             break;
 
                         case 7:
-                            Zahldir = "src/Images/7.jpg";
+                            Zahldir = "src/Images/7.png";
                             break;
 
                         case 8:
-                            Zahldir = "src/Images/8.jpg";
+                            Zahldir = "src/Images/8.png";
                             break;
 
                         case 9:
-                            Zahldir = "src/Images/9.jpg";
+                            Zahldir = "src/Images/9.png";
                             break;
 
                         case 10:
-                            Zahldir = "src/Images/1.jpg" ;
+                            Zahldir = "src/Images/1.png" ;
                             Inbetweener = 0 ;
                             i++;
                             j++;
@@ -152,7 +153,7 @@ public class Zielhilfe extends JPanel {
 
             if(PosY == 1){
 
-                Zahldir = "src/Images/1.jpg";
+                Zahldir = "src/Images/1.png";
 
                 Zahl = Bild.BildLoader(Zahldir);
 
