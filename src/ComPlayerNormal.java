@@ -18,10 +18,10 @@ public class ComPlayerNormal extends ComPlayer {
     private List<Integer> rowSeq = null;
     private int nextRow = -1;
 
-    public ComPlayerNormal(PlayingField pf, int[] ships) throws Exception {
-        super(pf, ships);
+    public ComPlayerNormal(PlayingField pf) throws Exception {
+        super(pf);
+        this.pf.setCom(2);
         this.setRowSeq(pf.getField().length);
-        this.difficulty = 1;
     }
 
     private void setRowSeq(int rows) {
@@ -30,6 +30,18 @@ public class ComPlayerNormal extends ComPlayer {
             this.rowSeq.add(i);
         }
         Collections.shuffle(rowSeq);
+    }
+
+    public int[] getLastCoords(){
+        return this.lastCoords;
+    }
+
+    public List<Integer> getRowSeq(){
+        return this.rowSeq;
+    }
+
+    public int getNextRow(){
+        return this.nextRow;
     }
 
     @Override

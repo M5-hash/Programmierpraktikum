@@ -1,21 +1,21 @@
 package src;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Random;
 
 public abstract class ComPlayer {
     protected PlayingField pf;
-    protected int difficulty;
 
     //public ComPlayer(int rows, int[] ships) throws Exception {
-    public ComPlayer(PlayingField pf, int[] ships) throws Exception {
+    public ComPlayer(PlayingField pf) throws Exception {
         this.pf = pf;
-        setShips(ships);
+        setShips(pf.getAllowedShips());
     }
 
     //TODO laden überarbeiten
     public ComPlayer(long id) throws FileNotFoundException {
-        pf = new PlayingField();
+        //pf = new PlayingField();
         this.loadGame(id);
     }
 
@@ -89,6 +89,11 @@ public abstract class ComPlayer {
         }
 
         throw new Exception("Fehler beim ermitteln der Computer-Schiff-Platzierungen!");
+    }
+
+    private void saveGame() throws IOException {
+        String file = "";
+        this.pf.saveGame("", this);
     }
 
     /**
