@@ -32,7 +32,7 @@ public class MenuSize {
         menuLayout.rowHeights = new int[]{ROW_INFO, R_GAP, ROW, R_GAP};
         constraints = new GridBagConstraints();
 
-        menuPanel = new CustomPanel(ImageLoader.getImage(ImageLoader.STARTMENU_BG));
+        menuPanel = new CustomPanel(ImageLoader.getImage(ImageLoader.MENU_BG));
         menuPanel.setLayout(menuLayout);
 
         menuInformation = new MenuInformation(ImageLoader.getImage(ImageLoader.STARTMENU_BTN_TEXTFIELD_EICH), TextSize, menuFrame);

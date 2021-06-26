@@ -10,19 +10,22 @@ public class MenuButton extends JButton {
 
 
     public Image image;
-    public Image disabledImage;
+    public Image disabledimage;
     public Icon icon;
+    public Icon disabledIcon;
 
     public MenuButton(String button_title, Image image) {
         super();
 
         this.image = image;
+        disabledimage = GrayFilter.createDisabledImage(image);
+//        disabledIcon = new ImageIcon(image);
+
         icon = new ImageIcon(image);
         setText(button_title);
         setBorder(new LineBorder(Color.darkGray));
         setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         setFont(Pokemon);
-        setOpaque(false);
         setFocusPainted(false);
         setContentAreaFilled(false);
         setVerticalTextPosition(CENTER);
@@ -35,15 +38,15 @@ public class MenuButton extends JButton {
             System.out.println("X Position: " + getX());
             System.out.println("Y Position: " + getY());
         });
-
-        disabledImage = GrayFilter.createDisabledImage(image);
     }
 
     @Override
     protected void paintComponent(Graphics g) {
+        if(isEnabled()){
             g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
-            super.paintComponent(g);
+        } else {
+            g.drawImage(disabledimage, 0, 0, getWidth(), getHeight(), this);
+        }
+        super.paintComponent(g);
     }
-
-
 }

@@ -51,7 +51,7 @@ public class PanelSize extends JPanel{
     JTextField          textField5;
     JPanel              buttonPanel;
 
-    public PanelSize(JFrame menuFrame, BufferedImage image, JPanel previousPanel, JPanel menuPanel) throws IOException, FontFormatException{
+    public PanelSize(JFrame menuFrame, BufferedImage image, JPanel previousPanel, JPanel menuPanel) {
         this.background = image;
         setOpaque(false);
 
@@ -98,17 +98,14 @@ public class PanelSize extends JPanel{
         makeConstraints(menuSlidername5, 1, 6, 1, 1);
 
         textField1 = new sizeTextfield(fieldsize);
-        textField1.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String typed = textField1.getText();
-                menuSlider1.setValue(5);
-                if(!typed.matches("\\d+") || typed.length() > 3 ) {
-                    return;
-                }
-                int value = Integer.parseInt(typed);
-                menuSlider1.setValue(value);
+        textField1.addActionListener(e -> {
+            String typed = textField1.getText();
+            menuSlider1.setValue(5);
+            if(!typed.matches("\\d+") || typed.length() > 3 ) {
+                return;
             }
+            int value = Integer.parseInt(typed);
+            menuSlider1.setValue(value);
         });
 
         makeConstraints(textField1, 2, 2, 1, 1);
@@ -245,6 +242,7 @@ public class PanelSize extends JPanel{
         });
         buttonPanel.add(buttonCancel);
         makeConstraints(buttonPanel, 1, 7, 3,1);
+
     }
 
     private void UpdateMenuCounter() {
@@ -266,10 +264,14 @@ public class PanelSize extends JPanel{
                     return Color.red;
                 }
             });
+            buttonApply.setBackground(Color.darkGray);
             buttonApply.setEnabled(false);
             menuCounter.setText("Reduce the amount of Pokemon by " + temp_fieldsleft);
-        } else {
-            menuCounter.setText(String.valueOf(temp_fieldsleft));
+        } else if(temp_fieldsleft >= 0) {
+            buttonApply.setEnabled(true);
+            buttonApply.setForeground(Color.black);
+            menuCounter.setText("Fields left " + temp_fieldsleft);
+            menuCounter.setForeground(Color.black);
         }
 
         System.out.println("-----------------");
