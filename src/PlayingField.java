@@ -68,17 +68,18 @@ public class PlayingField {
     }
 
     /**
-     * Konstruktor
-     *
-     * @param rows - Höhe und Breite des Spielfeldes
+     * Leerer-Konstruktor, um ein PlayingField zu erstellen, welches seine Daten über this.loadGame erhält
      */
-    public PlayingField(int rows) {
-        this.field = new int[rows][rows];
-        this.fieldEnemy = new int[rows][rows];
+    public PlayingField() {
     }
 
     /**
-     * Leerer-Konstruktor, um ein PlayingField zu erstellen, welches seine Daten über this.loadGame erhält
+     * Konstruktor
+     *
+     * @param rows         Größe des Spielfeldes
+     * @param allowedShips Die erlaubten Schiffe
+     * @param isServer     True: PlayingField des Servers (Bzw. des Spielers der zuerst schießt)
+     *                     False: Client
      */
     public PlayingField(int rows, int[] allowedShips, boolean isServer) {
         this.field = new int[rows][rows];
