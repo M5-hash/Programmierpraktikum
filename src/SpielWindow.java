@@ -5,11 +5,13 @@ import src.components.MenuButton;
 import src.components.QuitButton;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileFilter;
 import java.io.IOException;
 import java.util.Arrays;
 
@@ -123,7 +125,10 @@ public class SpielWindow extends JPanel {
         buttonSaveGame.addActionListener(e -> {
             JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
             jfc.setDialogTitle("Choose a directory to save your file: ");
-            jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            jfc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+            jfc.setDialogTitle("Sava a File");
+            FileNameExtensionFilter filter = new FileNameExtensionFilter("Text File", "txt");
+            jfc.setFileFilter(filter);
 
             int returnValue = jfc.showSaveDialog(null);
             if (returnValue == JFileChooser.APPROVE_OPTION) {

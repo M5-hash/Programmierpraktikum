@@ -20,6 +20,7 @@ public class CustomCheckBox extends JPanel {
 
         checkBox = new JCheckBox();
         checkBox.setText(fullscreen);
+        checkBox.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         checkBox.setSelected(b);
         checkBox.setMnemonic(KeyEvent.VK_C);
         checkBox.setHorizontalAlignment((int) JCheckBox.CENTER_ALIGNMENT);
@@ -40,7 +41,7 @@ public class CustomCheckBox extends JPanel {
 
     @Override
     protected void paintComponent(Graphics g) {
-        g.drawImage(ImageLoader.getImage(ImageLoader.MENU_BUTTON), 0, 0, getWidth(), getHeight(), this);
+        g.drawImage(ImageLoader.getImage(ImageLoader.MENU_BUTTON2), 0, 0, getWidth(), getHeight(), this);
         super.paintComponent(g);
     }
 }

@@ -24,9 +24,10 @@ public class CustomComboBox2 extends JPanel {
         listCellRenderer.setHorizontalAlignment(CENTER);
 
         comboBox = new JComboBox<>(text);
+        comboBox.setBackground(new Color(248, 247, 201));
         comboBox.setOpaque(false);
-        comboBox.setBackground(Color.darkGray);
         comboBox.setRenderer(listCellRenderer);
+        comboBox.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         comboBox.setAlignmentX(Component.CENTER_ALIGNMENT);
         comboBox.setFont(Pokemon);
         comboBox.addActionListener(e -> {

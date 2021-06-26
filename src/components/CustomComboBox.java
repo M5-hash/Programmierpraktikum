@@ -7,7 +7,6 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 
 import static javax.swing.SwingConstants.CENTER;
-import static src.FontLoader.Pokemon;
 import static src.config.*;
 
 public class CustomComboBox extends JPanel {
@@ -16,7 +15,6 @@ public class CustomComboBox extends JPanel {
 
     public CustomComboBox(String[] text, Font Pokemon) {
 
-        setOpaque(false);
         setLayout(new BorderLayout());
         setBorder(new LineBorder(Color.black));
 
@@ -25,8 +23,9 @@ public class CustomComboBox extends JPanel {
         listCellRenderer.setIcon(new ImageIcon(ImageLoader.getImage(ImageLoader.MENU_BUTTON)));
 
         comboBox = new JComboBox<>(text);
-//        comboBox.setOpaque(false);
-//        comboBox.setBackground(new Color(0,0,0,0));
+        comboBox.setBackground(new Color(248, 247, 201));
+        comboBox.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        comboBox.setOpaque(false);
         comboBox.setRenderer(listCellRenderer);
         comboBox.setAlignmentX(Component.CENTER_ALIGNMENT);
         comboBox.setFont(Pokemon);
@@ -43,9 +42,9 @@ public class CustomComboBox extends JPanel {
         });
         add(comboBox, BorderLayout.CENTER);
     }
-//    @Override
-//    protected void paintComponent(Graphics g) {
-//        super.paintComponent(g);
-//        g.drawImage(ImageLoader.getImage(ImageLoader.MENU_BUTTON), 0, 0, getWidth(), getHeight(), this);
-//    }
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.drawImage(ImageLoader.getImage(ImageLoader.MENU_BUTTON), 0, 0, getWidth(), getHeight(), this);
+    }
 }
