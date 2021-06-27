@@ -18,6 +18,7 @@ public class Client extends Com_base {
         this.out = new OutputStreamWriter(s.getOutputStream());
         this.usr = new BufferedReader(new InputStreamReader(System.in));
         this.pf = setupPlayingfield();
+        new SpielWindow(menuFrame, KI);
         this.run();
     }
 
