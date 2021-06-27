@@ -221,24 +221,31 @@ public class PlayingField {
      *
      * @param x X-Koordinate eines Schiffteiles
      * @param y Y-Koordinate eines Schiffteiles
+     * @return Länge des gelöschten Schiffes
      */
-    public void deleteShip(int x, int y) throws Exception {
+    public int deleteShip(int x, int y) throws Exception {
         checkCoordinatesInField(x, y);
 
         int[] data = getDirHeadOfShip(x, y);
         int xOffset = 0;
         int yOffset = 0;
 
+        //Länge ermitteln, als Rückgabewert
+        int l = 0;
+
         while (data[0] + xOffset < this.field.length && data[1] + yOffset < this.field.length
                 && this.field[data[1] + yOffset][data[0] + xOffset] == 3) {
 
             this.field[data[1] + yOffset][data[0] + xOffset] = 0;
+            l++;
 
             if (data[2] == 1) xOffset++;
             else yOffset++;
         }
 
         this.ships--;
+
+        return l;
     }
 
     /**
