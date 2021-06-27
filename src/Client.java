@@ -1,15 +1,14 @@
 package src;
 
-import src.Com_base;
-
+import javax.swing.*;
 import java.net.*;
 import java.io.*;
 
-class Client extends Com_base {
+public class Client extends Com_base {
 
     private final String IP;
 
-    public Client(String IP_in) throws Exception {
+    public Client(String IP_in, JFrame menuFrame, boolean KI) throws Exception {
         super();
         System.out.println("Bitte geben Sie die IP Ihres Spielpartners ein:");
         this.IP = IP_in;
