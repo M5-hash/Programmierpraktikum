@@ -1,11 +1,13 @@
 package src.components;
 
 import src.ImageLoader;
+import src.Server;
 import src.SpielWindow;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
@@ -13,9 +15,10 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 
 import static src.config.*;
-import static src.config.ROW;
 
 public class HostPanel extends JPanel {
+
+    private final BufferedImage background;
 
     GridBagLayout       menuLayout;
     GridBagConstraints  constraints;
@@ -25,13 +28,15 @@ public class HostPanel extends JPanel {
     JButton             buttonStartGame;
     JList<String> listIP;
 
-    public HostPanel(JFrame menuFrame, JPanel menuHost, JPanel previousPanel) throws IOException {
+    public HostPanel(JFrame menuFrame, JPanel menuHost, JPanel previousPanel, BufferedImage image) throws IOException {
+
+        this.background = image;
 
         int width   = menuFrame.getWidth() * 60 / 100;
         int height = menuFrame.getHeight() * 60 / 100;
 
         COL         = width * 25 / 100;
-        C_GAP       = width * 10 / 100;
+        C_GAP       = width * 5 / 100;
         ROW_INFO    = height * 70 / 100;
         ROW         = height * 10 / 100;
         menuLayout  = new GridBagLayout();
@@ -60,6 +65,7 @@ public class HostPanel extends JPanel {
         });
         buttonStartGame.addActionListener(e -> {
             String[] options = new String[] {"Player", "Computer", "Cancel"};
+
             ImageIcon icon = new ImageIcon("");
             int x = JOptionPane.showOptionDialog(menuFrame, "Wollen Sie selbst spielen oder als Computer?",
                     "Selfplay or KI", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, icon, options, options[0]);
@@ -69,7 +75,8 @@ public class HostPanel extends JPanel {
                 menuFrame.dispose();
                 // Create SpielWindow and display it
                 try {
-                    new SpielWindow(menuFrame, KI);
+
+                    Server server = new Server("setup", fieldsize, getShipString(), menuFrame);
                 } catch (Exception ioException) {
                     ioException.printStackTrace();
                 }
@@ -93,6 +100,24 @@ public class HostPanel extends JPanel {
 
         makeConstraints(scrollPane, 0, 0, 4);
         makeConstraints(buttonPanel, 0, 2, 4);
+    }
+
+    private String getShipString() {
+
+        String hold = "";
+        for(int i = 0; i < size2; i++){
+            hold += "2 ";
+        }
+        for(int i = 0; i < size3; i++){
+            hold += "3 ";
+        }
+        for(int i = 0; i < size4; i++){
+            hold += "4 ";
+        }
+        for(int i = 0; i < size5; i++){
+            hold += "5 ";
+        }
+        return hold;
     }
 
     public static String[] IP_Ausgabe() throws IOException {
@@ -121,5 +146,11 @@ public class HostPanel extends JPanel {
         constraints.weighty = 0.1;
         constraints.fill = GridBagConstraints.BOTH;
         add(comp, constraints);
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.drawImage(background, 0, 0, getWidth(), getHeight(), this);
     }
 }
