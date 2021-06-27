@@ -19,6 +19,8 @@ public abstract class Com_base {
     protected boolean setup;
     public PlayingField pf;
     public boolean myTurn;
+    protected int lastX;
+    protected int lastY;
 
     public Com_base(){
         this.port = 50000;
@@ -27,6 +29,11 @@ public abstract class Com_base {
 
     public void setTurn(boolean in){
         this.myTurn = in;
+    }
+
+    public void setXY(int x, int y){
+        this.lastX = x;
+        this.lastY = y;
     }
 
     public void Send(String input) throws IOException {
@@ -62,7 +69,6 @@ public abstract class Com_base {
 
     protected void message_check(String in) throws Exception{
 
-        String message;
         String [] holder = in.split(" ");
         if(holder[0].equals("shot")){
             int x = Integer.parseInt(holder[1]);
@@ -77,6 +83,20 @@ public abstract class Com_base {
             }
             else if(hit == 2){
                 Send("answer 2");
+            }
+        }
+
+        else if(holder[0].equals("answer")){
+            if(holder[1].equals("0")){
+                pf.didHit(0, this.lastX, this.lastY);
+                Send("pass");
+            }
+            else if(holder[1].equals("1")){
+                pf.didHit(1, this.lastX, this.lastY);
+                this.myTurn = true;
+            } else if (holder[1].equals("2")){
+                pf.didHit(2, this.lastX, this.lastY);
+                this.myTurn = true;
             }
         }
 

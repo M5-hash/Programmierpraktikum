@@ -5,6 +5,7 @@ import src.Com_base;
 import java.net.*;
 import java.io.*;
 import java.util.Enumeration;
+import java.util.ArrayList;
 
 class Server extends Com_base {
 
@@ -50,7 +51,8 @@ class Server extends Com_base {
         return pf_holder;
     }
 
-    public void IP_Ausgabe() throws IOException {
+    public static String[] IP_Ausgabe() throws IOException {
+        ArrayList<String> IPs = new ArrayList<String>();
         Enumeration<NetworkInterface> nis =
                 NetworkInterface.getNetworkInterfaces();
         while (nis.hasMoreElements()) {
@@ -59,22 +61,20 @@ class Server extends Com_base {
             while (ias.hasMoreElements()) {
                 InetAddress ia = ias.nextElement();
                 if (!ia.isLoopbackAddress() && ia.getHostAddress().startsWith("192.")) {
-                    System.out.print(" " + ia.getHostAddress());
+                    IPs.add(ia.getHostAddress());
                 }
             }
         }
+        return IPs.toArray(new String[0]);
     }
 
 
     public void ServerCommunicate() throws IOException {
         while (true) {
-
             if(!out_check()) break;
-
             Send(" ");
 
             if(!in_check()) break;
-
             Receive();
         }
     }
