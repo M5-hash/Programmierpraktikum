@@ -1,6 +1,7 @@
 package src;
 
 
+import src.components.CustomPanel;
 import src.components.MenuButton;
 import src.components.QuitButton;
 
@@ -40,20 +41,18 @@ public class SpielWindow extends JPanel {
         TilePainter tile = new TilePainter(fieldsize, "Spieler");
         Zielhilfe Z = new Zielhilfe();
 
-
-        JLayeredPane LayeredPanel;
-        JPanel Bg;
-        JPanel gamePanel;
-        GridLayout gameLayout;
-        JButton buttonMenuStart;
-        JButton buttonRestart;
-        JButton buttonSaveGame;
-        JButton buttonLoadGame;
-        JButton buttonMenuOptions;
-        JButton buttonQuitGame;
-        Wahlstation wahlstation;
-        JButton buttonReady;
-        JButton buttonDelete;
+    JPanel      menuPanel;
+    JPanel      gamePanel;
+    GridLayout  gameLayout;
+    JButton     buttonMenuStart;
+    JButton     buttonRestart;
+    JButton     buttonSaveGame;
+    JButton     buttonLoadGame;
+    JButton     buttonMenuOptions;
+    JButton     buttonQuitGame;
+    JButton     buttonReady;
+    JButton     buttonDelete;
+    Wahlstation wahlstation;
 
         System.out.println(size2 + "Das hier ist ein Schiff der größe 2");
         System.out.println(size3 + "Das hier ist ein Schiff der größe 3");
@@ -73,8 +72,7 @@ public class SpielWindow extends JPanel {
         frameheigth = frame.getHeight();
         framewidth = frame.getWidth();
 
-        LayeredPanel      = new JLayeredPane();
-        Bg                = new Background();
+        menuPanel         = new CustomPanel(ImageLoader.getImage(ImageLoader.GAME_BACKGROUND));
         wahlstation       = new Wahlstation();
         gameLayout        = new GridLayout(0, 1);
         buttonDelete      = new MenuButton("DELETE",       ImageLoader.getImage(ImageLoader.MENU_BUTTON));
@@ -87,7 +85,7 @@ public class SpielWindow extends JPanel {
         buttonQuitGame    = new QuitButton();
         gamePanel         = new JPanel();
 
-//        wahlstation.setOpaque(false);
+        menuPanel.setLayout(null);
 
         gameLayout.setVgap(5);
         gamePanel.setBounds(framewidth * 45 / 100, frameheigth / 3, framewidth / 20, frameheigth / 3);
@@ -97,7 +95,8 @@ public class SpielWindow extends JPanel {
 
         buttonReady.addActionListener(l -> {
 
-            Tile.fightstart = !Tile.fightstart;
+            Tile.fightstart = true;
+            wahlstation.setVisible(false);
             buttonReady.setVisible(false);
             buttonDelete.setVisible(false);
             gamePanel.setVisible(true);
@@ -115,6 +114,7 @@ public class SpielWindow extends JPanel {
             // Hide this window
             gamePanel.setVisible(false);
             frame.dispose();
+            Tile.fightstart = false;
 
             // Create MenuMain and display it
             try {
@@ -124,6 +124,8 @@ public class SpielWindow extends JPanel {
             }
         });
         buttonRestart.addActionListener(e -> {
+            Tile.fightstart = false;
+            wahlstation.setVisible(true);
             buttonReady.setVisible(true);
             buttonDelete.setVisible(true);
             gamePanel.setVisible(false);
@@ -160,8 +162,7 @@ public class SpielWindow extends JPanel {
         gamePanel.add(buttonMenuOptions);
         gamePanel.add(buttonQuitGame);
 
-        LayeredPanel.setBounds(0, 0, frame.getWidth(), frame.getHeight());
-        Bg.          setBounds(0, 0, frame.getWidth(), frame.getHeight());
+        menuPanel.   setBounds(0, 0, frame.getWidth(), frame.getHeight());
         tile.        setBounds(framewidth * 13 / 100, frameheigth * 25 / 100, TileSize.Tile_Size * fieldsize + 2 * Math.max(18, TileSize.Tile_Size / 8), TileSize.Tile_Size * fieldsize + 2 * Math.max(18, TileSize.Tile_Size / 8));
         tile2.       setBounds(framewidth * 63 / 100, frameheigth * 25 / 100, TileSize.Tile_Size * fieldsize + 2 * Math.max(18, TileSize.Tile_Size / 8), TileSize.Tile_Size * fieldsize + 2 * Math.max(18, TileSize.Tile_Size / 8));
         wahlstation. setBounds(framewidth * 46 / 100, frameheigth * 25 / 100, 3 * TileSize.Tile_Size + TileSize.Tile_Size / 2 + 2, 8 * TileSize.Tile_Size + 2); //Ohne das + 2 werden die netten Striche um die Wahlstation nicht gezeichnet
@@ -169,17 +170,15 @@ public class SpielWindow extends JPanel {
         buttonDelete.setBounds(framewidth * 46 / 100, frameheigth * 65 / 100, framewidth * 8 / 100, frameheigth * 5  / 100);
         gamePanel.   setBounds(framewidth * 46 / 100, frameheigth * 33 / 100, framewidth * 8 / 100, frameheigth * 33 / 100);
 
-        LayeredPanel.add(gamePanel, Integer.valueOf(1));
-        LayeredPanel.add(Bg, Integer.valueOf(0));
-        LayeredPanel.add(tile, Integer.valueOf(1));
-        LayeredPanel.add(tile2, Integer.valueOf(1));
-        LayeredPanel.add(wahlstation, Integer.valueOf(1));
-        LayeredPanel.add(Z, Integer.valueOf(1));
-        LayeredPanel.add(buttonReady, Integer.valueOf(1));
-        LayeredPanel.add(buttonDelete, Integer.valueOf(1));
+        menuPanel.add(gamePanel);
+        menuPanel.add(tile);
+        menuPanel.add(tile2);
+        menuPanel.add(wahlstation);
+        menuPanel.add(Z);
+        menuPanel.add(buttonReady);
+        menuPanel.add(buttonDelete);
 
-        frame.add(LayeredPanel);
-
+        frame.add(menuPanel);
 
         Timer timer = new Timer(110, e -> {
             int Borderwidth = 2 * Math.max(18, TileSize.Tile_Size / 8);
@@ -197,8 +196,7 @@ public class SpielWindow extends JPanel {
                 TileSize.setTile_Size(((framewidth / 4) - Borderwidth) / fieldsize);
             }
 
-            LayeredPanel.setBounds(0, 0, frame.getWidth(), frame.getHeight());
-            Bg.          setBounds(0, 0, frame.getWidth(), frame.getHeight());
+            menuPanel.   setBounds(0, 0, frame.getWidth(), frame.getHeight());
             tile.        setBounds(framewidth * 13 / 100, frameheigth * 25 / 100, TileSize.Tile_Size * fieldsize + Borderwidth, TileSize.Tile_Size * fieldsize + Borderwidth);
             tile2.       setBounds(framewidth * 63 / 100, frameheigth * 25 / 100, TileSize.Tile_Size * fieldsize + Borderwidth, TileSize.Tile_Size * fieldsize + Borderwidth);
             Z.           setBounds(framewidth * 13 / 100 + Borderwidth / 2, frameheigth * 17 / 100, TileSize.Tile_Size * 3, frameheigth * 8 / 100);
@@ -207,8 +205,8 @@ public class SpielWindow extends JPanel {
             buttonDelete.setBounds(framewidth * 46 / 100, frameheigth * 65 / 100, framewidth * 8 / 100, frameheigth * 5  / 100);
             gamePanel.   setBounds(framewidth * 46 / 100, frameheigth * 33 / 100, framewidth * 8 / 100, frameheigth * 33 / 100);
 
-            Bg.repaint();
-            Bg.revalidate();
+            menuPanel.repaint();
+            menuPanel.revalidate();
         });
         timer.start();
     }
