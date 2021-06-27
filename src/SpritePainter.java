@@ -12,6 +12,7 @@ import static src.config.fieldsize;
 public class SpritePainter {
 
 
+    public static boolean ready = false;
     /**
      * Haenle seine Tabelle
      * <p>
@@ -23,8 +24,7 @@ public class SpritePainter {
      * 5 = Wasser abgeschossen
      */
 
-    public static int[][] BugHeckMeck = new int[fieldsize][fieldsize];
-    public static boolean ready = false;//
+    private int[][] BugHeckMeck = new int[fieldsize][fieldsize];
     public static int counter;
     public static int[][] getEnemyPlacement;
 
@@ -145,10 +145,10 @@ public class SpritePainter {
             for (int j = 0; j < field_size; j++) {
 
 
-                if(Pokemon[i][j] != 0 && SpielWindow.playingField.getField()[i][j] == 0){
-                    Pokemon[i][j] = SpielWindow.playingField.getField()[i][j];
+                if(Pokemon[i][j] != 0 && SpielWindow.getPlayingField().getField()[i][j] == 0){
+                    Pokemon[i][j] = SpielWindow.getPlayingField().getField()[i][j];
                 } else
-                    if(Pokemon[i][j] == 0 && SpielWindow.playingField.getField()[i][j] == 3) {
+                    if(Pokemon[i][j] == 0 && SpielWindow.getPlayingField().getField()[i][j] == 3) {
 
                         Pokemon[i][j] = -1 ;
 
@@ -169,7 +169,7 @@ public class SpritePainter {
 
         //System.out.println("Schiffteil wurde aufgerufen");
 
-        int[][] Schiffe = SpielWindow.playingField.getField();
+        int[][] Schiffe = SpielWindow.getPlayingField().getField();
 
         if (Fieldof.equals("Vorhersage")) {
             Schiffe = Vorhersage;
@@ -295,7 +295,7 @@ public class SpritePainter {
                 Person = 1;
             }
             case "GegnerKI" -> {
-                dummy = SpielWindow.playingField.getFieldEnemy();
+                dummy = SpielWindow.getPlayingField().getFieldEnemy();
                 Person = 2;
             }
             case "GegnerMensch" -> {
@@ -312,7 +312,7 @@ public class SpritePainter {
 
                 if (Person == 1) {
 
-                    IsHit = SpielWindow.playingField.getField()[y][x] == 1;
+                    IsHit = SpielWindow.getPlayingField().getField()[y][x] == 1;
 
 
                     switch (dummy[y][x]) {
@@ -439,7 +439,7 @@ public class SpritePainter {
      */
     public void setPrediction(int y, int x) {
 
-        int size = TilePainter.groesse;
+        int size = TilePainter.getGroesse();
         boolean hor = TilePainter.horizontal;
 
         Vorhersage = new int[fieldsize][fieldsize];
@@ -466,8 +466,8 @@ public class SpritePainter {
 
             updatePokemen();
 
-            for (int y = 0; y < SpielWindow.playingField.getField().length; y++) {
-                for (int x = 0; x < SpielWindow.playingField.getField()[0].length; x++) {
+            for (int y = 0; y < SpielWindow.getPlayingField().getField().length; y++) {
+                for (int x = 0; x < SpielWindow.getPlayingField().getField()[0].length; x++) {
 
                     if (Pokemon[y][x] == -1 ) {
                         Pokemon[y][x] = (int) (Math.random() * 608);

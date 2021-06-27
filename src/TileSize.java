@@ -1,8 +1,10 @@
 package src;
 
+import static src.config.*;
+
 public class TileSize {                         //Die Dimesionen der Tiles
 
-    public static int Tile_Size = 24;
+    public static int Tile_Size = ((GF_WIDTH / 4) - 2 * 18 )/ fieldsize;
 
 
 
@@ -17,14 +19,10 @@ public class TileSize {                         //Die Dimesionen der Tiles
     public static int fighting = Tile.fightstart ? 1 : 0;
 
     public static void setTile_Size(int tile_Size) {
-        if (!Tile.fightstart)
+
             if (tile_Size != 0) {
                 Tile_Size = tile_Size;
-            } //else {
-//                if (tile_Size * 3 / 4 != 0) {
-//                    Tile_Size = tile_Size * 3 / 4;
-//                }
-//            }
+            }
     }
 
     public static int getSizeofBorder() {

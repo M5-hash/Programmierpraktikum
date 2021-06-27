@@ -21,11 +21,25 @@ import static src.config.*;
 public class SpielWindow extends JPanel {
 
     public static boolean change = false;
-    public static PlayingField playingField = new PlayingField(fieldsize, new int[]{3, 3, 3, 4}, true);
-    public static TilePainter tile2 = new TilePainter(fieldsize, "GegnerKI");
-    public static TilePainter tile = new TilePainter(fieldsize, "Spieler");
-    public static Zielhilfe Z = new Zielhilfe();
-    public static ComPlayer Com;
+    public static int framewidth = 0;
+    public static int frameheigth = 0;
+    private static PlayingField playingField = new PlayingField(fieldsize, calculateships(), true);
+    private static ComPlayer Com;
+    String Feldvon = "Spieler"; //"GegnerKI" "GegnerMensch"
+
+    {
+        try {
+            Com = new ComPlayerNormal(new PlayingField(fieldsize, calculateships(), false));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public SpielWindow(JFrame frame, JPanel menuMain, boolean KI) throws IOException, FontFormatException {
+
+
+        TilePainter tile2 = new TilePainter(fieldsize, "GegnerKI");
+        TilePainter tile = new TilePainter(fieldsize, "Spieler");
+        Zielhilfe Z = new Zielhilfe();
 
     JPanel      menuPanel;
     JPanel      gamePanel;
@@ -40,20 +54,11 @@ public class SpielWindow extends JPanel {
     JButton     buttonDelete;
     Wahlstation wahlstation;
 
-    static {
-        try {
-            Com = new ComPlayerNormal(new PlayingField(fieldsize, new int[]{3, 3, 3, 4}, false));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static int framewidth = 0;
-    public static int frameheigth = 0;
-
-    String Feldvon = "Spieler"; //"GegnerKI" "GegnerMensch"
-
-    public SpielWindow(JFrame frame, JPanel menuMain, boolean KI) throws IOException, FontFormatException {
+        System.out.println(size2 + "Das hier ist ein Schiff der größe 2");
+        System.out.println(size3 + "Das hier ist ein Schiff der größe 3");
+        System.out.println(size4 + "Das hier ist ein Schiff der größe 4");
+        System.out.println(size5 + "Das hier ist ein Schiff der größe 5");
+        System.out.println(Arrays.toString(calculateships()) + "Hier sollten die Schiffe stehen, welche man verwenden darf");
 
         if (fullscreen) {
             frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -204,5 +209,30 @@ public class SpielWindow extends JPanel {
             menuPanel.revalidate();
         });
         timer.start();
+    }
+
+    public static ComPlayer getCom() {
+        return Com;
+    }
+
+    public static PlayingField getPlayingField() {
+        return playingField;
+    }
+
+    static int[] calculateships() {
+
+        int[] sizes = {size2,size3,size4,size5};
+
+        int[] compiledArray = new int[size5 + size4 + size3 + size2];
+        int counter = 0;
+
+        for(int i = 0; i < 4 ; i++){
+            for(int j = 0; j < sizes[i]; sizes[i]-- ){
+                compiledArray[counter] = i + 2 ;
+                counter++ ;
+            }
+        }
+
+        return compiledArray;
     }
 }
