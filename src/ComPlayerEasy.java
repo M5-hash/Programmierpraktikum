@@ -8,17 +8,35 @@ import java.util.Random;
  * Schüsse komplett zufällig (Getroffene Ziele werden nicht beachtet)
  */
 public class ComPlayerEasy extends ComPlayer {
+    /**
+     * Konstruktor
+     *
+     * @param pf PlayingField des Computers
+     * @throws Exception X/Y-Koordinatenprüfung
+     */
     public ComPlayerEasy(PlayingField pf) throws Exception {
         super(pf);
         this.pf.setCom(1);
     }
 
+    /**
+     * Parameterloser Konstruktor, falls man das Spiel laden möchte
+     *
+     * @param id Die ID die an loadGame(..) übergeben wird
+     * @throws FileNotFoundException Wenn die zugehörige Speicherdatei nicht existiert
+     */
     public ComPlayerEasy(long id) throws FileNotFoundException {
         super();
         this.loadGame(id);
     }
 
-    public ComPlayerEasy(String file) throws  FileNotFoundException{
+    /**
+     * Konstruktor, falls man das Spiel laden möchte
+     *
+     * @param file Dateipfad und Dateiname
+     * @throws FileNotFoundException Wenn die zugehörige Speicherdatei nicht existiert
+     */
+    public ComPlayerEasy(String file) throws FileNotFoundException {
         super();
         this.loadGame(file);
     }
@@ -28,9 +46,7 @@ public class ComPlayerEasy extends ComPlayer {
      * Schwierigkeitsgrad Einfach:
      * Komplett zufälliges Feld, solange dieses nicht abgeschossen wurde.
      *
-     * @return Array
-     * [0]: X-Koordinate
-     * [1]: Y-Koordinate
+     * @return int[]{x, y}
      */
     @Override
     public int[] doNextShot() {
@@ -55,6 +71,14 @@ public class ComPlayerEasy extends ComPlayer {
         return new int[]{x, y};
     }
 
+    /**
+     * Für ComputerPlayerEasy leer.
+     * <p>
+     * Methode der übergeben wird, ob der nächste Computer-Spieler-Schuss getroffen hat
+     *
+     * @param hit 0: Nicht getroffen, 1: Schiff getroffen, 2: Schiff getroffen und versenkt
+     * @throws Exception Wenn davor noch nicht doNextShot aufgerufen wurde
+     */
     @Override
     public void didHit(int hit) throws Exception {
         //Do nothing.

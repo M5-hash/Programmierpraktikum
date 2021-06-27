@@ -11,30 +11,62 @@ import java.util.List;
  * Dann wird ermittelt wie das Schiff platziert ist und dieses komplett zerstört.
  */
 public class ComPlayerNormal extends ComPlayer {
+    /**
+     * Die zuletzt abgeschossenen Koordinaten,
+     * die durch doNextShot() ermittelt werden
+     */
     private int[] lastCoords = null;
+
     /**
      * Liste mit Reihenfolge der abzuschießenden Reihen.
      * Liste statt Array um shuffle zu nutzen.
      */
     private List<Integer> rowSeq = null;
+
+    /**
+     * Die nächste Row des Spielfeldes die nach Schiffen abgesucht wird
+     */
     private int nextRow = -1;
 
+    /**
+     * Konstruktor
+     *
+     * @param pf PlayingField des Computers
+     * @throws Exception X/Y-Koordinatenprüfung
+     */
     public ComPlayerNormal(PlayingField pf) throws Exception {
         super(pf);
         this.pf.setCom(2);
         this.setRowSeq(pf.getField().length);
     }
 
+    /**
+     * Parameterloser Konstruktor, falls man das Spiel laden möchte
+     *
+     * @param id Die ID die an loadGame(..) übergeben wird
+     * @throws FileNotFoundException Wenn die zugehörige Speicherdatei nicht existiert
+     */
     public ComPlayerNormal(long id) throws FileNotFoundException {
         super();
         this.loadGame(id);
     }
 
-    public ComPlayerNormal(String file) throws  FileNotFoundException{
+    /**
+     * Konstruktor, falls man das Spiel laden möchte
+     *
+     * @param file Dateipfad und Dateiname
+     * @throws FileNotFoundException Wenn die zugehörige Speicherdatei nicht existiert
+     */
+    public ComPlayerNormal(String file) throws FileNotFoundException {
         super();
         this.loadGame(file);
     }
 
+    /**
+     * rowSeq Setzen anhand Anzahl der Rows
+     *
+     * @param rows Größenangabe
+     */
     private void setRowSeq(int rows) {
         this.rowSeq = new ArrayList<Integer>();
         for (int i = 0; i < rows; i++) {
@@ -43,30 +75,66 @@ public class ComPlayerNormal extends ComPlayer {
         Collections.shuffle(rowSeq);
     }
 
-    public List<Integer> getRowSeq(){
+    /**
+     * rowSeq-Getter
+     *
+     * @return this.rowSeq
+     */
+    public List<Integer> getRowSeq() {
         return this.rowSeq;
     }
 
-    public void setRowSeq(List<Integer> val){
+    /**
+     * rowSeq-Setter
+     *
+     * @param val Neuer Wert für rowSeq
+     */
+    public void setRowSeq(List<Integer> val) {
         this.rowSeq = val;
     }
 
-    public int[] getLastCoords(){
+    /**
+     * lastCoords-Getter
+     *
+     * @return this.lastCoords
+     */
+    public int[] getLastCoords() {
         return this.lastCoords;
     }
 
-    public void setLastCoords(int[] val){
+    /**
+     * lastCoords-Setter
+     *
+     * @param val Neuer Wert für lastCoords
+     */
+    public void setLastCoords(int[] val) {
         this.lastCoords = val;
     }
 
-    public int getNextRow(){
+    /**
+     * nextRow-Getter
+     *
+     * @return this.nextRow
+     */
+    public int getNextRow() {
         return this.nextRow;
     }
 
-    public void setNextRow(int val){
+    /**
+     * nextRow-Setter
+     *
+     * @param val Neuer Wert für nextRow
+     */
+    public void setNextRow(int val) {
         this.nextRow = val;
     }
 
+    /**
+     * Methode die die nächsten Koordinaten ausgibt, die der Computer-Spieler abschießen will
+     *
+     * @return int[]{x, y}
+     * @throws Exception Wenn es keine sinnvolle Möglichkeit mehr gibt
+     */
     @Override
     public int[] doNextShot() throws Exception {
         int[] hit = this.findHit();
@@ -88,6 +156,13 @@ public class ComPlayerNormal extends ComPlayer {
         return next;
     }
 
+    /**
+     * Ermittelt anhand nextRow und rowSeq welche Reihe als nächstes überprüft wird
+     * und gibt passende X/Y-Koordinaten zurück
+     *
+     * @return int[]{x,y}
+     * @throws Exception
+     */
     private int[] findNextCheckPattern() throws Exception {
         if (this.nextRow < 0) {
             this.nextRow = this.rowSeq.indexOf(Collections.min(this.rowSeq));
@@ -113,6 +188,11 @@ public class ComPlayerNormal extends ComPlayer {
         return this.findNextCheckPattern();
     }
 
+    /**
+     * Sucht ein abgeschossenes, noch nicht zerstörtes, Schiff und gibt deren Koordinaten zurück
+     *
+     * @return int[]{x, y}, bzw. null, wenn es keines gibt
+     */
     private int[] findHit() {
         for (int y = 0; y < this.pf.getFieldEnemy().length; y++) {
             for (int x = 0; x < this.pf.getFieldEnemy().length; x++) {
@@ -125,6 +205,14 @@ public class ComPlayerNormal extends ComPlayer {
         return null;
     }
 
+    /**
+     * Ermittelt anhand eines getroffenen Schiffteiles
+     *
+     * @param x X-Koordinate des getroffenen Schiffteiles
+     * @param y Y-Koordinate des getroffenen Schiffteiles
+     * @return int[]{x, y}, X/Y-Koordinaten des Nächsten Schusses
+     * @throws Exception Wenn es keine Möglichkeiten mehr gibt
+     */
     private int[] findNextPotentialShip(int x, int y) throws Exception {
         boolean horizontal;
 
@@ -162,6 +250,16 @@ public class ComPlayerNormal extends ComPlayer {
         throw new Exception("findNextPotentialShip, Fehler beim Berechnen des nächsten abzuschießenden Schiff-Feldes");
     }
 
+    /**
+     * Überprüft anhand der Offset-Parameter ob in eine Richtung noch nicht abgeschossene Stellen sind,
+     * die potentiell Schiffsteile beinhalten (Unabgeschossenes Wasser)
+     *
+     * @param x X-Koordinate
+     * @param y Y-Koordinate
+     * @param xOff  X-Offset in dessen Richtung überprüft werden soll
+     * @param yOff  Y-Offset in dessen Richtung überprüft werden soll
+     * @return int[]{x, y} nächster möglicher Schuss
+     */
     private int[] potentialShipNeighboringField(int x, int y, int xOff, int yOff) {
         //In Richtung xOff/yOff überprüfen
         while (x >= 0 && x < this.pf.getFieldEnemy().length

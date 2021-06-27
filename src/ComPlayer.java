@@ -5,20 +5,35 @@ import java.io.IOException;
 import java.util.Random;
 
 public abstract class ComPlayer {
+    /**
+     * PlayingField des Computer-Spielers
+     */
     protected PlayingField pf;
 
-    //public ComPlayer(int rows, int[] ships) throws Exception {
+    /**
+     * Konstruktor
+     *
+     * @param pf PlayingField des Computers
+     * @throws Exception X/Y-Koordinatenprüfung
+     */
     public ComPlayer(PlayingField pf) throws Exception {
         this.pf = pf;
         setShips(pf.getAllowedShips());
     }
 
+    /**
+     * Parameterloser Konstruktor, falls man das Spiel laden möchte
+     *
+     * @throws FileNotFoundException Wenn die zugehörige Speicherdatei nicht existiert
+     */
     public ComPlayer() throws FileNotFoundException {
         pf = new PlayingField();
     }
 
     /**
      * Wrapper für die gameover Methode von PlayingField
+     *
+     * @return True: Laden erfolgreich, False: Laden nicht erfolgreich
      */
     public boolean gameover() {
         return this.pf.gameover();
@@ -26,6 +41,11 @@ public abstract class ComPlayer {
 
     /**
      * Wrapper für die isShot Methode von PlayingField
+     *
+     * @param x X-Koordinate
+     * @param y Y-Koordinate
+     * @return 0: Kein Treffer, 1: Treffer, 2: Treffer und versenkt
+     * @throws Exception X/Y-Koordinatenüberprüfung
      */
     public int isShot(int x, int y) throws Exception {
         return this.pf.isShot(x, y);
@@ -53,7 +73,7 @@ public abstract class ComPlayer {
      *
      * @param length Länge des zu platzierenden Schiffes
      * @return new int[]{ X-Koordinate, Y-Koordinate, Horizontal (1) bzw Vertikal (0) }
-     * @throws Exception
+     * @throws Exception Wenn kein Platz mehr gefunden werden kann
      */
     private int[] getRandomPossibleShip(int length) throws Exception {
         Random rand = new Random();
@@ -90,27 +110,59 @@ public abstract class ComPlayer {
     }
 
     /**
-     * Laden der Computer-Spieler-Sicht
+     * Laden der Computer-Spieler-Sicht, per ID
      *
-     * @param id
-     * @throws FileNotFoundException
+     * @param id ID die man über das Netzwerk bekommt
+     * @throws FileNotFoundException Wenn die dazugehörige Datei nicht existiert
      */
     protected boolean loadGame(long id) throws FileNotFoundException {
         return pf.loadGame(id, this);
     }
+
+    /**
+     * Laden der Computer-Spieler-Sicht, per File
+     *
+     * @param file Dateipfad und Dateiname
+     * @return True: Laden erfolgreich, False: Laden nicht erfolgreich
+     * @throws FileNotFoundException Wenn die dazugehörige Datei nicht existiert
+     */
     protected boolean loadGame(String file) throws FileNotFoundException {
         return pf.loadGame(file, this);
     }
 
+    /**
+     * Speichern des Computer-Spieler-Spielstandes
+     *
+     * @param id ID die man über das Netzwerk bekommt
+     * @throws IOException Wenn die Datei nicht erstellt/beschrieben werden kann
+     */
     public void saveGame(long id) throws IOException {
         this.pf.saveGame(id, this);
     }
 
+    /**
+     * Speichern des Computer-Spieler-Spielstandes
+     *
+     * @param file Dateipfad und Dateiname
+     * @throws IOException Wenn die Datei nicht erstellt/beschrieben werden kann
+     */
     public void saveGame(String file) throws IOException {
         this.pf.saveGame(file, this);
     }
 
+    /**
+     * Abstrakte Methode die die nächsten Koordinaten ausgibt, die der Computer-Spieler abschießen will
+     *
+     * @return int[]{x, y}
+     * @throws Exception Wenn es keine sinnvolle Möglichkeit mehr gibt
+     */
     public abstract int[] doNextShot() throws Exception;
 
+    /**
+     * Abstrakte Methode der übergeben wird, ob der nächste Computer-Spieler-Schuss getroffen hat
+     *
+     * @param hit 0: Nicht getroffen, 1: Schiff getroffen, 2: Schiff getroffen und versenkt
+     * @throws Exception Wenn davor noch nicht doNextShot aufgerufen wurde
+     */
     public abstract void didHit(int hit) throws Exception;
 }
