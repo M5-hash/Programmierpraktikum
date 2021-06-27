@@ -5,9 +5,7 @@ import src.ImageLoader;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
-
 import static javax.swing.SwingConstants.CENTER;
-import static src.FontLoader.Pokemon;
 import static src.config.selectedTheme;
 
 public class CustomComboBox2 extends JPanel {

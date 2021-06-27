@@ -26,7 +26,7 @@ public class MenuStart {
         makeComponents();
     }
 
-    private void makeComponents() throws IOException, FontFormatException {
+    private void makeComponents(){
         menuLayout = new GridBagLayout();
         menuLayout.columnWidths = new int[]{C_GAP, COL, COL, C_GAP};
         menuLayout.rowHeights = new int[]{ROW_INFO, R_GAP, ROW, R_GAP, ROW, R_GAP, ROW, R_GAP, ROW, ROW};

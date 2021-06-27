@@ -2,18 +2,9 @@ package src.components;
 
 import src.ImageLoader;
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.plaf.metal.MetalButtonUI;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.sql.SQLOutput;
-
 import static src.FontLoader.Pokemon;
 import static src.config.*;
 
@@ -75,27 +66,27 @@ public class PanelSize extends JPanel{
         menuCounter = new JLabel();
         menuCounter.setText("Fields left: " + temp_fieldsleft);
         menuCounter.setFont(Pokemon);
-        makeConstraints(menuCounter, 1, 1,  3, 1);
+        makeConstraints(menuCounter, 1, 1,  3);
 
         menuSlidername1 = new JLabel("Fieldsize");
         menuSlidername1.setFont(Pokemon.deriveFont(11f));
-        makeConstraints(menuSlidername1, 1, 2, 1, 1);
+        makeConstraints(menuSlidername1, 1, 2, 1);
 
         menuSlidername2 = new JLabel("<html><body>   Size  2<br>Pokemon</body></html>");
         menuSlidername2.setFont(Pokemon.deriveFont(11f));
-        makeConstraints(menuSlidername2, 1, 3, 1, 1);
+        makeConstraints(menuSlidername2, 1, 3, 1);
 
         menuSlidername3 = new JLabel("<html><body>   Size 3<br>Pokemon</body></html>");
         menuSlidername3.setFont(Pokemon.deriveFont(11f));
-        makeConstraints(menuSlidername3, 1, 4, 1, 1);
+        makeConstraints(menuSlidername3, 1, 4, 1);
 
         menuSlidername4 = new JLabel("<html><body>   Size 4<br>Pokemon</body></html>");
         menuSlidername4.setFont(Pokemon.deriveFont(11f));
-        makeConstraints(menuSlidername4, 1, 5, 1, 1);
+        makeConstraints(menuSlidername4, 1, 5, 1);
 
         menuSlidername5 = new JLabel("<html><body>   Size 5<br>Pokemon</body></html>");
         menuSlidername5.setFont(Pokemon.deriveFont(11f));
-        makeConstraints(menuSlidername5, 1, 6, 1, 1);
+        makeConstraints(menuSlidername5, 1, 6, 1);
 
         textField1 = new sizeTextfield(fieldsize);
         textField1.addActionListener(e -> {
@@ -108,12 +99,10 @@ public class PanelSize extends JPanel{
             menuSlider1.setValue(value);
         });
 
-        makeConstraints(textField1, 2, 2, 1, 1);
+        makeConstraints(textField1, 2, 2, 1);
 
         textField2 = new sizeTextfield(size2);
-        textField2.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyReleased(KeyEvent e) {
+        textField2.addActionListener(e -> {
                 String typed = textField2.getText();
                 menuSlider2.setValue(0);
                 if(!typed.matches("\\d+") || typed.length() > 3) {
@@ -121,14 +110,11 @@ public class PanelSize extends JPanel{
                 }
                 int value = Integer.parseInt(typed);
                 menuSlider2.setValue(value);
-            }
         });
-        makeConstraints(textField2, 2, 3, 1, 1);
+        makeConstraints(textField2, 2, 3, 1);
 
         textField3 = new sizeTextfield(size3);
-        textField3.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyReleased(KeyEvent e) {
+        textField3.addActionListener(e -> {
                 String typed = textField3.getText();
                 menuSlider3.setValue(0);
                 if(!typed.matches("\\d+") || typed.length() > 3) {
@@ -136,14 +122,11 @@ public class PanelSize extends JPanel{
                 }
                 int value = Integer.parseInt(typed);
                 menuSlider3.setValue(value);
-            }
         });
-        makeConstraints(textField3, 2, 4, 1, 1);
+        makeConstraints(textField3, 2, 4, 1);
 
         textField4 = new sizeTextfield(size4);
-        textField4.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyReleased(KeyEvent e) {
+        textField4.addActionListener(e -> {
                 String typed = textField4.getText();
                 menuSlider4.setValue(0);
                 if(!typed.matches("\\d+") || typed.length() > 3) {
@@ -151,14 +134,11 @@ public class PanelSize extends JPanel{
                 }
                 int value = Integer.parseInt(typed);
                 menuSlider4.setValue(value);
-            }
         });
-        makeConstraints(textField4, 2, 5, 1, 1);
+        makeConstraints(textField4, 2, 5, 1);
 
         textField5 = new sizeTextfield(size5);
-        textField5.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyReleased(KeyEvent e) {
+        textField5.addActionListener(e -> {
                 String typed = textField5.getText();
                 menuSlider5.setValue(0);
                 if(!typed.matches("\\d+") || typed.length() > 3) {
@@ -166,9 +146,8 @@ public class PanelSize extends JPanel{
                 }
                 int value = Integer.parseInt(typed);
                 menuSlider5.setValue(value);
-            }
         });
-        makeConstraints(textField5, 2, 6, 1, 1);
+        makeConstraints(textField5, 2, 6, 1);
 
         menuSlider1 = new SliderSize();
         menuSlider1.setMinimum(5);
@@ -177,7 +156,7 @@ public class PanelSize extends JPanel{
             textField1.setText(String.valueOf(menuSlider1.getValue()));
             UpdateMenuCounter();
         });
-        makeConstraints(menuSlider1, 3, 2, 1,1);
+        makeConstraints(menuSlider1, 3, 2, 1);
 
         menuSlider2 = new SliderSize();
         menuSlider2.setValue(size2);
@@ -185,7 +164,7 @@ public class PanelSize extends JPanel{
             textField2.setText(String.valueOf(menuSlider2.getValue()));
             UpdateMenuCounter();
         });
-        makeConstraints(menuSlider2, 3, 3, 1,1);
+        makeConstraints(menuSlider2, 3, 3, 1);
 
         menuSlider3 = new SliderSize();
         menuSlider3.setValue(size3);
@@ -194,7 +173,7 @@ public class PanelSize extends JPanel{
             UpdateMenuCounter();
         });
 
-        makeConstraints(menuSlider3, 3, 4, 1,1);
+        makeConstraints(menuSlider3, 3, 4, 1);
 
         menuSlider4 = new SliderSize();
         menuSlider4.setValue(size4);
@@ -202,7 +181,7 @@ public class PanelSize extends JPanel{
             textField4.setText(String.valueOf(menuSlider4.getValue()));
             UpdateMenuCounter();
         });
-        makeConstraints(menuSlider4, 3, 5, 1,1);
+        makeConstraints(menuSlider4, 3, 5, 1);
 
         menuSlider5 = new SliderSize();
         menuSlider5.setValue(size5);
@@ -210,7 +189,7 @@ public class PanelSize extends JPanel{
             textField5.setText(String.valueOf(menuSlider5.getValue()));
             UpdateMenuCounter();
         });
-        makeConstraints(menuSlider5, 3, 6, 1,1);
+        makeConstraints(menuSlider5, 3, 6, 1);
 
         buttonApply = new MenuButton("APPLY", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
         buttonApply.addActionListener(e -> {
@@ -221,11 +200,13 @@ public class PanelSize extends JPanel{
             size3 = menuSlider3.getValue();
             size4 = menuSlider4.getValue();
             size5 = menuSlider5.getValue();
-            System.out.println(fieldsize);
-            System.out.println(size2);
-            System.out.println(size3);
-            System.out.println(size4);
-            System.out.println(size5);
+            System.out.println("------------------");
+            System.out.println("APPLIED");
+            System.out.println("Fieldsize: " + fieldsize);
+            System.out.println("Size 2 Pokemon: " + size2);
+            System.out.println("Size 3 Pokemon: " + size3);
+            System.out.println("Size 4 Pokemon: " + size4);
+            System.out.println("Size 5 Pokemon: " + size5);
             previousPanel.setVisible(true);
         });
         buttonPanel.add(buttonApply);
@@ -238,20 +219,26 @@ public class PanelSize extends JPanel{
             temp_size3     = 1;
             temp_size4     = 1;
             temp_size5     = 1;
+            System.out.println("------------------");
+            System.out.println("CANCELLED");
+            System.out.println("Fieldsize: " + fieldsize);
+            System.out.println("Size 2 Pokemon: " + size2);
+            System.out.println("Size 3 Pokemon: " + size3);
+            System.out.println("Size 4 Pokemon: " + size4);
+            System.out.println("Size 5 Pokemon: " + size5);
             previousPanel.setVisible(true);
         });
         buttonPanel.add(buttonCancel);
-        makeConstraints(buttonPanel, 1, 7, 3,1);
-
+        makeConstraints(buttonPanel, 1, 7, 3);
     }
 
     private void UpdateMenuCounter() {
-        temp_fieldsize = menuSlider1.getValue();
-        temp_fields = temp_fieldsize * temp_fieldsize ;
-        temp_size2 = menuSlider2.getValue() * 2;
-        temp_size3 = menuSlider3.getValue() * 3;
-        temp_size4 = menuSlider4.getValue() * 4;
-        temp_size5 = menuSlider5.getValue() * 5;
+        temp_fieldsize  = menuSlider1.getValue();
+        temp_fields     = temp_fieldsize * temp_fieldsize ;
+        temp_size2      = menuSlider2.getValue() * 2;
+        temp_size3      = menuSlider3.getValue() * 3;
+        temp_size4      = menuSlider4.getValue() * 4;
+        temp_size5      = menuSlider5.getValue() * 5;
 
         temp_fieldsleft = (temp_fields * 30 / 100) - temp_size2 - temp_size3 - temp_size4 - temp_size5 ;
         menuCounter.setText(String.valueOf(temp_fieldsleft));
@@ -267,14 +254,14 @@ public class PanelSize extends JPanel{
             buttonApply.setBackground(Color.darkGray);
             buttonApply.setEnabled(false);
             menuCounter.setText("Reduce the amount of Pokemon by " + temp_fieldsleft);
-        } else if(temp_fieldsleft >= 0) {
+        } else {
             buttonApply.setEnabled(true);
             buttonApply.setForeground(Color.black);
             menuCounter.setText("Fields left " + temp_fieldsleft);
             menuCounter.setForeground(Color.black);
         }
 
-        System.out.println("-----------------");
+        System.out.println("------------------");
         System.out.println("fields_left: " + temp_fieldsleft);
         System.out.println("fieldsize: " + temp_fieldsize);
         System.out.println("fields: " + temp_fields);
@@ -284,12 +271,12 @@ public class PanelSize extends JPanel{
         System.out.println("size5: " + temp_size5);
     }
 
-    private void makeConstraints(JComponent comp, int gridx, int gridy, int gridweight, int gridheight) {
+    private void makeConstraints(JComponent comp, int gridx, int gridy, int gridwidth) {
         constraints.insets = new Insets(0, 5, 5, 5);
         constraints.gridx = gridx;
         constraints.gridy = gridy;
-        constraints.gridheight = gridheight;
-        constraints.gridwidth = gridweight;
+        constraints.gridheight = 1;
+        constraints.gridwidth = gridwidth;
         constraints.weightx = 1.0;
         constraints.weighty = 1.0;
         constraints.fill = GridBagConstraints.BOTH;

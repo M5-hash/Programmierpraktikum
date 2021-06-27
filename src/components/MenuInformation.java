@@ -5,7 +5,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import static src.FontLoader.Pokemon;
-import static src.config.INITIAL_HEIGHT;
 
 public class MenuInformation extends JPanel {
     int j = 0;
@@ -26,7 +25,7 @@ public class MenuInformation extends JPanel {
 
         contentLayout = new GridBagLayout();
         contentLayout.columnWidths = new int[]{menuFrame.getWidth() * 15 / 100, menuFrame.getWidth() * 75 / 100, menuFrame.getWidth() / 10};
-        contentLayout.rowHeights = new int[]{((INITIAL_HEIGHT * 33 / 100) - 10) / 10, ((INITIAL_HEIGHT * 33 / 100) - 10) * 8 / 10, ((INITIAL_HEIGHT * 33 / 100) - 10) / 10};
+        contentLayout.rowHeights = new int[]{((menuFrame.getHeight() * 33 / 100) - 10) / 10, ((menuFrame.getHeight() * 33 / 100) - 10) * 8 / 10, ((menuFrame.getHeight() * 33 / 100) - 10) / 10};
         constraints = new GridBagConstraints();
         constraints.weightx = 1.0;
         constraints.weighty = 1.0;

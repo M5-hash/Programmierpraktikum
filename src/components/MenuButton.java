@@ -12,14 +12,12 @@ public class MenuButton extends JButton {
     public Image image;
     public Image disabledimage;
     public Icon icon;
-    public Icon disabledIcon;
 
     public MenuButton(String button_title, Image image) {
         super();
 
         this.image = image;
         disabledimage = GrayFilter.createDisabledImage(image);
-//        disabledIcon = new ImageIcon(image);
 
         icon = new ImageIcon(image);
         setText(button_title);
@@ -31,10 +29,10 @@ public class MenuButton extends JButton {
         setVerticalTextPosition(CENTER);
         setHorizontalTextPosition(CENTER);
         addActionListener(e -> {
-            System.out.println("-------------------");
+            System.out.println("------------------");
             System.out.println(button_title);
-            System.out.println("Höhe des Buttons beträgt: " + getHeight());
-            System.out.println("Breite des Buttons beträgt: " + getWidth());
+            System.out.println("Button Height: " + getHeight());
+            System.out.println("Button Width: " + getWidth());
             System.out.println("X Position: " + getX());
             System.out.println("Y Position: " + getY());
         });

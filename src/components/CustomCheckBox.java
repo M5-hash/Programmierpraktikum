@@ -2,12 +2,10 @@ package src.components;
 
 import src.ImageLoader;
 import src.config;
-
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import static src.FontLoader.Pokemon;
 
 public class CustomCheckBox extends JPanel {
 
