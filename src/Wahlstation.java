@@ -5,6 +5,8 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import static src.config.*;
+
 public class Wahlstation extends JPanel {
 
     Bildloader Bild = new Bildloader();
@@ -20,6 +22,7 @@ public class Wahlstation extends JPanel {
         }
     }
 
+    //TODO Vervollständigen und noch mit dem Themes Aspekt Variabel machen
     public void Wahlstationpainter(Graphics g) {
 
         Graphics2D g2 = (Graphics2D) g;
@@ -27,9 +30,9 @@ public class Wahlstation extends JPanel {
         int Boxheight = 8 * TileSize.Tile_Size;
         int fieldwidth = 3 * TileSize.Tile_Size + TileSize.Tile_Size / 2;
 
-        Image Bckgrnd = Bild.BildLoader("src/Images/BorderVert.png") ;
+        Image Bckgrnd = Bild.BildLoader("src/Images/BorderVert.png");
 
-        g.drawImage(Bckgrnd,0,0,fieldwidth ,Boxheight ,null ) ;
+        g.drawImage(Bckgrnd, 0, 0, fieldwidth, Boxheight, null);
 
         g2.drawLine(0, 0, fieldwidth, 0); //Linie oben
         g2.drawLine(0, Boxheight, fieldwidth, Boxheight); //Linie unten
@@ -81,33 +84,41 @@ public class Wahlstation extends JPanel {
                         if (x >= TileSize.Tile_Size / 2                                                                 //Bereich in dem man klicken muss um sein Schiff auf die Groesse 5 zu setzen
                                 && x <= TileSize.Tile_Size / 2 + TileSize.Tile_Size
                                 && y >= TileSize.Tile_Size / 2
-                                && y <= TileSize.Tile_Size / 2 + 5 * TileSize.Tile_Size) {
-                            TilePainter.groesse = 5;
+                                && y <= TileSize.Tile_Size / 2 + 5 * TileSize.Tile_Size
+                                && size5 > 0) {
+                            TilePainter.setGroesse(5);
                             System.out.println("Die Größe wurde auf 5 gesetzt");
+                            size5--;
                         }
 
                         if (x >= TileSize.Tile_Size * 2                                                                 //Bereich in dem man klicken muss um sein Schiff auf die Groesse 4 zu setzen
                                 && x <= TileSize.Tile_Size * 2 + TileSize.Tile_Size
                                 && y >= TileSize.Tile_Size / 2
-                                && y <= TileSize.Tile_Size / 2 + 4 * TileSize.Tile_Size) {
-                            TilePainter.groesse = 4;
+                                && y <= TileSize.Tile_Size / 2 + 4 * TileSize.Tile_Size
+                                && size4 > 0) {
+                            TilePainter.setGroesse(4);
                             System.out.println("Die Größe wurde auf 4 gesetzt");
+                            size4--;
                         }
 
                         if (x >= TileSize.Tile_Size * 2                                                                 //Bereich in dem man klicken muss um sein Schiff auf die Groesse 3 zu setzen
                                 && x <= TileSize.Tile_Size * 2 + TileSize.Tile_Size
                                 && y >= Boxheight - (TileSize.Tile_Size * 7) / 2
-                                && y <= Boxheight - (TileSize.Tile_Size * 7) / 2 + 3 * TileSize.Tile_Size) {
-                            TilePainter.groesse = 3;
+                                && y <= Boxheight - (TileSize.Tile_Size * 7) / 2 + 3 * TileSize.Tile_Size
+                                && size3 > 0) {
+                            TilePainter.setGroesse(3);
                             System.out.println("Die Größe wurde auf 3 gesetzt");
+                            size3--;
                         }
 
                         if (x >= TileSize.Tile_Size / 2                                                                 //Bereich in dem man klicken muss um sein Schiff auf die Groesse 2 zu setzen
                                 && x <= TileSize.Tile_Size / 2 + TileSize.Tile_Size
                                 && y >= Boxheight - (TileSize.Tile_Size * 5) / 2
-                                && y <= Boxheight - (TileSize.Tile_Size * 5) / 2 + 2 * TileSize.Tile_Size) {
-                            TilePainter.groesse = 2;
+                                && y <= Boxheight - (TileSize.Tile_Size * 5) / 2 + 2 * TileSize.Tile_Size
+                                && size2 > 0) {
+                            TilePainter.setGroesse(2);
                             System.out.println("Die Größe wurde auf 2 gesetzt");
+                            size2--;
                         }
 
                     }
