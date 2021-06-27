@@ -15,7 +15,6 @@ public class MenuSingleplayer {
     JButton buttonMenuStart;
     JButton buttonEasy;
     JButton buttonNormal;
-    JButton buttonHard;
     JButton buttonShipSize;
     JButton buttonQuitGame;
     JPanel menuInformation;
@@ -62,7 +61,7 @@ public class MenuSingleplayer {
             menuFrame.dispose();
             // Create SpielWindow and display it
             try {
-                new SpielWindow(menuFrame, menuPanel, KI);
+                new SpielWindow(menuFrame, KI);
             } catch (IOException | FontFormatException ioException) {
                 ioException.printStackTrace();
             }
@@ -77,7 +76,7 @@ public class MenuSingleplayer {
 
             // Create MenuMain and display it
             try {
-                new SpielWindow(menuFrame, menuPanel, KI);
+                new SpielWindow(menuFrame, KI);
             } catch (IOException | FontFormatException ioException) {
                 ioException.printStackTrace();
             }

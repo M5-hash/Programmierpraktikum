@@ -22,6 +22,8 @@ public class config {
     public static int       NORMAL_DIFFICULTY       = 1;
     public static boolean   KI                      = false;
 
+    public static String    IP                      = "";
+
     // The string array for options
     public static String[]  Resolutions             = {"Resolution", "2560x1440","1920x1200","1920x1080","1680x1050","1440x900","1366x768","1280x720","1280x800","1024x768","800x600","640x480"};
     public static String[]  Themes                  = {"Theme", "Pokemon", "Zelda", "AoE"};
@@ -35,6 +37,7 @@ public class config {
     public static int       size3                   = 1;
     public static int       size4                   = 1;
     public static int       size5                   = 1;
+    public static int       sumofships              = size2 + size3 + size4 + size5;
 
     // Information Strings
     public static String  TextSingleplayer          =  """

@@ -1,6 +1,7 @@
 package src.components;
 
 import src.ImageLoader;
+import static src.config.*;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -10,11 +11,11 @@ import java.awt.event.MouseEvent;
 
 import static src.FontLoader.Pokemon;
 
-public class Textfield extends JPanel {
+public class TextFieldIP extends JPanel {
 
     JTextField textField;
 
-    public Textfield(String text){
+    public TextFieldIP(String text){
 
         setOpaque(false);
         setLayout(new BorderLayout());
@@ -29,7 +30,10 @@ public class Textfield extends JPanel {
                 textField.setText("");
             }
         });
-        textField.addActionListener(e -> System.out.println(textField.getText()));
+        textField.addActionListener(e -> {
+            System.out.println(textField.getText());
+            IP = textField.getText();
+        });
         add(textField, BorderLayout.CENTER);
     }
 

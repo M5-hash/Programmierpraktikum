@@ -9,13 +9,9 @@ import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.FileFilter;
 import java.io.IOException;
 import java.util.Arrays;
-
 import static src.config.*;
 
 public class SpielWindow extends JPanel {
@@ -27,19 +23,9 @@ public class SpielWindow extends JPanel {
     private static ComPlayer Com;
     String Feldvon = "Spieler"; //"GegnerKI" "GegnerMensch"
 
-    {
-        try {
-            Com = new ComPlayerNormal(new PlayingField(fieldsize, calculateships(), false));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    public SpielWindow(JFrame frame, JPanel menuMain, boolean KI) throws IOException, FontFormatException {
-
-
-        TilePainter tile2 = new TilePainter(fieldsize, "GegnerKI");
-        TilePainter tile = new TilePainter(fieldsize, "Spieler");
-        Zielhilfe Z = new Zielhilfe();
+    TilePainter tile2;
+    TilePainter tile;
+    Zielhilfe Z;
 
     JPanel      menuPanel;
     JPanel      gamePanel;
@@ -53,6 +39,26 @@ public class SpielWindow extends JPanel {
     JButton     buttonReady;
     JButton     buttonDelete;
     Wahlstation wahlstation;
+
+    {
+        try {
+            Com = new ComPlayerNormal(new PlayingField(fieldsize, calculateships(), false));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public SpielWindow(JFrame frame, boolean KI) throws IOException, FontFormatException {
+        makeComponents(frame);
+    }
+
+    public SpielWindow(JFrame frame, JPanel menuPanel, boolean ki, Object client) throws IOException, FontFormatException{
+        makeComponents(frame);
+    }
+
+    private void makeComponents(JFrame frame) {
+        tile2 = new TilePainter(fieldsize, "GegnerKI");
+        tile = new TilePainter(fieldsize, "Spieler");
+        Z = new Zielhilfe();
 
         System.out.println(size2 + "Das hier ist ein Schiff der größe 2");
         System.out.println(size3 + "Das hier ist ein Schiff der größe 3");
