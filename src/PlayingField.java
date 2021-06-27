@@ -122,6 +122,15 @@ public class PlayingField {
     }
 
     /**
+     * fieldEnemy-Getter
+     *
+     * @return Gibt fieldEnemy zurück
+     */
+    public int[][] getFieldEnemy() {
+        return this.fieldEnemy;
+    }
+
+    /**
      * Wrapper für getHeadOfShip mit zusätzlicher Ermittlung der Ausrichtung des Schiffes
      *
      * @param field Das Feld auf dem der Schiffskopf gesucht werden soll
@@ -148,6 +157,7 @@ public class PlayingField {
     /**
      * Überprüft ob Koordinaten im Spielfeld sind, falls nicht wird eine Exception geworfen
      *
+     * @param field Das Feld für das überprüft werden soll, ob die Koordinaten enthalten sind
      * @param x X-Koordinate
      * @param y Y-Koordinate
      * @throws Exception, wenn X/Y Koordinate nicht im Spielfeld
@@ -159,34 +169,18 @@ public class PlayingField {
     }
 
     /**
-     * fieldEnemy-Getter
-     *
-     * @return Gibt fieldEnemy zurück
-     */
-    public int[][] getFieldEnemy() {
-        return this.fieldEnemy;
-    }
-
-    /**
      * Wrapper von setShipWithCheck.
      * Setzt ein Schiff, wenn erlaubt.
-     * <p>
-     * param siehe setShipIntern
-     * return siehe setShipIntern
+     *
+     * @param length     Schifflänge
+     * @param x          X-Koordinate vom Schiffkopf
+     * @param y          Y-Koordinate vom Schiffkopf
+     * @param horizontal In welcher Richtung vom Schiffskopf der Rest des Schiffes ist
+     *                   False: Es wird nur zurückgegeben, ob das Schiff überhaupt dort paltziert werden darfs
+     * @return True = Schiff gesetzt, False = Schiff konnte nicht gesetzt werden
      */
     public boolean setShip(int length, int x, int y, boolean horizontal) {
         return setShipIntern(length, x, y, horizontal, true);
-    }
-
-    /**
-     * Wrapper von setShipWithCheck.
-     * Prüft ob ein Schiff an übergebene Stelle gesetzt werden darf.
-     * <p>
-     * param siehe setShipIntern
-     * return siehe setShipIntern
-     */
-    public boolean checkShip(int length, int x, int y, boolean horizontal) {
-        return setShipIntern(length, x, y, horizontal, false);
     }
 
     /**
@@ -196,6 +190,21 @@ public class PlayingField {
      */
     public int[] getAllowedShips() {
         return this.allowedShips;
+    }
+
+    /**
+     * Wrapper von setShipWithCheck.
+     * Prüft ob ein Schiff an übergebene Stelle gesetzt werden darf.
+     *
+     * @param length     Schifflänge
+     * @param x          X-Koordinate vom Schiffkopf
+     * @param y          Y-Koordinate vom Schiffkopf
+     * @param horizontal In welcher Richtung vom Schiffskopf der Rest des Schiffes ist
+     *                   False: Es wird nur zurückgegeben, ob das Schiff überhaupt dort paltziert werden darfs
+     * @return True = Schiff kann gesetzt werden, False = Schiff darf nicht gesetzt werden
+     */
+    public boolean checkShip(int length, int x, int y, boolean horizontal) {
+        return setShipIntern(length, x, y, horizontal, false);
     }
 
     /**
@@ -211,6 +220,11 @@ public class PlayingField {
 
     /**
      * Non-Static Wrapper für getDirHeadOfShipStatic
+     *
+     * @param x X-Koordinate eines Schiffteiles
+     * @param y Y-Koordinate eines Schiffteiles
+     * @return int[]{ x, y, 1 (horizontal) bzw. 0 (vertikal) }
+     * @throws Exception
      */
     public int[] getDirHeadOfShip(int x, int y) throws Exception {
         return PlayingField.getDirHeadOfShipStatic(this.field, x, y);
@@ -372,6 +386,8 @@ public class PlayingField {
      * @param hit 0: Wasser
      *            1: Treffer
      *            2: Treffer versenkt
+     * @param x   X-Koordinate
+     * @param y   Y-Koordinate
      */
     public void didHit(int hit, int x, int y) throws Exception {
         switch (hit) {
@@ -533,6 +549,10 @@ public class PlayingField {
 
     /**
      * Non-Static Wrapper für checkCoordinatesInFieldStatic
+     *
+     * @param x X-Koordinate
+     * @param y Y-Koordinate
+     * @throws Exception Wenn y/x nicht innerhalb von this.field
      */
     private void checkCoordinatesInField(int x, int y) throws Exception {
         PlayingField.checkCoordinatesInFieldStatic(this.field, x, y);
@@ -578,6 +598,7 @@ public class PlayingField {
      * In dem Fall wird vom Gegenüber eine ID übergeben.
      *
      * @param id
+     * @param com Wenn es das PlayingField eines Computer-Spielers ist, diesen mitgeben, sonst null
      * @throws IOException Wenn die Datei nicht erstellt/beschrieben werden kann
      */
     public void saveGame(long id, ComPlayer com) throws IOException {
@@ -706,7 +727,8 @@ public class PlayingField {
     /**
      * loadGame-Getter mit ID, statt Dateipfad und Dateinamen
      *
-     * @param id ID der Speicherdatei, welche z.B. beim Netzwerkspiel vom Server beim Speichern zugeteilt wird
+     * @param id  ID der Speicherdatei, welche z.B. beim Netzwerkspiel vom Server beim Speichern zugeteilt wird
+     * @param com Wenn es das PlayingField eines Computer-Spielers ist, diesen mitgeben, sonst null
      * @return True: Laden war erfolgreich, False: Laden war nicht erfolgreich
      */
     public boolean loadGame(long id, ComPlayer com) throws FileNotFoundException {
@@ -727,6 +749,9 @@ public class PlayingField {
      * Laden des Spieles anhand der Save-Datei
      *
      * @param file Absoluter Pfad und Dateinamen
+     * @param com  Wenn es das PlayingField eines Computer-Spielers ist, diesen mitgeben, sonst null
+     * @return True: Erfolgreich, False: Datei existiert nicht bzw. ist nicht lesbar
+     * @throws FileNotFoundException Sollte nie auftreten, da per return abgebrochen wird
      */
     public boolean loadGame(String file, ComPlayer com) throws FileNotFoundException {
         //Prüfen ob die Datei existiert
@@ -794,6 +819,13 @@ public class PlayingField {
         return true;
     }
 
+    /**
+     * Umwandeln eines Strings in ein 2D-Array
+     *
+     * @param line Der umzuwandelnde String
+     * @param len  Die Größe des Spielfeldes
+     * @return Das fertige Array
+     */
     private int[][] saveStringTo2DArray(String line, int len) {
         int[][] l = new int[len][len];
 
@@ -821,7 +853,7 @@ public class PlayingField {
             long l = 5836008514751432134L;
             long l2 = 4836008514751432134L;
             do {
-                if(i > 0){
+                if (i > 0) {
                     c1 = new ComPlayerNormal(l);
                     c2 = new ComPlayerNormal(l2);
                 }
@@ -846,7 +878,7 @@ public class PlayingField {
 
                 c1.saveGame(l);
                 c2.saveGame(l2);
-            }while (!c1.gameover() && !c2.gameover());
+            } while (!c1.gameover() && !c2.gameover());
 
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
