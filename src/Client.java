@@ -9,7 +9,7 @@ class Client extends Com_base {
 
     private final String IP;
 
-    public Client(String IP_in) throws Exception {
+    public Client(String IP_in) throws IOException {
         super();
         System.out.println("Bitte geben Sie die IP Ihres Spielpartners ein:");
         this.IP = IP_in;
