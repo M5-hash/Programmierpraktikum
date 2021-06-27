@@ -12,6 +12,7 @@ public class Wahlstation extends JPanel {
     public void paintComponent(Graphics g) {
 
         super.paintComponent(g);
+        setOpaque(false);
         if (SpritePainter.ready) {
             if (!Tile.fightstart) {
                 Wahlstationpainter(g);
