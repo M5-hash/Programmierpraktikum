@@ -9,23 +9,24 @@ class Client extends Com_base {
 
     private final String IP;
 
-    public Client() throws IOException {
+    public Client(String IP_in) throws Exception {
         super();
         System.out.println("Bitte geben Sie die IP Ihres Spielpartners ein:");
-        //
-        // IP einlesen implementieren
-        //
-        // Remove test IP
-        this.IP = "192.168.206.1";
+        this.IP = IP_in;
         this.s = new Socket(this.IP, this.port);
         System.out.println("Connection established.");
         this.in = new BufferedReader(new InputStreamReader(s.getInputStream()));
         this.out = new OutputStreamWriter(s.getOutputStream());
         this.usr = new BufferedReader(new InputStreamReader(System.in));
+        this.pf = setupPlayingfield();
+        this.run();
+    }
 
+    protected PlayingField setupPlayingfield() throws IOException {
+        PlayingField pf_holder;
         String[] in_size = Receive().split(" ");
         if (in_size[0].equals("size")) {
-            this.pf = new PlayingField(Integer.parseInt(in_size[1]));
+            pf_holder = new PlayingField(Integer.parseInt(in_size[1]));
 
             Send("done");
 
@@ -33,18 +34,20 @@ class Client extends Com_base {
             //Schiffe setzen param: ship_array(in_ships);
             Send("done");
         }
-        else if(in_size[0].equals("load")){
-            this.pf = new PlayingField(0);
-            pf.loadGame(Long.valueOf(in_size[1]));
-        }
+
+        //else if(in_size[0].equals("load"))
+
+        else{
+        pf_holder = new PlayingField(0);
+        pf_holder.loadGame(Long.valueOf(in_size[1]));
+    }
 
         if (Receive().equals("ready")) {
 
         }
-        ClientCommunicate();
-        KillSocket();
+        this.myTurn = false;
+        return pf_holder;
     }
-
    public void ClientCommunicate() throws IOException{
        while (true) {
 

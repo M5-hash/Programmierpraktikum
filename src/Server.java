@@ -12,11 +12,10 @@ class Server extends Com_base {
     private ServerSocket ss;
 
 
-    public Server(String start_mode, int in_size, String in_ships) throws IOException, NullPointerException {
+    public Server(String start_mode, int in_size, String in_ships) throws Exception{
 
         super();
         this.ss = new ServerSocket(this.port);
-
 
         IP_Ausgabe();
         System.out.println("Waiting for client connection ...");
@@ -25,10 +24,14 @@ class Server extends Com_base {
         this.in = new BufferedReader(new InputStreamReader(this.s.getInputStream()));
         this.out = new OutputStreamWriter(this.s.getOutputStream());
         this.usr = new BufferedReader(new InputStreamReader(System.in));
+        this.pf = setupPlayingfield(start_mode, in_size, in_ships);
+        this.run();
+    }
 
-
+    protected PlayingField setupPlayingfield(String start_mode, int in_size, String in_ships) throws IOException{
+        PlayingField pf_holder;
         if(start_mode.equals("setup")){
-            this.pf = new PlayingField(in_size);
+            pf_holder = new PlayingField(in_size);
             Send("size "+ in_size);
             if(Receive().equals("done")){
                 Send("ships " + in_ships);
@@ -37,16 +40,15 @@ class Server extends Com_base {
                 Send("ready");
             }
         }
+
         else{
-            this.pf = new PlayingField(0);
-            pf.loadGame(Long.valueOf(start_mode.split(" ")[1]));
+            pf_holder = new PlayingField(0);
+            pf_holder.loadGame(Long.valueOf(start_mode.split(" ")[1]));
         }
 
-        ServerCommunicate();
-        KillSocket();
+        this.myTurn = true;
+        return pf_holder;
     }
-
-
 
     public void IP_Ausgabe() throws IOException {
         Enumeration<NetworkInterface> nis =
@@ -56,31 +58,20 @@ class Server extends Com_base {
             Enumeration<InetAddress> ias = ni.getInetAddresses();
             while (ias.hasMoreElements()) {
                 InetAddress ia = ias.nextElement();
-                if (!ia.isLoopbackAddress()) {
+                if (!ia.isLoopbackAddress() && ia.getHostAddress().startsWith("192.")) {
                     System.out.print(" " + ia.getHostAddress());
                 }
             }
         }
     }
 
-    protected boolean setup_server(){
-
-        //send(Größe Spielfeld)
-        //if receive != done ???
-        //send(Schiffanzahl)
-        //if receive != done ???
-        //send("ready")
-        //if receive != ready ???
-        // ServerCommunicate();
-        return true;
-    }
 
     public void ServerCommunicate() throws IOException {
         while (true) {
 
             if(!out_check()) break;
 
-            Send("aa");
+            Send(" ");
 
             if(!in_check()) break;
 
