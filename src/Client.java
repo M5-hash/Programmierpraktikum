@@ -9,7 +9,7 @@ class Client extends Com_base {
 
     private final String IP;
 
-    public Client(String IP_in) throws IOException {
+    public Client(String IP_in) throws Exception {
         super();
         System.out.println("Bitte geben Sie die IP Ihres Spielpartners ein:");
         this.IP = IP_in;
@@ -26,7 +26,7 @@ class Client extends Com_base {
         PlayingField pf_holder;
         String[] in_size = Receive().split(" ");
         if (in_size[0].equals("size")) {
-            pf_holder = new PlayingField(Integer.parseInt(in_size[1]));
+            pf_holder = new PlayingField();//Integer.parseInt(in_size[1])
 
             Send("done");
 
@@ -38,7 +38,7 @@ class Client extends Com_base {
         //else if(in_size[0].equals("load"))
 
         else{
-        pf_holder = new PlayingField(0);
+        pf_holder = new PlayingField();
         pf_holder.loadGame(Long.valueOf(in_size[1]));
     }
 

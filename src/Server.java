@@ -31,7 +31,7 @@ class Server extends Com_base {
     protected PlayingField setupPlayingfield(String start_mode, int in_size, String in_ships) throws IOException{
         PlayingField pf_holder;
         if(start_mode.equals("setup")){
-            pf_holder = new PlayingField(in_size);
+            pf_holder = new PlayingField();
             Send("size "+ in_size);
             if(Receive().equals("done")){
                 Send("ships " + in_ships);
@@ -42,7 +42,7 @@ class Server extends Com_base {
         }
 
         else{
-            pf_holder = new PlayingField(0);
+            pf_holder = new PlayingField();
             pf_holder.loadGame(Long.valueOf(start_mode.split(" ")[1]));
         }
 
