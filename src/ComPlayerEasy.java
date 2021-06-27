@@ -1,5 +1,6 @@
 package src;
 
+import java.io.FileNotFoundException;
 import java.util.Random;
 
 /**
@@ -7,9 +8,19 @@ import java.util.Random;
  * Schüsse komplett zufällig (Getroffene Ziele werden nicht beachtet)
  */
 public class ComPlayerEasy extends ComPlayer {
-    public ComPlayerEasy(PlayingField pf, int[] ships) throws Exception {
-        super(pf, ships);
-        this.difficulty = 0;
+    public ComPlayerEasy(PlayingField pf) throws Exception {
+        super(pf);
+        this.pf.setCom(1);
+    }
+
+    public ComPlayerEasy(long id) throws FileNotFoundException {
+        super();
+        this.loadGame(id);
+    }
+
+    public ComPlayerEasy(String file) throws  FileNotFoundException{
+        super();
+        this.loadGame(file);
     }
 
     /**
@@ -24,16 +35,16 @@ public class ComPlayerEasy extends ComPlayer {
     @Override
     public int[] doNextShot() {
         Random rand = new Random();
-        int rows = this.enemyField.length;
+        int rows = this.pf.getFieldEnemy().length;
         int x = rand.nextInt(rows);
         int y = rand.nextInt(rows);
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < rows; j++) {
-                if (enemyField[y][x] == 0) {
+                if (this.pf.getFieldEnemy()[y][x] == 0) {
                     //Einfaches Markieren mit 1, da ein leichter Computer einfach
                     //nur zufällig Felder abschießt und nicht auf getroffene Schiffsteile achtet
-                    enemyField[y][x] = 1;
+                    this.pf.getFieldEnemy()[y][x] = 1;
                     return new int[]{x, y};
                 }
                 x = (x + 1) % rows;
@@ -46,7 +57,7 @@ public class ComPlayerEasy extends ComPlayer {
 
     @Override
     public void didHit(int hit) throws Exception {
-        //Do nothing
+        //Do nothing.
         //Methode ist in ComPlayer abstract, da ComPlayerNormal diese verwendet
         //und wir durch diese leere Implementierung beim Verwenden der Klasse nicht zwischen Easy und Normal unterscheiden müssen
     }

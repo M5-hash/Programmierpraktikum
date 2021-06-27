@@ -60,8 +60,6 @@ public class Tile extends JPanel {
         int SizeofBorder = Math.max(18, TileSize.Tile_Size / 12) ;
         int Size = field_size * TileSize.Tile_Size + 2 * SizeofBorder ;
 
-
-
         g.drawImage(Border, 0, 0, Size, Size, null );
 
         for (int y = 0; y < field_size; y++) {                                // Wird nur gebraucht, falls wir alle TileFrames in einem Bild ablegen wollen (TileSet), da in diesem Fall Zeilenumsprünge benötigt werden

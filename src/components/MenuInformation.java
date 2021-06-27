@@ -4,8 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-
 import static src.FontLoader.Pokemon;
 
 public class MenuInformation extends JPanel {
@@ -23,18 +21,16 @@ public class MenuInformation extends JPanel {
         this.text = text;
 
         System.out.println(getHeight());
-        int top = menuFrame.getHeight() * 4 / 100;
-        int left = menuFrame.getWidth() * 13 / 100;
-        int right = menuFrame.getWidth() * 7 / 100;
+
 
         contentLayout = new GridBagLayout();
+        contentLayout.columnWidths = new int[]{menuFrame.getWidth() * 15 / 100, menuFrame.getWidth() * 75 / 100, menuFrame.getWidth() / 10};
+        contentLayout.rowHeights = new int[]{((menuFrame.getHeight() * 33 / 100) - 10) / 10, ((menuFrame.getHeight() * 33 / 100) - 10) * 8 / 10, ((menuFrame.getHeight() * 33 / 100) - 10) / 10};
         constraints = new GridBagConstraints();
-        constraints.insets = new Insets(top, left, 0, right);
-        constraints.weightx = 0.8;
-        constraints.weighty = 0.5;
+        constraints.weightx = 1.0;
+        constraints.weighty = 1.0;
         constraints.gridwidth = 1;
-        constraints.fill = GridBagConstraints.HORIZONTAL;
-        constraints.anchor = GridBagConstraints.NORTH;
+        constraints.fill = GridBagConstraints.BOTH;
         constraints.gridx = 1;
         constraints.gridy = 1;
 
@@ -42,6 +38,7 @@ public class MenuInformation extends JPanel {
         setOpaque(false);
 
         displayText = new JTextArea();
+        displayText.setOpaque(false);
         displayText.setForeground(Color.black);
         displayText.setWrapStyleWord(true);
         displayText.setBackground(new Color(248,248,248));

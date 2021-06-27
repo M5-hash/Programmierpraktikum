@@ -4,7 +4,6 @@ import src.components.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyEvent;
 import java.io.IOException;
 
 import static javax.swing.SwingConstants.CENTER;
@@ -15,12 +14,11 @@ public class MenuOptions {
     GridBagLayout menuLayout;
     GridBagConstraints constraints;
     JButton buttonMenuStart;
-    JCheckBox cbFullscreen;
-    JComboBox<String> cbResolutions;
-    JComboBox<String> cbThemes;
+    JPanel cbResolutions;
+    JPanel cbThemes;
     JButton buttonShipSize;
     JButton buttonQuitGame;
-    JPanel menuSize;
+    JPanel cbFullscreen;
     JPanel menuInformation;
     JPanel buttonPanel;
     JPanel menuPanel;
@@ -29,9 +27,11 @@ public class MenuOptions {
     public MenuOptions(JFrame menuFrame, JPanel menuMain) throws IOException, FontFormatException {
         this.menuFrame = menuFrame;
 
-        INITIAL_HEIGHT = menuFrame.getHeight();
-        INITIAL_WIDTH = menuFrame.getWidth();
-
+        COL = (INITIAL_WIDTH * 22 / 100) - 10;
+        C_GAP = (INITIAL_WIDTH * 28 / 100) - 10;
+        ROW_INFO = (INITIAL_HEIGHT * 33 / 100) - 10;
+        ROW = (INITIAL_HEIGHT * 10 / 100) - 10;
+        R_GAP = (INITIAL_HEIGHT * 2) / 100;
         menuLayout = new GridBagLayout();
         menuLayout.columnWidths = new int[] {C_GAP, COL, COL, C_GAP};
         menuLayout.rowHeights = new int[] {ROW_INFO, R_GAP, ROW, R_GAP, ROW, R_GAP, ROW, R_GAP, ROW, ROW};
@@ -60,56 +60,24 @@ public class MenuOptions {
         DefaultListCellRenderer listCellRenderer = new DefaultListCellRenderer();
         listCellRenderer.setHorizontalAlignment(CENTER);
 
-        cbFullscreen = new JCheckBox("Fullscreen", false);
-        cbFullscreen.setMnemonic(KeyEvent.VK_C);
-        cbFullscreen.setHorizontalAlignment((int) JCheckBox.CENTER_ALIGNMENT);
-        cbFullscreen.setIconTextGap(5);
-        cbFullscreen.setFont(Pokemon);
-        cbFullscreen.addItemListener(e -> {
-            if(cbFullscreen.isSelected()){
-                fullscreen = true;
-                System.out.println("Fullscreen active");
-            } else {
-                fullscreen = false;
-                System.out.println("Fullscreen inactive");
-            }
-        });
+        cbFullscreen = new CustomCheckBox("FULLSCREEN", false, Pokemon.deriveFont(11f));
         buttonPanel.add(cbFullscreen);
 
-        cbResolutions = new JComboBox<>(Resolutions);
-        cbResolutions.setRenderer(listCellRenderer);
-        cbResolutions.setAlignmentX(Component.CENTER_ALIGNMENT);
-        cbResolutions.setFont(Pokemon);
-        cbResolutions.addActionListener(e -> {
-            selectedResolution = (String) cbResolutions.getSelectedItem();
-            System.out.println(selectedResolution);
-            String[] segments = selectedResolution.split("x");
-            GF_WIDTH = Integer.parseInt(segments[0]);
-            GF_HEIGHT = Integer.parseInt(segments[1]);
-            System.out.println("Frame width: " + GF_WIDTH);
-            System.out.println("Frame height: " + GF_HEIGHT);
-        });
+        cbResolutions = new CustomComboBox(Resolutions, Pokemon.deriveFont(11f));
+
         buttonPanel.add(cbResolutions);
         makeConstraints(buttonPanel, 1, 4, 2);
 
         buttonPanel = new ButtonPanel();
-
-        cbThemes = new JComboBox<>(Themes);
-        cbThemes.setRenderer(listCellRenderer);
-        cbThemes.setAlignmentX(Component.CENTER_ALIGNMENT);
-        cbThemes.setFont(Pokemon);
-        cbThemes.addActionListener(e -> {
-            selectedTheme = (String) cbThemes.getSelectedItem();
-            System.out.println(selectedTheme);
-        });
+        cbThemes = new CustomComboBox2(Themes, Pokemon.deriveFont(11f));
         buttonPanel.add(cbThemes);
 
-        buttonShipSize = new MenuButton("Size", ImageLoader.getImage(ImageLoader.MENU_BUTTON3));
+        buttonShipSize = new MenuButton("SIZE", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
         buttonShipSize.addActionListener(e -> {
             menuPanel.setVisible(false);
 
             try {
-                new MenuShipSize(menuFrame, menuPanel);
+                new MenuSize(menuFrame, menuPanel);
             } catch (IOException | FontFormatException ioException) {
                 ioException.printStackTrace();
             }

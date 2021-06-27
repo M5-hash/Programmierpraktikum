@@ -4,23 +4,19 @@ import src.components.*;
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
-
 import static src.config.*;
 
 
 public class MenuMultiplayer {
 
     GridBagLayout menuLayout;
-    GridLayout buttonPanelLayout;
     GridBagConstraints constraints;
     JButton buttonMenuStart;
     JButton buttonMenuHost;
     JButton buttonJoin;
     JButton buttonShipSize;
     JButton buttonQuitGame;
-    JPanel menuFiller;
     JPanel getIP;
-    JPanel menuSize;
     JPanel menuInformation;
     JPanel buttonPanel;
     JPanel menuPanel;
@@ -29,9 +25,11 @@ public class MenuMultiplayer {
     public MenuMultiplayer(JFrame menuFrame, JPanel menuMain) throws IOException, FontFormatException {
         this.menuFrame = menuFrame;
 
-        INITIAL_HEIGHT = menuFrame.getHeight();
-        INITIAL_WIDTH = menuFrame.getWidth();
-
+        COL = (INITIAL_WIDTH * 20 / 100) - 10;
+        C_GAP = (INITIAL_WIDTH * 30 / 100) - 10;
+        ROW_INFO = (INITIAL_HEIGHT * 33 / 100) - 10;
+        ROW = (INITIAL_HEIGHT * 10 / 100) - 10;
+        R_GAP = (INITIAL_HEIGHT * 2) / 100;
         menuLayout = new GridBagLayout();
         menuLayout.columnWidths = new int[] {C_GAP, COL, COL, C_GAP};
         menuLayout.rowHeights = new int[] {ROW_INFO, R_GAP, ROW, R_GAP, ROW, R_GAP, ROW, R_GAP, ROW, ROW};
@@ -51,34 +49,87 @@ public class MenuMultiplayer {
             menuPanel.setVisible(false);
 
             // Create MenuMain and display it
-            try {
-                new MenuStart(menuFrame);
-            } catch (IOException | FontFormatException ioException) {
-                ioException.printStackTrace();
-            }
+            menuMain.setVisible(true);
         });
         makeConstraints(buttonMenuStart, 1, 2, 2, 1);
 
         buttonPanel = new ButtonPanel();
 
-        buttonJoin = new MenuButton("JOIN GAME", ImageLoader.getImage(ImageLoader.MENU_BUTTON3));
+        buttonJoin = new MenuButton("JOIN GAME", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
+        buttonJoin.addActionListener(e -> {
+            String[] options = new String[] {"Player", "Computer", "Cancel"};
+            ImageIcon icon = new ImageIcon("");
+            int x = JOptionPane.showOptionDialog(menuFrame, "Wollen Sie selbst spielen oder als Computer?",
+                    "Selfplay or KI", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, icon, options, options[0]);
+
+            if(x == 0){
+                menuPanel.setVisible(false);
+                menuFrame.dispose();
+                // Create SpielWindow and display it
+                try {
+                    new SpielWindow(menuFrame, menuPanel, KI);
+                } catch (IOException | FontFormatException ioException) {
+                    ioException.printStackTrace();
+                }
+            } else if (x == 1){
+                KI = true;
+                menuPanel.setVisible(false);
+                menuFrame.dispose();
+                // Create SpielWindow and display it
+                try {
+                    new SpielWindow(menuFrame, menuPanel, KI);
+                } catch (IOException | FontFormatException ioException) {
+                    ioException.printStackTrace();
+                }
+            } else {
+                System.out.println("no");
+            }
+        });
         buttonPanel.add(buttonJoin);
 
-        buttonMenuHost = new MenuButton("HOST GAME", ImageLoader.getImage(ImageLoader.MENU_BUTTON3));
+        buttonMenuHost = new MenuButton("HOST GAME", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
+        buttonMenuHost.addActionListener(e -> {
+            String[] options = new String[] {"Player", "Computer", "Cancel"};
+            ImageIcon icon = new ImageIcon("");
+            int x = JOptionPane.showOptionDialog(menuFrame, "Wollen Sie selbst spielen oder als Computer?",
+                    "Selfplay or KI", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, icon, options, options[0]);
+
+            if(x == 0){
+                menuPanel.setVisible(false);
+                menuFrame.dispose();
+                // Create SpielWindow and display it
+                try {
+                    new SpielWindow(menuFrame, menuPanel, KI);
+                } catch (IOException | FontFormatException ioException) {
+                    ioException.printStackTrace();
+                }
+            } else if (x == 1){
+                menuPanel.setVisible(false);
+                menuFrame.dispose();
+                // Create SpielWindow and display it
+                try {
+                    new SpielWindow(menuFrame, menuPanel, KI);
+                } catch (IOException | FontFormatException ioException) {
+                    ioException.printStackTrace();
+                }
+            } else {
+                System.out.println("no");
+            }
+        });
         buttonPanel.add(buttonMenuHost);
         makeConstraints(buttonPanel, 1, 4, 2, 1);
 
         buttonPanel = new ButtonPanel();
 
-        getIP = new Textfield();
+        getIP = new Textfield("Enter IP");
         buttonPanel.add(getIP);
 
-        buttonShipSize = new MenuButton("Size", ImageLoader.getImage(ImageLoader.MENU_BUTTON3));
+        buttonShipSize = new MenuButton("Size", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
         buttonShipSize.addActionListener(e -> {
             menuPanel.setVisible(false);
 
             try {
-                new MenuShipSize(menuFrame, menuPanel);
+                new MenuSize(menuFrame, menuPanel);
             } catch (IOException | FontFormatException ioException) {
                 ioException.printStackTrace();
             }
