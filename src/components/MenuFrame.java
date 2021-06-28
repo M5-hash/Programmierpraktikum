@@ -12,7 +12,7 @@ public class MenuFrame extends JFrame {
         super();
 
         setTitle("Pokemon");
-        setMinimumSize(new Dimension(INITIAL_WIDTH, INITIAL_HEIGHT));
+//        setMinimumSize(new Dimension(INITIAL_WIDTH, INITIAL_HEIGHT));
         setSize(INITIAL_WIDTH, INITIAL_HEIGHT);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setIconImage(setIcon());

@@ -18,7 +18,7 @@ public class config {
     public static String    IP                      = "";
 
     // The string array for options
-    public static String[]  Resolutions             = {"Resolution", "2560x1440","1920x1200","1920x1080","1680x1050","1440x900","1366x768","1280x720","1280x800","1024x768","800x600","640x480"};
+    public static String[]  Resolutions             = {"Resolution", "2560x1440", "1920x1080", "1600x900","1366x768","1280x720","1024x576","960x540","854x480",};
     public static String[]  Themes                  = {"Theme", "Pokemon", "Zelda", "AoE"};
     public static String    selectedResolution      = "";
     public static String    selectedTheme           = "";
