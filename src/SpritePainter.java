@@ -206,7 +206,7 @@ public class SpritePainter {
 
         for (int i = 0; i < Schiffe.length; i++) {
             for (int j = 0; j < Schiffe[0].length; j++) {
-                if (Schiffe[i][j] == 3 ||Schiffe[i][j] == 1) {
+                if (Schiffe[i][j] == 3 || Schiffe[i][j] == 1 || Schiffe[i][j] == 2) {
 
                     x1 = false;
                     x2 = false;
@@ -214,13 +214,13 @@ public class SpritePainter {
                     y2 = false;
 
 
-                    if (i != 0 && Schiffe[i - 1][j] != 0)
+                    if (i != 0 && Schiffe[i - 1][j] != 0 && Schiffe[i - 1][j] != 5)
                         x1 = true;
-                    if (i != (fieldsize - 1) && Schiffe[i + 1][j] != 0)
+                    if (i != (fieldsize - 1) && Schiffe[i + 1][j] != 0 && Schiffe[i + 1][j] != 5)
                         x2 = true;
-                    if (j != 0 && Schiffe[i][j - 1] != 0)
+                    if (j != 0 && Schiffe[i][j - 1] != 0 && Schiffe[i][j - 1] != 5)
                         y1 = true;
-                    if (j != (fieldsize - 1) && Schiffe[i][j + 1] != 0)
+                    if (j != (fieldsize - 1) && Schiffe[i][j + 1] != 0 && Schiffe[i][j + 1] != 5)
                         y2 = true;
 
                     if (!x1 && !x2 && !y1 && y2)
@@ -279,16 +279,19 @@ public class SpritePainter {
         int[][] dummy;
         int Person = 1;
 
+        //Schiffe werden nur genau dargestellt, wenn es sich um das Feld des Menschen handelt ansonsten nicht
         if (Fieldof.equals("Spieler") || Fieldof.equals("Vorhersage")) Schiffteil();
-//            System.out.println("Schiffzeichner wurde aufgerufen");
 
         String Schiffdir = "Ich bin der String und ich bin ein Platzhalter";
         BufferedImage Schiff; //Nur ein Platzhalter, dass die IDE nicht weint
         boolean dosmthng = false;
 
+
+        //Die größe des Rahmens um das Spielfeld herum wird hier berchnet, sodass alle Schiffe an genau der richtigen Position sind.
         int SizeofBorder = Math.max(18, TileSize.Tile_Size / 12);
 
 
+        //Abhänig von dem Spielfeld das Angezeigt werden soll wird hier ein anderes Array eingelesen, sodass die Informationen auch der Situation entsprechen
         switch (Fieldof) {
             case "Spieler" -> {
                 dummy = BugHeckMeck;
@@ -306,22 +309,29 @@ public class SpritePainter {
             default -> dummy = BugHeckMeck;
         }
 
+
+        //Garantiert, dass auch das gesamte Array abgelaufen wird
         for (int y = 0; y < dummy.length; y++) {
             for (int x = 0; x < dummy[0].length; x++) {
 
-
+                //checkt ob es sich bei dem Spielfeld auch um das des Spielers handelt
                 if (Person == 1) {
 
-                    IsHit = SpielWindow.getPlayingField().getField()[y][x] == 1;
 
+                    //Wenn das Schiff getroffen wurde, dann ist das Array an der Stelle entweder 1 (Teil getroffen aber Schiff gibt es noch) oder 2 (Teil und gesamtes Schiff zerstört)
+                    IsHit = SpielWindow.getPlayingField().getField()[y][x] == 1 || SpielWindow.getPlayingField().getField()[y][x] == 2;
 
+                    //Die Art des Schiffteils wird ausgelesen und dieser wird dann ein Bild zugewiesen
+                    //Es wird auch eine Variable gesetzt, die angibt, dass eine etwas gezeichnet werden muss oder eben nicht
                     switch (dummy[y][x]) {
 
                         case 0:
                             break;
 
                         case 1:
+                            //Gibt das zu zeichnende Bild an
                             Schiffdir = "src/Images/Vorne32true" + IsHit + ".png";
+                            //Gibt an, dass etwas zu zeichnen ist
                             dosmthng = true;
                             break;
 
@@ -359,7 +369,12 @@ public class SpritePainter {
                     }
                 }
 
+
+                //Checkt ob es das Spielfeld des Computer Gegners ist TODO GegnerOnline hier drin implementieren
                 if (Person == 2) {
+
+                    //Das, was gezeichnet werden muss wird ausgelesen
+                    //Es wird auch eine Variable gesetzt, die angibt, dass eine etwas gezeichnet werden muss oder eben nicht
                     switch (dummy[y][x]) {
                         /**
                          * Haenle seine Tabelle
@@ -402,7 +417,7 @@ public class SpritePainter {
                     }
                 }
 
-
+                //checkt ob es ein zu zeichnendes Image gibt
                 if (dosmthng) {
                     Schiff = Bild.BildLoader(Schiffdir);
                     BufferedImage dummyImg;
@@ -442,6 +457,8 @@ public class SpritePainter {
         int size = TilePainter.getGroesse();
         boolean hor = TilePainter.horizontal;
 
+        //Da es in der Vorhersage immer nur ein Schiff geben kann und alte Positionen nicht nur irrelevant sondern verfälschend sind
+        //wird hier mit einem leeren Array gearbeitet
         Vorhersage = new int[fieldsize][fieldsize];
 
         for (int i = 0; i < size; i++) {
@@ -459,13 +476,17 @@ public class SpritePainter {
 
     public void Pokemonpicker(Graphics g) {
 
+        //Das Tileset Bild wird eingeladen
         BufferedImage PokemonBild = Bild.BildLoader("src/Images/PokemonTileSetremove.png");
 
         if (Fieldof.equals("Spieler")) {
+            //Die größe des Border wir hier berechnet, sodass die Sprites alle an richtiger Ort und Stelle sein können
             int SizeofBorder = Math.max(18, TileSize.Tile_Size / 12);
 
+            //Es wird abgefragt ob es zu Änderungen im Array kam
             updatePokemen();
 
+            //durch die 2 for Schleifen wird das gesamte Array abgelaufen
             for (int y = 0; y < SpielWindow.getPlayingField().getField().length; y++) {
                 for (int x = 0; x < SpielWindow.getPlayingField().getField()[0].length; x++) {
 
@@ -474,25 +495,33 @@ public class SpritePainter {
                     }
 
 
-                    int index = Pokemon[y][x];        //Höhe & Breite per Tile 80 //(Feld[SpielWindow.field_size][SpielWindow.field_size] +
+                    int index = Pokemon[y][x];
                     int yOffset = 0;
 
-                    if (index > (PokemonBild.getWidth() / 80) - 1) {                      // Da das Tileset nicht nur horizontal ausgerichtet ist, muss jedes mal wenn die rechte Seite des TileSets erreicht wurde unsere source
-                        while ((index > (PokemonBild.getWidth() / 80) - 1)) {             // Wieder an die linke Seite des Bildes verschoben werden
+                    //Höhe & Breite per Tile 80
+                    if (index > (PokemonBild.getWidth() / 80) - 1) {
+                        // Da das Tileset nicht nur horizontal ausgerichtet ist, muss jedes mal wenn die rechte Seite des TileSets erreicht wurde unsere source
+                        while ((index > (PokemonBild.getWidth() / 80) - 1)) {
+                            // Wieder an die linke Seite des Bildes verschoben werden
                             index = index - (PokemonBild.getWidth() / 80);
-                            yOffset++;                                              //Aber um eine Zeile nach unten verschoben
+                            //Aber um eine Zeile nach unten verschoben
+                            yOffset++;
                         }
                     }
 
+
+                    //checkt ab, ob es hier etwas zu zeichnen gibt
                     if (Pokemon[y][x] != 0) {
 
                         g.drawImage(PokemonBild, (x * TileSize.Tile_Size + SizeofBorder),
                                 (y * TileSize.Tile_Size + SizeofBorder),
                                 (x + 1) * TileSize.Tile_Size + SizeofBorder,
                                 (y + 1) * TileSize.Tile_Size + SizeofBorder,
-                                index * 80,                                         //Es wird ein Viereck zwischen diesen 2 Punkten aufgeschlagen, die ersten 2 sind das linke obere ende
-                                yOffset * 80,                                       //die anderen 2 sind das rechte untere ende. Es handelt sich hierbei um die Quelle, da die Source und das ausgegebene
-                                (index + 1) * 80,                                   //gleich groß sein sollen sind die Variablen nahezu identisch
+                                //Es wird ein Viereck zwischen diesen 2 Punkten aufgeschlagen, die ersten 2 sind das linke obere ende
+                                index * 80,
+                                yOffset * 80,
+                                //die anderen 2 sind das rechte untere ende. Es handelt sich hierbei um die Quelle
+                                (index + 1) * 80,
                                 (yOffset + 1) * 80,
                                 null);
 

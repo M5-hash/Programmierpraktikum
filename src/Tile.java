@@ -90,7 +90,11 @@ public class Tile extends JPanel {
                 }
                 if (Fieldof.equals("GegnerKI") || Fieldof.equals("GegnerMensch")) {
 
-                    Image = Bild.BildLoader("src/Images/PokeTest.jpg");
+                    if(field_size > 10){
+                        Image = Bild.BildLoader("src/images/PokemonGrass.jpg") ;
+                    } else{
+                        Image = Bild.BildLoader("src/Images/Pokemon4Graesser.jpg");
+                    }
 
                     g.drawImage(Image, (x * TileSize.Tile_Size) + SizeofBorder,                         //ok das ist jetzt blöd zu erklären
                             (y * TileSize.Tile_Size) + SizeofBorder,                                    //Es wird ein Viereck zwischen diesen 2 Punkten aufgeschlagen, die ersten 2 sind das linke obere ende
