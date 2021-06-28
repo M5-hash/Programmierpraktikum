@@ -19,6 +19,7 @@ public abstract class Com_base {
     public boolean myTurn;
     protected int lastX;
     protected int lastY;
+    protected boolean role_server;
 
     public Com_base(){
         this.port = 50000;
@@ -115,11 +116,13 @@ public abstract class Com_base {
         }
     }
 
-    protected int[] ship_array(String[] in_ships){
-        int [] out_ships = new int[in_ships.length];
-        for (int i = 0; i < in_ships.length; i++){
-            out_ships[i] = Integer.parseInt(in_ships[i]);
+    protected int[] ship_array_toInt(String[] in_ships, int begin){
+        int [] out_ships = new int[in_ships.length-begin];
+        for (int i = begin; i < in_ships.length; i++){
+            out_ships[i] = Integer.parseInt(in_ships[i-begin]);
         }
         return out_ships;
     }
+
+
 }

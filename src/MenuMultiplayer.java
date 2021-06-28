@@ -67,7 +67,7 @@ public class MenuMultiplayer {
                 menuFrame.dispose();
                 // Create SpielWindow and display it
                 try {
-                    Client client = new Client(IP);
+                    Client client = new Client(IP, menuFrame, KI);
                     new SpielWindow(menuFrame, menuPanel, KI, client);
                 } catch (Exception ioException) {
                     ioException.printStackTrace();

@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 
-public class main {
+public class main{
 
     /**
      * The main function for the battleships game.
@@ -27,5 +27,6 @@ public class main {
         
         // Create the start window
         new MenuStart();
+
     }
 }
