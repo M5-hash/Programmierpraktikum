@@ -8,7 +8,7 @@ public class Server extends Com_base {
 
 
     private ServerSocket ss;
-    public SpielWindow MP_Window;
+
 
     public Server(String start_mode, int in_size, String in_ships, JFrame menuFrame, boolean KI) throws Exception{
 
@@ -23,7 +23,7 @@ public class Server extends Com_base {
         this.out = new OutputStreamWriter(this.s.getOutputStream());
         this.usr = new BufferedReader(new InputStreamReader(System.in));
         this.pf = setupPlayingfield(start_mode, in_size, in_ships);
-//        this.MP_Window = new SpielWindow(menuFrame, KI);
+        SpielWindow MP_Window = new SpielWindow(menuFrame, KI, this.pf);
         this.run();
     }
 

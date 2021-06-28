@@ -7,7 +7,6 @@ import java.io.*;
 public class Client extends Com_base {
 
     private final String IP;
-    public SpielWindow MP_Window;
 
     public Client(String IP_in, JFrame menuFrame, boolean KI) throws Exception {
         super();
@@ -18,7 +17,7 @@ public class Client extends Com_base {
         this.out = new OutputStreamWriter(s.getOutputStream());
         this.usr = new BufferedReader(new InputStreamReader(System.in));
         this.pf = setupPlayingfield();
-//      this.MP_Window = new SpielWindow(menuFrame, KI);
+        SpielWindow MP_Window = new SpielWindow(menuFrame, KI, this.pf);
         this.run();
     }
 
