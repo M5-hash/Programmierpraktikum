@@ -8,7 +8,7 @@ public class Client extends Com_base {
 
     private final String IP;
 
-    public Client(String IP_in, JFrame menuFrame, boolean KI) throws Exception {
+    public Client(String IP_in) throws Exception {
         super();
         this.role_server = false;
         this.IP = IP_in;
@@ -17,8 +17,7 @@ public class Client extends Com_base {
         this.out = new OutputStreamWriter(s.getOutputStream());
         this.usr = new BufferedReader(new InputStreamReader(System.in));
         this.pf = setupPlayingfield();
-        SpielWindow MP_Window = new SpielWindow(menuFrame, KI, this.pf);
-        this.run();
+
     }
 
     protected PlayingField setupPlayingfield() throws IOException {

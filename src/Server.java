@@ -10,7 +10,7 @@ public class Server extends Com_base {
     private ServerSocket ss;
 
 
-    public Server(String start_mode, int in_size, String in_ships, JFrame menuFrame, boolean KI) throws Exception{
+    public Server(String start_mode, int in_size, String in_ships) throws Exception{
 
         super();
         this.role_server = true;
@@ -23,8 +23,6 @@ public class Server extends Com_base {
         this.out = new OutputStreamWriter(this.s.getOutputStream());
         this.usr = new BufferedReader(new InputStreamReader(System.in));
         this.pf = setupPlayingfield(start_mode, in_size, in_ships);
-        SpielWindow MP_Window = new SpielWindow(menuFrame, KI, this.pf);
-        this.run();
     }
 
     protected PlayingField setupPlayingfield(String start_mode, int in_size, String in_ships) throws IOException{

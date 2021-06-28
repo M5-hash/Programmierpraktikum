@@ -1,5 +1,6 @@
 package src.components;
 
+import src.config;
 import src.ImageLoader;
 import src.Server;
 import src.SpielWindow;
@@ -76,7 +77,8 @@ public class HostPanel extends JPanel {
                 // Create SpielWindow and display it
                 try {
 
-                    Server server = new Server("setup", fieldsize, getShipString(), menuFrame, KI);
+                    Server server = new Server("setup", fieldsize, getShipString());
+                    SpielWindow MP_Window = new SpielWindow(menuFrame,config.KI, server.pf, server);
                 } catch (Exception ioException) {
                     ioException.printStackTrace();
                 }
