@@ -28,11 +28,11 @@ public class MenuStart {
 
     private void makeComponents(){
 
-        COL      = (INITIAL_WIDTH * 20 / 100) - 10;
-        C_GAP    = (INITIAL_WIDTH * 30 / 100) - 10;
-        ROW_INFO = (INITIAL_HEIGHT * 33 / 100) - 10;
-        ROW      = (INITIAL_HEIGHT * 10 / 100) - 10;
-        R_GAP    = (INITIAL_HEIGHT * 2) / 100;
+        int COL         = (INITIAL_WIDTH * 22 / 100) - 10;
+        int C_GAP       = (INITIAL_WIDTH * 28 / 100) - 10;
+        int ROW_INFO    = (INITIAL_HEIGHT * 33 / 100) - 10;
+        int ROW         = (INITIAL_HEIGHT * 10 / 100) - 10;
+        int R_GAP       = (INITIAL_HEIGHT * 2) / 100;
         menuLayout = new GridBagLayout();
         menuLayout.columnWidths = new int[]{C_GAP, COL, COL, C_GAP};
         menuLayout.rowHeights = new int[]{ROW_INFO, R_GAP, ROW, R_GAP, ROW, R_GAP, ROW, R_GAP, ROW, ROW};

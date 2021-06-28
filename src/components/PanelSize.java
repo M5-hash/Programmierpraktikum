@@ -4,6 +4,8 @@ import src.ImageLoader;
 import javax.swing.*;
 import javax.swing.plaf.metal.MetalButtonUI;
 import java.awt.*;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.image.BufferedImage;
 import static src.FontLoader.Pokemon;
 import static src.config.*;
@@ -50,9 +52,9 @@ public class PanelSize extends JPanel{
         int height = menuFrame.getHeight() * 65 / 100;
 
         int C_GAP2 = width / 20;
-        C_GAP = width / 20;
-        COL = width * 60 / 100;
-        ROW = ((height - C_GAP2) / 7) - 10;
+        int C_GAP = width / 20;
+        int COL = width * 60 / 100;
+        int ROW = ((height - C_GAP2) / 7) - 10;
         menuLayout = new GridBagLayout();
         menuLayout.columnWidths = new int[] {C_GAP2, C_GAP, C_GAP, COL, C_GAP2};
         menuLayout.rowHeights = new int[] {C_GAP2, ROW, ROW, ROW, ROW, ROW, ROW, ROW, C_GAP2};
@@ -98,7 +100,6 @@ public class PanelSize extends JPanel{
             int value = Integer.parseInt(typed);
             menuSlider1.setValue(value);
         });
-
         makeConstraints(textField1, 2, 2, 1);
 
         textField2 = new sizeTextfield(size2);

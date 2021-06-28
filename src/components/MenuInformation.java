@@ -44,6 +44,7 @@ public class MenuInformation extends JPanel {
         displayText.setBackground(new Color(248,248,248));
         displayText.setEditable(false);
         displayText.setFont(Pokemon);
+        displayText.setFocusable(false);
         add(displayText, constraints);
 
         timer.start();

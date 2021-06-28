@@ -6,14 +6,13 @@ import static src.config.*;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 
 import static src.FontLoader.Pokemon;
 
 public class TextFieldIP extends JPanel {
 
-    JTextField textField;
+    private static JTextField textField;
 
     public TextFieldIP(String text){
 
@@ -30,12 +29,18 @@ public class TextFieldIP extends JPanel {
                 textField.setText("");
             }
         });
-        textField.addActionListener(e -> {
-            System.out.println(textField.getText());
-            IP = textField.getText();
+        textField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                System.out.println(textField.getText());
+                IP = textField.getText();
+            }
         });
         add(textField, BorderLayout.CENTER);
     }
+
+
+
 
     @Override
     protected void paintComponent(Graphics g) {

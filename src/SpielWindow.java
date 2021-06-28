@@ -1,17 +1,19 @@
 package src;
 
 
-import src.components.CustomPanel;
-import src.components.MenuButton;
-import src.components.QuitButton;
+import src.components.*;
+
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
+
 import static src.config.*;
 
 public class SpielWindow extends JPanel {
@@ -19,20 +21,12 @@ public class SpielWindow extends JPanel {
     public static boolean change = false;
     public static int framewidth = 0;
     public static int frameheigth = 0;
-    private static PlayingField playingField ;
 
+    private static PlayingField playingField ;
     private static Object Multiplayer ;
 
-    public SpielWindow(JFrame frame, boolean KI,PlayingField pf, Client Client ){
-        Multiplayer = Client ;
-        playingField = pf ;
-        makeComponents(frame);
-    }
     private static ComPlayer Com;
     String Feldvon = "Spieler"; //"GegnerKI" "GegnerMensch"
-
-
-
     {
         try {
             Com = new ComPlayerNormal(new PlayingField(fieldsize, calculateships(), false));
@@ -40,8 +34,19 @@ public class SpielWindow extends JPanel {
             e.printStackTrace();
         }
     }
+
+    public static Object getMultiplayer() {
+        return Multiplayer;
+    }
+
     public SpielWindow(JFrame frame, boolean KI) throws IOException, FontFormatException {
         playingField = new PlayingField(fieldsize, calculateships(), true);
+        makeComponents(frame);
+    }
+
+    public SpielWindow(JFrame frame, boolean KI,PlayingField pf, Client Client ){
+        Multiplayer = Client ;
+        playingField = pf ;
         makeComponents(frame);
     }
 
@@ -49,10 +54,6 @@ public class SpielWindow extends JPanel {
         Multiplayer = Server ;
         playingField = pf ;
         makeComponents(frame);
-    }
-
-    public static Object getMultiplayer() {
-        return Multiplayer;
     }
 
     public SpielWindow(JFrame frame, JPanel menuPanel, boolean ki, Object client) throws IOException, FontFormatException{
@@ -67,7 +68,8 @@ public class SpielWindow extends JPanel {
         Zielhilfe Z;
 
         JPanel      menuPanel;
-        JPanel      gamePanel;
+        JPanel      gamePanel1;
+        JPanel      gamePanel2;
         GridLayout  gameLayout;
         JButton     buttonMenuStart;
         JButton     buttonRestart;
@@ -77,7 +79,11 @@ public class SpielWindow extends JPanel {
         JButton     buttonQuitGame;
         JButton     buttonReady;
         JButton     buttonDelete;
-        Wahlstation wahlstation;
+        JButton     btn_size2;
+        JButton     btn_size3;
+        JButton     btn_size4;
+        JButton     btn_size5;
+//        Wahlstation wahlstation;
 
         tile2 = new TilePainter(fieldsize, "GegnerKI");
         tile = new TilePainter(fieldsize, "Spieler");
@@ -102,7 +108,7 @@ public class SpielWindow extends JPanel {
         framewidth = frame.getWidth();
 
         menuPanel         = new CustomPanel(ImageLoader.getImage(ImageLoader.GAME_BACKGROUND));
-        wahlstation       = new Wahlstation();
+//        wahlstation       = new Wahlstation();
         gameLayout        = new GridLayout(0, 1);
         buttonDelete      = new MenuButton("DELETE",       ImageLoader.getImage(ImageLoader.MENU_BUTTON));
         buttonReady       = new MenuButton("START GAME",   ImageLoader.getImage(ImageLoader.MENU_BUTTON));
@@ -112,23 +118,63 @@ public class SpielWindow extends JPanel {
         buttonLoadGame    = new MenuButton("LOAD GAME",    ImageLoader.getImage(ImageLoader.MENU_BUTTON));
         buttonMenuOptions = new MenuButton("OPTIONS",      ImageLoader.getImage(ImageLoader.MENU_BUTTON));
         buttonQuitGame    = new QuitButton();
-        gamePanel         = new JPanel();
+        btn_size2         = new MenuButton("size 2: " + size2, ImageLoader.getImage(ImageLoader.MENU_BUTTON2), ImageLoader.getImage(ImageLoader.GAME_BTN_BALL1));
+        btn_size3         = new MenuButton("size 3: " + size3, ImageLoader.getImage(ImageLoader.MENU_BUTTON2), ImageLoader.getImage(ImageLoader.GAME_BTN_BALL2));
+        btn_size4         = new MenuButton("size 4: " + size4, ImageLoader.getImage(ImageLoader.MENU_BUTTON2), ImageLoader.getImage(ImageLoader.GAME_BTN_BALL3));
+        btn_size5         = new MenuButton("size 5: " + size5, ImageLoader.getImage(ImageLoader.MENU_BUTTON2), ImageLoader.getImage(ImageLoader.GAME_BTN_BALL4));
+        gamePanel1        = new JPanel();
+        gamePanel2        = new JPanel();
 
         menuPanel.setLayout(null);
 
         gameLayout.setVgap(5);
-        gamePanel.setBounds(framewidth * 45 / 100, frameheigth / 3, framewidth / 20, frameheigth / 3);
-        gamePanel.setOpaque(false);
-        gamePanel.setLayout(gameLayout);
-        gamePanel.setVisible(false);
+        gamePanel1.setOpaque(false);
+        gamePanel1.setLayout(gameLayout);
+        gamePanel1.setVisible(false);
+
+        gameLayout.setVgap(5);
+        gamePanel2.setOpaque(false);
+        gamePanel2.setLayout(gameLayout);
+
+        btn_size2.addActionListener(e -> {
+            TilePainter.setGroesse(2);
+            if(size2 < 0) {
+                btn_size2.setText("size 2: 0");
+            } else {
+                btn_size2.setText("size 2: " + size2);
+            }
+        });
+        btn_size3.addActionListener(e -> {
+            TilePainter.setGroesse(3);
+            if(size3 < 0) {
+                btn_size3.setText("size 3: 0");
+            } else {
+                btn_size3.setText("size 3: " + size3);
+            }
+        });
+        btn_size4.addActionListener(e -> {
+            TilePainter.setGroesse(4);
+            if(size4 < 0) {
+                btn_size4.setText("size 4: 0");
+            } else {
+                btn_size4.setText("size 4: " + size4);
+            }
+        });
+        btn_size5.addActionListener(e -> {
+            TilePainter.setGroesse(5);
+            if(size5 < 0) {
+                btn_size5.setText("size 5: 0");
+            } else {
+                btn_size5.setText("size 5: " + size5);
+            }
+        });
 
         buttonReady.addActionListener(l -> {
 
             Tile.fightstart = true;
-            wahlstation.setVisible(false);
-            buttonReady.setVisible(false);
-            buttonDelete.setVisible(false);
-            gamePanel.setVisible(true);
+//            wahlstation.setVisible(false);
+            gamePanel1.setVisible(true);
+            gamePanel2.setVisible(false);
         });
         buttonDelete.addActionListener(e -> {
 
@@ -142,10 +188,10 @@ public class SpielWindow extends JPanel {
         });
         buttonMenuStart.addActionListener(e -> {
             // Hide this window
-            gamePanel.setVisible(false);
+            gamePanel1.setVisible(false);
             frame.dispose();
             Tile.fightstart = false;
-
+            fullscreen = false;
             // Create MenuMain and display it
             try {
                 new MenuStart();
@@ -155,10 +201,9 @@ public class SpielWindow extends JPanel {
         });
         buttonRestart.addActionListener(e -> {
             Tile.fightstart = false;
-            wahlstation.setVisible(true);
-            buttonReady.setVisible(true);
-            buttonDelete.setVisible(true);
-            gamePanel.setVisible(false);
+//            wahlstation.setVisible(true);
+            gamePanel1.setVisible(false);
+            gamePanel2.setVisible(true);
         });
         buttonSaveGame.addActionListener(e -> {
             JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
@@ -185,30 +230,53 @@ public class SpielWindow extends JPanel {
             }
         });
 
-        gamePanel.add(buttonMenuStart);
-        gamePanel.add(buttonRestart);
-        gamePanel.add(buttonSaveGame);
-        gamePanel.add(buttonLoadGame);
-        gamePanel.add(buttonMenuOptions);
-        gamePanel.add(buttonQuitGame);
+        gamePanel1.add(buttonMenuStart);
+        gamePanel1.add(buttonRestart);
+        gamePanel1.add(buttonSaveGame);
+        gamePanel1.add(buttonLoadGame);
+        gamePanel1.add(buttonMenuOptions);
+        gamePanel1.add(buttonQuitGame);
+
+        gamePanel2.add(btn_size2);
+        gamePanel2.add(btn_size3);
+        gamePanel2.add(btn_size4);
+        gamePanel2.add(btn_size5);
+        gamePanel2.add(buttonReady);
+        gamePanel2.add(buttonDelete);
 
         menuPanel.   setBounds(0, 0, frame.getWidth(), frame.getHeight());
         tile.        setBounds(framewidth * 13 / 100, frameheigth * 25 / 100, TileSize.Tile_Size * fieldsize + 2 * Math.max(18, TileSize.Tile_Size / 8), TileSize.Tile_Size * fieldsize + 2 * Math.max(18, TileSize.Tile_Size / 8));
         tile2.       setBounds(framewidth * 63 / 100, frameheigth * 25 / 100, TileSize.Tile_Size * fieldsize + 2 * Math.max(18, TileSize.Tile_Size / 8), TileSize.Tile_Size * fieldsize + 2 * Math.max(18, TileSize.Tile_Size / 8));
-        wahlstation. setBounds(framewidth * 46 / 100, frameheigth * 25 / 100, 3 * TileSize.Tile_Size + TileSize.Tile_Size / 2 + 2, 8 * TileSize.Tile_Size + 2); //Ohne das + 2 werden die netten Striche um die Wahlstation nicht gezeichnet
-        buttonReady. setBounds(framewidth * 46 / 100, frameheigth * 59 / 100, framewidth * 8 / 100, frameheigth * 5  / 100);
-        buttonDelete.setBounds(framewidth * 46 / 100, frameheigth * 65 / 100, framewidth * 8 / 100, frameheigth * 5  / 100);
-        gamePanel.   setBounds(framewidth * 46 / 100, frameheigth * 33 / 100, framewidth * 8 / 100, frameheigth * 33 / 100);
+//        wahlstation. setBounds(framewidth * 46 / 100, frameheigth * 25 / 100, 3 * TileSize.Tile_Size + TileSize.Tile_Size / 2 + 2, 8 * TileSize.Tile_Size + 2); //Ohne das + 2 werden die netten Striche um die Wahlstation nicht gezeichnet
+        gamePanel1.  setBounds(framewidth * 45 / 100, frameheigth * 25 / 100, framewidth * 10 / 100, TileSize.Tile_Size * fieldsize + 2 * Math.max(18, TileSize.Tile_Size / 8));
+        gamePanel2.  setBounds(framewidth * 45 / 100, frameheigth * 25 / 100, framewidth * 10 / 100, TileSize.Tile_Size * fieldsize + 2 * Math.max(18, TileSize.Tile_Size / 8));
 
-        menuPanel.add(gamePanel);
+        menuPanel.add(gamePanel1);
+        menuPanel.add(gamePanel2);
         menuPanel.add(tile);
         menuPanel.add(tile2);
-        menuPanel.add(wahlstation);
+//        menuPanel.add(wahlstation);
         menuPanel.add(Z);
-        menuPanel.add(buttonReady);
-        menuPanel.add(buttonDelete);
 
         frame.add(menuPanel);
+
+        frame.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+
+                int W = 4;
+                int H = 3;
+                Rectangle b = frame.getBounds();
+                int Borderwidth = 2 * Math.max(18, TileSize.Tile_Size / 8);
+
+                if (framewidth != frame.getWidth()) {
+                    frame.setBounds(b.x, b.y, b.width, b.width*H/W);
+                }
+                else if (frameheigth != frame.getHeight()) {
+                    frame.setBounds(b.x, b.y, b.height*W/H, b.height);
+                }
+            }
+        });
 
         Timer timer = new Timer(110, e -> {
             int Borderwidth = 2 * Math.max(18, TileSize.Tile_Size / 8);
@@ -230,10 +298,10 @@ public class SpielWindow extends JPanel {
             tile.        setBounds(framewidth * 13 / 100, frameheigth * 25 / 100, TileSize.Tile_Size * fieldsize + Borderwidth, TileSize.Tile_Size * fieldsize + Borderwidth);
             tile2.       setBounds(framewidth * 63 / 100, frameheigth * 25 / 100, TileSize.Tile_Size * fieldsize + Borderwidth, TileSize.Tile_Size * fieldsize + Borderwidth);
             Z.           setBounds(framewidth * 13 / 100 + Borderwidth / 2, frameheigth * 17 / 100, TileSize.Tile_Size * 3, frameheigth * 8 / 100);
-            wahlstation. setBounds(framewidth * 46 / 100, frameheigth / 4, 3 * TileSize.Tile_Size + TileSize.Tile_Size / 2 + 2, 8 * TileSize.Tile_Size + 2); //Ohne das + 2 werden die netten Striche um die Wahlstation nicht gezeichnet
+//            wahlstation. setBounds(framewidth * 46 / 100, frameheigth / 4, 3 * TileSize.Tile_Size + TileSize.Tile_Size / 2 + 2, 8 * TileSize.Tile_Size + 2); //Ohne das + 2 werden die netten Striche um die Wahlstation nicht gezeichnet
             buttonReady. setBounds(framewidth * 46 / 100, frameheigth * 59 / 100, framewidth * 8 / 100, frameheigth * 5  / 100);
-            buttonDelete.setBounds(framewidth * 46 / 100, frameheigth * 65 / 100, framewidth * 8 / 100, frameheigth * 5  / 100);
-            gamePanel.   setBounds(framewidth * 46 / 100, frameheigth * 33 / 100, framewidth * 8 / 100, frameheigth * 33 / 100);
+            gamePanel1.  setBounds(framewidth * 45 / 100, frameheigth * 25 / 100, framewidth * 10 / 100, TileSize.Tile_Size * fieldsize + Borderwidth);
+            gamePanel2.   setBounds(framewidth * 45 / 100, frameheigth * 25 / 100, framewidth * 10 / 100, TileSize.Tile_Size * fieldsize + Borderwidth);
 
             menuPanel.repaint();
             menuPanel.revalidate();

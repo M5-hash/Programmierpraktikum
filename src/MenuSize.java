@@ -9,7 +9,6 @@ import java.awt.*;
 import java.io.IOException;
 
 import static src.config.*;
-import static src.config.ROW;
 
 public class MenuSize {
 
@@ -23,10 +22,11 @@ public class MenuSize {
     public MenuSize(JFrame menuFrame, JPanel previousPanel) throws IOException, FontFormatException{
         this.menuFrame = menuFrame;
 
-        C_GAP = menuFrame.getWidth() / 10;
-        COL = menuFrame.getWidth() * 8 / 10;
-        ROW = menuFrame.getHeight() * 50 / 100;
-        ROW_INFO = menuFrame.getHeight() * 35 / 100;
+        int C_GAP = menuFrame.getWidth() / 10;
+        int COL = menuFrame.getWidth() * 8 / 10;
+        int ROW = menuFrame.getHeight() * 50 / 100;
+        int ROW_INFO = menuFrame.getHeight() * 35 / 100;
+        int R_GAP = (INITIAL_HEIGHT * 2) / 100;
         menuLayout = new GridBagLayout();
         menuLayout.columnWidths = new int[]{C_GAP, COL, C_GAP};
         menuLayout.rowHeights = new int[]{ROW_INFO, R_GAP, ROW, R_GAP};

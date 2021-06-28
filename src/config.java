@@ -10,13 +10,6 @@ public class config {
     public static int       GF_WIDTH                = 1920;
     public static int       GF_HEIGHT               = 1080;
 
-    // col row sizes
-    public static int       COL                     = (INITIAL_WIDTH * 20 / 100) - 10;
-    public static int       C_GAP                   = (INITIAL_WIDTH * 30 / 100) - 10;
-    public static int       ROW_INFO                = (INITIAL_HEIGHT * 33 / 100) - 10;
-    public static int       ROW                     = (INITIAL_HEIGHT * 10 / 100) - 10;
-    public static int       R_GAP                   = (INITIAL_HEIGHT * 2) / 100;
-
     // The difficulties of the game
     public static int       EASY_DIFFICULTY         = 0;
     public static int       NORMAL_DIFFICULTY       = 1;

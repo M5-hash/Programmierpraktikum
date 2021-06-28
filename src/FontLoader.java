@@ -13,7 +13,7 @@ public class FontLoader {
     }
 
     public static void createFont() throws IOException, FontFormatException {
-        Pokemon = Font.createFont(Font.TRUETYPE_FONT, new File("assets/pokemon.ttf")).deriveFont(12f);
+        Pokemon = Font.createFont(Font.TRUETYPE_FONT, new File("Fonts/pokemon.ttf")).deriveFont(12f);
         //create the font to use. Specify the size!
         ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
         //register the font
