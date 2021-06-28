@@ -22,12 +22,12 @@ public class Wahlstation extends JPanel {
         }
     }
 
-    //TODO Vervollständigen und noch mit dem Themes Aspekt Variabel machen
+    //TODO Vervollständigen und noch mit dem Themes Aspekt Variabel machen Machnmal kann man nach dem löschen nicht mehr setzen
     public void Wahlstationpainter(Graphics g) {
 
         Graphics2D g2 = (Graphics2D) g;
 
-        int Boxheight = 8 * TileSize.Tile_Size;
+        int Boxheight = 9 * TileSize.Tile_Size;
         int fieldwidth = 3 * TileSize.Tile_Size + TileSize.Tile_Size / 2;
 
         Image Bckgrnd = Bild.BildLoader("src/Images/BorderVert.png");
@@ -39,28 +39,56 @@ public class Wahlstation extends JPanel {
         g2.drawLine(0, 0, 0, Boxheight); //Linie links
         g2.drawLine(fieldwidth, 0, fieldwidth, Boxheight); //Linie rechts
 
-        Image Schiff = Bild.BildLoader("src/Images/Vorne32false.png");
+        Image Schiff = Bild.BildLoader("src/Images/PokeTest.jpg");
+
+        if (size5 > 0) {
+
+            for (int i = 0; i < 5; i++) {
+
+                g.drawImage(Schiff, TileSize.Tile_Size / 2,
+                        TileSize.Tile_Size / 2 + i * TileSize.Tile_Size,
+                        TileSize.Tile_Size,
+                        TileSize.Tile_Size, null);
+            }
+        }
+
+        if (size4 > 0) {
+
+            for (int i = 0; i < 4; i++) {
+
+                g.drawImage(Schiff, TileSize.Tile_Size * 2,
+                        TileSize.Tile_Size / 2 + i * TileSize.Tile_Size,
+                        TileSize.Tile_Size,
+                        TileSize.Tile_Size, null);
+            }
+        }
 
 
-        g.drawImage(Schiff, TileSize.Tile_Size / 2,
-                TileSize.Tile_Size / 2,
-                TileSize.Tile_Size,
-                TileSize.Tile_Size, null);
+        if (size3 > 0) {
 
-        g.drawImage(Schiff, TileSize.Tile_Size * 2,
-                TileSize.Tile_Size / 2,
-                TileSize.Tile_Size,
-                TileSize.Tile_Size, null);
+            for (int i = 1; i <= 3; i++) {
 
-        g.drawImage(Schiff, TileSize.Tile_Size / 2,
-                Boxheight - (TileSize.Tile_Size * 5) / 2,
-                TileSize.Tile_Size,
-                TileSize.Tile_Size, null);
+                g.drawImage(Schiff, TileSize.Tile_Size * 2,
+                        Boxheight - (TileSize.Tile_Size * 9) / 2 + i * TileSize.Tile_Size,
+                        TileSize.Tile_Size,
+                        TileSize.Tile_Size, null);
 
-        g.drawImage(Schiff, TileSize.Tile_Size * 2,
-                Boxheight - (TileSize.Tile_Size * 7) / 2,
-                TileSize.Tile_Size,
-                TileSize.Tile_Size, null);
+
+            }
+
+        }
+
+        if (size2 > 0) {
+
+            for (int i = 1; i <= 2; i++) {
+
+                g.drawImage(Schiff, TileSize.Tile_Size / 2,
+                        Boxheight - (TileSize.Tile_Size * 7) / 2 + i * TileSize.Tile_Size,
+                        TileSize.Tile_Size,
+                        TileSize.Tile_Size, null);
+            }
+        }
+
 
         addMouseListener(new MouseAdapter() {
             @Override
@@ -85,40 +113,40 @@ public class Wahlstation extends JPanel {
                                 && x <= TileSize.Tile_Size / 2 + TileSize.Tile_Size
                                 && y >= TileSize.Tile_Size / 2
                                 && y <= TileSize.Tile_Size / 2 + 5 * TileSize.Tile_Size
-                                && size5 > 0) {
+                                && size5 > 0
+                                && TilePainter.getGroesse() != 5) {
                             TilePainter.setGroesse(5);
                             System.out.println("Die Größe wurde auf 5 gesetzt");
-                            size5--;
                         }
 
                         if (x >= TileSize.Tile_Size * 2                                                                 //Bereich in dem man klicken muss um sein Schiff auf die Groesse 4 zu setzen
                                 && x <= TileSize.Tile_Size * 2 + TileSize.Tile_Size
                                 && y >= TileSize.Tile_Size / 2
                                 && y <= TileSize.Tile_Size / 2 + 4 * TileSize.Tile_Size
-                                && size4 > 0) {
+                                && size4 > 0
+                                && TilePainter.getGroesse() != 4) {
                             TilePainter.setGroesse(4);
                             System.out.println("Die Größe wurde auf 4 gesetzt");
-                            size4--;
                         }
 
                         if (x >= TileSize.Tile_Size * 2                                                                 //Bereich in dem man klicken muss um sein Schiff auf die Groesse 3 zu setzen
                                 && x <= TileSize.Tile_Size * 2 + TileSize.Tile_Size
-                                && y >= Boxheight - (TileSize.Tile_Size * 7) / 2
-                                && y <= Boxheight - (TileSize.Tile_Size * 7) / 2 + 3 * TileSize.Tile_Size
-                                && size3 > 0) {
+                                && y >= Boxheight - (TileSize.Tile_Size * 9) / 2
+                                && y <= Boxheight - (TileSize.Tile_Size * 9) / 2 + 3 * TileSize.Tile_Size
+                                && size3 > 0
+                                && TilePainter.getGroesse() != 3) {
                             TilePainter.setGroesse(3);
                             System.out.println("Die Größe wurde auf 3 gesetzt");
-                            size3--;
                         }
 
                         if (x >= TileSize.Tile_Size / 2                                                                 //Bereich in dem man klicken muss um sein Schiff auf die Groesse 2 zu setzen
                                 && x <= TileSize.Tile_Size / 2 + TileSize.Tile_Size
-                                && y >= Boxheight - (TileSize.Tile_Size * 5) / 2
-                                && y <= Boxheight - (TileSize.Tile_Size * 5) / 2 + 2 * TileSize.Tile_Size
-                                && size2 > 0) {
+                                && y >= Boxheight - (TileSize.Tile_Size * 7) / 2
+                                && y <= Boxheight - (TileSize.Tile_Size * 7) / 2 + 2 * TileSize.Tile_Size
+                                && size2 > 0
+                                && TilePainter.getGroesse() != 2) {
                             TilePainter.setGroesse(2);
                             System.out.println("Die Größe wurde auf 2 gesetzt");
-                            size2--;
                         }
 
                     }
