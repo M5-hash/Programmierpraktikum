@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Writer;
 import java.net.Socket;
+import java.util.concurrent.TimeUnit;
 
 public abstract class Com_base {
 
@@ -20,10 +21,12 @@ public abstract class Com_base {
     protected int lastX;
     protected int lastY;
     protected boolean role_server;
+    protected boolean loopBreaker;
 
     public Com_base(){
         this.port = 50000;
         this.setup = false;
+        this.loopBreaker = false;
     }
 
     public void setTurn(boolean in){
@@ -35,13 +38,15 @@ public abstract class Com_base {
         this.lastY = y;
     }
 
-    public void Send(String input) throws IOException {
+    public void Send(String input) throws Exception {
         this.out.write(String.format("%s%n", input));
+        TimeUnit.SECONDS.sleep(1);
         this.out.flush();
     }
 
     public String Receive(){
         System.out.println(this.line);
+        this.loopBreaker = false;
         return this.line;
     }
 
@@ -56,6 +61,22 @@ public abstract class Com_base {
         return this.line != null && !this.line.equals("");
     }
 
+    public String loopCheckIN() throws IOException{
+        this.loopBreaker = true;
+        String hold = "";
+        while(this.loopBreaker) {
+            if(!in_check()) break;
+            hold = Receive();
+        }
+        return hold;
+    }
+
+    public void loopCheckOUT(String message) throws Exception{
+        while (true) {
+            if(!out_check()) break;
+            Send(message);
+        }
+    }
 
 
     public boolean in_check() throws IOException {
@@ -119,7 +140,7 @@ public abstract class Com_base {
     protected int[] ship_array_toInt(String[] in_ships, int begin){
         int [] out_ships = new int[in_ships.length-begin];
         for (int i = begin; i < in_ships.length; i++){
-            out_ships[i] = Integer.parseInt(in_ships[i-begin]);
+            out_ships[i-begin] = Integer.parseInt(in_ships[i]);
         }
         return out_ships;
     }
