@@ -22,7 +22,7 @@ public class Server extends Com_base {
         this.in = new BufferedReader(new InputStreamReader(this.s.getInputStream()));
         this.out = new OutputStreamWriter(this.s.getOutputStream());
         this.usr = new BufferedReader(new InputStreamReader(System.in));
-        this.pf = setupPlayingfield(start_mode, in_size, in_ships);
+        System.out.println("Working");
     }
 
     protected PlayingField setupPlayingfield(String start_mode, int in_size, String in_ships) throws IOException{

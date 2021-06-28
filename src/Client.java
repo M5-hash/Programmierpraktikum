@@ -16,8 +16,7 @@ public class Client extends Com_base {
         this.in = new BufferedReader(new InputStreamReader(s.getInputStream()));
         this.out = new OutputStreamWriter(s.getOutputStream());
         this.usr = new BufferedReader(new InputStreamReader(System.in));
-        this.pf = setupPlayingfield();
-
+        System.out.println("Working");
     }
 
     protected PlayingField setupPlayingfield() throws IOException {
