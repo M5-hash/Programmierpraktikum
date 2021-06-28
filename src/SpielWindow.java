@@ -19,26 +19,11 @@ public class SpielWindow extends JPanel {
     public static boolean change = false;
     public static int framewidth = 0;
     public static int frameheigth = 0;
-    private static PlayingField playingField = new PlayingField(fieldsize, calculateships(), true);
+    private static PlayingField playingField ;
     private static ComPlayer Com;
     String Feldvon = "Spieler"; //"GegnerKI" "GegnerMensch"
 
-    TilePainter tile2;
-    TilePainter tile;
-    Zielhilfe Z;
 
-    JPanel      menuPanel;
-    JPanel      gamePanel;
-    GridLayout  gameLayout;
-    JButton     buttonMenuStart;
-    JButton     buttonRestart;
-    JButton     buttonSaveGame;
-    JButton     buttonLoadGame;
-    JButton     buttonMenuOptions;
-    JButton     buttonQuitGame;
-    JButton     buttonReady;
-    JButton     buttonDelete;
-    Wahlstation wahlstation;
 
     {
         try {
@@ -48,14 +33,39 @@ public class SpielWindow extends JPanel {
         }
     }
     public SpielWindow(JFrame frame, boolean KI) throws IOException, FontFormatException {
+        playingField = new PlayingField(fieldsize, calculateships(), true);
+        makeComponents(frame);
+    }
+
+    public SpielWindow(JFrame frame, boolean KI, PlayingField pf){
+        playingField = pf ;
         makeComponents(frame);
     }
 
     public SpielWindow(JFrame frame, JPanel menuPanel, boolean ki, Object client) throws IOException, FontFormatException{
+        playingField = new PlayingField(fieldsize, calculateships(), true);
         makeComponents(frame);
     }
 
     private void makeComponents(JFrame frame) {
+
+        TilePainter tile2;
+        TilePainter tile;
+        Zielhilfe Z;
+
+        JPanel      menuPanel;
+        JPanel      gamePanel;
+        GridLayout  gameLayout;
+        JButton     buttonMenuStart;
+        JButton     buttonRestart;
+        JButton     buttonSaveGame;
+        JButton     buttonLoadGame;
+        JButton     buttonMenuOptions;
+        JButton     buttonQuitGame;
+        JButton     buttonReady;
+        JButton     buttonDelete;
+        Wahlstation wahlstation;
+
         tile2 = new TilePainter(fieldsize, "GegnerKI");
         tile = new TilePainter(fieldsize, "Spieler");
         Z = new Zielhilfe();
@@ -110,11 +120,12 @@ public class SpielWindow extends JPanel {
         buttonDelete.addActionListener(e -> {
 
             System.out.println("Du hast delete gedrückt");
-            System.out.println(tile.deleting);
+            if(tile.deleting){
+                buttonDelete.setText("PLACE");
+            } else {
+                buttonDelete.setText("DELETE");
+            }
             tile.switchDeleting();
-            System.out.println(Arrays.deepToString(Com.pf.getField()).replace("]", "]\n"));
-            System.out.println(Arrays.deepToString(SpielWindow.playingField.getFieldEnemy()).replace("]", "]\n"));
-            System.out.println(tile.deleting);
         });
         buttonMenuStart.addActionListener(e -> {
             // Hide this window
