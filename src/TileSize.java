@@ -6,9 +6,12 @@ public class TileSize {                         //Die Dimesionen der Tiles
 
     public static int Tile_Size = ((GF_WIDTH / 4) - 12 )/ fieldsize;
 
+    public static int[] lasthit;
+    public static boolean hasshot = true;
 
 
-    public static int SizeofBorder = Math.max(6, TileSize.Tile_Size / 12) ;
+
+    public static int SizeofBorder = Math.max(18, TileSize.Tile_Size / 12) ;
     public static int getFighting() {
         return fighting;
     }
@@ -30,18 +33,4 @@ public class TileSize {                         //Die Dimesionen der Tiles
     }
 
 }
-
-/*
-    int[][] getEnemyPlacement =
-              {{0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
-            , {0, 0, 8, 8, 8, 8, 0, 0, 0, 0}
-            , {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
-            , {0, 0, 0, 0, 0, 7, 7, 7, 0, 0}
-            , {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
-            , {0, 0, 0, 0, 0, 8, 0, 0, 0, 0}
-            , {0, 8, 8, 0, 0, 8, 0, 0, 0, 0}
-            , {0, 8, 8, 0, 0, 8, 0, 0, 0, 0}
-            , {0, 8, 8, 0, 0, 8, 0, 0, 0, 0}
-            , {0, 8, 8, 0, 0, 0, 0, 0, 0, 0}};
-*/
 

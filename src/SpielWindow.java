@@ -23,10 +23,25 @@ public class SpielWindow extends JPanel {
     public static int frameheigth = 0;
 
     private static PlayingField playingField ;
+    TilePainter tile2;
+    TilePainter tile;
+    Client client ;
+    Server server ;
+    boolean Multclient ;
+
     private static Object Multiplayer ;
 
+    public SpielWindow(JFrame frame, boolean KI,PlayingField pf, Client Client ){
+        client = Client ;
+        playingField = pf ;
+        makeComponents(frame);
+        Multclient = true ;
+    }
     private static ComPlayer Com;
     String Feldvon = "Spieler"; //"GegnerKI" "GegnerMensch"
+
+
+
     {
         try {
             Com = new ComPlayerNormal(new PlayingField(fieldsize, calculateships(), false));
@@ -44,27 +59,26 @@ public class SpielWindow extends JPanel {
         makeComponents(frame);
     }
 
-    public SpielWindow(JFrame frame, boolean KI,PlayingField pf, Client Client ){
-        Multiplayer = Client ;
-        playingField = pf ;
-        makeComponents(frame);
-    }
+//    public SpielWindow(JFrame frame, boolean KI,PlayingField pf, Client Client ){
+//        Multiplayer = Client ;
+//        playingField = pf ;
+//        makeComponents(frame);
+//    }
 
     public SpielWindow(JFrame frame, boolean KI ,PlayingField pf, Server Server){
         Multiplayer = Server ;
         playingField = pf ;
         makeComponents(frame);
+        Multclient = false ;
     }
 
-    public SpielWindow(JFrame frame, JPanel menuPanel, boolean ki, Object client) throws IOException, FontFormatException{
+    public SpielWindow(JFrame frame, JPanel menuPanel, boolean ki, Object client) throws IOException, FontFormatException{ //Eigentlich obsolete
         playingField = new PlayingField(fieldsize, calculateships(), true);
         makeComponents(frame);
     }
 
     private void makeComponents(JFrame frame) {
 
-        TilePainter tile2;
-        TilePainter tile;
         Zielhilfe Z;
 
         JPanel      menuPanel;
@@ -85,8 +99,8 @@ public class SpielWindow extends JPanel {
         JButton     btn_size5;
 //        Wahlstation wahlstation;
 
-        tile2 = new TilePainter(fieldsize, "GegnerKI");
-        tile = new TilePainter(fieldsize, "Spieler");
+        tile2 = new TilePainter(fieldsize, "GegnerKI", this);
+        tile = new TilePainter(fieldsize, "Spieler", this);
         Z = new Zielhilfe();
 
         System.out.println(size2 + "Das hier ist ein Schiff der größe 2");
@@ -110,7 +124,7 @@ public class SpielWindow extends JPanel {
         menuPanel         = new CustomPanel(ImageLoader.getImage(ImageLoader.GAME_BACKGROUND));
 //        wahlstation       = new Wahlstation();
         gameLayout        = new GridLayout(0, 1);
-        buttonDelete      = new MenuButton("DELETE",       ImageLoader.getImage(ImageLoader.MENU_BUTTON));
+        buttonDelete      = new DeleteButton("DELETE");
         buttonReady       = new MenuButton("START GAME",   ImageLoader.getImage(ImageLoader.MENU_BUTTON));
         buttonMenuStart   = new MenuButton("MAIN MENU",    ImageLoader.getImage(ImageLoader.MENU_BUTTON));
         buttonRestart     = new MenuButton("RESTART GAME", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
@@ -175,14 +189,23 @@ public class SpielWindow extends JPanel {
 //            wahlstation.setVisible(false);
             gamePanel1.setVisible(true);
             gamePanel2.setVisible(false);
+            if(Feldvon.equals("GegnerOnline") && Multclient){
+                try {
+                    client.message_check(client.loopCheckIN());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         });
         buttonDelete.addActionListener(e -> {
 
             System.out.println("Du hast delete gedrückt");
+            ((DeleteButton) buttonDelete).switchDeleting() ;
             if(tile.deleting){
-                buttonDelete.setText("PLACE");
-            } else {
                 buttonDelete.setText("DELETE");
+
+            } else {
+                buttonDelete.setText("PLACE");
             }
             tile.switchDeleting();
         });

@@ -37,6 +37,8 @@ public class SpritePainter {
     int[][] Pokemon = new int[field_size][field_size];;
     Bildloader Bild = new Bildloader();
     String Fieldof;
+    SpielWindow frame ;
+    TilePainter Interface ;
     boolean IsHit = false ;
     int[][] Vorhersage = new int[fieldsize][fieldsize];
 
@@ -47,9 +49,11 @@ public class SpritePainter {
      *                "GegnerMensch" = OnlineGegners / Menschlicher Gegner
      *                "Preview" = Feld wird verwendet um das setzen des Spieler besser darzustellen
      */
-    public SpritePainter(String Feldvon) {
+    public SpritePainter(String Feldvon, TilePainter Kontakt, SpielWindow frame) {
 
         Fieldof = Feldvon;
+        Interface = Kontakt ;
+        this.frame = frame ;
         updatePokemen();
         //System.out.println(Fieldof);
 
@@ -243,7 +247,7 @@ public class SpritePainter {
 
 
         ready = true;
-        SpielWindow.change = false;
+        frame.change = false;
 
 
     }
@@ -367,6 +371,18 @@ public class SpritePainter {
                             Schiffdir = "src/Images/PokeTest32.jpg";
 
                     }
+
+                    if(frame.tile2.hasshot && x == frame.tile2.getRecentshot()[0] && y == frame.tile2.getRecentshot()[1]){ //Funktioniert noch nicht TODO fixen
+
+                        System.out.println("sind beim guten alten Scope Dingens");
+
+                        BufferedImage dummyImg = Bild.BildLoader("src/Images/SniperScope.png");
+
+                        g.drawImage(dummyImg, (x * TileSize.Tile_Size + SizeofBorder),
+                                (y * TileSize.Tile_Size + SizeofBorder),
+                                TileSize.Tile_Size,
+                                TileSize.Tile_Size, null);
+                    }
                 }
 
 
@@ -439,7 +455,14 @@ public class SpritePainter {
                             TileSize.Tile_Size,
                             TileSize.Tile_Size, null);
                     dosmthng = false;
+
+                    System.out.println(frame.tile2.hasshot);
+                    System.out.println(frame.tile2.getRecentshot()[0]);
+                    System.out.println(frame.tile2.getRecentshot()[1]);
+
+
                 }
+
             }
         }
         change = false;
