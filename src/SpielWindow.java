@@ -46,6 +46,7 @@ public class SpielWindow extends JPanel {
     JButton     btn_size3;
     JButton     btn_size4;
     JButton     btn_size5;
+    Timer       timer;
 
     private static ComPlayer Com;
     String Feldvon = "Spieler"; //"GegnerKI" "GegnerMensch"
@@ -86,7 +87,6 @@ public class SpielWindow extends JPanel {
     }
 
     private void makeComponents(JFrame frame) {
-
         frameheigth = frame.getHeight();
         framewidth = frame.getWidth();
 
@@ -109,7 +109,7 @@ public class SpielWindow extends JPanel {
 
         menuPanel         = new CustomPanel(ImageLoader.getImage(ImageLoader.GAME_BACKGROUND));
         gameLayout        = new GridLayout(0, 1);
-        buttonDelete      = new MenuButton("DELETE",       ImageLoader.getImage(ImageLoader.MENU_BUTTON));
+        buttonDelete      = new DeleteButton(ImageLoader.getImage(ImageLoader.GREEN), ImageLoader.getImage(ImageLoader.RED));
         buttonReady       = new MenuButton("START GAME",   ImageLoader.getImage(ImageLoader.MENU_BUTTON));
         buttonMenuStart   = new MenuButton("MAIN MENU",    ImageLoader.getImage(ImageLoader.MENU_BUTTON));
         buttonRestart     = new MenuButton("RESTART GAME", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
@@ -162,13 +162,12 @@ public class SpielWindow extends JPanel {
             }
         });
         buttonDelete.addActionListener(e -> {
-
             System.out.println("Du hast delete gedrückt");
-            if(tile.deleting){
-                buttonDelete.setText("PLACE");
-            } else {
-                buttonDelete.setText("DELETE");
-            }
+//            if(tile.deleting){
+//                buttonDelete.setText("PLACE");
+//            } else {
+//                buttonDelete.setText("DELETE");
+//            }
             tile.switchDeleting();
         });
         buttonMenuStart.addActionListener(e -> {
@@ -213,7 +212,6 @@ public class SpielWindow extends JPanel {
                 System.out.println(selectedFile.getAbsolutePath());
             }
         });
-
         gamePanel1.add(buttonMenuStart);
         gamePanel1.add(buttonRestart);
         gamePanel1.add(buttonSaveGame);
@@ -228,6 +226,7 @@ public class SpielWindow extends JPanel {
         gamePanel2.add(buttonReady);
         gamePanel2.add(buttonDelete);
 
+        TileSize.setTile_Size(((framewidth / 4) - 2 * Math.max(18, TileSize.Tile_Size / 8)) / fieldsize);
         menuPanel.   setBounds(0, 0, frame.getWidth(), frame.getHeight());
         tile.        setBounds(framewidth * 13 / 100, frameheigth * 25 / 100, framewidth * 25 / 100, framewidth * 25 / 100);
         tile2.       setBounds(framewidth * 62 / 100, frameheigth * 25 / 100, framewidth * 25 / 100, framewidth * 25 / 100);
@@ -254,7 +253,7 @@ public class SpielWindow extends JPanel {
                 if (framewidth != frame.getWidth()) {
                     framewidth = frame.getWidth();
                     frame.setBounds(b.x, b.y, b.width, b.width*H/W);
-                    TileSize.setTile_Size(((framewidth - Borderwidth) / 4) / fieldsize);
+                    TileSize.setTile_Size(((framewidth / 4) - Borderwidth) / fieldsize);
 
                 } else if (frameheigth != frame.getHeight()) {
                     frameheigth = frame.getHeight();
@@ -262,31 +261,14 @@ public class SpielWindow extends JPanel {
                     TileSize.setTile_Size(((framewidth / 4) - Borderwidth) / fieldsize);
                 }
                 menuPanel.   setBounds(0, 0, frame.getWidth(), frame.getHeight());
-                tile.        setBounds(framewidth * 13 / 100, frameheigth * 25 / 100, TileSize.Tile_Size * fieldsize + Borderwidth, TileSize.Tile_Size * fieldsize + Borderwidth);
-                tile2.       setBounds(framewidth * 62 / 100, frameheigth * 25 / 100, TileSize.Tile_Size * fieldsize + Borderwidth, TileSize.Tile_Size * fieldsize + Borderwidth);
-                gamePanel1.  setBounds(framewidth * 45 / 100, frameheigth * 25 / 100, framewidth * 10 / 100, TileSize.Tile_Size * fieldsize + Borderwidth);
-                gamePanel2.  setBounds(framewidth * 45 / 100, frameheigth * 25 / 100, framewidth * 10 / 100, TileSize.Tile_Size * fieldsize + Borderwidth);
+                tile.        setBounds(framewidth * 13 / 100, frameheigth * 25 / 100, framewidth * 25 / 100, framewidth * 25 / 100);
+                tile2.       setBounds(framewidth * 62 / 100, frameheigth * 25 / 100, framewidth * 25 / 100, framewidth * 25 / 100);
+                gamePanel1.  setBounds(framewidth * 45 / 100, frameheigth * 25 / 100, framewidth * 10 / 100, framewidth * 25 / 100);
+                gamePanel2.  setBounds(framewidth * 45 / 100, frameheigth * 25 / 100, framewidth * 10 / 100, framewidth * 25 / 100);
             }
         });
 
         Timer timer = new Timer(110, e -> {
-//            int Borderwidth = 2 * Math.max(18, TileSize.Tile_Size / 8);
-//            int dbframeheigth = frame.getHeight();
-//            int dbframewidth = frame.getWidth();
-//            int TileSizer = (int) (dbframewidth * 0.30) / fieldsize;
-//
-//            //TODO rework put check in resizer as very small and very big fieldsizes mess everything up
-//            if (framewidth != frame.getWidth()) {
-//                framewidth = frame.getWidth();
-//                TileSize.setTile_Size(((framewidth - Borderwidth) / 4) / fieldsize);
-//            } else if (frameheigth != frame.getHeight()) {
-//                frameheigth = frame.getHeight();
-//                TileSize.setTile_Size(((framewidth / 4) - Borderwidth) / fieldsize);
-//            }
-//
-//            Z.setBounds(framewidth * 13 / 100 + Borderwidth / 2, frameheigth * 17 / 100, TileSize.Tile_Size * 3, frameheigth * 8 / 100);
-//            tile.        setBounds(framewidth * 13 / 100, frameheigth * 25 / 100, TileSize.Tile_Size * fieldsize + Borderwidth, TileSize.Tile_Size * fieldsize + Borderwidth);
-//            tile2.       setBounds(framewidth * 62 / 100, frameheigth * 25 / 100, TileSize.Tile_Size * fieldsize + Borderwidth, TileSize.Tile_Size * fieldsize + Borderwidth);
 
             menuPanel.repaint();
             menuPanel.revalidate();

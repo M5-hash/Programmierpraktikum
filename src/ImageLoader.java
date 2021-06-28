@@ -21,11 +21,13 @@ public class ImageLoader {
     public static final int GAME_BTN_BACKGROUND = 11;
     public static final int FRAME_ICON = 12;
     public static final int OPTIONS_BACKGROUND = 13;
+    public static final int GREEN = 14;
+    public static final int RED = 15;
 
     private static BufferedImage[] image;
 
     public static void init() throws IOException {
-        image = new BufferedImage[14];
+        image = new BufferedImage[16];
 
         image[STARTMENU_BG]                 = ImageIO.read(new File("assets/THEME_POKEMON_SM_BG.png"));
         image[MENU_BG]                      = ImageIO.read(new File("assets/THEME_POKEMON_SM_BG2.png"));
@@ -41,6 +43,8 @@ public class ImageLoader {
         image[GAME_BTN_BACKGROUND]          = ImageIO.read(new File("assets/THEME_POKEMON_GAMEPLAY_BG.png"));
         image[FRAME_ICON]                   = ImageIO.read(new File("assets/Pokeball.png"));
         image[OPTIONS_BACKGROUND]           = ImageIO.read(new File("assets/OptionsBackground.png"));
+        image[GREEN]           = ImageIO.read(new File("assets/button1green.png"));
+        image[RED]           = ImageIO.read(new File("assets/button1red.png"));
     }
 
     public static BufferedImage getImage(int id) {
