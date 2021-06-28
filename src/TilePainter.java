@@ -210,7 +210,8 @@ public class TilePainter extends JPanel implements MouseMotionListener {
 
                             System.out.println("shot " + xString + yString);
 
-                            //Com_base.setXY(xFeld, yFeld);
+                            SpielWindow.getMultiplayer().setXY(xFeld, yFeld);
+                            //SpielWindow.getMultiplayer().send("shot " + xString + yString ) ;
                             //Com_base.send("shot " + xString + yString ) ;
                             //Com_base.setTurn(false) ;
 

@@ -20,6 +20,14 @@ public class SpielWindow extends JPanel {
     public static int framewidth = 0;
     public static int frameheigth = 0;
     private static PlayingField playingField ;
+
+    private static Object Multiplayer ;
+
+    public SpielWindow(JFrame frame, boolean KI,PlayingField pf, Client Client ){
+        Multiplayer = Client ;
+        playingField = pf ;
+        makeComponents(frame);
+    }
     private static ComPlayer Com;
     String Feldvon = "Spieler"; //"GegnerKI" "GegnerMensch"
 
@@ -37,9 +45,14 @@ public class SpielWindow extends JPanel {
         makeComponents(frame);
     }
 
-    public SpielWindow(JFrame frame, boolean KI, PlayingField pf){
+    public SpielWindow(JFrame frame, boolean KI ,PlayingField pf, Server Server){
+        Multiplayer = Server ;
         playingField = pf ;
         makeComponents(frame);
+    }
+
+    public static Object getMultiplayer() {
+        return Multiplayer;
     }
 
     public SpielWindow(JFrame frame, JPanel menuPanel, boolean ki, Object client) throws IOException, FontFormatException{
