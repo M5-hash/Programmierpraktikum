@@ -17,7 +17,7 @@ import java.util.Enumeration;
 
 import static src.config.*;
 
-public class HostPanel extends JPanel {
+public class PanelHost extends JPanel {
 
     private final BufferedImage background;
 
@@ -29,17 +29,16 @@ public class HostPanel extends JPanel {
     JButton             buttonStartGame;
     JList<String> listIP;
 
-    public HostPanel(JFrame menuFrame, JPanel menuHost, JPanel previousPanel, BufferedImage image) throws IOException {
+    public PanelHost(JFrame menuFrame, JPanel menuHost, JPanel previousPanel, BufferedImage image) throws IOException {
 
         this.background = image;
 
         int width   = menuFrame.getWidth() * 60 / 100;
         int height = menuFrame.getHeight() * 60 / 100;
 
-        COL         = width * 25 / 100;
-        C_GAP       = width * 5 / 100;
-        ROW_INFO    = height * 70 / 100;
-        ROW         = height * 10 / 100;
+        int COL         = width * 25 / 100;
+        int ROW_INFO    = height * 70 / 100;
+        int ROW         = height * 10 / 100;
         menuLayout  = new GridBagLayout();
         menuLayout.columnWidths = new int[] {COL, COL, COL, COL};
         menuLayout.rowHeights = new int[] {ROW_INFO, ROW, ROW, ROW};
@@ -88,8 +87,8 @@ public class HostPanel extends JPanel {
                 menuFrame.dispose();
                 // Create SpielWindow and display it
                 try {
-                    new SpielWindow(menuFrame, KI);
-                } catch (IOException | FontFormatException ioException) {
+                    Server server = new Server("setup", fieldsize, getShipString());
+                } catch (Exception ioException) {
                     ioException.printStackTrace();
                 }
             } else {

@@ -1,7 +1,7 @@
 package src;
 
 import src.components.CustomPanel;
-import src.components.HostPanel;
+import src.components.PanelHost;
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
@@ -19,10 +19,10 @@ public class MenuHost {
     public MenuHost(JFrame menuFrame, JPanel previousPanel) throws IOException {
         this.menuframe = menuFrame;
 
-        COL     = INITIAL_WIDTH * 80 / 100;
-        C_GAP   = INITIAL_WIDTH * 10 / 100;
-        ROW     = INITIAL_HEIGHT * 80 / 100;
-        R_GAP   = INITIAL_HEIGHT * 10 / 100;
+        int COL     = INITIAL_WIDTH * 80 / 100;
+        int C_GAP   = INITIAL_WIDTH * 10 / 100;
+        int ROW     = INITIAL_HEIGHT * 80 / 100;
+        int R_GAP   = INITIAL_HEIGHT * 10 / 100;
         menuLayout = new GridBagLayout();
         constraints = new GridBagConstraints();
         menuLayout.columnWidths = new int[] {C_GAP, COL, C_GAP};
@@ -31,7 +31,7 @@ public class MenuHost {
         menuPanel = new CustomPanel(ImageLoader.getImage(ImageLoader.MENU_BG));
         menuPanel.setLayout(menuLayout);
 
-        menuHost = new HostPanel(menuFrame, menuPanel, previousPanel, ImageLoader.getImage(ImageLoader.OPTIONS_BACKGROUND));
+        menuHost = new PanelHost(menuFrame, menuPanel, previousPanel, ImageLoader.getImage(ImageLoader.OPTIONS_BACKGROUND));
 
         constraints.gridx = 1;
         constraints.gridy = 1;

@@ -26,11 +26,11 @@ public class MenuMultiplayer {
     public MenuMultiplayer(JFrame menuFrame, JPanel menuMain) throws IOException, FontFormatException {
         this.menuFrame = menuFrame;
 
-        COL         = (INITIAL_WIDTH * 20 / 100) - 10;
-        C_GAP       = (INITIAL_WIDTH * 30 / 100) - 10;
-        ROW_INFO    = (INITIAL_HEIGHT * 33 / 100) - 10;
-        ROW         = (INITIAL_HEIGHT * 10 / 100) - 10;
-        R_GAP       = (INITIAL_HEIGHT * 2) / 100;
+        int COL         = (INITIAL_WIDTH * 22 / 100) - 10;
+        int C_GAP       = (INITIAL_WIDTH * 28 / 100) - 10;
+        int ROW_INFO    = (INITIAL_HEIGHT * 33 / 100) - 10;
+        int ROW         = (INITIAL_HEIGHT * 10 / 100) - 10;
+        int R_GAP       = (INITIAL_HEIGHT * 2) / 100;
         menuLayout  = new GridBagLayout();
         menuLayout.columnWidths = new int[] {C_GAP, COL, COL, C_GAP};
         menuLayout.rowHeights = new int[] {ROW_INFO, R_GAP, ROW, R_GAP, ROW, R_GAP, ROW, R_GAP, ROW, ROW};
@@ -57,10 +57,13 @@ public class MenuMultiplayer {
             menuMain.setVisible(true);
         });
         buttonJoin.addActionListener(e -> {
-            String[] options = new String[] {"Player", "Computer", "Cancel"};
-            ImageIcon icon = new ImageIcon("");
-            int x = JOptionPane.showOptionDialog(menuFrame, "Wollen Sie selbst spielen oder als Computer?",
-                    "Selfplay or KI", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, icon, options, options[0]);
+            if(IP.equals("")){
+                JOptionPane.showMessageDialog(null, "PLEASE ENTER AN IP");
+            } else {
+                String[] options = new String[] {"Player", "Computer", "Cancel"};
+                ImageIcon icon = new ImageIcon("");
+                int x = JOptionPane.showOptionDialog(menuFrame, "Wollen Sie selbst spielen oder als Computer?",
+                        "Selfplay or KI", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, icon, options, options[0]);
 
             if(x == 0){
                 menuPanel.setVisible(false);
@@ -68,7 +71,7 @@ public class MenuMultiplayer {
                 // Create SpielWindow and display it
                 try {
                     Client client = new Client(IP);
-                    SpielWindow MP_Window = new SpielWindow(menuFrame, config.KI, client.pf, client);
+                    new SpielWindow(menuFrame, menuPanel, KI, client);
                 } catch (Exception ioException) {
                     ioException.printStackTrace();
                 }
@@ -85,7 +88,7 @@ public class MenuMultiplayer {
             } else {
                 System.out.println("no");
             }
-        });
+        }});
         buttonMenuHost.addActionListener(e -> {
             menuPanel.setVisible(false);
             try {
