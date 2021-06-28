@@ -61,7 +61,7 @@ public class MenuSingleplayer {
             menuFrame.dispose();
             // Create SpielWindow and display it
             try {
-                new SpielWindow(menuFrame, KI);
+                new SpielWindow(menuFrame);
             } catch (IOException | FontFormatException ioException) {
                 ioException.printStackTrace();
             }
@@ -76,7 +76,7 @@ public class MenuSingleplayer {
 
             // Create MenuMain and display it
             try {
-                new SpielWindow(menuFrame, KI);
+                new SpielWindow(menuFrame);
             } catch (IOException | FontFormatException ioException) {
                 ioException.printStackTrace();
             }

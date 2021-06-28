@@ -20,17 +20,16 @@ public class SpielWindow extends JPanel {
     public static boolean change = false;
     public static int framewidth = 0;
     public static int frameheigth = 0;
-
-    private static PlayingField playingField ;
-    private static Object Multiplayer ;
-    Client client ;
-    Server server ;
     boolean Multclient ;
 
+    private static PlayingField playingField;
+    private static Object Multiplayer;
+
+    Client      client;
+    Server      server;
     TilePainter tile2;
     TilePainter tile;
-    Zielhilfe Z;
-
+    Zielhilfe   Z;
     GridLayout  gameLayout;
     JPanel      menuPanel;
     JPanel      gamePanel1;
@@ -62,19 +61,19 @@ public class SpielWindow extends JPanel {
         return Multiplayer;
     }
 
-    public SpielWindow(JFrame frame, boolean KI) throws IOException, FontFormatException {
+    public SpielWindow(JFrame frame) throws IOException, FontFormatException {
         playingField = new PlayingField(fieldsize, calculateships(), true);
         makeComponents(frame);
     }
 
-    public SpielWindow(JFrame frame, boolean KI,PlayingField pf, Client Client ){
+    public SpielWindow(JFrame frame, PlayingField pf, Client Client ){
         client = Client ;
         playingField = pf ;
         makeComponents(frame);
         Multclient = true ;
     }
 
-    public SpielWindow(JFrame frame, boolean KI ,PlayingField pf, Server Server){
+    public SpielWindow(JFrame frame,PlayingField pf, Server Server){
         Multiplayer = Server ;
         playingField = pf ;
         makeComponents(frame);

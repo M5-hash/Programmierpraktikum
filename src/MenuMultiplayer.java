@@ -81,7 +81,7 @@ public class MenuMultiplayer {
                 menuFrame.dispose();
                 // Create SpielWindow and display it
                 try {
-                    new SpielWindow(menuFrame, KI);
+                    new SpielWindow(menuFrame);
                 } catch (IOException | FontFormatException ioException) {
                     ioException.printStackTrace();
                 }

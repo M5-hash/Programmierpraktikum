@@ -77,7 +77,7 @@ public class PanelHost extends JPanel {
                 try {
 
                     Server server = new Server("setup", fieldsize, getShipString());
-                    SpielWindow MP_Window = new SpielWindow(menuFrame,config.KI, server.pf, server);
+                    SpielWindow MP_Window = new SpielWindow(menuFrame, server.pf, server);
                 } catch (Exception ioException) {
                     ioException.printStackTrace();
                 }
