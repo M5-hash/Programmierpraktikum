@@ -4,10 +4,7 @@ package src;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+import java.awt.event.*;
 import java.io.IOException;
 import java.util.Arrays;
 
@@ -41,6 +38,7 @@ public class TilePainter extends JPanel implements MouseMotionListener {
     SpielWindow frame;
     PlayingField pf;
     ComPlayer Computer;
+    Timer KItimer ;
     int[] recentshot = new int[2];
     boolean placeable = false;
     boolean MovementHandler;
@@ -193,30 +191,48 @@ public class TilePainter extends JPanel implements MouseMotionListener {
                                                 //Momentan noch funktionierend sollte aber eigentlich dafür sorgen, dass die KI nochmal Schießt, falls Sie gtroffen hat
                                                 counter = 0;
 
-                                                while(hitKI) {
-//                                                ActionListener KiAct = new ActionListener() {
+                                                ActionListener taskPerformer = new ActionListener() {
+                                                    public void actionPerformed(ActionEvent evt) {
+
+
+                                                        int[] Feld = new int[2];
+                                                        try {
+                                                            Feld = Computer.doNextShot();
+                                                            hasshot = true;
+                                                            recentshot = Feld;
+                                                        } catch (Exception exception) {
+                                                            exception.printStackTrace();
+                                                        }
+
+                                                        try {
+                                                            Computer.didHit(pf.isShot(Feld[0], Feld[1]));
+                                                            allowchange = true;
+                                                        } catch (Exception exception) {
+                                                            exception.printStackTrace();
+                                                        }
+//                                                        System.out.println("I was called" + counter++ + "times");
+                                                        hitKI = pf.getField()[Feld[1]][Feld[0]] == 1 || pf.getField()[Feld[1]][Feld[0]] == 2;
+                                                        System.out.println(hitKI);
+                                                        if(!hitKI){
+                                                            timerstopper();
+                                                        }
+                                                        if(hitKI){
+                                                            timerstarter();
+                                                        }
+                                                        System.out.println(counter++);
+                                                    }
+
+                                                };
+                                                KItimer = new Timer(300 ,taskPerformer);
+                                                KItimer.setRepeats(false);
+                                                KItimer.start();
+
+//                                                while(hitKI) {
+//                                                Timer KiAct = new Timer() {
 //                                                    @Override
 //                                                    public void actionPerformed(ActionEvent KIevnt) {
 
-                                                    int[] Feld = new int[2];
-                                                    try {
-                                                        Feld = Computer.doNextShot();
-                                                        hasshot = true;
-                                                        recentshot = Feld;
-                                                    } catch (Exception exception) {
-                                                        exception.printStackTrace();
-                                                    }
 
-                                                    try {
-                                                        Computer.didHit(pf.isShot(Feld[0], Feld[1]));
-                                                        allowchange = true;
-                                                    } catch (Exception exception) {
-                                                        exception.printStackTrace();
-                                                    }
-//                                                        System.out.println("I was called" + counter++ + "times");
-                                                    hitKI = pf.getField()[Feld[1]][Feld[0]] == 1 || pf.getField()[Feld[1]][Feld[0]] == 2;
-
-                                                }
                                             }
 
 
@@ -451,6 +467,14 @@ public class TilePainter extends JPanel implements MouseMotionListener {
     public void switchDeleting() {
         this.deleting = !this.deleting;
     }
+
+    private void timerstopper(){
+        KItimer.stop();
+    }
+    private void timerstarter() {
+        KItimer.start();
+    }
+
 
 
     @Override

@@ -410,13 +410,13 @@ public class SpritePainter {
                             break;
 
                         case 1:
-                            Schiffdir = "src/Images/1.png";
+                            Schiffdir = "src/Images/PokeTest.png";
                             dosmthng = true;
                             //Normaler Pokeball (kein Pokemon mehr)
                             break;
 
                         case 2:
-                            Schiffdir = "src/Images/2.png";
+                            Schiffdir = "src/Images/greyPokeball.png";
                             dosmthng = true;
                             //ausgegrauter Pokeball (Das ganze Schiff zerstört)
                             break;
@@ -429,7 +429,7 @@ public class SpritePainter {
                             //Schiff kann dort nicht sein
 
                         case 5:
-                            Schiffdir = "src/Images/5.png";
+                            Schiffdir = "src/Images/PokemonCutGrass.jpg";
                             dosmthng = true;
                             break;
                         //Schiff war dort nicht

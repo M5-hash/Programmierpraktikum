@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 
+import static src.config.Themes;
 import static src.config.selectedTheme;
 
 public class Tile extends JPanel {
@@ -67,7 +68,7 @@ public class Tile extends JPanel {
         for (int y = 0; y < field_size; y++) {                                // Wird nur gebraucht, falls wir alle TileFrames in einem Bild ablegen wollen (TileSet), da in diesem Fall Zeilenumsprünge benötigt werden
             for (int x = 0; x < field_size; x++) {
 
-                if (field == 0) {
+                if (!selectedTheme.equals("Pokemon")) {
 
                     int index = ((Feld[y][x] + counter) % 32);
                     int yOffset = 0;
@@ -90,7 +91,7 @@ public class Tile extends JPanel {
                             null);
 
                 }
-                if (field == 1 || field == 2) {
+                if (selectedTheme.equals("Pokemon")) {
 
                     if(field_size > 6){
                         Image = Bild.BildLoader("src/images/PokemonGrass.jpg") ;
