@@ -97,7 +97,7 @@ public abstract class Com_base {
                 int hit = pf.isShot(x, y);
                 if (hit == 0) {
                     Send("answer 0");
-                    this.myTurn = false;
+                    this.myTurn = true;
                 } else if (hit == 1) {
                     Send("answer 1");
                     this.myTurn = false;
