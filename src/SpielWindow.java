@@ -222,7 +222,7 @@ public class SpielWindow extends JPanel {
         gamePanel1.add(buttonRestart);
         gamePanel1.add(buttonSaveGame);
         gamePanel1.add(buttonLoadGame);
-        gamePanel1.add(buttonMenuOptions);
+//        gamePanel1.add(buttonMenuOptions);
         gamePanel1.add(buttonQuitGame);
 
         gamePanel2.add(btn_size2);
