@@ -12,12 +12,12 @@ public class MenuFrame extends JFrame {
         super();
 
         setTitle("Pokemon");
-//        setMinimumSize(new Dimension(INITIAL_WIDTH, INITIAL_HEIGHT));
         setSize(INITIAL_WIDTH, INITIAL_HEIGHT);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setIconImage(setIcon());
         setLocationRelativeTo(null);
         setResizable(false);
+//        getRootPane().setWindowDecorationStyle(JRootPane.FRAME);
         setVisible(true);
     }
 

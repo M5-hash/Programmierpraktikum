@@ -20,36 +20,34 @@ public class SpielWindow extends JPanel {
     public static boolean change = false;
     public static int framewidth = 0;
     public static int frameheigth = 0;
-    boolean Multclient ;
-
-    String Feldvon = "Spieler"; //"GegnerKI" "GegnerOnline"
     private static Object Multiplayer;
-
-    Client      client;
-    Server      server;
-    TilePainter tile2;
-    TilePainter tile;
-    Zielhilfe   Z;
-    GridLayout  gameLayout;
-    JPanel      menuPanel;
-    JPanel      gamePanel1;
-    JPanel      gamePanel2;
-    JButton     buttonMenuStart;
-    JButton     buttonRestart;
-    JButton     buttonSaveGame;
-    JButton     buttonLoadGame;
-    JButton     buttonMenuOptions;
-    JButton     buttonQuitGame;
-    JButton     buttonReady;
-    JButton     buttonDelete;
-    JButton     btn_size2;
-    JButton     btn_size3;
-    JButton     btn_size4;
-    JButton     btn_size5;
-    Timer       timer;
-
     private static ComPlayer Com;
     private PlayingField playingField;
+    String Feldvon = "Spieler"; //"GegnerKI" "GegnerOnline"
+    boolean Multclient ;
+
+    Client              client;
+    Server              server;
+    TilePainter         tile2;
+    TilePainter         tile;
+    Zielhilfe           Z;
+    GridLayout          gameLayout;
+    JPanel              menuPanel;
+    JPanel              gamePanel1;
+    JPanel              gamePanel2;
+    JButton             buttonMenuStart;
+    JButton             buttonRestart;
+    JButton             buttonSaveGame;
+    JButton             buttonLoadGame;
+    JButton             buttonMenuOptions;
+    JButton             buttonQuitGame;
+    JButton             buttonReady;
+    JButton             buttonDelete;
+    ButtonGroup         buttonGroup;
+    ToggleButton        btn_size2;
+    ToggleButton        btn_size3;
+    ToggleButton        btn_size4;
+    ToggleButton        btn_size5;
 
     {
         try {
@@ -117,14 +115,17 @@ public class SpielWindow extends JPanel {
         buttonLoadGame    = new MenuButton("LOAD GAME",    ImageLoader.getImage(ImageLoader.MENU_BUTTON));
         buttonMenuOptions = new MenuButton("OPTIONS",      ImageLoader.getImage(ImageLoader.MENU_BUTTON));
         buttonQuitGame    = new QuitButton();
-        btn_size2         = new MenuButton("size 2: " + size2, ImageLoader.getImage(ImageLoader.MENU_BUTTON2), ImageLoader.getImage(ImageLoader.GAME_BTN_BALL1));
-        btn_size3         = new MenuButton("size 3: " + size3, ImageLoader.getImage(ImageLoader.MENU_BUTTON2), ImageLoader.getImage(ImageLoader.GAME_BTN_BALL2));
-        btn_size4         = new MenuButton("size 4: " + size4, ImageLoader.getImage(ImageLoader.MENU_BUTTON2), ImageLoader.getImage(ImageLoader.GAME_BTN_BALL3));
-        btn_size5         = new MenuButton("size 5: " + size5, ImageLoader.getImage(ImageLoader.MENU_BUTTON2), ImageLoader.getImage(ImageLoader.GAME_BTN_BALL4));
+        btn_size2         = new ToggleButton("size 2: " + size2, ImageLoader.getImage(ImageLoader.RED), ImageLoader.getImage(ImageLoader.MENU_BUTTON2), ImageLoader.getImage(ImageLoader.GAME_BTN_BALL1));
+        btn_size3         = new ToggleButton("size 3: " + size3, ImageLoader.getImage(ImageLoader.RED), ImageLoader.getImage(ImageLoader.MENU_BUTTON2), ImageLoader.getImage(ImageLoader.GAME_BTN_BALL2));
+        btn_size4         = new ToggleButton("size 4: " + size4, ImageLoader.getImage(ImageLoader.RED), ImageLoader.getImage(ImageLoader.MENU_BUTTON2), ImageLoader.getImage(ImageLoader.GAME_BTN_BALL3));
+        btn_size5         = new ToggleButton("size 5: " + size5, ImageLoader.getImage(ImageLoader.RED), ImageLoader.getImage(ImageLoader.MENU_BUTTON2), ImageLoader.getImage(ImageLoader.GAME_BTN_BALL4));
         gamePanel1        = new JPanel();
         gamePanel2        = new JPanel();
+        buttonGroup       = new ButtonGroup();
 
         menuPanel.setLayout(null);
+        tile2.  setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+        tile.   setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
 
         gameLayout.setVgap(5);
         gamePanel1.setOpaque(false);
@@ -138,16 +139,19 @@ public class SpielWindow extends JPanel {
         btn_size2.addActionListener(e -> {
             TilePainter.setGroesse(2);
         });
+        buttonGroup.add(btn_size2);
         btn_size3.addActionListener(e -> {
             TilePainter.setGroesse(3);
         });
+        buttonGroup.add(btn_size3);
         btn_size4.addActionListener(e -> {
             TilePainter.setGroesse(4);
         });
+        buttonGroup.add(btn_size4);
         btn_size5.addActionListener(e -> {
             TilePainter.setGroesse(5);
         });
-
+        buttonGroup.add(btn_size5);
         buttonReady.addActionListener(e -> {
 
             Tile.fightstart = true;
@@ -229,9 +233,6 @@ public class SpielWindow extends JPanel {
         gamePanel1.  setBounds(framewidth * 45 / 100, frameheigth * 25 / 100, framewidth * 10 / 100, framewidth * 25 / 100);
         gamePanel2.  setBounds(framewidth * 45 / 100, frameheigth * 25 / 100, framewidth * 10 / 100, framewidth * 25 / 100);
 
-        tile2.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
-        tile.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
-
         menuPanel.add(gamePanel1);
         menuPanel.add(gamePanel2);
         menuPanel.add(tile);
@@ -245,6 +246,7 @@ public class SpielWindow extends JPanel {
             public void componentResized(ComponentEvent e) {
                 int W = 16;
                 int H = 9;
+
                 Rectangle b = frame.getBounds();
                 int Borderwidth = 2 * Math.max(18, TileSize.Tile_Size / 8);
 
@@ -259,6 +261,11 @@ public class SpielWindow extends JPanel {
                     frame.setBounds(b.x, b.y, b.height*W/H, b.height);
                     TileSize.setTile_Size(((framewidth / 4) - Borderwidth) / fieldsize);
                 }
+//
+                menuPanel.revalidate();
+                menuPanel.repaint();
+
+
                 menuPanel.   setBounds(0, 0, frame.getWidth(), frame.getHeight());
                 tile.        setBounds(framewidth * 13 / 100, frameheigth * 25 / 100, framewidth * 25 / 100, framewidth * 25 / 100);
                 tile2.       setBounds(framewidth * 62 / 100, frameheigth * 25 / 100, framewidth * 25 / 100, framewidth * 25 / 100);

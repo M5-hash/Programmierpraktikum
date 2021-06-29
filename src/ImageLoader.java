@@ -43,8 +43,8 @@ public class ImageLoader {
         image[GAME_BTN_BACKGROUND]          = ImageIO.read(new File("assets/THEME_POKEMON_GAMEPLAY_BG.png"));
         image[FRAME_ICON]                   = ImageIO.read(new File("assets/Pokeball.png"));
         image[OPTIONS_BACKGROUND]           = ImageIO.read(new File("assets/OptionsBackground.png"));
-        image[GREEN]           = ImageIO.read(new File("assets/button1green.png"));
-        image[RED]           = ImageIO.read(new File("assets/button1red.png"));
+        image[GREEN]                        = ImageIO.read(new File("assets/button1green.png"));
+        image[RED]                          = ImageIO.read(new File("assets/button1red.png"));
     }
 
     public static BufferedImage getImage(int id) {

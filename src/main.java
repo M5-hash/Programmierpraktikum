@@ -24,7 +24,7 @@ public class main{
             System.exit(0);
         }
         FontLoader.createFont();
-        
+        JFrame.setDefaultLookAndFeelDecorated(true);
         // Create the start window
         new MenuStart();
 
