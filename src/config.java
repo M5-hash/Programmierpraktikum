@@ -34,34 +34,34 @@ public class config {
     public static int       size3                   = 1;
     public static int       size4                   = 1;
     public static int       size5                   = 1;
-    public static int       sumofships              = size2 + size3 + size4 + size5;
+    public static int       sumofships              = 4;
 
     // Information Strings
     public static String  TextSingleplayer          =  """
             You  can  select  the  difficulty  of  the  game\s\040
             by  clicking  the  EASY  or NORMAL button.
 
-            You  can  also  select  the  size  of the  Pokemon's\s
+            You  can  also  select  the  size  of the  Pokemon\s
             by  clicking  the  size  button.""";
 
     public static String  TextMulitplayer           =  """
             You  can  either  join  a  game  or host  a game.
             Please  enter  your  IP  before  starting  the  game.\040
 
-            You  can  also  select  the  size  of the  Pokemon's\s
+            You  can  also  select  the  size  of the  Pokemon\s
             by  clicking  the  size  button.""";
 
 
     public static String  TextOptions               = """
             You  can  select  fullscreen  mode  and  resolution  here.
 
-            You  can  also  select  the  size  of the  Pokemon's\s
+            You  can  also  select  the  size  of the  Pokemon\s
             by  clicking  the  size  button.""";
 
     public static String  TextGame                  =  """
             You  can  select  fullscreen  mode  and  resolution  here.
 
-            You  can  also  select  the  size  of the  Pokemon's\s
+            You  can  also  select  the  size  of the  Pokemon\s
             by  clicking  the  size  button.""";
 
 
@@ -69,6 +69,6 @@ public class config {
             You  can  set  the  amount  of  size  2, 3, 4 and 5 Pokemon's
             as  well  as  the  size  of  the  playing  field.\040
 
-            You  can  also  select  the  size  of the  Pokemon's\s
+            You  can  also  select  the  size  of the  Pokemon\s
             by  clicking  the  size  button.""";
 }

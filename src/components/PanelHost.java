@@ -37,11 +37,13 @@ public class PanelHost extends JPanel {
         int height = menuFrame.getHeight() * 60 / 100;
 
         int COL         = width * 25 / 100;
+        int C_GAP       = width / 10;
         int ROW_INFO    = height * 70 / 100;
         int ROW         = height * 10 / 100;
+        int R_GAP       = height * 5  / 100;
         menuLayout  = new GridBagLayout();
-        menuLayout.columnWidths = new int[] {COL, COL, COL, COL};
-        menuLayout.rowHeights = new int[] {ROW_INFO, ROW, ROW, ROW};
+        menuLayout.columnWidths = new int[] {C_GAP, COL, COL, COL, COL,C_GAP};
+        menuLayout.rowHeights = new int[] {C_GAP, ROW_INFO, R_GAP, ROW, ROW};
         constraints = new GridBagConstraints();
 
         setLayout(menuLayout);
@@ -51,7 +53,6 @@ public class PanelHost extends JPanel {
         listIP.setBorder(new LineBorder(Color.black));
         listIP.setBackground(new Color(248, 247, 201));
         scrollPane            = new JScrollPane(listIP);
-
 
         buttonPanel           = new JPanel(new GridLayout(1, 0, 5,5));
         buttonMenuMultiplayer = new MenuButton("MULTIPLAYER", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
@@ -101,8 +102,8 @@ public class PanelHost extends JPanel {
         buttonPanel.add(buttonMenuMultiplayer);
         buttonPanel.add(buttonStartGame);
 
-        makeConstraints(scrollPane, 0, 0, 4);
-        makeConstraints(buttonPanel, 0, 2, 4);
+        makeConstraints(scrollPane, 1, 1, 4);
+        makeConstraints(buttonPanel, 1, 3, 4);
     }
 
     private String getShipString() {

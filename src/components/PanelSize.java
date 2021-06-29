@@ -21,6 +21,7 @@ public class PanelSize extends JPanel{
     int temp_size4 = size4;
     int temp_size5 = size5;
     int temp_fieldsleft = 16;
+    int temp_sumofships = sumofships;
 
     GridBagConstraints  constraints;
     GridBagLayout       menuLayout;
@@ -270,6 +271,7 @@ public class PanelSize extends JPanel{
         System.out.println("size3: " + temp_size3);
         System.out.println("size4: " + temp_size4);
         System.out.println("size5: " + temp_size5);
+        System.out.println("sumofships: " + sumofships);
     }
 
     private void makeConstraints(JComponent comp, int gridx, int gridy, int gridwidth) {

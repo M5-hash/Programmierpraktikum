@@ -17,7 +17,6 @@ public class MenuFrame extends JFrame {
         setIconImage(setIcon());
         setLocationRelativeTo(null);
         setResizable(false);
-//        getRootPane().setWindowDecorationStyle(JRootPane.FRAME);
         setVisible(true);
     }
 
