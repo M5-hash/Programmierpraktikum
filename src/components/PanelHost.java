@@ -82,7 +82,6 @@ public class PanelHost extends JPanel {
                     ioException.printStackTrace();
                 }
             } else if (x == 1){
-                KI = true;
                 menuHost.setVisible(false);
                 menuFrame.dispose();
                 // Create SpielWindow and display it

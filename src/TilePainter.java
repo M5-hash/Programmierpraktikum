@@ -29,13 +29,17 @@ public class TilePainter extends JPanel implements MouseMotionListener {
     boolean hitKI = true;
     int[] groessen = {0, 0, size2, size3, size4, size5};
     boolean PlayerTurn;
-    String field;
+    int field;
     boolean deleting;
     SpritePainter hier;
     SpritePainter Predicted;
+    SpielWindow frame ;
+    PlayingField pf ;
+    ComPlayer Computer;
     int[] recentshot = new int[2];
     boolean placeable = false;
     boolean MovementHandler;
+
     /**
      * @param Feldgroesse gibt Groesse des Feldes vor
      * @param Feldvon     gibt an für wen des Feld ist
@@ -44,18 +48,23 @@ public class TilePainter extends JPanel implements MouseMotionListener {
      *                    <p>
      *                    Übernimmt die Inputs des Spielers gibt diese wenn nötig an andere Methoden weiter
      */
-    public TilePainter(int Feldgroesse, String Feldvon, SpielWindow frame) {
+    public TilePainter(int Feldgroesse, int Feldvon, SpielWindow frame, ComPlayer Com, PlayingField pf) {
         Ebene = new Tile(Feldgroesse, Feldvon);
+        Computer = Com ;
+        this.frame = frame ;
         field = Feldvon;
-        hier = new SpritePainter(Feldvon, this, frame);
+        this.pf = pf ;
+        System.out.println(field);
+        hier = new SpritePainter(field, this, frame, pf);
 
 
-        if (Feldvon.equals("Spieler")) {
-            Predicted = new SpritePainter("Vorhersage", this, frame);
+        if (field == 0) {
+            //Da es sich hier nicht um ein normales Feld handelt wird hier 4 == Vorhersage übergeben
+            Predicted = new SpritePainter(4, this, frame, pf);
         }
 
 
-        if (Feldvon.equals("Spieler")) addMouseMotionListener(this);
+        if (field == 0) addMouseMotionListener(this);
 
 
         //TODO sichergehen, dass der der getroffen hat nochmal schießen darf und nicht zum anderen Spieler gewechselt wird
@@ -86,12 +95,12 @@ public class TilePainter extends JPanel implements MouseMotionListener {
                         int yFeld = ((y - TileSize.getSizeofBorder()) / TileSize.Tile_Size);
                         int xFeld = ((x - TileSize.getSizeofBorder()) / TileSize.Tile_Size);
 
-                        if (!Tile.fightstart && Feldvon.equals("Spieler")) {
+                        if (!Tile.fightstart && field == 0) {
 
                             System.out.println("Die Position auf der Y-Achse beträgt:" + yFeld + "\nDie Postion auf der X-Achse beträgt:" + xFeld);
 
                             if (!deleting && !Tile.isFightstart()) {
-                                if (groessen[groesse] > 0 && SpielWindow.getPlayingField().setShip(groesse, xFeld, yFeld, horizontal)) {
+                                if (groessen[groesse] > 0 && pf.setShip(groesse, xFeld, yFeld, horizontal)) {
                                     frame.change = true;
                                     AnzSchiffe++;
 
@@ -99,24 +108,28 @@ public class TilePainter extends JPanel implements MouseMotionListener {
                                         case 2:
                                             if (size2 > 0) {
                                                 size2--;
+                                                frame.btn_size2.setText("size 2: " + size3);
                                                 groessen[groesse]--;
                                             }
                                             break;
                                         case 3:
                                             if (size3 > 0) {
                                                 size3--;
+                                                frame.btn_size3.setText("size 3: " + size3);
                                                 groessen[groesse]--;
                                             }
                                             break;
                                         case 4:
                                             if (size4 > 0) {
                                                 size4--;
+                                                frame.btn_size4.setText("size 4: " + size4);
                                                 groessen[groesse]--;
                                             }
                                             break;
                                         case 5:
                                             if (size5 > 0) {
                                                 size5--;
+                                                frame.btn_size5.setText("size 5: " + size5);
                                                 groessen[groesse]--;
                                             }
                                             break;
@@ -128,27 +141,31 @@ public class TilePainter extends JPanel implements MouseMotionListener {
                             }
                             if (!Tile.isFightstart() && deleting) {
                                 try {
-                                    int recycleship = SpielWindow.getPlayingField().deleteShip(xFeld, yFeld);
+                                    int recycleship = pf.deleteShip(xFeld, yFeld);
 
                                     switch (recycleship) {
                                         case 2:
                                             size2++;
                                             groessen[recycleship]++;
+                                            frame.btn_size2.setText("size 2: " + size2);
                                             AnzSchiffe--;
                                             break;
                                         case 3:
                                             size3++;
                                             groessen[recycleship]++;
+                                            frame.btn_size3.setText("size 3: " + size3);
                                             AnzSchiffe--;
                                             break;
                                         case 4:
                                             size4++;
                                             groessen[recycleship]++;
+                                            frame.btn_size4.setText("size 4: " + size4);
                                             AnzSchiffe--;
                                             break;
                                         case 5:
                                             size5++;
                                             groessen[recycleship]++;
+                                            frame.btn_size5.setText("size 5: " + size5);
                                             AnzSchiffe--;
                                             break;
                                     }
@@ -162,38 +179,50 @@ public class TilePainter extends JPanel implements MouseMotionListener {
 
                         if (Tile.isFightstart()) {
 
-                            if (Feldvon.equals("GegnerKI")) {
+                            if (field == 1) {
 
                                 try {
-                                    if (SpielWindow.getPlayingField().getFieldEnemy()[yFeld][xFeld] == 0) {
+                                    if (pf.getFieldEnemy()[yFeld][xFeld] == 0) {
 
-                                        int TrefferSpieler = SpielWindow.getCom().isShot(xFeld, yFeld);
-                                        SpielWindow.getPlayingField().didHit(TrefferSpieler, xFeld, yFeld);
+                                        int TrefferSpieler = Computer.isShot(xFeld, yFeld);
+                                        pf.didHit(TrefferSpieler, xFeld, yFeld);
                                         if (TrefferSpieler == 0) {
                                             hitKI = true;
-                                            int[] Feld;
+
                                             //Momentan noch funktionierend sollte aber eigentlich dafür sorgen, dass die KI nochmal Schießt, falls Sie gtroffen hat
                                             counter = 0;
-                                            while (hitKI) {
-//                                            Timer timer = new Timer(110, w -> {
-//
-//                                            });
-                                                if (counter != 0) {
 
-
+                                            Timer timer = new Timer(110, w -> {
+                                                int[] Feld = new int[2];
+                                                try {
+                                                    Feld = Computer.doNextShot();
+                                                    hasshot = true;
+                                                    recentshot = Feld;
+                                                } catch (Exception exception) {
+                                                    exception.printStackTrace();
                                                 }
-                                                Feld = SpielWindow.getCom().doNextShot();
-                                                hasshot = true;
-                                                recentshot = Feld;
-                                                SpielWindow.getCom().didHit(SpielWindow.getPlayingField().isShot(Feld[0], Feld[1]));
+
+                                                try {
+                                                    Computer.didHit(pf.isShot(Feld[0], Feld[1]));
+                                                } catch (Exception exception) {
+                                                    exception.printStackTrace();
+                                                }
                                                 System.out.println("I was called" + counter++ + "times");
-                                                hitKI = SpielWindow.getPlayingField().getField()[Feld[1]][Feld[0]] == 1 || SpielWindow.getPlayingField().getField()[Feld[1]][Feld[0]] == 2;
+                                                hitKI = pf.getField()[Feld[1]][Feld[0]] == 1 || pf.getField()[Feld[1]][Feld[0]] == 2;
+
+                                            });
+                                            if(hitKI){
+                                                timer.start();
                                             }
-                                            SpielWindow.getPlayingField().gameover();
-                                            SpielWindow.getCom().gameover();
+                                            if (!hitKI) {
+                                                timer.stop();
+                                            }
+
+                                            pf.gameover();
+                                            Computer.gameover();
                                             PlayerTurn = true;
                                         }
-                                        System.out.println(Arrays.deepToString(SpielWindow.getPlayingField().getField()).replace("]", "]\n"));
+                                        System.out.println(Arrays.deepToString(pf.getField()).replace("]", "]\n"));
                                     }
                                     //mit getPlayingField().getGameOver kann ich rausfinden wer verloren hat für wen true --> hat verloren
 
@@ -204,7 +233,7 @@ public class TilePainter extends JPanel implements MouseMotionListener {
                                     exception.printStackTrace();
                                 }
                             }
-                            if (Feldvon.equals("GegnerOnline") && !frame.Multclient && frame.server.myTurn) { //&& Com_base.getmyturn()
+                            if (field == 2 && !frame.Multclient && frame.server.myTurn) {
 
 
                                 String xString = xFeld + " ";
@@ -226,13 +255,13 @@ public class TilePainter extends JPanel implements MouseMotionListener {
                                     exception.printStackTrace();
                                 }
                                 ;
-                                //Com_base.send("shot " + xString + yString ) ;
+
                                 frame.server.setTurn(false);
 
 
                             }
 
-                            if(Feldvon.equals("GegnerMensch") && frame.Multclient && frame.client.myTurn) {
+                            if (field == 2 && frame.Multclient && frame.client.myTurn) {
                                 String xString = xFeld + " ";
                                 String yString = "" + yFeld;
 
@@ -252,7 +281,6 @@ public class TilePainter extends JPanel implements MouseMotionListener {
                                     exception.printStackTrace();
                                 }
                                 ;
-                                //Com_base.send("shot " + xString + yString ) ;
                                 frame.client.setTurn(false);
 
                             }
@@ -361,28 +389,27 @@ public class TilePainter extends JPanel implements MouseMotionListener {
         setOpaque(false);
         Ebene.DrawLayer(g);
 
-        if (field.equals("GegnerKI")) {
+        if (field == 1) {
             hier.Schiffzeichner(g);
         }
-        hier.Schiffzeichner(g);
-        //hier.Pokemonpicker(g);
-        if (SpritePainter.ready && field.equals("Spieler")) {
+        if(selectedTheme.equals("Pokemon")){
+            hier.Pokemonpicker(g);
+        }else{
+            hier.Schiffzeichner(g);
+        }
+
+        if (SpritePainter.ready && field == 0) {
 
             if (!Tile.isFightstart() && sumofships > AnzSchiffe) {
                 if (MovementHandler) {
                     Predicted.setPrediction(PosX, PosY);
-                    placeable = SpielWindow.getPlayingField().checkShip(groesse, PosX, PosY, horizontal);
+                    placeable = pf.checkShip(groesse, PosX, PosY, horizontal);
                     Predicted.Schiffzeichner(g, placeable);
                 } else {
                     Predicted.Schiffzeichner(g, placeable);
                 }
             }
-
             MovementHandler = false;
-
-            //}
-
-
         }
 
     }
@@ -419,15 +446,6 @@ public class TilePainter extends JPanel implements MouseMotionListener {
 
             setPosX((e.getX() - TileSize.getSizeofBorder()) / TileSize.Tile_Size);
             setPosY((e.getY() - TileSize.getSizeofBorder()) / TileSize.Tile_Size);
-
-
-//            if(deleting){
-//                int[][] fieldcheck = SpielWindow.getPlayingField().getField();
-//
-//                if(fieldcheck[PosX][PosY] != 0){
-//                    Predicted.changetored(PosX, PosY);
-//                }
-//            }
 
             MovementHandler = true;
         }

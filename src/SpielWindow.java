@@ -22,7 +22,7 @@ public class SpielWindow extends JPanel {
     public static int frameheigth = 0;
     boolean Multclient ;
 
-    private static PlayingField playingField;
+    String Feldvon = "Spieler"; //"GegnerKI" "GegnerOnline"
     private static Object Multiplayer;
 
     Client      client;
@@ -49,7 +49,8 @@ public class SpielWindow extends JPanel {
     Timer       timer;
 
     private static ComPlayer Com;
-    String Feldvon = "Spieler"; //"GegnerKI" "GegnerMensch"
+    private PlayingField playingField;
+
     {
         try {
             Com = new ComPlayerNormal(new PlayingField(fieldsize, calculateships(), false));
@@ -63,11 +64,13 @@ public class SpielWindow extends JPanel {
     }
 
     public SpielWindow(JFrame frame) throws IOException, FontFormatException {
+        System.out.println("Ich bin der Konstruktor Nummer 1");
         playingField = new PlayingField(fieldsize, calculateships(), true);
         makeComponents(frame);
     }
 
-    public SpielWindow(JFrame frame, PlayingField pf, Client Client ){
+    public SpielWindow(JFrame frame, PlayingField pf, Client Client){
+        System.out.println("Ich bin der Konstruktor Nummer 2");
         client = Client ;
         playingField = pf ;
         makeComponents(frame);
@@ -75,23 +78,20 @@ public class SpielWindow extends JPanel {
     }
 
     public SpielWindow(JFrame frame,PlayingField pf, Server Server){
+        System.out.println("Ich bin der Konstruktor Nummer 3");
         Multiplayer = Server ;
         playingField = pf ;
         makeComponents(frame);
         Multclient = false ;
     }
 
-    public SpielWindow(JFrame frame, JPanel menuPanel, boolean ki, Object client) throws IOException, FontFormatException{
-        playingField = new PlayingField(fieldsize, calculateships(), true);
-        makeComponents(frame);
-    }
-
     private void makeComponents(JFrame frame) {
+
         frameheigth = frame.getHeight();
         framewidth = frame.getWidth();
 
-        tile2 = new TilePainter(fieldsize, "GegnerKI", this);
-        tile = new TilePainter(fieldsize, "Spieler", this);
+        tile = new TilePainter(fieldsize, SpielFeld1, this, Com, playingField);
+        tile2 = new TilePainter(fieldsize, SpielFeld2, this, Com, playingField);
         Z = new Zielhilfe();
 
         if (fullscreen) {
@@ -109,7 +109,7 @@ public class SpielWindow extends JPanel {
 
         menuPanel         = new CustomPanel(ImageLoader.getImage(ImageLoader.GAME_BACKGROUND));
         gameLayout        = new GridLayout(0, 1);
-        buttonDelete      = new DeleteButton(ImageLoader.getImage(ImageLoader.GREEN), ImageLoader.getImage(ImageLoader.RED));
+        buttonDelete      = new DeleteButton();
         buttonReady       = new MenuButton("START GAME",   ImageLoader.getImage(ImageLoader.MENU_BUTTON));
         buttonMenuStart   = new MenuButton("MAIN MENU",    ImageLoader.getImage(ImageLoader.MENU_BUTTON));
         buttonRestart     = new MenuButton("RESTART GAME", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
@@ -162,12 +162,8 @@ public class SpielWindow extends JPanel {
             }
         });
         buttonDelete.addActionListener(e -> {
-            System.out.println("Du hast delete gedrückt");
-//            if(tile.deleting){
-//                buttonDelete.setText("PLACE");
-//            } else {
-//                buttonDelete.setText("DELETE");
-//            }
+
+            ((DeleteButton) buttonDelete).switchDeleting() ;
             tile.switchDeleting();
         });
         buttonMenuStart.addActionListener(e -> {
@@ -233,6 +229,9 @@ public class SpielWindow extends JPanel {
         gamePanel1.  setBounds(framewidth * 45 / 100, frameheigth * 25 / 100, framewidth * 10 / 100, framewidth * 25 / 100);
         gamePanel2.  setBounds(framewidth * 45 / 100, frameheigth * 25 / 100, framewidth * 10 / 100, framewidth * 25 / 100);
 
+        tile2.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+        tile.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+
         menuPanel.add(gamePanel1);
         menuPanel.add(gamePanel2);
         menuPanel.add(tile);
@@ -280,9 +279,9 @@ public class SpielWindow extends JPanel {
         return Com;
     }
 
-    public static PlayingField getPlayingField() {
-        return playingField;
-    }
+//    public static PlayingField getPlayingField() {
+//        return playingField;
+//    }
 
     static int[] calculateships() {
 

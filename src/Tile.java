@@ -17,7 +17,7 @@ public class Tile extends JPanel {
     private static int counter = 0;
     private final Bildloader Bild = new Bildloader();
     private final int[][] Feld;
-    String Fieldof;
+    int field;
     private BufferedImage Image;
     private BufferedImage Border ;
 
@@ -27,9 +27,9 @@ public class Tile extends JPanel {
      *          Diese Information wird per int mitgeteilt
      */
 
-    public Tile(int x, String Feldvon) {
+    public Tile(int x, int Feldvon) {
         field_size = x;
-        Fieldof = Feldvon;
+        field = Feldvon;
         Feld = new int[field_size][field_size];
         DummyLeser(Feld);
         Border = Bild.BildLoader("src/Images/Border.jpg");
@@ -65,7 +65,7 @@ public class Tile extends JPanel {
         for (int y = 0; y < field_size; y++) {                                // Wird nur gebraucht, falls wir alle TileFrames in einem Bild ablegen wollen (TileSet), da in diesem Fall Zeilenumsprünge benötigt werden
             for (int x = 0; x < field_size; x++) {
 
-                if (Fieldof.equals("Spieler")) {
+                if (field == 0) {
 
                     int index = ((Feld[y][x] + counter) % 32);
                     int yOffset = 0;
@@ -88,7 +88,7 @@ public class Tile extends JPanel {
                             null);
 
                 }
-                if (Fieldof.equals("GegnerKI") || Fieldof.equals("GegnerMensch")) {
+                if (field == 1 || field == 2) {
 
                     if(field_size > 10){
                         Image = Bild.BildLoader("src/images/PokemonGrass.jpg") ;

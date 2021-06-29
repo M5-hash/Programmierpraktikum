@@ -1,45 +1,48 @@
 package src.components;
 
+import src.Bildloader;
+
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+
 import static src.FontLoader.Pokemon;
 
 public class DeleteButton extends JButton {
 
-    Image background1;
-    Image background2;
-    static boolean deleting = false;
+    boolean deleting;
+    Bildloader Bild = new Bildloader();
 
-    public DeleteButton(Image background1, Image background2) {
-        this.background1 = background1;
-        this.background2 = background2;
-
-        setText("DELETE");
-        setBorder(new LineBorder(Color.darkGray));
-        setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+    public DeleteButton() {
+        super("DELETE");
+        this.setHorizontalTextPosition(JButton.CENTER);
+        this.setVerticalTextPosition(JButton.CENTER);
         setFont(Pokemon);
         setFocusPainted(false);
         setContentAreaFilled(false);
-        setVerticalTextPosition(CENTER);
-        setHorizontalTextPosition(CENTER);
-        addActionListener(e -> {
-            deleting = !deleting;
-            if (deleting) {
-                setText("PLACE");
-            } else {
-                setText("DELETE");
-            }
-        });
+    }
+
+    public void switchDeleting() {
+        this.deleting = !deleting;
+        if(!deleting){
+            setText("DELETE");
+        } else {
+            setText("PLACE");
+        }
     }
 
     @Override
     protected void paintComponent(Graphics g) {
+
+        BufferedImage image;
+
         if (deleting) {
-            g.drawImage(background1, 0, 0, getWidth(), getHeight(), this);
+            image = Bild.BildLoader("assets/button1green.png");
         } else {
-            g.drawImage(background2, 0, 0, getWidth(), getHeight(), this);
+            image = Bild.BildLoader("assets/button1red.png");
         }
+
+        g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
         super.paintComponent(g);
     }
 }

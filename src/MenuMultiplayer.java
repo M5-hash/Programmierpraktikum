@@ -60,6 +60,9 @@ public class MenuMultiplayer {
             if(IP.equals("")){
                 JOptionPane.showMessageDialog(null, "PLEASE ENTER AN IP");
             } else {
+
+                SpielFeld2 = 2 ;
+
                 String[] options = new String[] {"Player", "Computer", "Cancel"};
                 ImageIcon icon = new ImageIcon("");
                 int x = JOptionPane.showOptionDialog(menuFrame, "Wollen Sie selbst spielen oder als Computer?",
@@ -71,17 +74,19 @@ public class MenuMultiplayer {
                 // Create SpielWindow and display it
                 try {
                     Client client = new Client(IP);
-                    new SpielWindow(menuFrame, menuPanel, KI, client);
+                    SpielFeld1 = 0 ;
+                    //new SpielWindow(menuFrame, menuPanel, client); //warum wird hier kein SpielWindow übergeben  ?
                 } catch (Exception ioException) {
                     ioException.printStackTrace();
                 }
             } else if (x == 1){
-                KI = true;
                 menuPanel.setVisible(false);
                 menuFrame.dispose();
                 // Create SpielWindow and display it
                 try {
-                    new SpielWindow(menuFrame);
+
+                    SpielFeld1 = 1 ;
+                    new SpielWindow(menuFrame);                                 //Gleiche frage:Warum wird hier kein Spielfeld übergeben, die Ergebnisse von Schüssen werden in der GUI nie erfasst, die Daten sollen auch weitergeschickt werden
                 } catch (IOException | FontFormatException ioException) {
                     ioException.printStackTrace();
                 }

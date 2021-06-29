@@ -33,12 +33,12 @@ public class SpritePainter {
     static ArrayList<BufferedImage> Finished = new ArrayList<>();              // Zwischenspeicher für bereits geladene Bilder
     static ArrayList<String> Loaded = new ArrayList<>();                       // Speichert als String die Quellen der bereits geladenen Bilder ab
     static boolean fits = true;
-    static int[][] saveTest;
     int[][] Pokemon = new int[field_size][field_size];;
     Bildloader Bild = new Bildloader();
-    String Fieldof;
+    int fieldof;
     SpielWindow frame ;
     TilePainter Interface ;
+    PlayingField pf ;
     boolean IsHit = false ;
     int[][] Vorhersage = new int[fieldsize][fieldsize];
 
@@ -49,9 +49,10 @@ public class SpritePainter {
      *                "GegnerMensch" = OnlineGegners / Menschlicher Gegner
      *                "Preview" = Feld wird verwendet um das setzen des Spieler besser darzustellen
      */
-    public SpritePainter(String Feldvon, TilePainter Kontakt, SpielWindow frame) {
+    public SpritePainter(int Feldvon, TilePainter Kontakt, SpielWindow frame, PlayingField playingField) {
 
-        Fieldof = Feldvon;
+        pf = playingField ;
+        fieldof = Feldvon;
         Interface = Kontakt ;
         this.frame = frame ;
         updatePokemen();
@@ -149,10 +150,10 @@ public class SpritePainter {
             for (int j = 0; j < field_size; j++) {
 
 
-                if(Pokemon[i][j] != 0 && SpielWindow.getPlayingField().getField()[i][j] == 0){
-                    Pokemon[i][j] = SpielWindow.getPlayingField().getField()[i][j];
+                if(Pokemon[i][j] != 0 && pf.getField()[i][j] == 0){
+                    Pokemon[i][j] = pf.getField()[i][j];
                 } else
-                    if(Pokemon[i][j] == 0 && SpielWindow.getPlayingField().getField()[i][j] == 3) {
+                    if(Pokemon[i][j] == 0 && pf.getField()[i][j] == 3) {
 
                         Pokemon[i][j] = -1 ;
 
@@ -173,9 +174,9 @@ public class SpritePainter {
 
         //System.out.println("Schiffteil wurde aufgerufen");
 
-        int[][] Schiffe = SpielWindow.getPlayingField().getField();
+        int[][] Schiffe = pf.getField();
 
-        if (Fieldof.equals("Vorhersage")) {
+        if (fieldof == 4) {
             Schiffe = Vorhersage;
         }
 
@@ -281,10 +282,9 @@ public class SpritePainter {
     public void Schiffzeichner(Graphics g) {
 
         int[][] dummy;
-        int Person = 1;
 
         //Schiffe werden nur genau dargestellt, wenn es sich um das Feld des Menschen handelt ansonsten nicht
-        if (Fieldof.equals("Spieler") || Fieldof.equals("Vorhersage")) Schiffteil();
+        if (fieldof == 0 || fieldof == 4) Schiffteil();
 
         String Schiffdir = "Ich bin der String und ich bin ein Platzhalter";
         BufferedImage Schiff; //Nur ein Platzhalter, dass die IDE nicht weint
@@ -296,20 +296,26 @@ public class SpritePainter {
 
 
         //Abhänig von dem Spielfeld das Angezeigt werden soll wird hier ein anderes Array eingelesen, sodass die Informationen auch der Situation entsprechen
-        switch (Fieldof) {
-            case "Spieler" -> {
+        switch (fieldof) {
+            case 0 -> {
                 dummy = BugHeckMeck;
-                Person = 1;
+
+                break;
             }
-            case "GegnerKI" -> {
-                dummy = SpielWindow.getPlayingField().getFieldEnemy();
-                Person = 2;
+            case 1 -> {
+                dummy = pf.getFieldEnemy();
+                break;
             }
-            case "GegnerMensch" -> {
+            case 2 -> {
                 dummy = getEnemyPlacement;
-                Person = 3;
+
+
                 //case "Vorhersage" -> Vorhersage;
             }
+            case 4 -> {
+                dummy = BugHeckMeck;
+            }
+
             default -> dummy = BugHeckMeck;
         }
 
@@ -319,11 +325,11 @@ public class SpritePainter {
             for (int x = 0; x < dummy[0].length; x++) {
 
                 //checkt ob es sich bei dem Spielfeld auch um das des Spielers handelt
-                if (Person == 1) {
+                if (fieldof == 0||fieldof == 4) {
 
 
                     //Wenn das Schiff getroffen wurde, dann ist das Array an der Stelle entweder 1 (Teil getroffen aber Schiff gibt es noch) oder 2 (Teil und gesamtes Schiff zerstört)
-                    IsHit = SpielWindow.getPlayingField().getField()[y][x] == 1 || SpielWindow.getPlayingField().getField()[y][x] == 2;
+                    IsHit = pf.getField()[y][x] == 1 || pf.getField()[y][x] == 2;
 
                     //Die Art des Schiffteils wird ausgelesen und dieser wird dann ein Bild zugewiesen
                     //Es wird auch eine Variable gesetzt, die angibt, dass eine etwas gezeichnet werden muss oder eben nicht
@@ -387,7 +393,7 @@ public class SpritePainter {
 
 
                 //Checkt ob es das Spielfeld des Computer Gegners ist TODO GegnerOnline hier drin implementieren
-                if (Person == 2) {
+                if (fieldof == 2) {
 
                     //Das, was gezeichnet werden muss wird ausgelesen
                     //Es wird auch eine Variable gesetzt, die angibt, dass eine etwas gezeichnet werden muss oder eben nicht
@@ -438,7 +444,7 @@ public class SpritePainter {
                     Schiff = Bild.BildLoader(Schiffdir);
                     BufferedImage dummyImg;
 
-                    if (Fieldof.equals("Vorhersage")) {
+                    if (fieldof == 4) {
                         int check = fetchImg(Schiffdir);
                         if (check != -1) {
                             dummyImg = Finished.get(check);
@@ -455,11 +461,6 @@ public class SpritePainter {
                             TileSize.Tile_Size,
                             TileSize.Tile_Size, null);
                     dosmthng = false;
-
-                    System.out.println(frame.tile2.hasshot);
-                    System.out.println(frame.tile2.getRecentshot()[0]);
-                    System.out.println(frame.tile2.getRecentshot()[1]);
-
 
                 }
 
@@ -502,7 +503,7 @@ public class SpritePainter {
         //Das Tileset Bild wird eingeladen
         BufferedImage PokemonBild = Bild.BildLoader("src/Images/PokemonTileSetremove.png");
 
-        if (Fieldof.equals("Spieler")) {
+        if (fieldof == 0) {
             //Die größe des Border wir hier berechnet, sodass die Sprites alle an richtiger Ort und Stelle sein können
             int SizeofBorder = Math.max(18, TileSize.Tile_Size / 12);
 
@@ -510,8 +511,8 @@ public class SpritePainter {
             updatePokemen();
 
             //durch die 2 for Schleifen wird das gesamte Array abgelaufen
-            for (int y = 0; y < SpielWindow.getPlayingField().getField().length; y++) {
-                for (int x = 0; x < SpielWindow.getPlayingField().getField()[0].length; x++) {
+            for (int y = 0; y < pf.getField().length; y++) {
+                for (int x = 0; x < pf.getField()[0].length; x++) {
 
                     if (Pokemon[y][x] == -1 ) {
                         Pokemon[y][x] = (int) (Math.random() * 608);

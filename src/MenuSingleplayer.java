@@ -25,11 +25,11 @@ public class MenuSingleplayer {
     public MenuSingleplayer(JFrame menuFrame, JPanel menuMain) throws IOException, FontFormatException {
         this.menuFrame = menuFrame;
 
-        int COL         = (INITIAL_WIDTH * 22 / 100) - 10;
-        int C_GAP       = (INITIAL_WIDTH * 28 / 100) - 10;
-        int ROW_INFO    = (INITIAL_HEIGHT * 33 / 100) - 10;
-        int ROW         = (INITIAL_HEIGHT * 10 / 100) - 10;
-        int R_GAP       = (INITIAL_HEIGHT * 2) / 100;
+        int COL = (INITIAL_WIDTH * 22 / 100) - 10;
+        int C_GAP = (INITIAL_WIDTH * 28 / 100) - 10;
+        int ROW_INFO = (INITIAL_HEIGHT * 33 / 100) - 10;
+        int ROW = (INITIAL_HEIGHT * 10 / 100) - 10;
+        int R_GAP = (INITIAL_HEIGHT * 2) / 100;
         menuLayout = new GridBagLayout();
         menuLayout.columnWidths = new int[]{C_GAP, COL, COL, C_GAP};
         menuLayout.rowHeights = new int[]{ROW_INFO, R_GAP, ROW, R_GAP, ROW, R_GAP, ROW, R_GAP, ROW, ROW};
@@ -56,30 +56,91 @@ public class MenuSingleplayer {
 
         buttonEasy = new MenuButton("EASY", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
         buttonEasy.addActionListener(e -> {
-            // Hide this window
-            menuPanel.setVisible(false);
-            menuFrame.dispose();
-            // Create SpielWindow and display it
-            try {
-                new SpielWindow(menuFrame);
-            } catch (IOException | FontFormatException ioException) {
-                ioException.printStackTrace();
+
+            SpielFeld2 = 1 ;
+
+            String[] options = new String[]{"Player", "Computer"};
+            ImageIcon icon = new ImageIcon("");
+            int x = JOptionPane.showOptionDialog(menuFrame, "Wollen Sie selbst spielen oder als Computer?",
+                    "Selfplay or KI", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, icon, options, options[0]);
+
+            if (x == 0) {
+                menuPanel.setVisible(false);
+                menuFrame.dispose();
+                // Create SpielWindow and display it
+                try {
+                    SpielFeld1 = 0 ;
+                    new SpielWindow(menuFrame);
+                } catch (Exception ioException) {
+                    ioException.printStackTrace();
+                }
+            } else if (x == 1) {
+                menuPanel.setVisible(false);
+                menuFrame.dispose();
+                // Create SpielWindow and display it
+                try {
+                    SpielFeld1 = 1;
+                    new SpielWindow(menuFrame);
+                } catch (IOException | FontFormatException ioException) {
+                    ioException.printStackTrace();
+                }
             }
+
+//            // Hide this window
+//            menuPanel.setVisible(false);
+//            menuFrame.dispose();
+//            // Create SpielWindow and display it
+//            try {
+//                new SpielWindow(menuFrame);
+//            } catch (IOException | FontFormatException ioException) {
+//                ioException.printStackTrace();
+//            }
         });
         buttonPanel.add(buttonEasy);
 
         buttonNormal = new MenuButton("NORMAL", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
         buttonNormal.addActionListener(e -> {
-            // Hide this window
-            menuPanel.setVisible(false);
-            menuFrame.dispose();
 
-            // Create MenuMain and display it
-            try {
-                new SpielWindow(menuFrame);
-            } catch (IOException | FontFormatException ioException) {
-                ioException.printStackTrace();
+            SpielFeld2 = 1 ;
+
+            String[] options = new String[]{"Player", "Computer"};
+            ImageIcon icon = new ImageIcon("");
+            int x = JOptionPane.showOptionDialog(menuFrame, "Wollen Sie selbst spielen oder als Computer?",
+                    "Selfplay or KI", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, icon, options, options[0]);
+
+            if (x == 0) {
+                menuPanel.setVisible(false);
+                menuFrame.dispose();
+                // Create SpielWindow and display it
+                try {
+                    SpielFeld1 = 0 ;
+                    new SpielWindow(menuFrame);
+                } catch (Exception ioException) {
+                    ioException.printStackTrace();
+                }
+            } else if (x == 1) {
+                menuPanel.setVisible(false);
+                menuFrame.dispose();
+                // Create SpielWindow and display it
+                try {
+                    SpielFeld1 = 1 ;
+                    new SpielWindow(menuFrame);
+                } catch (IOException | FontFormatException ioException) {
+                    ioException.printStackTrace();
+                }
             }
+
+
+//            // Hide this window
+//            menuPanel.setVisible(false);
+//            menuFrame.dispose();
+//
+//            // Create MenuMain and display it
+//            try {
+//                new SpielWindow(menuFrame);
+//            } catch (IOException | FontFormatException ioException) {
+//                ioException.printStackTrace();
+//            }
         });
         buttonPanel.add(buttonNormal);
 
