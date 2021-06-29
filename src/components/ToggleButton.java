@@ -3,6 +3,9 @@ package src.components;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+
 import static src.FontLoader.Pokemon;
 
 public class ToggleButton extends JToggleButton {
@@ -34,6 +37,17 @@ public class ToggleButton extends JToggleButton {
             System.out.println("X Position: " + getX());
             System.out.println("Y Position: " + getY());
         });
+
+//        addComponentListener(new ComponentAdapter() {
+//            @Override
+//            public void componentResized(ComponentEvent e) {
+//                if (!(getIcon() == null)) {
+//                    icon = icon.getScaledInstance(getHeight() - getHeight() * 25 / 100, getHeight() - getHeight() * 25 / 100, Image.SCALE_SMOOTH);
+//                    setIcon(new ImageIcon(icon));
+//                    setIconTextGap(getWidth() / 10);
+//                }
+//            }
+//        });
     }
 
     @Override

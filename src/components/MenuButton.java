@@ -44,11 +44,5 @@ public class MenuButton extends JButton {
             g.drawImage(disabledimage, 0, 0, getWidth(), getHeight(), this);
         }
         super.paintComponent(g);
-
-//        if (!(getIcon() == null)) {
-//            icon = icon.getScaledInstance(getHeight() - getHeight() * 25 / 100, getHeight() - getHeight() * 25 / 100, Image.SCALE_SMOOTH);
-//            setIcon(new ImageIcon(icon));
-//            setIconTextGap(getWidth() / 10);
-//        }
     }
 }
