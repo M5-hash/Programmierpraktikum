@@ -48,16 +48,10 @@ public class SpielWindow extends JPanel {
     JButton     btn_size5;
     Timer       timer;
 
-    private static ComPlayer Com;
+    private ComPlayer Com;
     private PlayingField playingField;
 
-    {
-        try {
-            Com = new ComPlayerNormal(new PlayingField(fieldsize, calculateships(), false));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+
 
     public static Object getMultiplayer() {
         return Multiplayer;
@@ -65,22 +59,29 @@ public class SpielWindow extends JPanel {
 
     public SpielWindow(JFrame frame) throws IOException, FontFormatException {
         System.out.println("Ich bin der Konstruktor Nummer 1");
+        System.out.println("Spielfeld 1 ist: " + SpielFeld1);
+        System.out.println("Spielfeld 1 ist : " + SpielFeld2);
         playingField = new PlayingField(fieldsize, calculateships(), true);
         makeComponents(frame);
     }
 
-    public SpielWindow(JFrame frame, PlayingField pf, Client Client){
+    public SpielWindow(JFrame frame, Client Client){
         System.out.println("Ich bin der Konstruktor Nummer 2");
+        System.out.println("Spielfeld 1 ist: " + SpielFeld1);
+        System.out.println("Spielfeld 1 ist : " + SpielFeld2);
+        System.out.println(SpielFeld1 + SpielFeld2);
         client = Client ;
-        playingField = pf ;
+        playingField = Client.pf ;
         makeComponents(frame);
         Multclient = true ;
     }
 
-    public SpielWindow(JFrame frame,PlayingField pf, Server Server){
+    public SpielWindow(JFrame frame, Server Server){
         System.out.println("Ich bin der Konstruktor Nummer 3");
-        Multiplayer = Server ;
-        playingField = pf ;
+        System.out.println("Spielfeld 1 ist: " + SpielFeld1);
+        System.out.println("Spielfeld 1 ist : " + SpielFeld2);
+        this.server = Server ;
+        playingField = server.pf ;
         makeComponents(frame);
         Multclient = false ;
     }
@@ -90,9 +91,21 @@ public class SpielWindow extends JPanel {
         frameheigth = frame.getHeight();
         framewidth = frame.getWidth();
 
+        if(SpielFeld1 == 1 || SpielFeld2 == 1){
+            {
+                try {
+                    Com = new ComPlayerNormal(new PlayingField(fieldsize, calculateships(), false));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
         tile = new TilePainter(fieldsize, SpielFeld1, this, Com, playingField);
         tile2 = new TilePainter(fieldsize, SpielFeld2, this, Com, playingField);
         Z = new Zielhilfe();
+
+
 
         if (fullscreen) {
             frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -165,6 +178,7 @@ public class SpielWindow extends JPanel {
 
             ((DeleteButton) buttonDelete).switchDeleting() ;
             tile.switchDeleting();
+
         });
         buttonMenuStart.addActionListener(e -> {
             // Hide this window
@@ -275,9 +289,6 @@ public class SpielWindow extends JPanel {
         timer.start();
     }
 
-    public static ComPlayer getCom() {
-        return Com;
-    }
 
 //    public static PlayingField getPlayingField() {
 //        return playingField;

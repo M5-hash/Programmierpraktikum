@@ -21,6 +21,7 @@ public class DeleteButton extends JButton {
         setFont(Pokemon);
         setFocusPainted(false);
         setContentAreaFilled(false);
+
     }
 
     public void switchDeleting() {
