@@ -24,6 +24,8 @@ public class MenuStart {
         // Custom Frame
         menuFrame = new MenuFrame();
         makeComponents();
+        menuFrame.repaint();
+        menuFrame.revalidate();
     }
 
     private void makeComponents(){
@@ -93,6 +95,7 @@ public class MenuStart {
         makeConstraints(buttonQuitGame, 1, 8, 2);
 
         menuFrame.add(menuPanel);
+
     }
 
     private void makeConstraints(JComponent comp, int gridx, int gridy, int gridwidth) {
