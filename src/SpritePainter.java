@@ -20,8 +20,7 @@ public class SpritePainter {
     static ArrayList<String> Loaded = new ArrayList<>();                       // Speichert als String die Quellen der bereits geladenen Bilder ab
     static boolean fits = true;
     int[][] Pokemon = new int[field_size][field_size];
-    Bildloader Bild = new Bildloader();
-    ;
+    static Bildloader Bild = new Bildloader();
     int fieldof;
     SpielWindow frame;
     TilePainter Interface;
@@ -153,7 +152,11 @@ public class SpritePainter {
                     Pokemon[i][j] = pf.getField()[i][j];
                 } else if (Pokemon[i][j] == 0 && pf.getField()[i][j] == 3) {
                     Pokemon[i][j] = -1;
-                } else if (Pokemon[i][j] == -2 && !Interface.PlayerTurn) {
+                } else if(pf.getField()[i][j] == 1) {
+                    Pokemon[i][j] = -4 ;
+                } else if(pf.getField()[i][j] == 2) {
+                    Pokemon[i][j] = -5;
+                }else if (Pokemon[i][j] == -2 && !Interface.PlayerTurn) {
                     Pokemon[i][j] = -3;
                 } else if (Pokemon[i][j] != -3 && pf.getField()[i][j] == 5) {
                     Pokemon[i][j] = -2;
@@ -540,7 +543,40 @@ public class SpritePainter {
                                     TileSize.Tile_Size,
                                     TileSize.Tile_Size, null);
 
+                        } else
+                        if (Pokemon[y][x] == -5) {
+
+                            BufferedImage dummyImg = Bild.BildLoader("src/Images/greyPokeball.png");
+
+                            g.drawImage(dummyImg, (x * TileSize.Tile_Size + SizeofBorder),
+                                    (y * TileSize.Tile_Size + SizeofBorder),
+                                    TileSize.Tile_Size,
+                                    TileSize.Tile_Size, null);
+
                         } else {
+
+                            if (Pokemon[y][x] == -4) {
+
+                                BufferedImage dummyImg = Bild.BildLoader("src/Images/redsheen.png");
+
+                                g.drawImage(dummyImg, (x * TileSize.Tile_Size + SizeofBorder),
+                                        (y * TileSize.Tile_Size + SizeofBorder),
+                                        TileSize.Tile_Size,
+                                        TileSize.Tile_Size, null);
+
+                                g.drawImage(PokemonBild, (x * TileSize.Tile_Size + SizeofBorder),
+                                        (y * TileSize.Tile_Size + SizeofBorder),
+                                        (x + 1) * TileSize.Tile_Size + SizeofBorder,
+                                        (y + 1) * TileSize.Tile_Size + SizeofBorder,
+                                        //Es wird ein Viereck zwischen diesen 2 Punkten aufgeschlagen, die ersten 2 sind das linke obere ende
+                                        index * 80,
+                                        yOffset * 80,
+                                        //die anderen 2 sind das rechte untere ende. Es handelt sich hierbei um die Quelle
+                                        (index + 1) * 80,
+                                        (yOffset + 1) * 80,
+                                        null);
+
+                            }
 
                             g.drawImage(PokemonBild, (x * TileSize.Tile_Size + SizeofBorder),
                                     (y * TileSize.Tile_Size + SizeofBorder),

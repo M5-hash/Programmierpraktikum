@@ -150,13 +150,14 @@ public class Tile extends JPanel {
     }
 
     public void YouWin(Graphics g) {
-        g.drawImage(Border, 0, 0, getWidth(), getHeight(), null );
         int SizeofBorder = Math.max(18, TileSize.Tile_Size / 12) ;
         int Size = field_size * TileSize.Tile_Size + 2 * SizeofBorder ;
 
+        g.drawImage(Border, 0, 0, Size, Size, null );
+
         BufferedImage WinScreen = Bild.BildLoader("src/Images/youwon.png") ;
 
-        g.drawImage(WinScreen,SizeofBorder,SizeofBorder, Size, Size, null) ;
+        g.drawImage(WinScreen,SizeofBorder,SizeofBorder, Size - 2 * SizeofBorder, Size - 2 * SizeofBorder, null) ;
 
 
     }
@@ -171,7 +172,7 @@ public class Tile extends JPanel {
 
         BufferedImage LossScreen = Bild.BildLoader("src/Images/youlost.png") ;
 
-        g.drawImage(LossScreen,0,0, Size, Size, null) ;
+        g.drawImage(LossScreen,SizeofBorder,SizeofBorder, Size - 2 * SizeofBorder, Size - 2 * SizeofBorder, null) ;
 
 
     }
