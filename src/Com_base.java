@@ -39,8 +39,9 @@ public abstract class Com_base {
     }
 
     public void Send(String input) throws Exception {
+        this.myTurn = false;
         this.out.write(String.format("%s%n", input));
-        TimeUnit.SECONDS.sleep(1);
+        TimeUnit.MILLISECONDS.sleep(250);
         this.out.flush();
     }
 
@@ -87,8 +88,9 @@ public abstract class Com_base {
         return true;
     }
 
-    protected void message_check(String in) throws Exception {
-        do {
+    protected void message_check() throws Exception {
+
+            String in = loopCheckIN();
             String[] holder = in.split(" ");
             if (holder[0].equals("shot")) {
                 int x = Integer.parseInt(holder[1]);
@@ -97,7 +99,7 @@ public abstract class Com_base {
                 int hit = pf.isShot(x, y);
                 if (hit == 0) {
                     Send("answer 0");
-                    this.myTurn = true;
+                    this.myTurn = false;
                 } else if (hit == 1) {
                     Send("answer 1");
                     this.myTurn = false;
@@ -124,12 +126,12 @@ public abstract class Com_base {
             } else if (holder[0].equals("pass")) {
                 this.myTurn = true;
             }
-        }while(!this.myTurn);
+
     }
     protected void run() throws Exception{
         while(true){
             if(this.in_check() == true){
-                this.message_check(this.line);
+                this.message_check();
             }
         }
     }

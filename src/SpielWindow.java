@@ -166,7 +166,12 @@ public class SpielWindow extends JPanel {
             gamePanel2.setVisible(false);
             if(SpielFeld2 == 2 && Multclient){
                 try {
-                    client.message_check(client.loopCheckIN());
+                    do{
+                        client.message_check();
+                        tile.repaint();
+                        //tile.revalidate();
+
+                    }while(!client.myTurn);
                 } catch (Exception f) {
                     f.printStackTrace();
                 }

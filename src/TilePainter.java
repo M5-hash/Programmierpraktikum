@@ -255,8 +255,13 @@ public class TilePainter extends JPanel implements MouseMotionListener {
                                     exception.printStackTrace();
                                 }
                                 try {
-                                    frame.server.message_check(frame.server.loopCheckIN());
-                                } catch (Exception exception) {
+                                    do {
+                                        frame.server.message_check();
+                                        frame.tile.repaint();
+                                        //tile.revalidate();
+
+                                    }while(!frame.server.myTurn);
+                                    } catch (Exception exception) {
                                     exception.printStackTrace();
                                 }
                                 ;
@@ -279,7 +284,13 @@ public class TilePainter extends JPanel implements MouseMotionListener {
                                     exception.printStackTrace();
                                 }
                                 try {
-                                    frame.client.message_check(frame.client.loopCheckIN());
+                                    do{
+                                    frame.client.message_check();
+                                    frame.tile.repaint();
+                                        //tile.revalidate();
+
+
+                                    }while(!frame.client.myTurn);
                                 } catch (Exception exception) {
                                     exception.printStackTrace();
                                 }
