@@ -86,7 +86,7 @@ public class MenuMultiplayer {
                 try {
 
                     SpielFeld1 = 1 ;
-                    new SpielWindow(menuFrame);                                 //Gleiche frage:Warum wird hier kein Spielfeld übergeben, die Ergebnisse von Schüssen werden in der GUI nie erfasst, die Daten sollen auch weitergeschickt werden
+                    new SpielWindow(menuFrame);    //Gleiche frage:Warum wird hier kein Spielfeld übergeben, die Ergebnisse von Schüssen werden in der GUI nie erfasst, die Daten sollen auch weitergeschickt werden
                 } catch (IOException | FontFormatException ioException) {
                     ioException.printStackTrace();
                 }

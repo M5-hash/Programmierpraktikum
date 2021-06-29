@@ -3,6 +3,7 @@ package src.components;
 import src.Bildloader;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
@@ -15,8 +16,8 @@ public class DeleteButton extends JButton {
 
     public DeleteButton() {
         super("DELETE");
-        this.setHorizontalTextPosition(JButton.CENTER);
-        this.setVerticalTextPosition(JButton.CENTER);
+        setBorder(new LineBorder(Color.darkGray));
+        setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         setFont(Pokemon);
         setFocusPainted(false);
         setContentAreaFilled(false);
