@@ -54,13 +54,11 @@ public class SpielWindow extends JPanel {
     }
 
     public SpielWindow(JFrame frame) throws IOException, FontFormatException {
-        System.out.println("Ich bin der Konstruktor Nummer 1");
         playingField = new PlayingField(fieldsize, calculateships(), true);
         makeComponents(frame);
     }
 
     public SpielWindow(JFrame frame, Client Client){
-        System.out.println("Ich bin der Konstruktor Nummer 2");
         client = Client ;
         playingField = Client.pf ;
         makeComponents(frame);
@@ -68,7 +66,6 @@ public class SpielWindow extends JPanel {
     }
 
     public SpielWindow(JFrame frame, Server Server){
-        System.out.println("Ich bin der Konstruktor Nummer 3");
         this.server = Server ;
         playingField = Server.pf ;
         makeComponents(frame);
@@ -261,12 +258,12 @@ public class SpielWindow extends JPanel {
                 //TODO rework put check in resizer as very small and very big fieldsizes mess everything up
                 if (framewidth != frame.getWidth()) {
                     framewidth = frame.getWidth();
-                    frame.setBounds(b.x, b.y, b.width, b.width*H/W);
+                    frame.setBounds(b.x, b.y, b.width, b.width * H/W);
                     TileSize.setTile_Size(((framewidth / 4) - Borderwidth) / fieldsize);
 
                 } else if (frameheigth != frame.getHeight()) {
                     frameheigth = frame.getHeight();
-                    frame.setBounds(b.x, b.y, b.height*W/H, b.height);
+                    frame.setBounds(b.x, b.y, b.height * W/H, b.height);
                     TileSize.setTile_Size(((framewidth / 4) - Borderwidth) / fieldsize);
                 }
 

@@ -5,6 +5,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 
+import static src.config.selectedTheme;
+
 public class Tile extends JPanel {
 
     public static int field_size;
@@ -42,7 +44,7 @@ public class Tile extends JPanel {
      *                    kopiert Array in anderen Array, ohne das funktioniert DummyLeser leider nicht, bin aber zu faul/dumm um zu verstehen, warum das so ist
      */
     public void TileArrangement(int[][] Feldvorgabe) {
-        System.out.println("TileArrangement aufgerufen");
+//        System.out.println("TileArrangement aufgerufen");
 
         for (int y = 0; y < field_size; y++) {
             if (field_size >= 0) System.arraycopy(Feldvorgabe[y], 0, Feld[y], 0, field_size);

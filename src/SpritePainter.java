@@ -13,6 +13,21 @@ public class SpritePainter {
 
 
     public static boolean ready = false;
+    public static int counter;
+    public static int[][] getEnemyPlacement;
+    static boolean change = false;
+    static ArrayList<BufferedImage> Finished = new ArrayList<>();              // Zwischenspeicher für bereits geladene Bilder
+    static ArrayList<String> Loaded = new ArrayList<>();                       // Speichert als String die Quellen der bereits geladenen Bilder ab
+    static boolean fits = true;
+    int[][] Pokemon = new int[field_size][field_size];
+    Bildloader Bild = new Bildloader();
+    ;
+    int fieldof;
+    SpielWindow frame;
+    TilePainter Interface;
+    PlayingField pf;
+    boolean IsHit = false;
+    int[][] Vorhersage = new int[fieldsize][fieldsize];
     /**
      * Haenle seine Tabelle
      * <p>
@@ -25,22 +40,6 @@ public class SpritePainter {
      */
 
     private int[][] BugHeckMeck = new int[fieldsize][fieldsize];
-    public static int counter;
-    public static int[][] getEnemyPlacement;
-
-
-    static boolean change = false;
-    static ArrayList<BufferedImage> Finished = new ArrayList<>();              // Zwischenspeicher für bereits geladene Bilder
-    static ArrayList<String> Loaded = new ArrayList<>();                       // Speichert als String die Quellen der bereits geladenen Bilder ab
-    static boolean fits = true;
-    int[][] Pokemon = new int[field_size][field_size];;
-    Bildloader Bild = new Bildloader();
-    int fieldof;
-    SpielWindow frame ;
-    TilePainter Interface ;
-    PlayingField pf ;
-    boolean IsHit = false ;
-    int[][] Vorhersage = new int[fieldsize][fieldsize];
 
     /**
      * @param Feldvon gibt an für wenn die Schiffe gezeichnet werden
@@ -51,10 +50,10 @@ public class SpritePainter {
      */
     public SpritePainter(int Feldvon, TilePainter Kontakt, SpielWindow frame, PlayingField playingField) {
 
-        pf = playingField ;
+        pf = playingField;
         fieldof = Feldvon;
-        Interface = Kontakt ;
-        this.frame = frame ;
+        Interface = Kontakt;
+        this.frame = frame;
         updatePokemen();
         //System.out.println(Fieldof);
 
@@ -87,7 +86,7 @@ public class SpritePainter {
         int width = copy.getWidth();
         int height = copy.getHeight();
 
-        System.out.println("Es wurden insgesamt " + counter + " Bilder bearbeitet/umgefärbt");
+//        System.out.println("Es wurden insgesamt " + counter + " Bilder bearbeitet/umgefärbt");
 
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
@@ -150,13 +149,14 @@ public class SpritePainter {
             for (int j = 0; j < field_size; j++) {
 
 
-                if(Pokemon[i][j] != 0 && pf.getField()[i][j] == 0){
+                if (Pokemon[i][j] > 0 && pf.getField()[i][j] == 0) {
                     Pokemon[i][j] = pf.getField()[i][j];
-                } else
-                    if(Pokemon[i][j] == 0 && pf.getField()[i][j] == 3) {
-
-                        Pokemon[i][j] = -1 ;
-
+                } else if (Pokemon[i][j] == 0 && pf.getField()[i][j] == 3) {
+                    Pokemon[i][j] = -1;
+                } else if(Pokemon[i][j] == -2) {
+                    Pokemon[i][j] = -3 ;
+                } else if (Pokemon[i][j] != -3 && pf.getField()[i][j] == 5){
+                    Pokemon[i][j] = -2 ;
                 }
 
 
@@ -276,8 +276,6 @@ public class SpritePainter {
      *          <p>
      *          Zeichnet die Schiffe wie sie durch das in Schiffteil() ermittelt Array vorgegeben werden, aber mit der
      *          weiteren Information ob diese dort überhaupt gesetzt werden dürfen (Feld von Preview)
-     *
-     *          TODO zeichne deine zerstörten Schiffe Tom
      */
     public void Schiffzeichner(Graphics g) {
 
@@ -297,27 +295,19 @@ public class SpritePainter {
 
         //Abhänig von dem Spielfeld das Angezeigt werden soll wird hier ein anderes Array eingelesen, sodass die Informationen auch der Situation entsprechen
         switch (fieldof) {
-            case 0 -> {
+            case 0, 4 -> {
                 dummy = BugHeckMeck;
-
-                break;
             }
             case 1 -> {
                 dummy = pf.getFieldEnemy();
-                break;
             }
             case 2 -> {
-                if(frame.Multclient){
+                if (frame.Multclient) {
                     dummy = frame.client.pf.getFieldEnemy();
                 } else {
                     dummy = frame.server.pf.getFieldEnemy();
                 }
-
-
                 //case "Vorhersage" -> Vorhersage;
-            }
-            case 4 -> {
-                dummy = BugHeckMeck;
             }
 
             default -> dummy = BugHeckMeck;
@@ -329,7 +319,7 @@ public class SpritePainter {
             for (int x = 0; x < dummy[0].length; x++) {
 
                 //checkt ob es sich bei dem Spielfeld auch um das des Spielers handelt
-                if (fieldof == 0||fieldof == 4) {
+                if (fieldof == 0 || fieldof == 4) {
 
 
                     //Wenn das Schiff getroffen wurde, dann ist das Array an der Stelle entweder 1 (Teil getroffen aber Schiff gibt es noch) oder 2 (Teil und gesamtes Schiff zerstört)
@@ -382,9 +372,7 @@ public class SpritePainter {
 
                     }
 
-                    if(frame.tile2.hasshot && x == frame.tile2.getRecentshot()[0] && y == frame.tile2.getRecentshot()[1]){ //Funktioniert noch nicht TODO fixen
-
-                        System.out.println("sind beim guten alten Scope Dingens");
+                    if (frame.tile2.hasshot && x == frame.tile2.getRecentshot()[0] && y == frame.tile2.getRecentshot()[1]) { //Funktioniert noch nicht TODO fixen
 
                         BufferedImage dummyImg = Bild.BildLoader("src/Images/SniperScope.png");
 
@@ -397,7 +385,7 @@ public class SpritePainter {
 
 
                 //Checkt ob es das Spielfeld des Computer Gegners ist TODO GegnerOnline hier drin implementieren
-                if (fieldof == 2) {
+                if (fieldof == 2 || fieldof == 1) {
 
                     //Das, was gezeichnet werden muss wird ausgelesen
                     //Es wird auch eine Variable gesetzt, die angibt, dass eine etwas gezeichnet werden muss oder eben nicht
@@ -518,7 +506,7 @@ public class SpritePainter {
             for (int y = 0; y < pf.getField().length; y++) {
                 for (int x = 0; x < pf.getField()[0].length; x++) {
 
-                    if (Pokemon[y][x] == -1 ) {
+                    if (Pokemon[y][x] == -1) {
                         Pokemon[y][x] = (int) (Math.random() * 608);
                     }
 

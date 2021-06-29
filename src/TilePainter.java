@@ -22,21 +22,7 @@ public class TilePainter extends JPanel implements MouseMotionListener {
     private static int PosX = 0;
     private static int PosY = 0;
     private final Tile Ebene;
-    int counter;
-    boolean hasshot = false;
-    boolean hitKI = true;
-    int[] groessen = {0, 0, size2, size3, size4, size5};
-    boolean PlayerTurn;
-    int field;
-    boolean deleting;
-    SpritePainter hier;
-    SpritePainter Predicted;
-    SpielWindow frame;
-    PlayingField pf;
-    ComPlayer Computer;
-    int[] recentshot = new int[2];
-    boolean placeable = false;
-    boolean MovementHandler;
+    boolean usable = false;
 
     /**
      * @param Feldgroesse gibt Groesse des Feldes vor
@@ -52,7 +38,6 @@ public class TilePainter extends JPanel implements MouseMotionListener {
         this.frame = frame;
         field = Feldvon;
         this.pf = pf;
-        System.out.println(field);
         hier = new SpritePainter(field, this, frame, pf);
 
 
@@ -95,7 +80,7 @@ public class TilePainter extends JPanel implements MouseMotionListener {
 
                         if (!Tile.fightstart && field == 0) {
 
-                            System.out.println("Die Position auf der Y-Achse beträgt:" + yFeld + "\nDie Postion auf der X-Achse beträgt:" + xFeld);
+//                            System.out.println("Die Position auf der Y-Achse beträgt:" + yFeld + "\nDie Postion auf der X-Achse beträgt:" + xFeld);
 
                             if (!deleting && !Tile.isFightstart()) {
                                 if (groessen[groesse] > 0 && pf.setShip(groesse, xFeld, yFeld, horizontal)) {
@@ -208,7 +193,7 @@ public class TilePainter extends JPanel implements MouseMotionListener {
                                                         } catch (Exception exception) {
                                                             exception.printStackTrace();
                                                         }
-                                                        System.out.println("I was called" + counter++ + "times");
+//                                                        System.out.println("I was called" + counter++ + "times");
                                                         hitKI = pf.getField()[Feld[1]][Feld[0]] == 1 || pf.getField()[Feld[1]][Feld[0]] == 2;
 
 
@@ -226,7 +211,7 @@ public class TilePainter extends JPanel implements MouseMotionListener {
                                                 Computer.gameover();
                                                 PlayerTurn = true;
                                             }
-                                            System.out.println(Arrays.deepToString(pf.getField()).replace("]", "]\n"));
+//                                            System.out.println(Arrays.deepToString(pf.getField()).replace("]", "]\n"));
                                         }
                                         //mit getPlayingField().getGameOver kann ich rausfinden wer verloren hat für wen true --> hat verloren
 
@@ -294,8 +279,6 @@ public class TilePainter extends JPanel implements MouseMotionListener {
                                 } catch (Exception exception) {
                                     exception.printStackTrace();
                                 }
-                                ;
-
 
                             }
 
@@ -317,7 +300,7 @@ public class TilePainter extends JPanel implements MouseMotionListener {
                 if (e.getButton() == MouseEvent.BUTTON3) {
                     horizontal = !horizontal;
                     MovementHandler = true;
-                    System.out.println("Es wurden " + AnzSchiffe + " platziert");
+//                    System.out.println("Es wurden " + AnzSchiffe + " platziert");
                 }
 
             }
@@ -329,13 +312,34 @@ public class TilePainter extends JPanel implements MouseMotionListener {
                 if (e.getButton() == MouseEvent.BUTTON2) {
                     Tile.fightstart = !Tile.fightstart;
                     TileSize.setFighting(Tile.fightstart ? 1 : 0);
-                    System.out.println("Der Kampf hat begonnen");
+//                    System.out.println("Der Kampf hat begonnen");
                 }
 
             }
         });
 
 
+    }
+
+    int counter;
+    boolean hasshot = false;
+    boolean hitKI = true;
+    int[] groessen = {0, 0, size2, size3, size4, size5};
+    boolean PlayerTurn;
+    int field;
+    boolean deleting;
+    SpritePainter hier;
+    SpritePainter Predicted;
+    SpielWindow frame;
+    PlayingField pf;
+    ComPlayer Computer;
+    int[] recentshot = new int[2];
+    boolean placeable = false;
+    boolean MovementHandler;
+
+    public void switchUsable() {
+        usable = !usable;
+        setFocusable(usable);
     }
 
     public static int getGroesse() {
@@ -405,12 +409,14 @@ public class TilePainter extends JPanel implements MouseMotionListener {
 
         if (field == 1) {
             hier.Schiffzeichner(g);
+//            System.out.println("Eigentlich sollten jetzt Schiffe gezeichnet werden (Hier sind es momentan noch Zahlen");
+//            System.out.println(Arrays.deepToString(pf.getFieldEnemy()).replace("],", "],\n"));
         }
-        if (selectedTheme.equals("Pokemon")) {
-            hier.Pokemonpicker(g);
-        } else {
+//        if (selectedTheme.equals("Pokemon")) {
+            //hier.Pokemonpicker(g);
+//        } else {
             hier.Schiffzeichner(g);
-        }
+//        }
 
         if (SpritePainter.ready && field == 0) {
 
