@@ -16,13 +16,16 @@ public class config {
     public static int       SpielFeld1              = 0; // 0 = Spieler ; 1 = GegnerKI ; 2 = GegnerOnline
     public static int       SpielFeld2              = 1; // 0 = Spieler ; 1 = GegnerKI ; 2 = GegnerOnline
 
+    public static boolean   change                  = false;
+    public static int       framewidth              = 0;
+    public static int       frameheigth             = 0;
     public static String    IP                      = "";
 
     // The string array for options
     public static String[]  Resolutions             = {"Resolution", "2560x1440", "1920x1080", "1600x900","1366x768","1280x720","1024x576","960x540","854x480",};
-    public static String[]  Themes                  = {"Theme", "Pokemon", "Zelda", "AoE"};
+    public static String[]  Themes                  = {"Theme", "Pokemon", ""};
     public static String    selectedResolution      = "";
-    public static String    selectedTheme           = "";
+    public static String    selectedTheme           = "Pokemon";
     public static boolean   fullscreen              = false;
 
     // Slider sizes
@@ -35,24 +38,21 @@ public class config {
 
     // Information Strings
     public static String  TextSingleplayer          =  """
-            You  can  select  fullscreen  mode  and  resolution  here.
+            You  can  select  the  difficulty  of  the  game\s\040
+            by  clicking  the  EASY  or NORMAL button.
 
             You  can  also  select  the  size  of the  Pokemon's\s
             by  clicking  the  size  button.""";
 
     public static String  TextMulitplayer           =  """
-            You  can  select  fullscreen  mode  and  resolution  here.
+            You  can  either  join  a  game  or host  a game.
+            Please  enter  your  IP  before  starting  the  game.\040
 
             You  can  also  select  the  size  of the  Pokemon's\s
             by  clicking  the  size  button.""";
+
 
     public static String  TextOptions               = """
-            You  can  select  fullscreen  mode  and  resolution  here.
-
-            You  can  also  select  the  size  of the  Pokemon's\s
-            by  clicking  the  size  button.""";
-
-    public static String  TextHost                  =  """
             You  can  select  fullscreen  mode  and  resolution  here.
 
             You  can  also  select  the  size  of the  Pokemon's\s
@@ -66,7 +66,8 @@ public class config {
 
 
     public static String  TextSize                  =  """
-            You  can  select  fullscreen  mode  and  resolution  here.
+            You  can  set  the  amount  of  size  2, 3, 4 and 5 Pokemon's
+            as  well  as  the  size  of  the  playing  field.\040
 
             You  can  also  select  the  size  of the  Pokemon's\s
             by  clicking  the  size  button.""";
