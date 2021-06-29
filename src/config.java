@@ -34,7 +34,7 @@ public class config {
     public static int       size3                   = 1;
     public static int       size4                   = 1;
     public static int       size5                   = 1;
-    public static int       sumofships              = size2 + size3 + size4 + size5;
+    public static int       sumofships              = 4;
 
     // Information Strings
     public static String  TextSingleplayer          =  """

@@ -58,7 +58,7 @@ public class ToggleButton extends JToggleButton {
 
     @Override
     protected void paintComponent(Graphics g) {
-        if (isSelected()) {
+        if(isSelected()){
             g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
         } else {
             g.drawImage(selected, 0, 0, getWidth(), getHeight(), this);

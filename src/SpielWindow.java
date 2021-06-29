@@ -75,6 +75,8 @@ public class SpielWindow extends JPanel {
 
     private void makeComponents(JFrame frame) {
 
+        sumofships = size2 + size3 + size4 + size5;
+        System.out.println("sumofships" + sumofships);
         frameheigth = frame.getHeight();
         framewidth = frame.getWidth();
 
@@ -109,7 +111,6 @@ public class SpielWindow extends JPanel {
         buttonDelete      = new DeleteButton();
         buttonReady       = new MenuButton("START GAME",   ImageLoader.getImage(ImageLoader.MENU_BUTTON));
         buttonMenuStart   = new MenuButton("MAIN MENU",    ImageLoader.getImage(ImageLoader.MENU_BUTTON));
-        buttonRestart     = new MenuButton("RESTART GAME", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
         buttonSaveGame    = new MenuButton("SAVE GAME",    ImageLoader.getImage(ImageLoader.MENU_BUTTON));
         buttonLoadGame    = new MenuButton("LOAD GAME",    ImageLoader.getImage(ImageLoader.MENU_BUTTON));
 //        buttonMenuOptions = new MenuButton("OPTIONS",      ImageLoader.getImage(ImageLoader.MENU_BUTTON));
@@ -182,17 +183,18 @@ public class SpielWindow extends JPanel {
             frame.dispose();
             Tile.fightstart = false;
             fullscreen = false;
+            fieldsize  = 10;
+            size2      = 1;
+            size3      = 1;
+            size4      = 1;
+            size5      = 1;
+            sumofships = 4;
             // Create MenuMain and display it
             try {
                 new MenuStart();
             } catch (IOException | FontFormatException ioException) {
                 ioException.printStackTrace();
             }
-        });
-        buttonRestart.addActionListener(e -> {
-            Tile.fightstart = false;
-            gamePanel1.setVisible(false);
-            gamePanel2.setVisible(true);
         });
         buttonSaveGame.addActionListener(e -> {
             JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
@@ -219,7 +221,6 @@ public class SpielWindow extends JPanel {
             }
         });
         gamePanel1.add(buttonMenuStart);
-        gamePanel1.add(buttonRestart);
         gamePanel1.add(buttonSaveGame);
         gamePanel1.add(buttonLoadGame);
 //        gamePanel1.add(buttonMenuOptions);
@@ -237,7 +238,7 @@ public class SpielWindow extends JPanel {
         tile.        setBounds(framewidth * 13 / 100, frameheigth * 25 / 100, framewidth * 25 / 100, framewidth * 25 / 100);
         tile2.       setBounds(framewidth * 62 / 100, frameheigth * 25 / 100, framewidth * 25 / 100, framewidth * 25 / 100);
         Z.           setBounds(framewidth * 13 / 100, frameheigth * 10 / 100, framewidth * 25 / 100, frameheigth * 10/ 100);
-        gamePanel1.  setBounds(framewidth * 45 / 100, frameheigth * 25 / 100, framewidth * 10 / 100, framewidth * 25 / 100);
+        gamePanel1.  setBounds(framewidth * 45 / 100, frameheigth * 25 / 100, framewidth * 10 / 100, framewidth * 17 / 100);
         gamePanel2.  setBounds(framewidth * 45 / 100, frameheigth * 25 / 100, framewidth * 10 / 100, framewidth * 25 / 100);
 
         menuPanel.add(gamePanel1);
@@ -272,7 +273,7 @@ public class SpielWindow extends JPanel {
                 menuPanel.   setBounds(0, 0, frame.getWidth(), frame.getHeight());
                 tile.        setBounds(framewidth * 13 / 100, frameheigth * 25 / 100, framewidth * 25 / 100, framewidth * 25 / 100);
                 tile2.       setBounds(framewidth * 62 / 100, frameheigth * 25 / 100, framewidth * 25 / 100, framewidth * 25 / 100);
-                gamePanel1.  setBounds(framewidth * 45 / 100, frameheigth * 25 / 100, framewidth * 10 / 100, framewidth * 25 / 100);
+                gamePanel1.  setBounds(framewidth * 45 / 100, frameheigth * 25 / 100, framewidth * 10 / 100, framewidth * 17 / 100);
                 gamePanel2.  setBounds(framewidth * 45 / 100, frameheigth * 25 / 100, framewidth * 10 / 100, framewidth * 25 / 100);
 
                 menuPanel.revalidate();
