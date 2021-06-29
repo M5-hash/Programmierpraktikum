@@ -11,7 +11,12 @@ public class main{
      * @param args The arguments which are passed to the programme - ignored
      */
     public static void main(String[] args) throws IOException, FontFormatException {
-
+        try {
+            UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
+//            SwingUtilities.updateComponentTreeUI(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         // Try to load the sprites
         try {
             ImageLoader.init();

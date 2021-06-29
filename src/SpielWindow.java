@@ -17,37 +17,32 @@ import static src.config.*;
 
 public class SpielWindow extends JPanel {
 
-    public static boolean change = false;
-    public static int framewidth = 0;
-    public static int frameheigth = 0;
     boolean Multclient ;
-
     String Feldvon = "Spieler"; //"GegnerKI" "GegnerOnline"
     private static Object Multiplayer;
 
-    Client      client;
-    Server      server;
-    TilePainter tile2;
-    TilePainter tile;
-    Zielhilfe   Z;
-    GridLayout  gameLayout;
-    JPanel      menuPanel;
-    JPanel      gamePanel1;
-    JPanel      gamePanel2;
-    JButton     buttonMenuStart;
-    JButton     buttonRestart;
-    JButton     buttonSaveGame;
-    JButton     buttonLoadGame;
-    JButton     buttonMenuOptions;
-    JButton     buttonQuitGame;
-    JButton     buttonReady;
-    JButton     buttonDelete;
-    ButtonGroup         buttonGroup;
-    ToggleButton        btn_size2;
-    ToggleButton        btn_size3;
-    ToggleButton        btn_size4;
-    ToggleButton        btn_size5;
-    Timer       timer;
+    Client          client;
+    Server          server;
+    TilePainter     tile2;
+    TilePainter     tile;
+    Zielhilfe       Z;
+    GridLayout      gameLayout;
+    JPanel          menuPanel;
+    JPanel          gamePanel1;
+    JPanel          gamePanel2;
+    JButton         buttonMenuStart;
+    JButton         buttonRestart;
+    JButton         buttonSaveGame;
+    JButton         buttonLoadGame;
+    JButton         buttonMenuOptions;
+    JButton         buttonQuitGame;
+    JButton         buttonReady;
+    JButton         buttonDelete;
+    ButtonGroup     buttonGroup;
+    ToggleButton    btn_size2;
+    ToggleButton    btn_size3;
+    ToggleButton    btn_size4;
+    ToggleButton    btn_size5;
 
     private ComPlayer Com;
     private PlayingField playingField;
@@ -95,10 +90,6 @@ public class SpielWindow extends JPanel {
             }
         }
 
-        tile = new TilePainter(fieldsize, SpielFeld1, this, Com, playingField);
-        tile2 = new TilePainter(fieldsize, SpielFeld2, this, Com, playingField);
-        Z = new Zielhilfe();
-
         if (fullscreen) {
             frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
             frame.setUndecorated(true);
@@ -112,6 +103,9 @@ public class SpielWindow extends JPanel {
         frameheigth = frame.getHeight();
         framewidth = frame.getWidth();
 
+        tile              = new TilePainter(fieldsize, SpielFeld1, this, Com, playingField);
+        tile2             = new TilePainter(fieldsize, SpielFeld2, this, Com, playingField);
+        Z                 = new Zielhilfe();
         menuPanel         = new CustomPanel(ImageLoader.getImage(ImageLoader.GAME_BACKGROUND));
         gameLayout        = new GridLayout(0, 1);
         buttonDelete      = new DeleteButton();
@@ -130,16 +124,17 @@ public class SpielWindow extends JPanel {
         gamePanel2        = new JPanel();
         buttonGroup       = new ButtonGroup();
 
-        menuPanel.setLayout(null);
-        tile2.  setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
-        tile.   setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+        menuPanel. setLayout(null);
+
+        tile2.     setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+        tile.      setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
 
         gameLayout.setVgap(5);
+
         gamePanel1.setOpaque(false);
         gamePanel1.setLayout(gameLayout);
         gamePanel1.setVisible(false);
 
-        gameLayout.setVgap(5);
         gamePanel2.setOpaque(false);
         gamePanel2.setLayout(gameLayout);
 
@@ -274,16 +269,15 @@ public class SpielWindow extends JPanel {
                     frame.setBounds(b.x, b.y, b.height*W/H, b.height);
                     TileSize.setTile_Size(((framewidth / 4) - Borderwidth) / fieldsize);
                 }
-//
-                menuPanel.revalidate();
-                menuPanel.repaint();
-
 
                 menuPanel.   setBounds(0, 0, frame.getWidth(), frame.getHeight());
                 tile.        setBounds(framewidth * 13 / 100, frameheigth * 25 / 100, framewidth * 25 / 100, framewidth * 25 / 100);
                 tile2.       setBounds(framewidth * 62 / 100, frameheigth * 25 / 100, framewidth * 25 / 100, framewidth * 25 / 100);
                 gamePanel1.  setBounds(framewidth * 45 / 100, frameheigth * 25 / 100, framewidth * 10 / 100, framewidth * 25 / 100);
                 gamePanel2.  setBounds(framewidth * 45 / 100, frameheigth * 25 / 100, framewidth * 10 / 100, framewidth * 25 / 100);
+
+                menuPanel.revalidate();
+                menuPanel.repaint();
             }
         });
 

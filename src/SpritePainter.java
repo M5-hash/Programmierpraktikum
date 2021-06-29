@@ -248,7 +248,7 @@ public class SpritePainter {
 
 
         ready = true;
-        frame.change = false;
+        change = false;
 
 
     }

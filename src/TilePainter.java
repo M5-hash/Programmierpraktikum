@@ -99,7 +99,7 @@ public class TilePainter extends JPanel implements MouseMotionListener {
 
                             if (!deleting && !Tile.isFightstart()) {
                                 if (groessen[groesse] > 0 && pf.setShip(groesse, xFeld, yFeld, horizontal)) {
-                                    frame.change = true;
+                                    change = true;
                                     AnzSchiffe++;
 
                                     switch (groesse) {
@@ -134,7 +134,7 @@ public class TilePainter extends JPanel implements MouseMotionListener {
                                     }
 
                                 } else {
-                                    frame.change = false;
+                                    change = false;
                                 }
                             }
                             if (!Tile.isFightstart() && deleting) {
