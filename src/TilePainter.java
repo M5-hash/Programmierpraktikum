@@ -4,9 +4,7 @@ package src;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
+import java.awt.event.*;
 import java.io.IOException;
 import java.util.Arrays;
 
@@ -33,8 +31,8 @@ public class TilePainter extends JPanel implements MouseMotionListener {
     boolean deleting;
     SpritePainter hier;
     SpritePainter Predicted;
-    SpielWindow frame ;
-    PlayingField pf ;
+    SpielWindow frame;
+    PlayingField pf;
     ComPlayer Computer;
     int[] recentshot = new int[2];
     boolean placeable = false;
@@ -50,10 +48,10 @@ public class TilePainter extends JPanel implements MouseMotionListener {
      */
     public TilePainter(int Feldgroesse, int Feldvon, SpielWindow frame, ComPlayer Com, PlayingField pf) {
         Ebene = new Tile(Feldgroesse, Feldvon);
-        Computer = Com ;
-        this.frame = frame ;
+        Computer = Com;
+        this.frame = frame;
         field = Feldvon;
-        this.pf = pf ;
+        this.pf = pf;
         System.out.println(field);
         hier = new SpritePainter(field, this, frame, pf);
 
@@ -108,7 +106,7 @@ public class TilePainter extends JPanel implements MouseMotionListener {
                                         case 2:
                                             if (size2 > 0) {
                                                 size2--;
-                                                frame.btn_size2.setText("size 2: " + size3);
+                                                frame.btn_size2.setText("size 2: " + size2);
                                                 groessen[groesse]--;
                                             }
                                             break;
@@ -180,57 +178,64 @@ public class TilePainter extends JPanel implements MouseMotionListener {
                         if (Tile.isFightstart()) {
 
                             if (field == 1) {
+                                if (SpielFeld2 == 1) {
+                                    try {
+                                        if (pf.getFieldEnemy()[yFeld][xFeld] == 0) {
 
-                                try {
-                                    if (pf.getFieldEnemy()[yFeld][xFeld] == 0) {
+                                            int TrefferSpieler = Computer.isShot(xFeld, yFeld);
+                                            pf.didHit(TrefferSpieler, xFeld, yFeld);
+                                            if (TrefferSpieler == 0) {
+                                                hitKI = true;
 
-                                        int TrefferSpieler = Computer.isShot(xFeld, yFeld);
-                                        pf.didHit(TrefferSpieler, xFeld, yFeld);
-                                        if (TrefferSpieler == 0) {
-                                            hitKI = true;
+                                                //Momentan noch funktionierend sollte aber eigentlich dafür sorgen, dass die KI nochmal Schießt, falls Sie gtroffen hat
+                                                counter = 0;
 
-                                            //Momentan noch funktionierend sollte aber eigentlich dafür sorgen, dass die KI nochmal Schießt, falls Sie gtroffen hat
-                                            counter = 0;
+                                                ActionListener KiAct = new ActionListener() {
+                                                    @Override
+                                                    public void actionPerformed(ActionEvent KIevnt) {
 
-                                            Timer timer = new Timer(110, w -> {
-                                                int[] Feld = new int[2];
-                                                try {
-                                                    Feld = Computer.doNextShot();
-                                                    hasshot = true;
-                                                    recentshot = Feld;
-                                                } catch (Exception exception) {
-                                                    exception.printStackTrace();
+                                                        int[] Feld = new int[2];
+                                                        try {
+                                                            Feld = Computer.doNextShot();
+                                                            hasshot = true;
+                                                            recentshot = Feld;
+                                                        } catch (Exception exception) {
+                                                            exception.printStackTrace();
+                                                        }
+
+                                                        try {
+                                                            Computer.didHit(pf.isShot(Feld[0], Feld[1]));
+                                                        } catch (Exception exception) {
+                                                            exception.printStackTrace();
+                                                        }
+                                                        System.out.println("I was called" + counter++ + "times");
+                                                        hitKI = pf.getField()[Feld[1]][Feld[0]] == 1 || pf.getField()[Feld[1]][Feld[0]] == 2;
+
+
+                                                    }
+                                                };
+
+                                                Timer KItimer = new Timer(110, KiAct);
+
+                                                if (hitKI) {
+                                                    KItimer.start();
                                                 }
 
-                                                try {
-                                                    Computer.didHit(pf.isShot(Feld[0], Feld[1]));
-                                                } catch (Exception exception) {
-                                                    exception.printStackTrace();
-                                                }
-                                                System.out.println("I was called" + counter++ + "times");
-                                                hitKI = pf.getField()[Feld[1]][Feld[0]] == 1 || pf.getField()[Feld[1]][Feld[0]] == 2;
 
-                                            });
-                                            if(hitKI){
-                                                timer.start();
+                                                pf.gameover();
+                                                Computer.gameover();
+                                                PlayerTurn = true;
                                             }
-                                            if (!hitKI) {
-                                                timer.stop();
-                                            }
-
-                                            pf.gameover();
-                                            Computer.gameover();
-                                            PlayerTurn = true;
+                                            System.out.println(Arrays.deepToString(pf.getField()).replace("]", "]\n"));
                                         }
-                                        System.out.println(Arrays.deepToString(pf.getField()).replace("]", "]\n"));
+                                        //mit getPlayingField().getGameOver kann ich rausfinden wer verloren hat für wen true --> hat verloren
+
+                                        //SpielWindow.Com.doNextShot();
+
+                                        System.out.println("Es wurde geschossen auf X: " + xFeld + " Y: " + yFeld);
+                                    } catch (Exception exception) {
+                                        exception.printStackTrace();
                                     }
-                                    //mit getPlayingField().getGameOver kann ich rausfinden wer verloren hat für wen true --> hat verloren
-
-                                    //SpielWindow.Com.doNextShot();
-
-                                    System.out.println("Es wurde geschossen auf X: " + xFeld + " Y: " + yFeld);
-                                } catch (Exception exception) {
-                                    exception.printStackTrace();
                                 }
                             }
                             if (field == 2 && !frame.Multclient && frame.server.myTurn) {
@@ -256,8 +261,6 @@ public class TilePainter extends JPanel implements MouseMotionListener {
                                 }
                                 ;
 
-                                frame.server.setTurn(false);
-
 
                             }
 
@@ -281,7 +284,7 @@ public class TilePainter extends JPanel implements MouseMotionListener {
                                     exception.printStackTrace();
                                 }
                                 ;
-                                frame.client.setTurn(false);
+
 
                             }
 
@@ -392,9 +395,9 @@ public class TilePainter extends JPanel implements MouseMotionListener {
         if (field == 1) {
             hier.Schiffzeichner(g);
         }
-        if(selectedTheme.equals("Pokemon")){
+        if (selectedTheme.equals("Pokemon")) {
             hier.Pokemonpicker(g);
-        }else{
+        } else {
             hier.Schiffzeichner(g);
         }
 

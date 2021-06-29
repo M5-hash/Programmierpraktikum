@@ -68,8 +68,6 @@ public class Zielhilfe extends JPanel {
                     i++;
                 }
 
-                int h = i ;
-
                 if (secondrun) {
                     notfinished = false;
                 }
@@ -79,58 +77,13 @@ public class Zielhilfe extends JPanel {
                     laeufer = Inbetweener / (Exponent(10, j));
                     Inbetweener = Inbetweener - laeufer * Exponent(10, j);
 
-                    switch (laeufer) {
-
-                        case 0:
-                            Zahldir = "src/Images/0.png";
-                            break;
-
-                        case 1:
-                            Zahldir = "src/Images/1.png";
-                            break;
-
-                        case 2:
-                            Zahldir = "src/Images/2.png";
-                            break;
-
-                        case 3:
-                            Zahldir = "src/Images/3.png";
-                            break;
-
-                        case 4:
-                            Zahldir = "src/Images/4.png";
-                            break;
-
-                        case 5:
-                            Zahldir = "src/Images/5.png";
-                            break;
-
-                        case 6:
-                            Zahldir = "src/Images/6.png";
-                            break;
-
-                        case 7:
-                            Zahldir = "src/Images/7.png";
-                            break;
-
-                        case 8:
-                            Zahldir = "src/Images/8.png";
-                            break;
-
-                        case 9:
-                            Zahldir = "src/Images/9.png";
-                            break;
-
-                        case 10:
-                            Zahldir = "src/Images/1.png" ;
-                            Inbetweener = 0 ;
-                            i++;
-                            j++;
-                            break ;
-
-                        default:
-                            break;
-
+                    if(laeufer < 10 && laeufer >= 0){
+                        Zahldir = "src/Images/" + laeufer + ".png";
+                    }else if(laeufer == 10){
+                        Zahldir = "src/Images/1.png" ;
+                        Inbetweener = 0 ;
+                        i++;
+                        j++;
                     }
 
                     Zahl = Bild.BildLoader(Zahldir);

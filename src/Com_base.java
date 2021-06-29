@@ -97,12 +97,15 @@ public abstract class Com_base {
             int hit = pf.isShot(x, y);
             if(hit == 0){
                 Send("answer 0");
+                this.myTurn = false;
             }
             else if(hit == 1){
                 Send("answer 1");
+                this.myTurn = false;
             }
             else if(hit == 2){
                 Send("answer 2");
+                this.myTurn = false;
             }
         }
 
@@ -110,6 +113,7 @@ public abstract class Com_base {
             if(holder[1].equals("0")){
                 pf.didHit(0, this.lastX, this.lastY);
                 Send("pass");
+                this.myTurn = false;
             }
             else if(holder[1].equals("1")){
                 pf.didHit(1, this.lastX, this.lastY);
@@ -124,6 +128,10 @@ public abstract class Com_base {
             //saveGame
         }
 
+        else if(holder[0].equals("ready")){
+            this.myTurn = true;
+        }
+
         else if(holder[0].equals("pass")){
             this.myTurn = true;
         }
@@ -136,6 +144,8 @@ public abstract class Com_base {
             }
         }
     }
+
+
 
     protected int[] ship_array_toInt(String[] in_ships, int begin){
         int [] out_ships = new int[in_ships.length-begin];

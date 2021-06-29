@@ -307,7 +307,11 @@ public class SpritePainter {
                 break;
             }
             case 2 -> {
-                dummy = getEnemyPlacement;
+                if(frame.Multclient){
+                    dummy = frame.client.pf.getFieldEnemy();
+                } else {
+                    dummy = frame.server.pf.getFieldEnemy();
+                }
 
 
                 //case "Vorhersage" -> Vorhersage;

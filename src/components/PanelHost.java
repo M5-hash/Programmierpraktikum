@@ -70,14 +70,16 @@ public class PanelHost extends JPanel {
             int x = JOptionPane.showOptionDialog(menuFrame, "Wollen Sie selbst spielen oder als Computer?",
                     "Selfplay or KI", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, icon, options, options[0]);
 
+            SpielFeld2 = 2 ;
+
             if(x == 0){
                 menuHost.setVisible(false);
                 menuFrame.dispose();
                 // Create SpielWindow and display it
                 try {
-
+                    SpielFeld1 = 0 ;
                     Server server = new Server("setup", fieldsize, getShipString());
-                    SpielWindow MP_Window = new SpielWindow(menuFrame, server.pf, server);
+                    SpielWindow MP_Window = new SpielWindow(menuFrame, server);
                 } catch (Exception ioException) {
                     ioException.printStackTrace();
                 }
@@ -86,6 +88,7 @@ public class PanelHost extends JPanel {
                 menuFrame.dispose();
                 // Create SpielWindow and display it
                 try {
+                    SpielFeld1 = 0 ;
                     Server server = new Server("setup", fieldsize, getShipString());
                 } catch (Exception ioException) {
                     ioException.printStackTrace();

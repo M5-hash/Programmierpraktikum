@@ -75,7 +75,7 @@ public class MenuMultiplayer {
                 try {
                     Client client = new Client(IP);
                     SpielFeld1 = 0 ;
-                    //new SpielWindow(menuFrame, menuPanel, client); //warum wird hier kein SpielWindow übergeben  ?
+                    new SpielWindow(menuFrame, client); //warum wird hier kein SpielWindow übergeben  ?
                 } catch (Exception ioException) {
                     ioException.printStackTrace();
                 }
@@ -83,13 +83,12 @@ public class MenuMultiplayer {
                 menuPanel.setVisible(false);
                 menuFrame.dispose();
                 // Create SpielWindow and display it
-                try {
-
-                    SpielFeld1 = 1 ;
-                    new SpielWindow(menuFrame);                                 //Gleiche frage:Warum wird hier kein Spielfeld übergeben, die Ergebnisse von Schüssen werden in der GUI nie erfasst, die Daten sollen auch weitergeschickt werden
-                } catch (IOException | FontFormatException ioException) {
-                    ioException.printStackTrace();
-                }
+//                try {
+//                    SpielFeld1 = 1 ;
+//                    //new SpielWindow(menuFrame, server, );    //Gleiche frage:Warum wird hier kein Spielfeld übergeben, die Ergebnisse von Schüssen werden in der GUI nie erfasst, die Daten sollen auch weitergeschickt werden
+//                } catch (IOException | FontFormatException ioException) {
+//                    ioException.printStackTrace();
+//                }
             } else {
                 System.out.println("no");
             }

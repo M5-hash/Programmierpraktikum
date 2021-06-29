@@ -17,7 +17,7 @@ public class Client extends Com_base {
         this.out = new OutputStreamWriter(s.getOutputStream());
         this.usr = new BufferedReader(new InputStreamReader(System.in));
         this.pf = setupPlayingfield();
-
+/*
         Thread t = new Thread() {
             public void run(){
                 try{
@@ -30,7 +30,7 @@ public class Client extends Com_base {
             }
         };
         t.start();
-
+*/
         System.out.println("Working");
     }
 
@@ -52,7 +52,6 @@ public class Client extends Com_base {
             if (loopCheckIN().equals("ready")) {
                 Send("ready");
             }
-
         }
         else {
             pf_holder = new PlayingField();
@@ -62,7 +61,7 @@ public class Client extends Com_base {
         return pf_holder;
     }
 
-    public void ClientCommunicate() throws Exception {
+        public void ClientCommunicate() throws Exception {
         while (true) {
             if(!in_check()) break;
             Receive();

@@ -20,42 +20,39 @@ public class SpielWindow extends JPanel {
     public static boolean change = false;
     public static int framewidth = 0;
     public static int frameheigth = 0;
-    private static Object Multiplayer;
-    private static ComPlayer Com;
-    private PlayingField playingField;
-    String Feldvon = "Spieler"; //"GegnerKI" "GegnerOnline"
     boolean Multclient ;
 
-    Client              client;
-    Server              server;
-    TilePainter         tile2;
-    TilePainter         tile;
-    Zielhilfe           Z;
-    GridLayout          gameLayout;
-    JPanel              menuPanel;
-    JPanel              gamePanel1;
-    JPanel              gamePanel2;
-    JButton             buttonMenuStart;
-    JButton             buttonRestart;
-    JButton             buttonSaveGame;
-    JButton             buttonLoadGame;
-    JButton             buttonMenuOptions;
-    JButton             buttonQuitGame;
-    JButton             buttonReady;
-    JButton             buttonDelete;
+    String Feldvon = "Spieler"; //"GegnerKI" "GegnerOnline"
+    private static Object Multiplayer;
+
+    Client      client;
+    Server      server;
+    TilePainter tile2;
+    TilePainter tile;
+    Zielhilfe   Z;
+    GridLayout  gameLayout;
+    JPanel      menuPanel;
+    JPanel      gamePanel1;
+    JPanel      gamePanel2;
+    JButton     buttonMenuStart;
+    JButton     buttonRestart;
+    JButton     buttonSaveGame;
+    JButton     buttonLoadGame;
+    JButton     buttonMenuOptions;
+    JButton     buttonQuitGame;
+    JButton     buttonReady;
+    JButton     buttonDelete;
     ButtonGroup         buttonGroup;
     ToggleButton        btn_size2;
     ToggleButton        btn_size3;
     ToggleButton        btn_size4;
     ToggleButton        btn_size5;
+    Timer       timer;
 
-    {
-        try {
-            Com = new ComPlayerNormal(new PlayingField(fieldsize, calculateships(), false));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+    private ComPlayer Com;
+    private PlayingField playingField;
+
+
 
     public static Object getMultiplayer() {
         return Multiplayer;
@@ -67,18 +64,18 @@ public class SpielWindow extends JPanel {
         makeComponents(frame);
     }
 
-    public SpielWindow(JFrame frame, PlayingField pf, Client Client){
+    public SpielWindow(JFrame frame, Client Client){
         System.out.println("Ich bin der Konstruktor Nummer 2");
         client = Client ;
-        playingField = pf ;
+        playingField = Client.pf ;
         makeComponents(frame);
         Multclient = true ;
     }
 
-    public SpielWindow(JFrame frame,PlayingField pf, Server Server){
+    public SpielWindow(JFrame frame, Server Server){
         System.out.println("Ich bin der Konstruktor Nummer 3");
-        Multiplayer = Server ;
-        playingField = pf ;
+        this.server = Server ;
+        playingField = Server.pf ;
         makeComponents(frame);
         Multclient = false ;
     }
@@ -87,6 +84,16 @@ public class SpielWindow extends JPanel {
 
         frameheigth = frame.getHeight();
         framewidth = frame.getWidth();
+
+        if(SpielFeld1 == 1 || SpielFeld2 == 1){
+            {
+                try {
+                    Com = new ComPlayerNormal(new PlayingField(fieldsize, calculateships(), false));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
 
         tile = new TilePainter(fieldsize, SpielFeld1, this, Com, playingField);
         tile2 = new TilePainter(fieldsize, SpielFeld2, this, Com, playingField);
@@ -157,9 +164,9 @@ public class SpielWindow extends JPanel {
             Tile.fightstart = true;
             gamePanel1.setVisible(true);
             gamePanel2.setVisible(false);
-            if(Feldvon.equals("GegnerOnline") && Multclient){
+            if(SpielFeld2 == 2 && !Multclient){
                 try {
-                    client.message_check(client.loopCheckIN());
+                    server.message_check(server.loopCheckIN());
                 } catch (Exception f) {
                     f.printStackTrace();
                 }
@@ -169,6 +176,7 @@ public class SpielWindow extends JPanel {
 
             ((DeleteButton) buttonDelete).switchDeleting() ;
             tile.switchDeleting();
+
         });
         buttonMenuStart.addActionListener(e -> {
             // Hide this window
@@ -282,9 +290,6 @@ public class SpielWindow extends JPanel {
         timer.start();
     }
 
-    public static ComPlayer getCom() {
-        return Com;
-    }
 
 //    public static PlayingField getPlayingField() {
 //        return playingField;
