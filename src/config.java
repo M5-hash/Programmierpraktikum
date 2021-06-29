@@ -23,7 +23,7 @@ public class config {
 
     // The string array for options
     public static String[]  Resolutions             = {"Resolution", "2560x1440", "1920x1080", "1600x900","1366x768","1280x720","1024x576","960x540","854x480",};
-    public static String[]  Themes                  = {"Theme", "Pokemon", ""};
+    public static String[]  Themes                  = {"Classic", "Pokemon", ""};
     public static String    selectedResolution      = "";
     public static String    selectedTheme           = "Pokemon";
     public static boolean   fullscreen              = false;

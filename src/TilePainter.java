@@ -38,10 +38,11 @@ public class TilePainter extends JPanel implements MouseMotionListener {
     SpielWindow frame;
     PlayingField pf;
     ComPlayer Computer;
-    Timer KItimer ;
+    Timer KItimer;
     int[] recentshot = new int[2];
     boolean placeable = false;
     boolean MovementHandler;
+
     /**
      * @param Feldgroesse gibt Groesse des Feldes vor
      * @param Feldvon     gibt an für wen des Feld ist
@@ -144,27 +145,23 @@ public class TilePainter extends JPanel implements MouseMotionListener {
 
                                     switch (recycleship) {
                                         case 2:
-                                            size2++;
                                             groessen[recycleship]++;
-                                            frame.btn_size2.setText("size 2: " + size2);
+                                            frame.btn_size2.setText("size 2: " + groessen[groesse]);
                                             AnzSchiffe--;
                                             break;
                                         case 3:
-                                            size3++;
                                             groessen[recycleship]++;
-                                            frame.btn_size3.setText("size 3: " + size3);
+                                            frame.btn_size3.setText("size 3: " + groessen[groesse]);
                                             AnzSchiffe--;
                                             break;
                                         case 4:
-                                            size4++;
                                             groessen[recycleship]++;
-                                            frame.btn_size4.setText("size 4: " + size4);
+                                            frame.btn_size4.setText("size 4: " + groessen[groesse]);
                                             AnzSchiffe--;
                                             break;
                                         case 5:
-                                            size5++;
                                             groessen[recycleship]++;
-                                            frame.btn_size5.setText("size 5: " + size5);
+                                            frame.btn_size5.setText("size 5: " + groessen[groesse]);
                                             AnzSchiffe--;
                                             break;
                                     }
@@ -213,17 +210,17 @@ public class TilePainter extends JPanel implements MouseMotionListener {
 //                                                        System.out.println("I was called" + counter++ + "times");
                                                         hitKI = pf.getField()[Feld[1]][Feld[0]] == 1 || pf.getField()[Feld[1]][Feld[0]] == 2;
                                                         System.out.println(hitKI);
-                                                        if(!hitKI){
+                                                        if (!hitKI) {
                                                             timerstopper();
                                                         }
-                                                        if(hitKI){
+                                                        if (hitKI) {
                                                             timerstarter();
                                                         }
                                                         System.out.println(counter++);
                                                     }
 
                                                 };
-                                                KItimer = new Timer(300 ,taskPerformer);
+                                                KItimer = new Timer(300, taskPerformer);
                                                 KItimer.setRepeats(false);
                                                 KItimer.start();
 
@@ -338,10 +335,6 @@ public class TilePainter extends JPanel implements MouseMotionListener {
 
     }
 
-    public int[] getGroessen() {
-        return groessen;
-    }
-
     public static int getGroesse() {
         return groesse;
     }
@@ -390,6 +383,10 @@ public class TilePainter extends JPanel implements MouseMotionListener {
         PosY = posY;
     }
 
+    public int[] getGroessen() {
+        return groessen;
+    }
+
     public void switchUsable() {
         usable = !usable;
         if (usable) {
@@ -424,9 +421,7 @@ public class TilePainter extends JPanel implements MouseMotionListener {
             frame.tile.Ebene.YouWin(g);
 //            frame.tile2.Ebene.YouLost(g);
             System.out.println("Der Mensch gewann");
-       } else
-
-      {
+        } else {
             Ebene.DrawLayer(g);
             if (field == 1) {
                 hier.Schiffzeichner(g);
@@ -442,7 +437,7 @@ public class TilePainter extends JPanel implements MouseMotionListener {
 
             if (SpritePainter.ready && field == 0) {
 
-                if (MovementHandler) System.out.println(sumofships + AnzSchiffe );
+                if (MovementHandler) System.out.println(sumofships + AnzSchiffe);
 
                 if (!Tile.isFightstart() && sumofships > AnzSchiffe) {
                     if (MovementHandler) {
@@ -468,13 +463,13 @@ public class TilePainter extends JPanel implements MouseMotionListener {
         this.deleting = !this.deleting;
     }
 
-    private void timerstopper(){
+    private void timerstopper() {
         KItimer.stop();
     }
+
     private void timerstarter() {
         KItimer.start();
     }
-
 
 
     @Override
@@ -506,11 +501,11 @@ public class TilePainter extends JPanel implements MouseMotionListener {
 
     public void clearAll(PlayingField pf) {
 
-        this.pf = pf ;
+        this.pf = pf;
 
-        hier.pf = pf ;
-        if(field == 0){
-            Predicted.pf = pf ;
+        hier.pf = pf;
+        if (field == 0) {
+            Predicted.pf = pf;
         }
     }
 }

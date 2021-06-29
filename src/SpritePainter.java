@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import static src.Tile.field_size;
 import static src.config.fieldsize;
+import static src.config.selectedTheme;
 
 public class SpritePainter {
 
@@ -19,8 +20,8 @@ public class SpritePainter {
     static ArrayList<BufferedImage> Finished = new ArrayList<>();              // Zwischenspeicher für bereits geladene Bilder
     static ArrayList<String> Loaded = new ArrayList<>();                       // Speichert als String die Quellen der bereits geladenen Bilder ab
     static boolean fits = true;
-    int[][] Pokemon = new int[field_size][field_size];
     static Bildloader Bild = new Bildloader();
+    int[][] Pokemon = new int[field_size][field_size];
     int fieldof;
     SpielWindow frame;
     TilePainter Interface;
@@ -152,11 +153,11 @@ public class SpritePainter {
                     Pokemon[i][j] = pf.getField()[i][j];
                 } else if (Pokemon[i][j] == 0 && pf.getField()[i][j] == 3) {
                     Pokemon[i][j] = -1;
-                } else if(pf.getField()[i][j] == 1) {
-                    Pokemon[i][j] = -4 ;
-                } else if(pf.getField()[i][j] == 2) {
+                } else if (pf.getField()[i][j] == 1) {
+                    Pokemon[i][j] = -4;
+                } else if (pf.getField()[i][j] == 2) {
                     Pokemon[i][j] = -5;
-                }else if (Pokemon[i][j] == -2 && !Interface.PlayerTurn) {
+                } else if (Pokemon[i][j] == -2 && !Interface.PlayerTurn) {
                     Pokemon[i][j] = -3;
                 } else if (Pokemon[i][j] != -3 && pf.getField()[i][j] == 5) {
                     Pokemon[i][j] = -2;
@@ -166,7 +167,7 @@ public class SpritePainter {
             }
         }
 
-        frame.tile2.allowchange = false ;
+        frame.tile2.allowchange = false;
 
     }
 
@@ -394,45 +395,94 @@ public class SpritePainter {
 
                     //Das, was gezeichnet werden muss wird ausgelesen
                     //Es wird auch eine Variable gesetzt, die angibt, dass eine etwas gezeichnet werden muss oder eben nicht
-                    switch (dummy[y][x]) {
-                        /**
-                         * Haenle seine Tabelle
-                         * <p>
-                         * 0 = Wasser
-                         * 1 = Abgeschossenes Schiffsteil
-                         * 2 = Komplett zerstört
-                         * 3 = Normales Schiffsteil
-                         * 4 = Geplantes Schiffsteil, noch nicht gesetzt
-                         * 5 = Wasser abgeschossen
-                         */
+                    if (selectedTheme.equals("Pokemon")) {
+                        switch (dummy[y][x]) {
+                            /**
+                             * Haenle seine Tabelle
+                             * <p>
+                             * 0 = Wasser
+                             * 1 = Abgeschossenes Schiffsteil
+                             * 2 = Komplett zerstört
+                             * 3 = Normales Schiffsteil
+                             * 4 = Geplantes Schiffsteil, noch nicht gesetzt
+                             * 5 = Wasser abgeschossen
+                             */
 
-                        case 0:
-                            break;
+                            case 0:
+                                break;
 
-                        case 1:
-                            Schiffdir = "src/Images/PokeTest.png";
-                            dosmthng = true;
-                            //Normaler Pokeball (kein Pokemon mehr)
-                            break;
+                            case 1:
+                                Schiffdir = "src/Images/PokeTest.png";
+                                dosmthng = true;
+                                //Normaler Pokeball (kein Pokemon mehr)
+                                break;
 
-                        case 2:
-                            Schiffdir = "src/Images/greyPokeball.png";
-                            dosmthng = true;
-                            //ausgegrauter Pokeball (Das ganze Schiff zerstört)
-                            break;
+                            case 2:
+                                Schiffdir = "src/Images/greyPokeball.png";
+                                dosmthng = true;
+                                //ausgegrauter Pokeball (Das ganze Schiff zerstört)
+                                break;
 
-                        case 3:
-                            //Sollte es nicht geben
-                            break;
+                            case 3:
+                                //Sollte es nicht geben
+                                break;
 
-                        case 4:
-                            //Schiff kann dort nicht sein
+                            case 4:
+                                //Schiff kann dort nicht sein
 
-                        case 5:
-                            Schiffdir = "src/Images/PokemonCutGrass.jpg";
-                            dosmthng = true;
-                            break;
-                        //Schiff war dort nicht
+                            case 5:
+                                if (fieldsize < 6) {
+                                    Schiffdir = "src/Images/Pokemon4CutGraesser.jpg";
+                                } else {
+                                    Schiffdir = "src/Images/PokemonCutGrass.jpg";
+                                }
+                                dosmthng = true;
+                                break;
+                            //Schiff war dort nicht
+                        }
+                    } else {
+
+                            switch (dummy[y][x]) {
+                                /**
+                                 * Haenle seine Tabelle
+                                 * <p>
+                                 * 0 = Wasser
+                                 * 1 = Abgeschossenes Schiffsteil
+                                 * 2 = Komplett zerstört
+                                 * 3 = Normales Schiffsteil
+                                 * 4 = Geplantes Schiffsteil, noch nicht gesetzt
+                                 * 5 = Wasser abgeschossen
+                                 */
+
+                                case 0:
+                                    break;
+
+                                case 1:
+                                    Schiffdir = "src/Images/BurningTile.png";
+                                    dosmthng = true;
+                                    //Normaler Pokeball (kein Pokemon mehr)
+                                    break;
+
+                                case 2:
+                                    Schiffdir = "src/Images/Mitte32truetrue.png";
+                                    dosmthng = true;
+                                    //ausgegrauter Pokeball (Das ganze Schiff zerstört)
+                                    break;
+
+                                case 3:
+                                    //Sollte es nicht geben
+                                    break;
+
+                                case 4:
+                                    //Schiff kann dort nicht sein
+
+                                case 5:
+                                   Schiffdir = "src/Images/WaterHitCircle.png" ;
+                                    dosmthng = true;
+                                    break;
+                                //Schiff war dort nicht
+
+                        }
                     }
                 }
 
@@ -505,7 +555,7 @@ public class SpritePainter {
             int SizeofBorder = Math.max(18, TileSize.Tile_Size / 12);
 
             //Es wird abgefragt ob es zu Änderungen im Array kam
-            if(frame.tile2 != null && !Tile.fightstart || frame.tile2.allowchange)updatePokemen();
+            if (frame.tile2 != null && !Tile.fightstart || frame.tile2.allowchange) updatePokemen();
 
             //durch die 2 for Schleifen wird das gesamte Array abgelaufen
             for (int y = 0; y < pf.getField().length; y++) {
@@ -543,8 +593,7 @@ public class SpritePainter {
                                     TileSize.Tile_Size,
                                     TileSize.Tile_Size, null);
 
-                        } else
-                        if (Pokemon[y][x] == -5) {
+                        } else if (Pokemon[y][x] == -5) {
 
                             BufferedImage dummyImg = Bild.BildLoader("src/Images/greyPokeball.png");
 
