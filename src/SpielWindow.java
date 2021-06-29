@@ -69,18 +69,18 @@ public class SpielWindow extends JPanel {
         makeComponents(frame);
     }
 
-    public SpielWindow(JFrame frame, PlayingField pf, Client Client){
+    public SpielWindow(JFrame frame, Client Client){
         System.out.println("Ich bin der Konstruktor Nummer 2");
         client = Client ;
-        playingField = pf ;
+        playingField = Client.pf ;
         makeComponents(frame);
         Multclient = true ;
     }
 
-    public SpielWindow(JFrame frame,PlayingField pf, Server Server){
+    public SpielWindow(JFrame frame, Server Server){
         System.out.println("Ich bin der Konstruktor Nummer 3");
         Multiplayer = Server ;
-        playingField = pf ;
+        playingField = Server.pf ;
         makeComponents(frame);
         Multclient = false ;
     }

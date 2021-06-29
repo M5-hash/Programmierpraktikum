@@ -67,18 +67,17 @@ public class MenuMultiplayer {
                 ImageIcon icon = new ImageIcon("");
                 int x = JOptionPane.showOptionDialog(menuFrame, "Wollen Sie selbst spielen oder als Computer?",
                         "Selfplay or KI", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, icon, options, options[0]);
-
-            if(x == 0){
-                menuPanel.setVisible(false);
-                menuFrame.dispose();
-                // Create SpielWindow and display it
-                try {
-                    Client client = new Client(IP);
-                    SpielFeld1 = 0 ;
-                    //new SpielWindow(menuFrame, menuPanel, client); //warum wird hier kein SpielWindow übergeben  ?
-                } catch (Exception ioException) {
-                    ioException.printStackTrace();
-                }
+                if(x == 0){
+                    menuPanel.setVisible(false);
+                    menuFrame.dispose();
+                    // Create SpielWindow and display it
+                    try {
+                        Client client = new Client(IP);
+                        SpielFeld1 = 0 ;
+                        new SpielWindow(menuFrame, client);
+                    } catch (Exception ioException) {
+                        ioException.printStackTrace();
+                    }
             } else if (x == 1){
                 menuPanel.setVisible(false);
                 menuFrame.dispose();
