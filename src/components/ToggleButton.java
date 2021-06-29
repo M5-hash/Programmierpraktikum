@@ -13,11 +13,13 @@ public class ToggleButton extends JToggleButton {
     public Image image;
     public Image selected;
     public Image icon;
+    public Image originalIcon;
 
     public ToggleButton(String button_title, Image image, Image selected, Image icon) {
         super();
         this.image = image;
         this.icon = icon;
+        this.originalIcon = icon;
         this.selected = selected;
 
         setText(button_title);
@@ -38,21 +40,25 @@ public class ToggleButton extends JToggleButton {
             System.out.println("Y Position: " + getY());
         });
 
-//        addComponentListener(new ComponentAdapter() {
-//            @Override
-//            public void componentResized(ComponentEvent e) {
-//                if (!(getIcon() == null)) {
-//                    icon = icon.getScaledInstance(getHeight() - getHeight() * 25 / 100, getHeight() - getHeight() * 25 / 100, Image.SCALE_SMOOTH);
-//                    setIcon(new ImageIcon(icon));
-//                    setIconTextGap(getWidth() / 10);
-//                }
-//            }
-//        });
+        addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                resizeIcon();
+            }
+        });
+    }
+
+    private void resizeIcon(){
+        if (getIcon() != null) {
+            icon = originalIcon.getScaledInstance(getHeight() - getHeight() * 25 / 100, getHeight() - getHeight() * 25 / 100, Image.SCALE_SMOOTH);
+            setIcon(new ImageIcon(icon));
+            setIconTextGap(getWidth() / 10);
+        }
     }
 
     @Override
     protected void paintComponent(Graphics g) {
-        if(isSelected()){
+        if (isSelected()) {
             g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
         } else {
             g.drawImage(selected, 0, 0, getWidth(), getHeight(), this);
