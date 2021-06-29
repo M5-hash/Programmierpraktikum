@@ -256,7 +256,7 @@ public class TilePainter extends JPanel implements MouseMotionListener {
                                 }
                                 ;
 
-                                frame.server.setTurn(false);
+
 
 
                             }
@@ -281,7 +281,7 @@ public class TilePainter extends JPanel implements MouseMotionListener {
                                     exception.printStackTrace();
                                 }
                                 ;
-                                frame.client.setTurn(false);
+
 
                             }
 

@@ -21,7 +21,7 @@ public class Server extends Com_base {
         this.usr = new BufferedReader(new InputStreamReader(System.in));
         this.pf = setupPlayingfield(start_mode, in_size, in_ships);
 
-
+/*
         Thread t = new Thread() {
             public void run(){
                 try{
@@ -34,7 +34,7 @@ public class Server extends Com_base {
             }
         };
         t.start();
-
+*/
 
         System.out.println("Working");
     }
