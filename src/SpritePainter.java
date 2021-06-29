@@ -54,7 +54,7 @@ public class SpritePainter {
         fieldof = Feldvon;
         Interface = Kontakt;
         this.frame = frame;
-        updatePokemen();
+        //updatePokemen();
         //System.out.println(Fieldof);
 
         Schiffteil();
@@ -153,15 +153,17 @@ public class SpritePainter {
                     Pokemon[i][j] = pf.getField()[i][j];
                 } else if (Pokemon[i][j] == 0 && pf.getField()[i][j] == 3) {
                     Pokemon[i][j] = -1;
-                } else if(Pokemon[i][j] == -2) {
-                    Pokemon[i][j] = -3 ;
-                } else if (Pokemon[i][j] != -3 && pf.getField()[i][j] == 5){
-                    Pokemon[i][j] = -2 ;
+                } else if (Pokemon[i][j] == -2 && !Interface.PlayerTurn) {
+                    Pokemon[i][j] = -3;
+                } else if (Pokemon[i][j] != -3 && pf.getField()[i][j] == 5) {
+                    Pokemon[i][j] = -2;
                 }
 
 
             }
         }
+
+        frame.tile2.allowchange = false ;
 
     }
 
@@ -500,7 +502,7 @@ public class SpritePainter {
             int SizeofBorder = Math.max(18, TileSize.Tile_Size / 12);
 
             //Es wird abgefragt ob es zu Änderungen im Array kam
-            updatePokemen();
+            if(frame.tile2 != null && !Tile.fightstart || frame.tile2.allowchange)updatePokemen();
 
             //durch die 2 for Schleifen wird das gesamte Array abgelaufen
             for (int y = 0; y < pf.getField().length; y++) {
@@ -529,19 +531,30 @@ public class SpritePainter {
                     //checkt ab, ob es hier etwas zu zeichnen gibt
                     if (Pokemon[y][x] != 0) {
 
-                        g.drawImage(PokemonBild, (x * TileSize.Tile_Size + SizeofBorder),
-                                (y * TileSize.Tile_Size + SizeofBorder),
-                                (x + 1) * TileSize.Tile_Size + SizeofBorder,
-                                (y + 1) * TileSize.Tile_Size + SizeofBorder,
-                                //Es wird ein Viereck zwischen diesen 2 Punkten aufgeschlagen, die ersten 2 sind das linke obere ende
-                                index * 80,
-                                yOffset * 80,
-                                //die anderen 2 sind das rechte untere ende. Es handelt sich hierbei um die Quelle
-                                (index + 1) * 80,
-                                (yOffset + 1) * 80,
-                                null);
+                        if (Pokemon[y][x] == -2) {
 
+                            BufferedImage dummyImg = Bild.BildLoader("src/Images/SniperScope.png");
 
+                            g.drawImage(dummyImg, (x * TileSize.Tile_Size + SizeofBorder),
+                                    (y * TileSize.Tile_Size + SizeofBorder),
+                                    TileSize.Tile_Size,
+                                    TileSize.Tile_Size, null);
+
+                        } else {
+
+                            g.drawImage(PokemonBild, (x * TileSize.Tile_Size + SizeofBorder),
+                                    (y * TileSize.Tile_Size + SizeofBorder),
+                                    (x + 1) * TileSize.Tile_Size + SizeofBorder,
+                                    (y + 1) * TileSize.Tile_Size + SizeofBorder,
+                                    //Es wird ein Viereck zwischen diesen 2 Punkten aufgeschlagen, die ersten 2 sind das linke obere ende
+                                    index * 80,
+                                    yOffset * 80,
+                                    //die anderen 2 sind das rechte untere ende. Es handelt sich hierbei um die Quelle
+                                    (index + 1) * 80,
+                                    (yOffset + 1) * 80,
+                                    null);
+
+                        }
                     }
 
                 }

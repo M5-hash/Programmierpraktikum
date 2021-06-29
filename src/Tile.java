@@ -92,7 +92,7 @@ public class Tile extends JPanel {
                 }
                 if (field == 1 || field == 2) {
 
-                    if(field_size > 10){
+                    if(field_size > 6){
                         Image = Bild.BildLoader("src/images/PokemonGrass.jpg") ;
                     } else{
                         Image = Bild.BildLoader("src/Images/Pokemon4Graesser.jpg");
@@ -149,4 +149,33 @@ public class Tile extends JPanel {
         TileArrangement(Ebene);
     }
 
+    public void YouWin(Graphics g) {
+        g.drawImage(Border, 0, 0, getWidth(), getHeight(), null );
+        int SizeofBorder = Math.max(18, TileSize.Tile_Size / 12) ;
+        int Size = field_size * TileSize.Tile_Size + 2 * SizeofBorder ;
+
+        BufferedImage WinScreen = Bild.BildLoader("src/Images/youwon.png") ;
+
+        g.drawImage(WinScreen,SizeofBorder,SizeofBorder, Size, Size, null) ;
+
+
+    }
+
+    public void YouLost(Graphics g) {
+        int SizeofBorder = Math.max(18, TileSize.Tile_Size / 12) ;
+        int Size = field_size * TileSize.Tile_Size + 2 * SizeofBorder ;
+
+        g.drawImage(Border, 0, 0, Size, Size, null );
+
+
+
+        BufferedImage LossScreen = Bild.BildLoader("src/Images/youlost.png") ;
+
+        g.drawImage(LossScreen,0,0, Size, Size, null) ;
+
+
+    }
+
+
 }
+

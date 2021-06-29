@@ -19,7 +19,6 @@ public class SpielWindow extends JPanel {
 
     boolean Multclient ;
     String Feldvon = "Spieler"; //"GegnerKI" "GegnerOnline"
-    private static Object Multiplayer;
 
     Client          client;
     Server          server;
@@ -47,11 +46,6 @@ public class SpielWindow extends JPanel {
     private ComPlayer Com;
     private PlayingField playingField;
 
-
-
-    public static Object getMultiplayer() {
-        return Multiplayer;
-    }
 
     public SpielWindow(JFrame frame) throws IOException, FontFormatException {
         playingField = new PlayingField(fieldsize, calculateships(), true);

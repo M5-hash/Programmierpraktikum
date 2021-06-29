@@ -4,7 +4,10 @@ package src;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.io.IOException;
 import java.util.Arrays;
 
@@ -18,12 +21,29 @@ public class TilePainter extends JPanel implements MouseMotionListener {
     public static boolean horizontal = true;
     public static int AnzSchiffe = 0;
     public static boolean Onfirstfield = false;
-    private static int groesse = 3;
+    private static int groesse = 0;
     private static int PosX = 0;
     private static int PosY = 0;
     private final Tile Ebene;
     boolean usable = false;
-
+    MouseListener temp;
+    MouseListener temp2;
+    int counter;
+    boolean hasshot = false;
+    boolean hitKI = true;
+    int[] groessen = {0, 0, size2, size3, size4, size5};
+    boolean PlayerTurn;
+    int field;
+    boolean allowchange;
+    boolean deleting;
+    SpritePainter hier;
+    SpritePainter Predicted;
+    SpielWindow frame;
+    PlayingField pf;
+    ComPlayer Computer;
+    int[] recentshot = new int[2];
+    boolean placeable = false;
+    boolean MovementHandler;
     /**
      * @param Feldgroesse gibt Groesse des Feldes vor
      * @param Feldvon     gibt an für wen des Feld ist
@@ -49,9 +69,8 @@ public class TilePainter extends JPanel implements MouseMotionListener {
 
         if (field == 0) addMouseMotionListener(this);
 
-
         //TODO sichergehen, dass der der getroffen hat nochmal schießen darf und nicht zum anderen Spieler gewechselt wird
-        addMouseListener(new MouseAdapter() {
+        addMouseListener(temp = new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 if (e.getButton() == MouseEvent.BUTTON1) {
@@ -89,31 +108,30 @@ public class TilePainter extends JPanel implements MouseMotionListener {
 
                                     switch (groesse) {
                                         case 2:
-                                            if (size2 > 0) {
-                                                size2--;
-                                                frame.btn_size2.setText("size 2: " + size2);
+                                            if (groessen[groesse] > 0) {
                                                 groessen[groesse]--;
+                                                frame.btn_size2.setText("size 2: " + groessen[groesse]);
                                             }
                                             break;
                                         case 3:
-                                            if (size3 > 0) {
-                                                size3--;
-                                                frame.btn_size3.setText("size 3: " + size3);
+                                            if (groessen[groesse] > 0) {
                                                 groessen[groesse]--;
+                                                frame.btn_size3.setText("size 3: " + groessen[groesse]);
+
                                             }
                                             break;
                                         case 4:
-                                            if (size4 > 0) {
-                                                size4--;
-                                                frame.btn_size4.setText("size 4: " + size4);
+                                            if (groessen[groesse] > 0) {
                                                 groessen[groesse]--;
+                                                frame.btn_size4.setText("size 4: " + groessen[groesse]);
+
                                             }
                                             break;
                                         case 5:
-                                            if (size5 > 0) {
-                                                size5--;
-                                                frame.btn_size5.setText("size 5: " + size5);
+                                            if (groessen[groesse] > 0) {
                                                 groessen[groesse]--;
+                                                frame.btn_size5.setText("size 5: " + groessen[groesse]);
+
                                             }
                                             break;
                                     }
@@ -175,42 +193,37 @@ public class TilePainter extends JPanel implements MouseMotionListener {
                                                 //Momentan noch funktionierend sollte aber eigentlich dafür sorgen, dass die KI nochmal Schießt, falls Sie gtroffen hat
                                                 counter = 0;
 
-                                                ActionListener KiAct = new ActionListener() {
-                                                    @Override
-                                                    public void actionPerformed(ActionEvent KIevnt) {
+//                                                ActionListener KiAct = new ActionListener() {
+//                                                    @Override
+//                                                    public void actionPerformed(ActionEvent KIevnt) {
 
-                                                        int[] Feld = new int[2];
-                                                        try {
-                                                            Feld = Computer.doNextShot();
-                                                            hasshot = true;
-                                                            recentshot = Feld;
-                                                        } catch (Exception exception) {
-                                                            exception.printStackTrace();
-                                                        }
-
-                                                        try {
-                                                            Computer.didHit(pf.isShot(Feld[0], Feld[1]));
-                                                        } catch (Exception exception) {
-                                                            exception.printStackTrace();
-                                                        }
-//                                                        System.out.println("I was called" + counter++ + "times");
-                                                        hitKI = pf.getField()[Feld[1]][Feld[0]] == 1 || pf.getField()[Feld[1]][Feld[0]] == 2;
-
-
-                                                    }
-                                                };
-
-                                                Timer KItimer = new Timer(110, KiAct);
-
-                                                if (hitKI) {
-                                                    KItimer.start();
+                                                int[] Feld = new int[2];
+                                                try {
+                                                    Feld = Computer.doNextShot();
+                                                    hasshot = true;
+                                                    recentshot = Feld;
+                                                } catch (Exception exception) {
+                                                    exception.printStackTrace();
                                                 }
 
+                                                try {
+                                                    Computer.didHit(pf.isShot(Feld[0], Feld[1]));
+                                                    allowchange = true;
+                                                } catch (Exception exception) {
+                                                    exception.printStackTrace();
+                                                }
+//                                                        System.out.println("I was called" + counter++ + "times");
+                                                hitKI = pf.getField()[Feld[1]][Feld[0]] == 1 || pf.getField()[Feld[1]][Feld[0]] == 2;
 
-                                                pf.gameover();
-                                                Computer.gameover();
-                                                PlayerTurn = true;
+
                                             }
+
+
+//                                                Timer KItimer = new Timer(110, KiAct);
+
+
+                                            PlayerTurn = true;
+//                                            }
 //                                            System.out.println(Arrays.deepToString(pf.getField()).replace("]", "]\n"));
                                         }
                                         //mit getPlayingField().getGameOver kann ich rausfinden wer verloren hat für wen true --> hat verloren
@@ -229,6 +242,8 @@ public class TilePainter extends JPanel implements MouseMotionListener {
                                 String xString = xFeld + " ";
                                 String yString = "" + yFeld;
 
+                                System.out.println(Arrays.deepToString(pf.getFieldEnemy()).replace("],", "],\n"));
+
                                 System.out.println("shot " + xString + yString);
 
                                 frame.server.setXY(xFeld, yFeld);
@@ -245,18 +260,18 @@ public class TilePainter extends JPanel implements MouseMotionListener {
                                         frame.tile.repaint();
                                         //tile.revalidate();
 
-                                    }while(!frame.server.myTurn);
-                                    } catch (Exception exception) {
+                                    } while (!frame.server.myTurn);
+                                } catch (Exception exception) {
                                     exception.printStackTrace();
                                 }
-                                ;
-
 
                             }
 
                             if (field == 2 && frame.Multclient && frame.client.myTurn) {
                                 String xString = xFeld + " ";
                                 String yString = "" + yFeld;
+
+                                System.out.println(Arrays.deepToString(pf.getFieldEnemy()).replace("],", "],\n"));
 
                                 System.out.println("shot " + xString + yString);
 
@@ -269,13 +284,11 @@ public class TilePainter extends JPanel implements MouseMotionListener {
                                     exception.printStackTrace();
                                 }
                                 try {
-                                    do{
-                                    frame.client.message_check();
-                                    frame.tile.repaint();
-                                        //tile.revalidate();
+                                    do {
+                                        frame.client.message_check();
+                                        frame.tile.repaint();
 
-
-                                    }while(!frame.client.myTurn);
+                                    } while (!frame.client.myTurn);
                                 } catch (Exception exception) {
                                     exception.printStackTrace();
                                 }
@@ -294,7 +307,7 @@ public class TilePainter extends JPanel implements MouseMotionListener {
          * @param
          *
          * */
-        addMouseListener(new MouseAdapter() {
+        addMouseListener(temp2 = new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 if (e.getButton() == MouseEvent.BUTTON3) {
@@ -306,40 +319,10 @@ public class TilePainter extends JPanel implements MouseMotionListener {
             }
         });
 
-        addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                if (e.getButton() == MouseEvent.BUTTON2) {
-                    Tile.fightstart = !Tile.fightstart;
-                    TileSize.setFighting(Tile.fightstart ? 1 : 0);
-//                    System.out.println("Der Kampf hat begonnen");
-                }
-
-            }
-        });
-
-
     }
 
-    int counter;
-    boolean hasshot = false;
-    boolean hitKI = true;
-    int[] groessen = {0, 0, size2, size3, size4, size5};
-    boolean PlayerTurn;
-    int field;
-    boolean deleting;
-    SpritePainter hier;
-    SpritePainter Predicted;
-    SpielWindow frame;
-    PlayingField pf;
-    ComPlayer Computer;
-    int[] recentshot = new int[2];
-    boolean placeable = false;
-    boolean MovementHandler;
-
-    public void switchUsable() {
-        usable = !usable;
-        setFocusable(usable);
+    public int[] getGroessen() {
+        return groessen;
     }
 
     public static int getGroesse() {
@@ -390,6 +373,17 @@ public class TilePainter extends JPanel implements MouseMotionListener {
         PosY = posY;
     }
 
+    public void switchUsable() {
+        usable = !usable;
+        if (usable) {
+            this.removeMouseListener(temp);
+            this.removeMouseListener(temp2);
+        } else {
+            this.addMouseListener(temp);
+            this.addMouseListener(temp2);
+        }
+    }
+
     public int[] getRecentshot() {
         return recentshot;
     }
@@ -399,37 +393,51 @@ public class TilePainter extends JPanel implements MouseMotionListener {
      *          <p>
      *          Hier werden alle Methoden aufgerufen, welche etwas Zeichnen.
      *          <p>
-     *          TODO Theme check mit einarbeiten, den gibt es bis jetzt leider noch nicht
      */
     public void paintComponent(Graphics g) {
 
         super.paintComponent(g);
         setOpaque(false);
-        Ebene.DrawLayer(g);
 
-        if (field == 1) {
-            hier.Schiffzeichner(g);
+        if (Tile.fightstart && pf.gameover()) {
+            frame.tile.Ebene.YouLost(g);
+            frame.tile2.Ebene.YouWin(g);
+            System.out.println("Der Computer gewann");
+//        } else if (Tile.fightstart && Computer.gameover()) {
+//            frame.tile.Ebene.YouWin(g);
+//            frame.tile2.Ebene.YouLost(g);
+//            System.out.println("Der Mensch gewann");
+       } else
+
+      {
+            Ebene.DrawLayer(g);
+            if (field == 1) {
+                hier.Schiffzeichner(g);
 //            System.out.println("Eigentlich sollten jetzt Schiffe gezeichnet werden (Hier sind es momentan noch Zahlen");
 //            System.out.println(Arrays.deepToString(pf.getFieldEnemy()).replace("],", "],\n"));
-        }
-//        if (selectedTheme.equals("Pokemon")) {
-            //hier.Pokemonpicker(g);
-//        } else {
-            hier.Schiffzeichner(g);
-//        }
-
-        if (SpritePainter.ready && field == 0) {
-
-            if (!Tile.isFightstart() && sumofships > AnzSchiffe) {
-                if (MovementHandler) {
-                    Predicted.setPrediction(PosX, PosY);
-                    placeable = pf.checkShip(groesse, PosX, PosY, horizontal);
-                    Predicted.Schiffzeichner(g, placeable);
-                } else {
-                    Predicted.Schiffzeichner(g, placeable);
-                }
             }
-            MovementHandler = false;
+            if (selectedTheme.equals("Pokemon")) {
+                hier.Pokemonpicker(g);
+            } else {
+                hier.Schiffzeichner(g);
+            }
+
+
+            if (SpritePainter.ready && field == 0) {
+
+                if (MovementHandler) System.out.println(sumofships + AnzSchiffe );
+
+                if (!Tile.isFightstart() && sumofships > AnzSchiffe) {
+                    if (MovementHandler) {
+                        Predicted.setPrediction(PosX, PosY);
+                        placeable = pf.checkShip(groesse, PosX, PosY, horizontal);
+                        Predicted.Schiffzeichner(g, placeable);
+                    } else {
+                        Predicted.Schiffzeichner(g, placeable);
+                    }
+                }
+                MovementHandler = false;
+            }
         }
 
     }
@@ -471,5 +479,14 @@ public class TilePainter extends JPanel implements MouseMotionListener {
         }
     }
 
+    public void clearAll(PlayingField pf) {
+
+        this.pf = pf ;
+
+        hier.pf = pf ;
+        if(field == 0){
+            Predicted.pf = pf ;
+        }
+    }
 }
 
