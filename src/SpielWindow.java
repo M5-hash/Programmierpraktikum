@@ -159,9 +159,9 @@ public class SpielWindow extends JPanel {
             Tile.fightstart = true;
             gamePanel1.setVisible(true);
             gamePanel2.setVisible(false);
-            if(SpielFeld2 == 2 && !Multclient){
+            if(SpielFeld2 == 2 && Multclient){
                 try {
-                    server.message_check(server.loopCheckIN());
+                    client.message_check(client.loopCheckIN());
                 } catch (Exception f) {
                     f.printStackTrace();
                 }

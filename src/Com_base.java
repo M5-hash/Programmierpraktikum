@@ -87,56 +87,45 @@ public abstract class Com_base {
         return true;
     }
 
-    protected void message_check(String in) throws Exception{
+    protected void message_check(String in) throws Exception {
+        do {
+            String[] holder = in.split(" ");
+            if (holder[0].equals("shot")) {
+                int x = Integer.parseInt(holder[1]);
+                int y = Integer.parseInt(holder[2]);
 
-        String [] holder = in.split(" ");
-        if(holder[0].equals("shot")){
-            int x = Integer.parseInt(holder[1]);
-            int y = Integer.parseInt(holder[2]);
-
-            int hit = pf.isShot(x, y);
-            if(hit == 0){
-                Send("answer 0");
-                this.myTurn = false;
-            }
-            else if(hit == 1){
-                Send("answer 1");
-                this.myTurn = false;
-            }
-            else if(hit == 2){
-                Send("answer 2");
-                this.myTurn = false;
-            }
-        }
-
-        else if(holder[0].equals("answer")){
-            if(holder[1].equals("0")){
-                pf.didHit(0, this.lastX, this.lastY);
-                Send("pass");
-                this.myTurn = false;
-            }
-            else if(holder[1].equals("1")){
-                pf.didHit(1, this.lastX, this.lastY);
+                int hit = pf.isShot(x, y);
+                if (hit == 0) {
+                    Send("answer 0");
+                    this.myTurn = true;
+                } else if (hit == 1) {
+                    Send("answer 1");
+                    this.myTurn = false;
+                } else if (hit == 2) {
+                    Send("answer 2");
+                    this.myTurn = false;
+                }
+            } else if (holder[0].equals("answer")) {
+                if (holder[1].equals("0")) {
+                    pf.didHit(0, this.lastX, this.lastY);
+                    Send("pass");
+                    this.myTurn = false;
+                } else if (holder[1].equals("1")) {
+                    pf.didHit(1, this.lastX, this.lastY);
+                    this.myTurn = true;
+                } else if (holder[1].equals("2")) {
+                    pf.didHit(2, this.lastX, this.lastY);
+                    this.myTurn = true;
+                }
+            } else if (holder[0].equals("save")) {
+                //saveGame
+            } else if (holder[0].equals("ready")) {
                 this.myTurn = true;
-            } else if (holder[1].equals("2")){
-                pf.didHit(2, this.lastX, this.lastY);
+            } else if (holder[0].equals("pass")) {
                 this.myTurn = true;
             }
-        }
-
-        else if(holder[0].equals("save")){
-            //saveGame
-        }
-
-        else if(holder[0].equals("ready")){
-            this.myTurn = true;
-        }
-
-        else if(holder[0].equals("pass")){
-            this.myTurn = true;
-        }
+        }while(!this.myTurn);
     }
-
     protected void run() throws Exception{
         while(true){
             if(this.in_check() == true){
