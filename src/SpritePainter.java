@@ -434,7 +434,7 @@ public class SpritePainter {
                                 if (fieldsize < 6) {
                                     Schiffdir = "src/Images/Pokemon4CutGraesser.jpg";
                                 } else {
-                                    Schiffdir = "src/Images/PokemonCutGrass.jpg";
+                                    Schiffdir = "src/Images/fullCutGrass.jpg";
                                 }
                                 dosmthng = true;
                                 break;
@@ -503,10 +503,10 @@ public class SpritePainter {
                     }
 
 
-                    g.drawImage(dummyImg, (x * TileSize.Tile_Size + SizeofBorder),
-                            (y * TileSize.Tile_Size + SizeofBorder),
-                            TileSize.Tile_Size,
-                            TileSize.Tile_Size, null);
+                    g.drawImage(dummyImg, (x * TileSize.Tile_Size + SizeofBorder) + 1,
+                            (y * TileSize.Tile_Size + SizeofBorder) + 1,
+                            TileSize.Tile_Size - 2,
+                            TileSize.Tile_Size - 2, null);
                     dosmthng = false;
 
                 }
