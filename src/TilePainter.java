@@ -146,22 +146,22 @@ public class TilePainter extends JPanel implements MouseMotionListener {
                                     switch (recycleship) {
                                         case 2:
                                             groessen[recycleship]++;
-                                            frame.btn_size2.setText("size 2: " + groessen[groesse]);
+                                            frame.btn_size2.setText("size 2: " + groessen[recycleship]);
                                             AnzSchiffe--;
                                             break;
                                         case 3:
                                             groessen[recycleship]++;
-                                            frame.btn_size3.setText("size 3: " + groessen[groesse]);
+                                            frame.btn_size3.setText("size 3: " + groessen[recycleship]);
                                             AnzSchiffe--;
                                             break;
                                         case 4:
                                             groessen[recycleship]++;
-                                            frame.btn_size4.setText("size 4: " + groessen[groesse]);
+                                            frame.btn_size4.setText("size 4: " + groessen[recycleship]);
                                             AnzSchiffe--;
                                             break;
                                         case 5:
                                             groessen[recycleship]++;
-                                            frame.btn_size5.setText("size 5: " + groessen[groesse]);
+                                            frame.btn_size5.setText("size 5: " + groessen[recycleship]);
                                             AnzSchiffe--;
                                             break;
                                     }

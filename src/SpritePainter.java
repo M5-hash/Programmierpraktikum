@@ -503,10 +503,10 @@ public class SpritePainter {
                     }
 
 
-                    g.drawImage(dummyImg, (x * TileSize.Tile_Size + SizeofBorder) + 1,
-                            (y * TileSize.Tile_Size + SizeofBorder) + 1,
-                            TileSize.Tile_Size - 2,
-                            TileSize.Tile_Size - 2, null);
+                    g.drawImage(dummyImg, (x * TileSize.Tile_Size + SizeofBorder),
+                            (y * TileSize.Tile_Size + SizeofBorder),
+                            TileSize.Tile_Size,
+                            TileSize.Tile_Size, null);
                     dosmthng = false;
 
                 }
