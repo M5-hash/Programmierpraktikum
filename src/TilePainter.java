@@ -417,7 +417,7 @@ public class TilePainter extends JPanel implements MouseMotionListener {
             frame.tile.Ebene.YouLost(g);
             frame.Z.stopdrawing();
             System.out.println("Der Computer gewann");
-        } else if (Tile.fightstart && Computer.gameover()) {
+        } else if (Tile.fightstart && frame.tile.field == 1 && Computer.gameover()) {
             frame.tile.Ebene.YouWin(g);
             frame.Z.stopdrawing();
             System.out.println("Der Mensch gewann");

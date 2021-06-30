@@ -2,6 +2,7 @@ package src;
 
 import javax.swing.*;
 import java.awt.*;
+import static src.config.*;
 
 public class Zielhilfe extends JPanel {
 
@@ -30,7 +31,7 @@ public class Zielhilfe extends JPanel {
 
             setOpaque(false);
 
-            if (Tile.isFightstart()) {
+            if (Tile.isFightstart() ) {
                 change = PosX != spWin.tile2.getPosX() || PosY != spWin.tile2.getPosY();
             } else {
                 change = PosX != spWin.tile.getPosX() || PosY != spWin.tile.getPosY();
