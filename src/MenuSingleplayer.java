@@ -57,6 +57,8 @@ public class MenuSingleplayer {
         buttonEasy = new MenuButton("EASY", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
         buttonEasy.addActionListener(e -> {
 
+            KIisEasy = true ;
+
             SpielFeld2 = 1 ;
 
             String[] options = new String[]{"Player", "Computer"};
@@ -100,6 +102,8 @@ public class MenuSingleplayer {
 
         buttonNormal = new MenuButton("NORMAL", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
         buttonNormal.addActionListener(e -> {
+
+            KIisEasy = false ;
 
             SpielFeld2 = 1 ;
 

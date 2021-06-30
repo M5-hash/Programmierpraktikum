@@ -48,6 +48,9 @@ public class SpielWindow extends JPanel {
 
 
     public SpielWindow(JFrame frame) throws IOException, FontFormatException {
+        System.out.println(EASY_DIFFICULTY + ":Das war die EasyDifficulty");
+        System.out.println(NORMAL_DIFFICULTY + ":Das war die NormalDifficulty");
+
         playingField = new PlayingField(fieldsize, calculateships(), true);
         makeComponents(frame);
     }
@@ -74,6 +77,13 @@ public class SpielWindow extends JPanel {
         framewidth = frame.getWidth();
 
         if(SpielFeld1 == 1 || SpielFeld2 == 1){
+            if(KIisEasy){
+                try {
+                    Com = new ComPlayerEasy(new PlayingField(fieldsize, calculateships(), false)) ;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else
             {
                 try {
                     Com = new ComPlayerNormal(new PlayingField(fieldsize, calculateships(), false));
