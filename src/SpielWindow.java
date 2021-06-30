@@ -149,6 +149,7 @@ public class SpielWindow extends JPanel {
         buttonReady.addActionListener(e -> {
 
             Tile.fightstart = true;
+            tile.AnzSchiffe = 0 ;
             if(Tile.isFightstart()){
                 Z.           setBounds(framewidth * 62 / 100, frameheigth * 17 / 100, framewidth * 25 / 100, frameheigth * 10/ 100);
             }

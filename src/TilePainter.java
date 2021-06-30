@@ -16,7 +16,7 @@ import static src.config.*;
 public class TilePainter extends JPanel implements MouseMotionListener {
 
     public static boolean horizontal = true;
-    public static int AnzSchiffe = 0;
+    int AnzSchiffe = 0;
     public boolean Onfirstfield = false;
     private static int groesse = 0;
     private int PosX = 0;
