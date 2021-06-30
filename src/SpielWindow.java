@@ -19,7 +19,6 @@ public class SpielWindow extends JPanel {
 
 
     boolean Multclient ;
-    String Feldvon = "Spieler"; //"GegnerKI" "GegnerOnline"
 
     Client          client;
     Server          server;
@@ -99,7 +98,7 @@ public class SpielWindow extends JPanel {
 
         tile              = new TilePainter(fieldsize, SpielFeld1, this, Com, playingField);
         tile2             = new TilePainter(fieldsize, SpielFeld2, this, Com, playingField);
-        Z                 = new Zielhilfe();
+        Z                 = new Zielhilfe(this, frame);
         menuPanel         = new CustomPanel(ImageLoader.getImage(ImageLoader.GAME_BACKGROUND));
         gameLayout        = new GridLayout(0, 1);
         buttonDelete      = new DeleteButton();
@@ -150,6 +149,9 @@ public class SpielWindow extends JPanel {
         buttonReady.addActionListener(e -> {
 
             Tile.fightstart = true;
+            if(Tile.isFightstart()){
+                Z.           setBounds(framewidth * 62 / 100, frameheigth * 17 / 100, framewidth * 25 / 100, frameheigth * 10/ 100);
+            }
             gamePanel1.setVisible(true);
             gamePanel2.setVisible(false);
             if(SpielFeld2 == 2 && Multclient){
@@ -269,6 +271,12 @@ public class SpielWindow extends JPanel {
                 tile2.       setBounds(framewidth * 62 / 100, frameheigth * 25 / 100, framewidth * 25 / 100, framewidth * 25 / 100);
                 gamePanel1.  setBounds(framewidth * 45 / 100, frameheigth * 25 / 100, framewidth * 10 / 100, framewidth * 17 / 100);
                 gamePanel2.  setBounds(framewidth * 45 / 100, frameheigth * 25 / 100, framewidth * 10 / 100, framewidth * 25 / 100);
+                if(Tile.isFightstart()){
+                    Z.           setBounds(framewidth * 62 / 100, frameheigth * 17 / 100, framewidth * 25 / 100, frameheigth * 10/ 100);
+                }
+                else{
+                    Z.           setBounds(framewidth * 13 / 100, frameheigth * 17 / 100, framewidth * 25 / 100, frameheigth * 10/ 100);
+                }
 
                 menuPanel.revalidate();
                 menuPanel.repaint();

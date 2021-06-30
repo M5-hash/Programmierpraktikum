@@ -8,47 +8,75 @@ public class Zielhilfe extends JPanel {
     Bildloader Bild = new Bildloader();
     String Zahldir = "Ich bin der String und ich bin ein Platzhalter";
     Image Zahl; //Nur ein Platzhalter, dass die IDE nicht weint
-    static int PosX  = 5;
-    static int PosY = 5;
+    SpielWindow spWin;
+    int PosX = 5;
+    int PosY = 5;
+    boolean draw = true;
+    JFrame frame ;
+    boolean eitherfield ;
+    boolean change;
+
+    public Zielhilfe(SpielWindow Window, JFrame frame) {
+        spWin = Window;
+        this.frame = frame ;
+    }
 
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        setOpaque(false);
 
-        boolean change = PosX != TilePainter.getPosX() ||PosY != TilePainter.getPosY() ;
+        if (draw) {
 
-        if(change && TilePainter.getOnfirstfield()){
-            BildRechner(g);
+            setOpaque(false);
+
+            if (Tile.isFightstart()) {
+                change = PosX != spWin.tile2.getPosX() || PosY != spWin.tile2.getPosY();
+            } else {
+                change = PosX != spWin.tile.getPosX() || PosY != spWin.tile.getPosY();
+            }
+
+            eitherfield = spWin.tile.getOnfirstfield() || spWin.tile2.getOnfirstfield() ;
+
+            if (change && eitherfield) {
+                BildRechner(g);
+            }
         }
 
     }
 
-    /**
-     * @param g     gibt Graphics Object weiter
-     *
-     *              Wandelt die int X & Y Position in ein Bilderkombination um
-     */
-    void BildRechner( Graphics g) {
+    public void stopdrawing() {
+        draw = false;
+    }
 
-        PosX = TilePainter.getPosX() + 1;
-        PosY = TilePainter.getPosY() + 1;
+    /**
+     * @param g gibt Graphics Object weiter
+     *          <p>
+     *          Wandelt die int X & Y Position in ein Bilderkombination um
+     */
+    void BildRechner(Graphics g) {
+
+        int NumberSize = frame.getHeight() / 20 ;
+
+        if (Tile.isFightstart()) {
+            PosX = spWin.tile2.getPosX() + 1;
+            PosY = spWin.tile2.getPosY() + 1;
+        } else {
+            PosX = spWin.tile.getPosX() + 1;
+            PosY = spWin.tile.getPosY() + 1;
+        }
 
         int i = 0;
-        int Bildercounter = 1 ;
+        int Bildercounter = 1;
         int Inbetweener = PosX;
         boolean notfinished = true;
         int displacement = 0;
         boolean secondrun = false;
 
-        int laeufer ;
+        int laeufer;
 
-        Zahl = Bild.BildLoader("src/Images/PokX.png");
-        g.drawImage(Zahl,0,0,TileSize.Tile_Size, TileSize.Tile_Size, null);
-
-        Zahl = Bild.BildLoader("src/Images/PokY.png");
-        g.drawImage(Zahl,0,TileSize.Tile_Size,TileSize.Tile_Size, TileSize.Tile_Size, null);
+        Zahl = Bild.BildLoader("src/Images/x.png");
+        g.drawImage(Zahl, 0, 0, NumberSize, NumberSize, null);
 
         while (notfinished) {
 
@@ -57,10 +85,12 @@ public class Zielhilfe extends JPanel {
 
                 Zahl = Bild.BildLoader(Zahldir);
 
-                g.drawImage(Zahl, (TileSize.Tile_Size + displacement),
+                g.drawImage(Zahl, (NumberSize + displacement),
                         0,
-                        TileSize.Tile_Size,
-                        TileSize.Tile_Size, null);
+                        NumberSize,
+                        NumberSize, null);
+
+                Bildercounter++ ;
 
             } else {
 
@@ -77,44 +107,54 @@ public class Zielhilfe extends JPanel {
                     laeufer = Inbetweener / (Exponent(10, j));
                     Inbetweener = Inbetweener - laeufer * Exponent(10, j);
 
-                    if(laeufer < 10 && laeufer >= 0){
+                    if (laeufer < 10 && laeufer >= 0) {
                         Zahldir = "src/Images/" + laeufer + ".png";
-                    }else if(laeufer == 10){
-                        Zahldir = "src/Images/1.png" ;
-                        Inbetweener = 0 ;
+                    } else if (laeufer == 10) {
+                        Zahldir = "src/Images/1.png";
+                        Inbetweener = 0;
                         i++;
                         j++;
                     }
 
                     Zahl = Bild.BildLoader(Zahldir);
 
-                    displacement = Bildercounter++ * TileSize.Tile_Size ;
-
-                    int scndrow = secondrun ? 1 : 0 ;
+                    displacement = Bildercounter++ * NumberSize;
 
                     g.drawImage(Zahl, displacement,
-                            scndrow * TileSize.Tile_Size,
-                            TileSize.Tile_Size,
-                            TileSize.Tile_Size, null);
+                            0,
+                            NumberSize,
+                            NumberSize, null);
 
                 }
             }
 
+            Bildercounter++;
+            displacement = (Bildercounter++) * NumberSize;
+
+
+            if(!secondrun){
+                Zahl = Bild.BildLoader("src/Images/y.png");
+                g.drawImage(Zahl, displacement, 0, NumberSize, NumberSize, null);
+            }
+
             Inbetweener = PosY;
             secondrun = true;
-            Bildercounter = 1 ;
             i = 0;
 
-            if(PosY == 1){
+
+
+            if (PosY == 1) {
 
                 Zahldir = "src/Images/1.png";
 
                 Zahl = Bild.BildLoader(Zahldir);
 
-                g.drawImage(Zahl, TileSize.Tile_Size,
-                        TileSize.Tile_Size,
-                        TileSize.Tile_Size,
-                        TileSize.Tile_Size, null);
+                displacement = (Bildercounter) * NumberSize;
+
+                g.drawImage(Zahl, displacement,
+                        0,
+                        NumberSize,
+                        NumberSize, null);
 
                 break;
             }
