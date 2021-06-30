@@ -48,9 +48,6 @@ public class SpielWindow extends JPanel {
 
 
     public SpielWindow(JFrame frame) throws IOException, FontFormatException {
-        System.out.println(EASY_DIFFICULTY + ":Das war die EasyDifficulty");
-        System.out.println(NORMAL_DIFFICULTY + ":Das war die NormalDifficulty");
-
         playingField = new PlayingField(fieldsize, calculateships(), true);
         makeComponents(frame);
     }
