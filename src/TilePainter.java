@@ -5,7 +5,6 @@ package src;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.IOException;
 import java.util.Arrays;
 
 import static src.config.*;
@@ -16,12 +15,10 @@ import static src.config.*;
 public class TilePainter extends JPanel implements MouseMotionListener {
 
     public static boolean horizontal = true;
-    int AnzSchiffe = 0;
-    public boolean Onfirstfield = false;
     private static int groesse = 0;
-    private int PosX = 0;
-    private int PosY = 0;
     private final Tile Ebene;
+    public boolean Onfirstfield = false;
+    int AnzSchiffe = 0;
     boolean usable = false;
     MouseListener temp;
     MouseListener temp2;
@@ -29,7 +26,7 @@ public class TilePainter extends JPanel implements MouseMotionListener {
     boolean hasshot = false;
     boolean hitKI = true;
     int[] groessen = {0, 0, size2, size3, size4, size5};
-    boolean PlayerTurn;
+    boolean PlayerTurn = true;
     int field;
     boolean allowchange;
     boolean deleting;
@@ -42,17 +39,23 @@ public class TilePainter extends JPanel implements MouseMotionListener {
     int[] recentshot = new int[2];
     boolean placeable = false;
     boolean MovementHandler;
+    private int PosX = 0;
+    private int PosY = 0;
+
 
     /**
-     * @param Feldgroesse gibt Groesse des Feldes vor
-     * @param Feldvon     gibt an für wen des Feld ist
+     * @param Feldgroesse int --> Größe des zu erstellenden Spielfelds
+     * @param Feldvon     int --> Für wen/was das Spielfeld ist (0 = Spieler ; 1 = GegnerKI ; 2 = GegnerOnline)
+     * @param frame       SpielWindow --> Das erstellte Fenster
+     * @param Com         ComPLayer --> ComputerGegner
+     * @param pf          PlayingField --> PlayingField des Spielfeld1
      *                    <p>
      *                    Konstruktor für TilePainter, welches das Felder an sich durch Tile aufruft
      *                    <p>
      *                    Übernimmt die Inputs des Spielers gibt diese wenn nötig an andere Methoden weiter
      */
     public TilePainter(int Feldgroesse, int Feldvon, SpielWindow frame, ComPlayer Com, PlayingField pf) {
-        Ebene = new Tile(Feldgroesse, Feldvon);
+        Ebene = new Tile(Feldgroesse);
         Computer = Com;
         this.frame = frame;
         field = Feldvon;
@@ -68,7 +71,7 @@ public class TilePainter extends JPanel implements MouseMotionListener {
 
         addMouseMotionListener(this);
 
-        //TODO sichergehen, dass der der getroffen hat nochmal schießen darf und nicht zum anderen Spieler gewechselt wird
+        //TODO Wenn man im Online Modus nochmal schießt, dann landet des einfach im Buffer
         addMouseListener(temp = new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -144,26 +147,26 @@ public class TilePainter extends JPanel implements MouseMotionListener {
                                     int recycleship = pf.deleteShip(xFeld, yFeld);
 
                                     switch (recycleship) {
-                                        case 2:
+                                        case 2 -> {
                                             groessen[recycleship]++;
                                             frame.btn_size2.setText("size 2: " + groessen[recycleship]);
                                             AnzSchiffe--;
-                                            break;
-                                        case 3:
+                                        }
+                                        case 3 -> {
                                             groessen[recycleship]++;
                                             frame.btn_size3.setText("size 3: " + groessen[recycleship]);
                                             AnzSchiffe--;
-                                            break;
-                                        case 4:
+                                        }
+                                        case 4 -> {
                                             groessen[recycleship]++;
                                             frame.btn_size4.setText("size 4: " + groessen[recycleship]);
                                             AnzSchiffe--;
-                                            break;
-                                        case 5:
+                                        }
+                                        case 5 -> {
                                             groessen[recycleship]++;
                                             frame.btn_size5.setText("size 5: " + groessen[recycleship]);
                                             AnzSchiffe--;
-                                            break;
+                                        }
                                     }
 
 
@@ -175,21 +178,20 @@ public class TilePainter extends JPanel implements MouseMotionListener {
 
                         if (Tile.isFightstart()) {
 
-                            if (field == 1) {
-                                if (SpielFeld2 == 1) {
-                                    try {
-                                        if (pf.getFieldEnemy()[yFeld][xFeld] == 0) {
+                            if (pf.getFieldEnemy()[yFeld][xFeld] == 0) {
 
-                                            int TrefferSpieler = Computer.isShot(xFeld, yFeld);
-                                            pf.didHit(TrefferSpieler, xFeld, yFeld);
-                                            if (TrefferSpieler == 0) {
-                                                hitKI = true;
 
-                                                //Momentan noch funktionierend sollte aber eigentlich dafür sorgen, dass die KI nochmal Schießt, falls Sie gtroffen hat
-                                                counter = 0;
+                                if (field == 1) {
+                                    if (SpielFeld2 == 1) {
+                                        try {
+                                            if (PlayerTurn) {
 
-                                                ActionListener taskPerformer = new ActionListener() {
-                                                    public void actionPerformed(ActionEvent evt) {
+                                                int TrefferSpieler = Computer.isShot(xFeld, yFeld);
+                                                pf.didHit(TrefferSpieler, xFeld, yFeld);
+                                                if (TrefferSpieler == 0) {
+                                                    hitKI = true;
+
+                                                    ActionListener taskPerformer = evt -> {
 
 
                                                         int[] Feld = new int[2];
@@ -207,112 +209,89 @@ public class TilePainter extends JPanel implements MouseMotionListener {
                                                         } catch (Exception exception) {
                                                             exception.printStackTrace();
                                                         }
-//                                                        System.out.println("I was called" + counter++ + "times");
+
                                                         hitKI = pf.getField()[Feld[1]][Feld[0]] == 1 || pf.getField()[Feld[1]][Feld[0]] == 2;
                                                         System.out.println(hitKI);
                                                         if (!hitKI) {
+                                                            PlayerTurn = true;
                                                             timerstopper();
                                                         }
                                                         if (hitKI) {
+                                                            PlayerTurn = false;
                                                             timerstarter();
                                                         }
                                                         System.out.println(counter++);
-                                                    }
+                                                    };
+                                                    KItimer = new Timer(300, taskPerformer);
+                                                    KItimer.setRepeats(false);
+                                                    KItimer.start();
 
-                                                };
-                                                KItimer = new Timer(300, taskPerformer);
-                                                KItimer.setRepeats(false);
-                                                KItimer.start();
-
-//                                                while(hitKI) {
-//                                                Timer KiAct = new Timer() {
-//                                                    @Override
-//                                                    public void actionPerformed(ActionEvent KIevnt) {
-
+                                                }
 
                                             }
 
-
-//                                                Timer KItimer = new Timer(110, KiAct);
-
-
-                                            PlayerTurn = true;
-//                                            }
-//                                            System.out.println(Arrays.deepToString(pf.getField()).replace("]", "]\n"));
+                                            System.out.println("Es wurde geschossen auf X: " + xFeld + " Y: " + yFeld);
+                                        } catch (Exception exception) {
+                                            exception.printStackTrace();
                                         }
-                                        //mit getPlayingField().getGameOver kann ich rausfinden wer verloren hat für wen true --> hat verloren
+                                    }
+                                }
+                                if (field == 2 && !frame.Multclient && frame.server.myTurn) {
 
-                                        //SpielWindow.Com.doNextShot();
 
-                                        System.out.println("Es wurde geschossen auf X: " + xFeld + " Y: " + yFeld);
+                                    String xString = xFeld + " ";
+                                    String yString = "" + yFeld;
+
+                                    System.out.println(Arrays.deepToString(pf.getFieldEnemy()).replace("],", "],\n"));
+
+                                    System.out.println("shot " + xString + yString);
+
+                                    frame.server.setXY(xFeld, yFeld);
+                                    try {
+                                        frame.server.Send("shot " + xString + yString);
+                                    } catch (Exception ioException) {
+                                        ioException.printStackTrace();
+                                    }
+                                    try {
+                                        do {
+                                            frame.server.message_check();
+                                            frame.tile.repaint();
+
+                                        } while (!frame.server.myTurn);
+                                    } catch (Exception exception) {
+                                        exception.printStackTrace();
+                                    }
+
+                                }
+
+                                if (field == 2 && frame.Multclient && frame.client.myTurn) {
+                                    String xString = xFeld + " ";
+                                    String yString = "" + yFeld;
+
+                                    System.out.println(Arrays.deepToString(pf.getFieldEnemy()).replace("],", "],\n"));
+
+                                    System.out.println("shot " + xString + yString);
+
+                                    frame.client.setXY(xFeld, yFeld);
+                                    try {
+                                        frame.client.Send("shot " + xString + yString);
+                                    } catch (Exception ioException) {
+                                        ioException.printStackTrace();
+                                    }
+                                    try {
+                                        do {
+                                            frame.client.message_check();
+                                            frame.tile.repaint();
+
+                                        } while (!frame.client.myTurn);
                                     } catch (Exception exception) {
                                         exception.printStackTrace();
                                     }
                                 }
                             }
-                            if (field == 2 && !frame.Multclient && frame.server.myTurn) {
-
-
-                                String xString = xFeld + " ";
-                                String yString = "" + yFeld;
-
-                                System.out.println(Arrays.deepToString(pf.getFieldEnemy()).replace("],", "],\n"));
-
-                                System.out.println("shot " + xString + yString);
-
-                                frame.server.setXY(xFeld, yFeld);
-                                try {
-                                    frame.server.Send("shot " + xString + yString);
-                                } catch (IOException ioException) {
-                                    ioException.printStackTrace();
-                                } catch (Exception exception) {
-                                    exception.printStackTrace();
-                                }
-                                try {
-                                    do {
-                                        frame.server.message_check();
-                                        frame.tile.repaint();
-                                        //tile.revalidate();
-
-                                    } while (!frame.server.myTurn);
-                                } catch (Exception exception) {
-                                    exception.printStackTrace();
-                                }
-
-                            }
-
-                            if (field == 2 && frame.Multclient && frame.client.myTurn) {
-                                String xString = xFeld + " ";
-                                String yString = "" + yFeld;
-
-                                System.out.println(Arrays.deepToString(pf.getFieldEnemy()).replace("],", "],\n"));
-
-                                System.out.println("shot " + xString + yString);
-
-                                frame.client.setXY(xFeld, yFeld);
-                                try {
-                                    frame.client.Send("shot " + xString + yString);
-                                } catch (IOException ioException) {
-                                    ioException.printStackTrace();
-                                } catch (Exception exception) {
-                                    exception.printStackTrace();
-                                }
-                                try {
-                                    do {
-                                        frame.client.message_check();
-                                        frame.tile.repaint();
-
-                                    } while (!frame.client.myTurn);
-                                } catch (Exception exception) {
-                                    exception.printStackTrace();
-                                }
-
-                            }
-
                         }
                     }
                 }
-
             }
         });
 
@@ -352,13 +331,13 @@ public class TilePainter extends JPanel implements MouseMotionListener {
      *          <p>
      *          Überprüft ob die Maus sich momentan auf dem Spielfeld befindet
      */
-    public void setOnfirstfield(MouseEvent e) {
+    public boolean setOnfirstfield(MouseEvent e) {
 
         int x = e.getX();
         int y = e.getY();
 
 
-        Onfirstfield = x > TileSize.getSizeofBorder() && x < Tile.field_size * TileSize.Tile_Size + TileSize.getSizeofBorder() && y > TileSize.getSizeofBorder() && y < TileSize.getSizeofBorder() + fieldsize * TileSize.Tile_Size;
+        return Onfirstfield = x > TileSize.getSizeofBorder() && x < Tile.field_size * TileSize.Tile_Size + TileSize.getSizeofBorder() && y > TileSize.getSizeofBorder() && y < TileSize.getSizeofBorder() + fieldsize * TileSize.Tile_Size;
     }
 
     public int getPosX() {
@@ -383,10 +362,6 @@ public class TilePainter extends JPanel implements MouseMotionListener {
         PosY = posY;
     }
 
-    public int[] getGroessen() {
-        return groessen;
-    }
-
     public void switchUsable() {
         usable = !usable;
         if (usable) {
@@ -405,45 +380,58 @@ public class TilePainter extends JPanel implements MouseMotionListener {
     /**
      * @param g Man brauch für nahezu alles ein Object des Typs Graphics, deswegen gibt es hier eins.
      *          <p>
-     *          Hier werden alle Methoden aufgerufen, welche etwas Zeichnen.
+     *          Hier werden alle Methoden aufgerufen, welche etwas visuell darstellen.
      *          <p>
      */
     public void paintComponent(Graphics g) {
-
         super.paintComponent(g);
+
         setOpaque(false);
 
+        //checkt ab, ob der Spieler bereits verloren hat
         if (Tile.fightstart && pf.gameover()) {
+            //Gibt weiter, das nicht mehr das Spielfeld sondern der loss Screen Angezeigt werden soll
             frame.tile.Ebene.YouLost(g);
+            //Schaltet die Zielhilfe aus (X und Y Anzeige über dem Spielfeld)
             frame.Z.stopdrawing();
-            System.out.println("Der Computer gewann");
-        } else if (Tile.fightstart && frame.tile.field == 1 && Computer.gameover()) {
+
+            //checkt ab ob der Computer bereits verloren hat
+        } else if (Tile.fightstart && frame.tile2.field == 1 && Computer.gameover()) {
+            //Gibt weiter, das nicht mehr das Spielfeld sondern der win Screen Angezeigt werden soll
             frame.tile.Ebene.YouWin(g);
+            //Schaltet die Zielhilfe aus (X und Y Anzeige über dem Spielfeld)
             frame.Z.stopdrawing();
-            System.out.println("Der Mensch gewann");
+
+            //Das else bedeutet, dass das Spiel noch nicht beendet ist, also wird entweder platziert oder
+            //gekämpft
         } else {
+            //Ruft das Spielfeld auf
             Ebene.DrawLayer(g);
-            if (field == 1) {
+
+            //Wenn das Spielfeld nicht vom Spieler ist, muss immer der Schiffzeichner aufgerufen werden egal welches Theme
+            if (field == 1 || field == 2) {
+                //Zeichnet die Sprites welche auf dem Spielfeld angezeigt werden
                 hier.Schiffzeichner(g);
-            }
-            if (selectedTheme.equals("Pokemon")) {
-                hier.Pokemonpicker(g);
             } else {
-                hier.Schiffzeichner(g);
+                //Überprüfung auf gewähltes Theme
+                if (selectedTheme.equals("Pokemon")) {
+                    //Zeichnet die Sprites aber alle haben Pokemon Thematik
+                    hier.Pokemonpicker(g);
+                } else {
+                    //Zeichnet die Sprites aber alles hat eine klassische Schiff Thematik
+                    hier.Schiffzeichner(g);
+                }
             }
 
-            if (SpritePainter.ready && field == 0) {
-
-                if (MovementHandler) System.out.println(sumofships + AnzSchiffe);
+            if (field == 0) {
 
                 if (!Tile.isFightstart() && sumofships > AnzSchiffe) {
                     if (MovementHandler) {
+
                         Predicted.setPrediction(PosX, PosY);
                         placeable = pf.checkShip(groesse, PosX, PosY, horizontal);
-                        Predicted.Schiffzeichner(g, placeable);
-                    } else {
-                        Predicted.Schiffzeichner(g, placeable);
                     }
+                    Predicted.Schiffzeichner(g, placeable);
                 }
                 MovementHandler = false;
             }
@@ -460,10 +448,16 @@ public class TilePainter extends JPanel implements MouseMotionListener {
         this.deleting = !this.deleting;
     }
 
+    /**
+     * Stop den Timer, welcher es dem Menschen ermöglicht genau zu sehen was der Computer macht
+     */
     private void timerstopper() {
         KItimer.stop();
     }
 
+    /**
+     * Startet den Timer, welcher es dem Menschen ermöglicht genau zu sehen was der Computer macht
+     */
     private void timerstarter() {
         KItimer.start();
     }
@@ -477,26 +471,32 @@ public class TilePainter extends JPanel implements MouseMotionListener {
     /**
      * @param e gibt MouseEvent weiter
      *          <p>
-     *          setzt die Pos Variablen auf das Tile auf dem sich die Maus momentan befindet
+     *          setzt die Pos Variablen auf das Tile auf dem sich die Maus momentan befindet und sagt der Vorhersage,
+     *          ob diese sich neue Werte für die Anzeige holen muss
      *          <p>
-     *          TODO Wenn man Pech hat bleibt existiert der Predictor nach Spielstart immernoch
      */
     @Override
     public void mouseMoved(MouseEvent e) {
 
-        setOnfirstfield(e);
-        boolean changed = PosX != ((e.getX() - TileSize.getSizeofBorder()) / TileSize.Tile_Size) || PosY != (e.getY() - TileSize.getSizeofBorder()) / TileSize.Tile_Size;
+        boolean changed = false;
 
-        if (Onfirstfield && changed && !Tile.isFightstart()) {
+        //checkt ab, ob die Maus sich auf dem Spielfeld befindet und dann ob es eine Änderung in der Maus Position gibt
+        if (setOnfirstfield(e))
+            changed = PosX != ((e.getX() - TileSize.getSizeofBorder()) / TileSize.Tile_Size) || PosY != (e.getY() - TileSize.getSizeofBorder()) / TileSize.Tile_Size;
 
+        //Maus ist auf Spielfeld aber auf einen andren individuellen Feld als zuvor
+        if (changed) {
+
+            //Gibt an auf welchem Feld sich die Maus momentan befindet
             setPosX((e.getX() - TileSize.getSizeofBorder()) / TileSize.Tile_Size);
             setPosY((e.getY() - TileSize.getSizeofBorder()) / TileSize.Tile_Size);
 
-            MovementHandler = true;
-        } else if(Onfirstfield && changed && Tile.isFightstart()) {
+            //Checkt ab ob man schon beim schießen ist wenn ja muss die Vorhersage, welche bim platzieren hilft
+            //nicht mehr aufgerufen werden
+            MovementHandler = !Tile.isFightstart();
+            //Sagt der visuellen Vorhersage, dass die Maus sich auf einem anderen Feld befindet und diese ihre
+            //Werte erneuern muss
 
-            setPosX((e.getX() - TileSize.getSizeofBorder()) / TileSize.Tile_Size);
-            setPosY((e.getY() - TileSize.getSizeofBorder()) / TileSize.Tile_Size);
         }
     }
 

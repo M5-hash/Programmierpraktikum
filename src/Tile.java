@@ -5,103 +5,134 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 
-import static src.config.Themes;
 import static src.config.selectedTheme;
 
 public class Tile extends JPanel {
 
     public static int field_size;
 
-    public static boolean isFightstart() {
-        return fightstart;
-    }
+    BufferedImage Image;
 
     static boolean fightstart = false;
     private static int counter = 0;
     private final Bildloader Bild = new Bildloader();
     private final int[][] Feld;
-    int field;
-    private BufferedImage Image;
-    private BufferedImage Border ;
-
-
+    BufferedImage Border ;
     /**
-     * @param x Gibt die Größe des Feldes an, welches in Tile gezeichnet werden soll
-     *          Diese Information wird per int mitgeteilt
+     * @param x         int gibt die Größe des zu zeichnenden Spielfeldes weiter
+     *
+     *                  Zeichnet die individuellen Tiles des Spielfeldes
      */
-
-    public Tile(int x, int Feldvon) {
+    public Tile(int x) {
         field_size = x;
-        field = Feldvon;
         Feld = new int[field_size][field_size];
         DummyLeser(Feld);
         Border = Bild.BildLoader("src/Images/Border.jpg");
     }
 
     /**
-     * @param Feldvorgabe Ist das 2-Dimensionale int Array, von welchem das Spielfeld abgeleitet werden soll.
-     *                    Momentan handelt es sich hierbei immer um den return aus DummyLeser
-     *                    <p>
-     *                    kopiert Array in anderen Array, ohne das funktioniert DummyLeser leider nicht, bin aber zu faul/dumm um zu verstehen, warum das so ist
+     * @return boolean fightstart
+     *
+     *          true --> Es wird gekämpft / platzieren ist vorbei
+     *          false --> Es wird nicht gekämpft / platzieren ist vorbei
      */
-    public void TileArrangement(int[][] Feldvorgabe) {
-//        System.out.println("TileArrangement aufgerufen");
-
-        for (int y = 0; y < field_size; y++) {
-            if (field_size >= 0) System.arraycopy(Feldvorgabe[y], 0, Feld[y], 0, field_size);
-        }
-        Image = Bild.BildLoader("src/Images/Tileset.jpg");
+    public static boolean isFightstart() {
+        return fightstart;
     }
 
     /**
-     * @param g Wird verwendet um die jeweiligen Tiles der Wasser Animation zu zeichnen
-     *          Da aus einem TileSet gelesen muss nicht nur das Ziel bzw. die Position davon geändert werden sondern auch die Source
+     * @param g Übergebenes Graphics Object
+     *
+     *          Die Methode zeichnet dem im Konstruktor übergebenen Array entsprechend das Spielfeld
      */
     public void DrawLayer(Graphics g) {
+
+        //Aus Graphics g wird ein Graphics2D Objekt erstellt, dies wird benötigt um später die Striche durch das Spielfeld
+        // zu zeichnen welches die einzelnen Tiles/Felder verdeutlicht
         Graphics2D g2 = (Graphics2D) g;
-        g2.setStroke(new BasicStroke(Math.max(1, TileSize.Tile_Size / 25)));       //nach Bauchgefühl gesetz, wie viel Bild und wie viel des einzelnen Tiles Strich sein soll, das max garantiert, dass der Strich nicht dünner als ein Pixel wird
+
+        //Hier wird die dicke der Unterteilungsstriche gesetzt, diese skalieren mit der Größe der einzelnen Felder
+        //Es wird aber garantiert, das ihre dicke nie 0 werden kann
+        g2.setStroke(new BasicStroke(Math.max(1, TileSize.Tile_Size / 25)));
+
+        //Hier wird die dicke des Rahmens definiert, welcher das Spielfeld umgibt
+        //Dieser skaliert auch mit der größe der individuellen Felder
+        // TODO das das nicht mehr skaliert und einen guten Standard Wert wählen, da das so keine Sinn macht
         int SizeofBorder = Math.max(18, TileSize.Tile_Size / 12) ;
+
+        //Die Größe des Gesamten Panels, welches die Größe des Spielfelds und die Größe des Rahmens beinhaltet
         int Size = field_size * TileSize.Tile_Size + 2 * SizeofBorder ;
 
+        //Zeichnet den Rahmen zuerst, sodass das Spielfeld ihn übermalen kann, da er aber Größer ist als das Spielfeld
+        //bleibt er immer sichtbar
         g.drawImage(Border, 0, 0, Size, Size, null );
 
-        for (int y = 0; y < field_size; y++) {                                // Wird nur gebraucht, falls wir alle TileFrames in einem Bild ablegen wollen (TileSet), da in diesem Fall Zeilenumsprünge benötigt werden
+
+        //Läuft das gesamte Array ab
+        for (int y = 0; y < field_size; y++) {
             for (int x = 0; x < field_size; x++) {
 
+                //Überprüft welches Theme dargestellt werden soll, da es nur 2 gibt reicht die if Abfrage
                 if (!selectedTheme.equals("Pokemon")) {
+                    //Hier wird ein TileSet verwendet
+                    Image = Bild.BildLoader("src/Images/Tileset.jpg");
+                    //Ein Tileset ist eine Bilddatei welche aus mehreren einzelnen nach einem festen Muster angeordneten
+                    //Bildern besteht diese haben alle eine feste Position, sodass jedes Bild klar definiert ist
+                    //Und auch klar angesprochen werden kann
 
+
+                    //Garantie, dass das gewählte Bild eines der 32 frames ist (0 - 31)
+                    //Der index dient als Zeiger, welchen Teil des Bildes man darstellen will
                     int index = ((Feld[y][x] + counter) % 32);
                     int yOffset = 0;
 
-                    if (index > (Image.getWidth() / 32) - 1) {                      // Da das Tileset nicht nur horizontal ausgerichtet ist, muss jedes mal wenn die rechte Seite des TileSets erreicht wurde unsere source
-                        while ((index > (Image.getWidth() / 32) - 1)) {             // Wieder an die linke Seite des Bildes verschoben werden
+                    //Ein Bild ist 32 Pixel hoch und breit, also kann so die Anzahl an Bildern in einer Zeile berechnet werden
+                    //Wenn der index also über die Länge einer Zeile hinausreicht ...
+                    if (index > (Image.getWidth() / 32) - 1) {
+                        while ((index > (Image.getWidth() / 32) - 1)) {
+
+                            //... wird die nun "übersprungene" Anzahl an Bildern von Index abgezogen
                             index = index - (Image.getWidth() / 32);
-                            yOffset++;                                              //Aber um eine Zeile nach unten verschoben
+
+                            //... und die Suche eine Zeile nach unten verschoben
+                            yOffset++;
                         }
                     }
 
-                    g.drawImage(Image, (x * TileSize.Tile_Size) + SizeofBorder,                  //ok das ist jetzt blöd zu erklären
-                            (y * TileSize.Tile_Size) + SizeofBorder,                           //Es wird ein Viereck zwischen diesen 2 Punkten aufgeschlagen, die ersten 2 sind das linke obere ende
-                            ((x + 1) * TileSize.Tile_Size) + SizeofBorder,                      //die anderen 2 sind das rechte untere ende. Es handelt sich hierbei um das Ziel
+                    //Hier wird nun unser Tile gezeichnet, egal welcher frame dargestellt werden soll es wird immer
+                    //die selbe Quelldatei eingelesen
+                    g.drawImage(Image,
+                            //Das Viereck welches definiert wo unser Tile hingezeichnet werden soll wird definiert
+                            //Begonnen mit dem Punkt Oben Links
+                            (x * TileSize.Tile_Size) + SizeofBorder,
+                            (y * TileSize.Tile_Size) + SizeofBorder,
+                            //Und dann dem Punkt Unten Rechts
+                            ((x + 1) * TileSize.Tile_Size) + SizeofBorder,
                             ((y + 1) * TileSize.Tile_Size) + SizeofBorder,
-                            index * 32,                                         //Es wird ein Viereck zwischen diesen 2 Punkten aufgeschlagen, die ersten 2 sind das linke obere ende
-                            yOffset * 32,                                       //die anderen 2 sind das rechte untere ende. Es handelt sich hierbei um die Quelle, da die Source und das ausgegebene
-                            (index + 1) * 32,                                   //gleich groß sein sollen sind die Variablen nahezu identisch
+                            //Hier wird der "Quellbereich" definiert, also welcher Teil der Quelldatei
+                            //auch gezeichnet werden soll
+                            //Begonnen mit dem Punkt Oben Links
+                            index * 32,
+                            yOffset * 32,
+                            //Und dann dem Punkt Unten Rechts
+                            (index + 1) * 32,
                             (yOffset + 1) * 32,
                             null);
 
-                }
-                if (selectedTheme.equals("Pokemon")) {
+                } else {
 
+                    //Da es sich bei dem Pokemon Theme um statische Bilder handelt kann das Bild einfach geladen...
                     if(field_size > 6){
                         Image = Bild.BildLoader("src/images/PokemonGrass.jpg") ;
                     } else{
                         Image = Bild.BildLoader("src/Images/Pokemon4Graesser.jpg");
                     }
 
-                    g.drawImage(Image, (x * TileSize.Tile_Size) + SizeofBorder,                         //ok das ist jetzt blöd zu erklären
-                            (y * TileSize.Tile_Size) + SizeofBorder,                                    //Es wird ein Viereck zwischen diesen 2 Punkten aufgeschlagen, die ersten 2 sind das linke obere ende
-                            TileSize.Tile_Size,                                                            //die anderen 2 sind das rechte untere ende. Es handelt sich hierbei um das Ziel
+
+                    //... und dann dem Array entsprechend gezeichnet werden
+                    g.drawImage(Image, (x * TileSize.Tile_Size) + SizeofBorder,
+                            (y * TileSize.Tile_Size) + SizeofBorder,
+                            TileSize.Tile_Size,
                             TileSize.Tile_Size, null);
 
                 }
@@ -113,6 +144,8 @@ public class Tile extends JPanel {
 
 
             }
+            //Um das Wasser zu animieren müssen verschieden Frames des Wassers aufgerufen werden, das wird durch die Erhöhung des counters erreicht
+            //Um aber zu garantieren, das immer eines der 32 Frames gewählt wird, wird mod 32 gerechnet
             counter = (counter + 1) % 32;
 
 
@@ -127,52 +160,67 @@ public class Tile extends JPanel {
     }
 
     /**
-     * @param Ebene Gibt die Größe des Spielfelds an, welche vom DummyLeser gefüllt werden soll
+     * @param Ebene Übergebenes int[][] Object
      *              <p>
-     *              Es sieht meiner Meinung nach einfach schöner aus, wenn die Animation nicht für jedes Frame gleichzeitig den selben Frame zeigt
-     *              Hier werden zufällige Werte den Feldern zugewiesen, sodass der Startframe Tile spezifisch ist.
+     *
+     *              Hier werden zufällige Werte den Feldern zugewiesen, sodass der Startframe des Tiles spezifisch ist.
+     *              Da es so besser aussieht.
      */
     public void DummyLeser(int[][] Ebene) {
 
+        //liest die Größen aus dem übergebenen Array aus
         int height = Ebene.length;
         int width = Ebene[0].length;
 
-        Random rd = new Random(); // creating Random object
+        //Fügt an jede Stelle in dem Array eine zufälligen Wert zwischen 0 und 32 ein
+        Random rd = new Random();
         for (int i = 0; i < height; i++) {
             int[] arr = new int[width];
             for (int j = 0; j < arr.length; j++) {
                 arr[j] = rd.nextInt(33);
             }
             Ebene[i] = arr;
-            //System.out.println(Arrays.toString(Ebene[i]));
-        }
 
-        TileArrangement(Ebene);
+        }
     }
 
+    /**
+     * @param g Übergebenes Graphics Object
+     *
+     *          Zeigt dem Spieler das er gewonnen hat
+     */
     public void YouWin(Graphics g) {
+        //Garantiert, dass das genze Panel gefüllt wird
         int SizeofBorder = Math.max(18, TileSize.Tile_Size / 12) ;
         int Size = field_size * TileSize.Tile_Size + 2 * SizeofBorder ;
 
+        //zeichnet den Hintergrund/Grenze des Panels
         g.drawImage(Border, 0, 0, Size, Size, null );
 
         BufferedImage WinScreen = Bild.BildLoader("src/Images/youwon.png") ;
 
+        //Das Bild, das einem sagt, dass man gewonnen hat
         g.drawImage(WinScreen,SizeofBorder,SizeofBorder, Size - 2 * SizeofBorder, Size - 2 * SizeofBorder, null) ;
 
 
     }
 
+    /**
+     * @param g Übergebenes Graphics Object
+     *
+     *          Zeigt dem Spieler das er verloren hat
+     */
     public void YouLost(Graphics g) {
+        //Garantiert, dass das genze Panel gefüllt wird
         int SizeofBorder = Math.max(18, TileSize.Tile_Size / 12) ;
         int Size = field_size * TileSize.Tile_Size + 2 * SizeofBorder ;
 
+        //zeichnet den Hintergrund/Grenze des Panels
         g.drawImage(Border, 0, 0, Size, Size, null );
-
-
 
         BufferedImage LossScreen = Bild.BildLoader("src/Images/youlost.png") ;
 
+        //Das Bild, das einem sagt, dass man verloren hat
         g.drawImage(LossScreen,SizeofBorder,SizeofBorder, Size - 2 * SizeofBorder, Size - 2 * SizeofBorder, null) ;
 
 

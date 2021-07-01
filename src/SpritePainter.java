@@ -5,18 +5,16 @@ import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.WritableRaster;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import static src.Tile.field_size;
-import static src.config.fieldsize;
-import static src.config.selectedTheme;
+import static src.config.*;
 
 public class SpritePainter {
 
 
     public static boolean ready = false;
     public static int counter;
-    public static int[][] getEnemyPlacement;
-    static boolean change = false;
     static ArrayList<BufferedImage> Finished = new ArrayList<>();              // Zwischenspeicher für bereits geladene Bilder
     static ArrayList<String> Loaded = new ArrayList<>();                       // Speichert als String die Quellen der bereits geladenen Bilder ab
     static boolean fits = true;
@@ -54,9 +52,6 @@ public class SpritePainter {
         fieldof = Feldvon;
         Interface = Kontakt;
         this.frame = frame;
-        //updatePokemen();
-        //System.out.println(Fieldof);
-
         Schiffteil();
     }
 
@@ -81,7 +76,14 @@ public class SpritePainter {
      */
     private static BufferedImage colorshiftpng(BufferedImage image, String Schiff_dir) {
 
-        BufferedImage copy = deepCopy(image);
+        BufferedImage copy ;
+
+        if(selectedTheme.equals("Pokemon")){
+            copy = deepCopy(Bild.BildLoader("src/Images/OneColor.png"));
+        } else {
+            copy = deepCopy(image);
+        }
+
 
         int width = copy.getWidth();
         int height = copy.getHeight();
@@ -143,7 +145,7 @@ public class SpritePainter {
         return new BufferedImage(cm, wr, isAlphaPremultiplied, null);
     }
 
-    void updatePokemen() {
+    void updatePokemon() {
 
         for (int i = 0; i < field_size; i++) {
             for (int j = 0; j < field_size; j++) {
@@ -157,7 +159,7 @@ public class SpritePainter {
                     Pokemon[i][j] = -4;
                 } else if (pf.getField()[i][j] == 2) {
                     Pokemon[i][j] = -5;
-                } else if (Pokemon[i][j] == -2 && !Interface.PlayerTurn) {
+                } else if (Pokemon[i][j] == -2) {
                     Pokemon[i][j] = -3;
                 } else if (Pokemon[i][j] != -3 && pf.getField()[i][j] == 5) {
                     Pokemon[i][j] = -2;
@@ -209,10 +211,10 @@ public class SpritePainter {
 
         /* Ausgehend von Schiffe[i][j]
          *
-         * x1 entspricht Schiffe[i - 1][j]
-         * x2 entspricht Schiffe[i + 1][j]
-         * y1 entspricht Schiffe[i][j - 1]
-         * y2 entspricht Schiffe[i][j + 1]
+         * x1 entspricht Schiffe[i - 1][j] links von Punkt
+         * x2 entspricht Schiffe[i + 1][j] rechts von Punkt
+         * y1 entspricht Schiffe[i][j - 1] über dem Punkt
+         * y2 entspricht Schiffe[i][j + 1] unter dem Punkt
          **/
 
         for (int i = 0; i < Schiffe.length; i++) {
@@ -254,7 +256,6 @@ public class SpritePainter {
 
 
         ready = true;
-        change = false;
 
 
     }
@@ -297,16 +298,16 @@ public class SpritePainter {
 
         //Die größe des Rahmens um das Spielfeld herum wird hier berchnet, sodass alle Schiffe an genau der richtigen Position sind.
         int SizeofBorder = Math.max(18, TileSize.Tile_Size / 12);
+        int isX ;
+        int isY ;
+        int picSize ;
 
 
         //Abhänig von dem Spielfeld das Angezeigt werden soll wird hier ein anderes Array eingelesen, sodass die Informationen auch der Situation entsprechen
         switch (fieldof) {
-            case 0, 4 -> {
-                dummy = BugHeckMeck;
-            }
-            case 1 -> {
+            case 1 ->
                 dummy = pf.getFieldEnemy();
-            }
+
             case 2 -> {
                 if (frame.Multclient) {
                     dummy = frame.client.pf.getFieldEnemy();
@@ -324,6 +325,10 @@ public class SpritePainter {
         for (int y = 0; y < dummy.length; y++) {
             for (int x = 0; x < dummy[0].length; x++) {
 
+                isX = (x * TileSize.Tile_Size + SizeofBorder) ;
+                isY = (y * TileSize.Tile_Size + SizeofBorder) ;
+                picSize = TileSize.Tile_Size ;
+
                 //checkt ob es sich bei dem Spielfeld auch um das des Spielers handelt
                 if (fieldof == 0 || fieldof == 4) {
 
@@ -332,7 +337,7 @@ public class SpritePainter {
                     IsHit = pf.getField()[y][x] == 1 || pf.getField()[y][x] == 2;
 
                     //Die Art des Schiffteils wird ausgelesen und dieser wird dann ein Bild zugewiesen
-                    //Es wird auch eine Variable gesetzt, die angibt, dass eine etwas gezeichnet werden muss oder eben nicht
+                    //Es wird auch eine Variable gesetzt, die angibt das etwas gezeichnet werden muss oder eben nicht
                     switch (dummy[y][x]) {
 
                         case 0:
@@ -346,6 +351,11 @@ public class SpritePainter {
                             break;
 
                         case 2:
+                            //Aus dem String geht heraus was gezeichnet wird
+                            //Vorne/Mitte/Hinten Ob es ich um Bug Heck oder Mittelstück handelt
+                            //32 ist die Größe des Bildes in Pixel
+                            //true/false ob horizontal (true) oder vertikal (false)
+                            //isHIt ob getroffen oder nicht
                             Schiffdir = "src/Images/Vorne32false" + IsHit + ".png";
                             dosmthng = true;
                             break;
@@ -378,28 +388,31 @@ public class SpritePainter {
 
                     }
 
-                    if (frame.tile2.hasshot && x == frame.tile2.getRecentshot()[0] && y == frame.tile2.getRecentshot()[1]) { //Funktioniert noch nicht TODO fixen
+                    if (frame.tile2.hasshot && x == frame.tile2.getRecentshot()[0] && y == frame.tile2.getRecentshot()[1]) {
 
                         BufferedImage dummyImg = Bild.BildLoader("src/Images/SniperScope.png");
 
-                        g.drawImage(dummyImg, (x * TileSize.Tile_Size + SizeofBorder),
-                                (y * TileSize.Tile_Size + SizeofBorder),
-                                TileSize.Tile_Size,
-                                TileSize.Tile_Size, null);
+                        g.drawImage(dummyImg, isX,
+                                isY,
+                                picSize,
+                                picSize, null);
                     }
                 }
 
 
-                //Checkt ob es das Spielfeld des Computer Gegners ist TODO GegnerOnline hier drin implementieren
+                //Checkt ob es das Spielfeld des Computer Gegners ist
                 if (fieldof == 2 || fieldof == 1) {
 
                     //Das, was gezeichnet werden muss wird ausgelesen
                     //Es wird auch eine Variable gesetzt, die angibt, dass eine etwas gezeichnet werden muss oder eben nicht
                     if (selectedTheme.equals("Pokemon")) {
+
+                        isX = (x * TileSize.Tile_Size + SizeofBorder) + 1 ;
+                        isY = (y * TileSize.Tile_Size + SizeofBorder) + 1;
+                        picSize = TileSize.Tile_Size - 2;
+
                         switch (dummy[y][x]) {
-                            /**
-                             * Haenle seine Tabelle
-                             * <p>
+                            /*
                              * 0 = Wasser
                              * 1 = Abgeschossenes Schiffsteil
                              * 2 = Komplett zerstört
@@ -407,6 +420,7 @@ public class SpritePainter {
                              * 4 = Geplantes Schiffsteil, noch nicht gesetzt
                              * 5 = Wasser abgeschossen
                              */
+
 
                             case 0:
                                 break;
@@ -443,9 +457,7 @@ public class SpritePainter {
                     } else {
 
                             switch (dummy[y][x]) {
-                                /**
-                                 * Haenle seine Tabelle
-                                 * <p>
+                                /*
                                  * 0 = Wasser
                                  * 1 = Abgeschossenes Schiffsteil
                                  * 2 = Komplett zerstört
@@ -503,17 +515,16 @@ public class SpritePainter {
                     }
 
 
-                    g.drawImage(dummyImg, (x * TileSize.Tile_Size + SizeofBorder),
-                            (y * TileSize.Tile_Size + SizeofBorder),
-                            TileSize.Tile_Size,
-                            TileSize.Tile_Size, null);
+                    g.drawImage(dummyImg, isX,
+                            isY,
+                            picSize,
+                            picSize, null);
                     dosmthng = false;
 
                 }
 
             }
         }
-        change = false;
 
     }
 
@@ -555,7 +566,7 @@ public class SpritePainter {
             int SizeofBorder = Math.max(18, TileSize.Tile_Size / 12);
 
             //Es wird abgefragt ob es zu Änderungen im Array kam
-            if (frame.tile2 != null && !Tile.fightstart || frame.tile2.allowchange) updatePokemen();
+            if (!Tile.fightstart || Objects.requireNonNull(frame.tile2).allowchange) updatePokemon();
 
             //durch die 2 for Schleifen wird das gesamte Array abgelaufen
             for (int y = 0; y < pf.getField().length; y++) {

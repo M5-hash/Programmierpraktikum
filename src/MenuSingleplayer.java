@@ -57,9 +57,9 @@ public class MenuSingleplayer {
         buttonEasy = new MenuButton("EASY", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
         buttonEasy.addActionListener(e -> {
 
-            KIisEasy = true ;
+            KIisEasy = true;
 
-            SpielFeld2 = 1 ;
+            SpielFeld2 = 1;
 
             String[] options = new String[]{"Player", "Computer"};
             ImageIcon icon = new ImageIcon("");
@@ -71,7 +71,7 @@ public class MenuSingleplayer {
                 menuFrame.dispose();
                 // Create SpielWindow and display it
                 try {
-                    SpielFeld1 = 0 ;
+                    SpielFeld1 = 0;
                     new SpielWindow(menuFrame);
                 } catch (Exception ioException) {
                     ioException.printStackTrace();
@@ -80,12 +80,10 @@ public class MenuSingleplayer {
                 menuPanel.setVisible(false);
                 menuFrame.dispose();
                 // Create SpielWindow and display it
-                try {
-                    SpielFeld1 = 1;
-                    new SpielWindow(menuFrame);
-                } catch (IOException | FontFormatException ioException) {
-                    ioException.printStackTrace();
-                }
+
+                SpielFeld1 = 1;
+                new SpielWindow(menuFrame);
+
             }
 
 //            // Hide this window
@@ -103,9 +101,9 @@ public class MenuSingleplayer {
         buttonNormal = new MenuButton("NORMAL", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
         buttonNormal.addActionListener(e -> {
 
-            KIisEasy = false ;
+            KIisEasy = false;
 
-            SpielFeld2 = 1 ;
+            SpielFeld2 = 1;
 
             String[] options = new String[]{"Player", "Computer"};
             ImageIcon icon = new ImageIcon("");
@@ -117,7 +115,7 @@ public class MenuSingleplayer {
                 menuFrame.dispose();
                 // Create SpielWindow and display it
                 try {
-                    SpielFeld1 = 0 ;
+                    SpielFeld1 = 0;
                     new SpielWindow(menuFrame);
                 } catch (Exception ioException) {
                     ioException.printStackTrace();
@@ -126,12 +124,9 @@ public class MenuSingleplayer {
                 menuPanel.setVisible(false);
                 menuFrame.dispose();
                 // Create SpielWindow and display it
-                try {
-                    SpielFeld1 = 1 ;
-                    new SpielWindow(menuFrame);
-                } catch (IOException | FontFormatException ioException) {
-                    ioException.printStackTrace();
-                }
+
+                SpielFeld1 = 1;
+                new SpielWindow(menuFrame);
             }
 
 

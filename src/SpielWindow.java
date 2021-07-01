@@ -30,10 +30,8 @@ public class SpielWindow extends JPanel {
     JPanel          gamePanel1;
     JPanel          gamePanel2;
     JButton         buttonMenuStart;
-    JButton         buttonRestart;
     JButton         buttonSaveGame;
     JButton         buttonLoadGame;
-    JButton         buttonMenuOptions;
     JButton         buttonQuitGame;
     JButton         buttonReady;
     JButton         buttonDelete;
@@ -47,7 +45,7 @@ public class SpielWindow extends JPanel {
     private PlayingField playingField;
 
 
-    public SpielWindow(JFrame frame) throws IOException, FontFormatException {
+    public SpielWindow(JFrame frame){
         playingField = new PlayingField(fieldsize, calculateships(), true);
         makeComponents(frame);
     }
@@ -109,7 +107,7 @@ public class SpielWindow extends JPanel {
         menuPanel         = new CustomPanel(ImageLoader.getImage(ImageLoader.GAME_BACKGROUND));
         gameLayout        = new GridLayout(0, 1);
         buttonDelete      = new DeleteButton();
-        buttonReady       = new MenuButton("START GAME",   ImageLoader.getImage(ImageLoader.MENU_BUTTON));
+        buttonReady       = new MenuButton("START GAME",   ImageLoader.getImage(ImageLoader.MENU_BUTTON), "Das Spiel kann erst gestartet werden, wenn alle Schiffe gesetzt sind");
         buttonMenuStart   = new MenuButton("MAIN MENU",    ImageLoader.getImage(ImageLoader.MENU_BUTTON));
         buttonSaveGame    = new MenuButton("SAVE GAME",    ImageLoader.getImage(ImageLoader.MENU_BUTTON));
         buttonLoadGame    = new MenuButton("LOAD GAME",    ImageLoader.getImage(ImageLoader.MENU_BUTTON));
@@ -155,25 +153,31 @@ public class SpielWindow extends JPanel {
         buttonGroup.add(btn_size5);
         buttonReady.addActionListener(e -> {
 
-            Tile.fightstart = true;
-            tile.AnzSchiffe = 0 ;
-            if(Tile.isFightstart()){
-                Z.           setBounds(framewidth * 62 / 100, frameheigth * 17 / 100, framewidth * 25 / 100, frameheigth * 10/ 100);
-            }
-            gamePanel1.setVisible(true);
-            gamePanel2.setVisible(false);
-            if(SpielFeld2 == 2 && Multclient){
-                try {
-                    do{
-                        client.message_check();
-                        tile.repaint();
-                        //tile.revalidate();
-
-                    }while(!client.myTurn);
-                } catch (Exception f) {
-                    f.printStackTrace();
+            if(tile.AnzSchiffe == sumofships){
+                Tile.fightstart = true;
+                tile.AnzSchiffe = 0 ;
+                if(Tile.isFightstart()){
+                    Z.           setBounds(framewidth * 62 / 100, frameheigth * 17 / 100, framewidth * 25 / 100, frameheigth * 10/ 100);
                 }
+                gamePanel1.setVisible(true);
+                gamePanel2.setVisible(false);
+                if(SpielFeld2 == 2 && Multclient){
+                    try {
+                        do{
+                            client.message_check();
+                            tile.repaint();
+                            //tile.revalidate();
+
+                        }while(!client.myTurn);
+                    } catch (Exception f) {
+                        f.printStackTrace();
+                    }
+                }
+            } else
+            {
+                setToolTipText("Es wurden noch nicht alle Schiffe platziert");
             }
+
         });
         buttonDelete.addActionListener(e -> {
 
@@ -298,11 +302,6 @@ public class SpielWindow extends JPanel {
         });
         timer.start();
     }
-
-
-//    public static PlayingField getPlayingField() {
-//        return playingField;
-//    }
 
     static int[] calculateships() {
 

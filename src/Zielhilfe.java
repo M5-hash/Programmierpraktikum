@@ -2,7 +2,6 @@ package src;
 
 import javax.swing.*;
 import java.awt.*;
-import static src.config.*;
 
 public class Zielhilfe extends JPanel {
 
