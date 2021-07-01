@@ -59,28 +59,15 @@ public class MenuOptions {
         listCellRenderer.setHorizontalAlignment(CENTER);
 
         cbFullscreen = new CustomCheckBox("FULLSCREEN", false, Pokemon.deriveFont(11f));
-        buttonPanel.add(cbFullscreen);
-
-        cbResolutions = new CustomComboBox(Resolutions, Pokemon.deriveFont(11f));
-
-        buttonPanel.add(cbResolutions);
-        makeConstraints(buttonPanel, 1, 4, 2);
+        makeConstraints(cbFullscreen, 1, 4, 2);
 
         buttonPanel = new ButtonPanel();
+
+        cbResolutions = new CustomComboBox(Resolutions, Pokemon.deriveFont(11f));
         cbThemes = new CustomComboBox2(Themes, Pokemon.deriveFont(11f));
+
+        buttonPanel.add(cbResolutions);
         buttonPanel.add(cbThemes);
-
-        buttonShipSize = new MenuButton("SIZE", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
-        buttonShipSize.addActionListener(e -> {
-            menuPanel.setVisible(false);
-
-            try {
-                new MenuSize(menuFrame, menuPanel);
-            } catch (IOException | FontFormatException ioException) {
-                ioException.printStackTrace();
-            }
-        });
-        buttonPanel.add(buttonShipSize);
         makeConstraints(buttonPanel, 1, 6, 2);
 
         buttonQuitGame = new QuitButton();

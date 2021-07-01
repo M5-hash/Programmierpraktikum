@@ -45,7 +45,7 @@ public class SpielWindow extends JPanel {
     private PlayingField playingField;
 
 
-    public SpielWindow(JFrame frame){
+    public SpielWindow(JFrame frame) throws IOException, FontFormatException {
         playingField = new PlayingField(fieldsize, calculateships(), true);
         makeComponents(frame);
     }
@@ -110,7 +110,7 @@ public class SpielWindow extends JPanel {
         buttonReady       = new MenuButton("START GAME",   ImageLoader.getImage(ImageLoader.MENU_BUTTON), "Das Spiel kann erst gestartet werden, wenn alle Schiffe gesetzt sind");
         buttonMenuStart   = new MenuButton("MAIN MENU",    ImageLoader.getImage(ImageLoader.MENU_BUTTON));
         buttonSaveGame    = new MenuButton("SAVE GAME",    ImageLoader.getImage(ImageLoader.MENU_BUTTON));
-        buttonLoadGame    = new MenuButton("LOAD GAME",    ImageLoader.getImage(ImageLoader.MENU_BUTTON));
+        buttonLoadGame    = new LoadGameButton("LOAD GAME",    ImageLoader.getImage(ImageLoader.MENU_BUTTON));
 //        buttonMenuOptions = new MenuButton("OPTIONS",      ImageLoader.getImage(ImageLoader.MENU_BUTTON));
         buttonQuitGame    = new QuitButton();
         btn_size2         = new ToggleButton("size 2: " + size2, ImageLoader.getImage(ImageLoader.RED), ImageLoader.getImage(ImageLoader.MENU_BUTTON2), ImageLoader.getImage(ImageLoader.GAME_BTN_BALL1));
@@ -219,15 +219,6 @@ public class SpielWindow extends JPanel {
                 }
             }
         });
-        buttonLoadGame.addActionListener(e -> {
-            JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
-
-            int returnValue = jfc.showOpenDialog(null);
-            if (returnValue == JFileChooser.APPROVE_OPTION) {
-                File selectedFile = jfc.getSelectedFile();
-                System.out.println(selectedFile.getAbsolutePath());
-            }
-        });
         gamePanel1.add(buttonMenuStart);
         gamePanel1.add(buttonSaveGame);
         gamePanel1.add(buttonLoadGame);
@@ -267,11 +258,13 @@ public class SpielWindow extends JPanel {
                 Rectangle b = frame.getBounds();
                 int Borderwidth = 2 * Math.max(18, TileSize.Tile_Size / 8);
 
+                //TODO rework put check in resizer as very small and very big fieldsizes mess everything up
                 if (framewidth != frame.getWidth()) {
                     framewidth = frame.getWidth();
                     frameheigth = frame.getHeight();
                     frame.setBounds(b.x, b.y, b.width, b.width * H/W);
                     TileSize.setTile_Size(((framewidth / 4) - Borderwidth) / fieldsize);
+
                 } else if (frameheigth != frame.getHeight()) {
                     frameheigth = frame.getHeight();
                     framewidth = frame.getWidth();
