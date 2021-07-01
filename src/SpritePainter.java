@@ -1,14 +1,17 @@
 package src;
 
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.WritableRaster;
-import java.util.ArrayList;
-import java.util.Objects;
+import java.util.*;
+import javax.swing.*;
+import javax.swing.Timer;
 
 import static src.Tile.field_size;
-import static src.config.*;
+import static src.config.fieldsize;
+import static src.config.selectedTheme;
 
 public class SpritePainter {
 
@@ -24,6 +27,7 @@ public class SpritePainter {
     SpielWindow frame;
     TilePainter Interface;
     PlayingField pf;
+    int addnumber;
     boolean IsHit = false;
     int[][] Vorhersage = new int[fieldsize][fieldsize];
     /**
@@ -53,6 +57,9 @@ public class SpritePainter {
         Interface = Kontakt;
         this.frame = frame;
         Schiffteil();
+        if (selectedTheme.equals("Pokemon")) {
+             PokemonAnimator();
+            }
     }
 
     static int fetchImg(String Schiffdir) {
@@ -76,60 +83,66 @@ public class SpritePainter {
      */
     private static BufferedImage colorshiftpng(BufferedImage image, String Schiff_dir) {
 
-        BufferedImage copy ;
+
+
 
         if(selectedTheme.equals("Pokemon")){
-            copy = deepCopy(Bild.BildLoader("src/Images/OneColor.png"));
+
+            if(fits){
+                return Bild.BildLoader("src/Images/greenOutline.png") ;
+            } else {
+                return Bild.BildLoader("src/Images/redOutline.png")  ;
+            }
+
         } else {
+
+            BufferedImage copy ;
+
             copy = deepCopy(image);
-        }
 
-
-        int width = copy.getWidth();
-        int height = copy.getHeight();
+            int width = copy.getWidth();
+            int height = copy.getHeight();
 
 //        System.out.println("Es wurden insgesamt " + counter + " Bilder bearbeitet/umgefärbt");
 
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                if (((copy.getRGB(x, y) >> 24) & 0xFF) != 0) {
+            for (int x = 0; x < width; x++) {
+                for (int y = 0; y < height; y++) {
+                    if (((copy.getRGB(x, y) >> 24) & 0xFF) != 0) {
 
-                    int pixel = copy.getRGB(x, y);
+                        int pixel = copy.getRGB(x, y);
 
-                    float blue = (pixel) & 0xff;
-                    float green = (pixel >> 8) & 0xff;
-                    float red = (pixel >> 16) & 0xff;
+                        float blue = (pixel) & 0xff;
+                        float green = (pixel >> 8) & 0xff;
+                        float red = (pixel >> 16) & 0xff;
 
-                    //System.out.println("Ergebnis aus getRGB : \nred: " + red + "blue: " + blue);
+                        if (fits) {
+                            blue = blue / 510;     //Da nicht von 0 -> 255 erlaubt sondern von 0.0 -> 1.0 weitere Halbierung um die B Menge zu verringern/ es Grüner zu machen
+                            red = red / 510;       //Verdopplung ist zufällig gewählt und wird sich wahrscheinlich noch ändern (Ich nehme Vorschläge)
 
 
-                    if (fits) {
-                        blue = blue / 510;     //Da nicht von 0 -> 255 erlaubt sondern von 0.0 -> 1.0 weitere Halbierung um die B Menge zu verringern/ es Grüner zu machen
-                        red = red / 510;       //Verdopplung ist zufällig gewählt und wird sich wahrscheinlich noch ändern (Ich nehme Vorschläge)
+                            Color Cgreen = new Color(red, 0.42f, blue, 0.82f); //G und A zufällig gewählt
 
-                        //System.out.println("\nred: " + red + "blue: " + blue);
+                            copy.setRGB(x, y, Cgreen.getRGB());
+                        } else {
 
-                        Color Cgreen = new Color(red, 0.42f, blue, 0.82f); //G und A zufällig gewählt
+                            green = green / 510;
+                            blue = blue / 510;
 
-                        copy.setRGB(x, y, Cgreen.getRGB());
-                    } else {
+                            Color Cred = new Color(0.5f, green, blue, 0.62f); //Grün schlechter sichtbar als Rot --> höherer Alpha Wert
 
-                        green = green / 510;
-                        blue = blue / 510;
-
-                        Color Cred = new Color(0.5f, green, blue, 0.62f); //Grün schlechter sichtbar als Rot --> höherer Alpha Wert
-
-                        copy.setRGB(x, y, Cred.getRGB());
+                            copy.setRGB(x, y, Cred.getRGB());
+                        }
                     }
                 }
             }
-        }
-        String Stringaling = Schiff_dir + fits;
+            String Stringaling = Schiff_dir + fits;
 
-        Loaded.add(counter, Stringaling);                                         // Fügt die Quelle dem Zwischenspeicher hinzu
-        Finished.add(counter, copy);                                             // Fügt das Bild dem Zwischenspeicher hinzu
-        counter++;
-        return copy;
+            Loaded.add(counter, Stringaling);                                         // Fügt die Quelle dem Zwischenspeicher hinzu
+            Finished.add(counter, copy);                                             // Fügt das Bild dem Zwischenspeicher hinzu
+            counter++;
+            return copy;
+        }
+
     }
 
     /**
@@ -145,6 +158,9 @@ public class SpritePainter {
         return new BufferedImage(cm, wr, isAlphaPremultiplied, null);
     }
 
+    /**
+     *          Das Array, welches verwendet wird um die Pokemon zu zeichnen wird geupdated
+     */
     void updatePokemon() {
 
         for (int i = 0; i < field_size; i++) {
@@ -558,6 +574,8 @@ public class SpritePainter {
 
     public void Pokemonpicker(Graphics g) {
 
+
+
         //Das Tileset Bild wird eingeladen
         BufferedImage PokemonBild = Bild.BildLoader("src/Images/PokemonTileSetremove.png");
 
@@ -568,16 +586,20 @@ public class SpritePainter {
             //Es wird abgefragt ob es zu Änderungen im Array kam
             if (!Tile.fightstart || Objects.requireNonNull(frame.tile2).allowchange) updatePokemon();
 
+
+
             //durch die 2 for Schleifen wird das gesamte Array abgelaufen
             for (int y = 0; y < pf.getField().length; y++) {
                 for (int x = 0; x < pf.getField()[0].length; x++) {
 
+                    Random rd = new Random();
+
                     if (Pokemon[y][x] == -1) {
-                        Pokemon[y][x] = (int) (Math.random() * 608);
+                        Pokemon[y][x] = rd.nextInt(152) * 4;
                     }
 
 
-                    int index = Pokemon[y][x];
+                    int index = Pokemon[y][x] + addnumber;
                     int yOffset = 0;
 
                     //Höhe & Breite per Tile 80
@@ -652,11 +674,20 @@ public class SpritePainter {
 
                         }
                     }
-
                 }
             }
         }
+    }
 
+    public void PokemonAnimator() {
+        Timer t;
+
+        ActionListener taskPerformer = evt -> {
+            addnumber = ++addnumber % 4 ;
+            System.out.println(addnumber);
+        };
+        t = new javax.swing.Timer(420, taskPerformer);
+        t.start();
     }
 
 
