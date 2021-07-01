@@ -260,20 +260,21 @@ public class SpielWindow extends JPanel {
         frame.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
+                int isfightstart = Tile.isFightstart() ? 62 : 13;
                 int W = 16;
                 int H = 9;
 
                 Rectangle b = frame.getBounds();
                 int Borderwidth = 2 * Math.max(18, TileSize.Tile_Size / 8);
 
-                //TODO rework put check in resizer as very small and very big fieldsizes mess everything up
                 if (framewidth != frame.getWidth()) {
                     framewidth = frame.getWidth();
+                    frameheigth = frame.getHeight();
                     frame.setBounds(b.x, b.y, b.width, b.width * H/W);
                     TileSize.setTile_Size(((framewidth / 4) - Borderwidth) / fieldsize);
-
                 } else if (frameheigth != frame.getHeight()) {
                     frameheigth = frame.getHeight();
+                    framewidth = frame.getWidth();
                     frame.setBounds(b.x, b.y, b.height * W/H, b.height);
                     TileSize.setTile_Size(((framewidth / 4) - Borderwidth) / fieldsize);
                 }
@@ -283,12 +284,7 @@ public class SpielWindow extends JPanel {
                 tile2.       setBounds(framewidth * 62 / 100, frameheigth * 25 / 100, framewidth * 25 / 100, framewidth * 25 / 100);
                 gamePanel1.  setBounds(framewidth * 45 / 100, frameheigth * 25 / 100, framewidth * 10 / 100, framewidth * 17 / 100);
                 gamePanel2.  setBounds(framewidth * 45 / 100, frameheigth * 25 / 100, framewidth * 10 / 100, framewidth * 25 / 100);
-                if(Tile.isFightstart()){
-                    Z.           setBounds(framewidth * 62 / 100, frameheigth * 17 / 100, framewidth * 25 / 100, frameheigth * 10/ 100);
-                }
-                else{
-                    Z.           setBounds(framewidth * 13 / 100, frameheigth * 17 / 100, framewidth * 25 / 100, frameheigth * 10/ 100);
-                }
+                Z.setBounds(framewidth * isfightstart / 100, frameheigth * 17 / 100, framewidth * 25 / 100, frameheigth * 10/ 100);
 
                 menuPanel.revalidate();
                 menuPanel.repaint();
@@ -296,7 +292,6 @@ public class SpielWindow extends JPanel {
         });
 
         Timer timer = new Timer(110, e -> {
-
             menuPanel.repaint();
             menuPanel.revalidate();
         });
