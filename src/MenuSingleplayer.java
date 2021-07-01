@@ -58,43 +58,17 @@ public class MenuSingleplayer {
         buttonEasy.addActionListener(e -> {
 
             KIisEasy = true;
-
+            SpielFeld1 = 0;
             SpielFeld2 = 1;
 
-            String[] options = new String[]{"Player", "Computer"};
-            ImageIcon icon = new ImageIcon("");
-            int x = JOptionPane.showOptionDialog(menuFrame, "Wollen Sie selbst spielen oder als Computer?",
-                    "Selfplay or KI", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, icon, options, options[0]);
+            menuPanel.setVisible(false);
+            menuFrame.dispose();
 
-            if (x == 0) {
-                menuPanel.setVisible(false);
-                menuFrame.dispose();
-                // Create SpielWindow and display it
-                try {
-                    SpielFeld1 = 0;
-                    new SpielWindow(menuFrame);
-                } catch (Exception ioException) {
-                    ioException.printStackTrace();
-                }
-            } else if (x == 1) {
-                menuPanel.setVisible(false);
-                menuFrame.dispose();
-                // Create SpielWindow and display it
-
-                SpielFeld1 = 1;
+            try {
                 new SpielWindow(menuFrame);
-
+            } catch (Exception ioException) {
+                ioException.printStackTrace();
             }
-
-//            // Hide this window
-//            menuPanel.setVisible(false);
-//            menuFrame.dispose();
-//            // Create SpielWindow and display it
-//            try {
-//                new SpielWindow(menuFrame);
-//            } catch (IOException | FontFormatException ioException) {
-//                ioException.printStackTrace();
-//            }
         });
         buttonPanel.add(buttonEasy);
 
@@ -102,44 +76,17 @@ public class MenuSingleplayer {
         buttonNormal.addActionListener(e -> {
 
             KIisEasy = false;
-
+            SpielFeld1 = 0;
             SpielFeld2 = 1;
 
-            String[] options = new String[]{"Player", "Computer"};
-            ImageIcon icon = new ImageIcon("");
-            int x = JOptionPane.showOptionDialog(menuFrame, "Wollen Sie selbst spielen oder als Computer?",
-                    "Selfplay or KI", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, icon, options, options[0]);
+            menuPanel.setVisible(false);
+            menuFrame.dispose();
 
-            if (x == 0) {
-                menuPanel.setVisible(false);
-                menuFrame.dispose();
-                // Create SpielWindow and display it
-                try {
-                    SpielFeld1 = 0;
-                    new SpielWindow(menuFrame);
-                } catch (Exception ioException) {
-                    ioException.printStackTrace();
-                }
-            } else if (x == 1) {
-                menuPanel.setVisible(false);
-                menuFrame.dispose();
-                // Create SpielWindow and display it
-
-                SpielFeld1 = 1;
+            try {
                 new SpielWindow(menuFrame);
+            } catch (Exception ioException) {
+                ioException.printStackTrace();
             }
-
-
-//            // Hide this window
-//            menuPanel.setVisible(false);
-//            menuFrame.dispose();
-//
-//            // Create MenuMain and display it
-//            try {
-//                new SpielWindow(menuFrame);
-//            } catch (IOException | FontFormatException ioException) {
-//                ioException.printStackTrace();
-//            }
         });
         buttonPanel.add(buttonNormal);
 

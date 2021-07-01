@@ -2,42 +2,21 @@ package src.components;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
+import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
 
 import static src.FontLoader.Pokemon;
 
-public class MenuButton extends JButton {
-
+public class LoadGameButton extends JButton {
 
     public Image image;
-    public Image disabledimage;
-    String button_title ;
 
-    public MenuButton(String button_title, Image image) {
-        super();
-
+    public LoadGameButton(String button_title, BufferedImage image) {
         this.image = image;
-        disabledimage = GrayFilter.createDisabledImage(image);
-        this.button_title = button_title ;
+
         setText(button_title);
-
-        makecomponent();
-    }
-
-    public MenuButton(String button_title, Image image, String ToolTipText) {
-        super();
-
-        this.image = image;
-        disabledimage = GrayFilter.createDisabledImage(image);
-        this.button_title = button_title ;
-        setText(button_title);
-        setToolTipText(ToolTipText);
-        makecomponent();
-    }
-
-
-
-    private void makecomponent() {
         setBorder(new LineBorder(Color.darkGray));
         setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         setFont(Pokemon);
@@ -45,6 +24,15 @@ public class MenuButton extends JButton {
         setContentAreaFilled(false);
         setVerticalTextPosition(CENTER);
         setHorizontalTextPosition(CENTER);
+        addActionListener(e -> {
+            JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+
+            int returnValue = jfc.showOpenDialog(null);
+            if (returnValue == JFileChooser.APPROVE_OPTION) {
+                File selectedFile = jfc.getSelectedFile();
+                System.out.println(selectedFile.getAbsolutePath());
+            }
+        });
         addActionListener(e -> {
             System.out.println("------------------");
             System.out.println(button_title);
@@ -57,12 +45,7 @@ public class MenuButton extends JButton {
 
     @Override
     protected void paintComponent(Graphics g) {
-
-        if (isEnabled()) {
-            g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
-        } else {
-            g.drawImage(disabledimage, 0, 0, getWidth(), getHeight(), this);
-        }
+        g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
         super.paintComponent(g);
     }
 }
