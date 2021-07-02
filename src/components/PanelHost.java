@@ -1,6 +1,5 @@
 package src.components;
 
-import src.config;
 import src.ImageLoader;
 import src.Server;
 import src.SpielWindow;
@@ -25,19 +24,20 @@ public class PanelHost extends JPanel {
     GridBagConstraints  constraints;
     JPanel              buttonPanel;
     JScrollPane         scrollPane;
-    JButton             buttonMenuMultiplayer;
-    JButton             buttonStartGame;
-    JList<String> listIP;
+    JButton             buttonCancel;
+    JButton             buttonLoadGame;
+    JButton             buttonConfirm;
+    JList<String>       listIP;
 
     public PanelHost(JFrame menuFrame, JPanel menuHost, JPanel previousPanel, BufferedImage image) throws IOException {
 
         this.background = image;
 
-        int width   = menuFrame.getWidth() * 60 / 100;
-        int height = menuFrame.getHeight() * 60 / 100;
+        int width   = menuFrame.getWidth()  * 60 / 100;
+        int height  = menuFrame.getHeight() * 60 / 100;
 
-        int COL         = width * 25 / 100;
-        int C_GAP       = width / 10;
+        int COL         = width  * 25 / 100;
+        int C_GAP       = width  * 10 / 100;
         int ROW_INFO    = height * 70 / 100;
         int ROW         = height * 10 / 100;
         int R_GAP       = height * 5  / 100;
@@ -49,22 +49,23 @@ public class PanelHost extends JPanel {
         setLayout(menuLayout);
         setOpaque(false);
 
-        listIP                = new JList<>(IP_Ausgabe());
-        listIP.setBorder(new LineBorder(Color.black));
-        listIP.setBackground(new Color(248, 247, 201));
-        scrollPane            = new JScrollPane(listIP);
-
-        buttonPanel           = new JPanel(new GridLayout(1, 0, 5,5));
-        buttonMenuMultiplayer = new MenuButton("MULTIPLAYER", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
-        buttonStartGame       = new MenuButton("START GAME", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
+        listIP          = new JList<>(IP_Ausgabe());
+        scrollPane      = new JScrollPane(listIP);
+        buttonPanel     = new JPanel(new GridLayout(1, 0, 5,5));
+        buttonCancel    = new MenuButton("CANCEL", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
+        buttonLoadGame  = new LoadGameButton(menuFrame, "LOAD GAME", ImageLoader.getImage(ImageLoader.MENU_BUTTON), true);
+        buttonConfirm   = new MenuButton("START GAME", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
 
         buttonPanel.setOpaque(false);
 
-        buttonMenuMultiplayer.addActionListener(e -> {
+        listIP.setBorder(new LineBorder(Color.black));
+        listIP.setBackground(new Color(248, 247, 201));
+
+        buttonCancel.addActionListener(e -> {
             menuHost.setVisible(false);
             previousPanel.setVisible(true);
         });
-        buttonStartGame.addActionListener(e -> {
+        buttonConfirm.addActionListener(e -> {
             String[] options = new String[] {"Player", "Computer", "Cancel"};
 
             ImageIcon icon = new ImageIcon("");
@@ -99,8 +100,9 @@ public class PanelHost extends JPanel {
             }
         });
 
-        buttonPanel.add(buttonMenuMultiplayer);
-        buttonPanel.add(buttonStartGame);
+        buttonPanel.add(buttonConfirm);
+        buttonPanel.add(buttonLoadGame);
+        buttonPanel.add(buttonCancel);
 
         makeConstraints(scrollPane, 1, 1, 4);
         makeConstraints(buttonPanel, 1, 3, 4);

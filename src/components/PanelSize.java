@@ -1,12 +1,14 @@
 package src.components;
 
 import src.ImageLoader;
+import src.MenuHost;
+import src.SpielWindow;
 import javax.swing.*;
 import javax.swing.plaf.metal.MetalButtonUI;
 import java.awt.*;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+
 import static src.FontLoader.Pokemon;
 import static src.config.*;
 
@@ -193,7 +195,7 @@ public class PanelSize extends JPanel{
         });
         makeConstraints(menuSlider5, 3, 6, 1);
 
-        buttonApply = new MenuButton("APPLY", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
+        buttonApply = new MenuButton("CONFIRM", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
         buttonApply.addActionListener(e -> {
             menuPanel.setVisible(false);
 
@@ -203,13 +205,25 @@ public class PanelSize extends JPanel{
             size4 = menuSlider4.getValue();
             size5 = menuSlider5.getValue();
             System.out.println("------------------");
-            System.out.println("APPLIED");
+            System.out.println("CONFIRMED");
             System.out.println("Fieldsize: " + fieldsize);
             System.out.println("Size 2 Pokemon: " + size2);
             System.out.println("Size 3 Pokemon: " + size3);
             System.out.println("Size 4 Pokemon: " + size4);
             System.out.println("Size 5 Pokemon: " + size5);
-            previousPanel.setVisible(true);
+            if(GameMode){
+                try {
+                    new MenuHost(menuFrame, menuPanel);
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
+            } else {
+                try {
+                    new SpielWindow(menuFrame);
+                } catch (IOException | FontFormatException ioException) {
+                    ioException.printStackTrace();
+                }
+            }
         });
         buttonPanel.add(buttonApply);
 

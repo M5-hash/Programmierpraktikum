@@ -39,9 +39,6 @@ public class TextFieldIP extends JPanel {
         add(textField, BorderLayout.CENTER);
     }
 
-
-
-
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
