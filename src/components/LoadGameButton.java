@@ -13,7 +13,7 @@ public class LoadGameButton extends JButton {
 
     public Image image;
 
-    public LoadGameButton(String button_title, BufferedImage image) {
+    public LoadGameButton(String button_title, BufferedImage image, boolean multiplayer) {
         this.image = image;
 
         setText(button_title);

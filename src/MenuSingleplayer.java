@@ -88,7 +88,7 @@ public class MenuSingleplayer {
 
         makeConstraints(buttonPanel, 1, 4, 2);
 
-        buttonLoadGame = new LoadGameButton("LOAD GAME", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
+        buttonLoadGame = new LoadGameButton("LOAD GAME", ImageLoader.getImage(ImageLoader.MENU_BUTTON), false);
         makeConstraints(buttonLoadGame, 1, 6, 2);
 
         buttonQuitGame = new QuitButton();

@@ -45,7 +45,7 @@ public class MenuMultiplayer {
         buttonPanel2    = new ButtonPanel();
         buttonJoin      = new MenuButton("JOIN GAME", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
         buttonMenuHost  = new MenuButton("HOST GAME", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
-        buttonLoadGame  = new LoadGameButton("LOAD GAME",  ImageLoader.getImage(ImageLoader.MENU_BUTTON));
+        buttonLoadGame  = new LoadGameButton("LOAD GAME",  ImageLoader.getImage(ImageLoader.MENU_BUTTON), true);
         buttonQuitGame  = new QuitButton();
         buttonConfirm   = new MenuButton("CONFIRM",  ImageLoader.getImage(ImageLoader.MENU_BUTTON));
         buttonCancel    = new MenuButton("CANCEL",  ImageLoader.getImage(ImageLoader.MENU_BUTTON));
