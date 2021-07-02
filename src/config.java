@@ -36,6 +36,9 @@ public class config {
     public static int       size5                   = 1;
     public static int       sumofships              = 4;
 
+    // Load Multiplayer Game
+    public static String    filepath                = "";
+
     // Information Strings
     public static String  TextSingleplayer          =  """
             You  can  select  the  difficulty  of  the  game\s\040
