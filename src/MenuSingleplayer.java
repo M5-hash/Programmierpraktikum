@@ -15,7 +15,7 @@ public class MenuSingleplayer {
     JButton buttonMenuStart;
     JButton buttonEasy;
     JButton buttonNormal;
-    JButton buttonShipSize;
+    JButton buttonLoadGame;
     JButton buttonQuitGame;
     JPanel menuInformation;
     JPanel buttonPanel;
@@ -56,17 +56,15 @@ public class MenuSingleplayer {
 
         buttonEasy = new MenuButton("EASY", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
         buttonEasy.addActionListener(e -> {
+            menuPanel.setVisible(false);
 
             KIisEasy = true;
+            GameMode = false;
             SpielFeld1 = 0;
             SpielFeld2 = 1;
-
-            menuPanel.setVisible(false);
-            menuFrame.dispose();
-
             try {
-                new SpielWindow(menuFrame);
-            } catch (Exception ioException) {
+                new MenuSize(menuFrame, menuPanel);
+            } catch (IOException | FontFormatException ioException) {
                 ioException.printStackTrace();
             }
         });
@@ -74,17 +72,15 @@ public class MenuSingleplayer {
 
         buttonNormal = new MenuButton("NORMAL", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
         buttonNormal.addActionListener(e -> {
+            menuPanel.setVisible(false);
 
             KIisEasy = false;
+            GameMode = false;
             SpielFeld1 = 0;
             SpielFeld2 = 1;
-
-            menuPanel.setVisible(false);
-            menuFrame.dispose();
-
             try {
-                new SpielWindow(menuFrame);
-            } catch (Exception ioException) {
+                new MenuSize(menuFrame, menuPanel);
+            } catch (IOException | FontFormatException ioException) {
                 ioException.printStackTrace();
             }
         });
@@ -92,17 +88,8 @@ public class MenuSingleplayer {
 
         makeConstraints(buttonPanel, 1, 4, 2);
 
-        buttonShipSize = new MenuButton("SIZE", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
-        buttonShipSize.addActionListener(e -> {
-            menuPanel.setVisible(false);
-
-            try {
-                new MenuSize(menuFrame, menuPanel);
-            } catch (IOException | FontFormatException ioException) {
-                ioException.printStackTrace();
-            }
-        });
-        makeConstraints(buttonShipSize, 1, 6, 2);
+        buttonLoadGame = new LoadGameButton("LOAD GAME", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
+        makeConstraints(buttonLoadGame, 1, 6, 2);
 
         buttonQuitGame = new QuitButton();
         makeConstraints(buttonQuitGame, 1, 8, 2);

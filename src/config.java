@@ -12,8 +12,7 @@ public class config {
 
     // The difficulties of the game
     public static boolean   KIisEasy                = false;
-    public static int       EASY_DIFFICULTY         = 0;
-    public static int       NORMAL_DIFFICULTY       = 1;
+    public static boolean   GameMode                = false; // false = Singleplayer; true = Multiplayer
     public static int       SpielFeld1              = 0; // 0 = Spieler ; 1 = GegnerKI ; 2 = GegnerOnline
     public static int       SpielFeld2              = 1; // 0 = Spieler ; 1 = GegnerKI ; 2 = GegnerOnline
 
