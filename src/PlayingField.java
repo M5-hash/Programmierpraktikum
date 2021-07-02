@@ -1,6 +1,7 @@
 package src;
 
 import java.io.*;
+import java.sql.Timestamp;
 import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
@@ -57,6 +58,11 @@ public class PlayingField {
     private int com = 0;
 
     /**
+     * Timestamp für Speicherdateien
+     */
+    protected long timestamp = new Timestamp(System.currentTimeMillis()).getTime();
+
+    /**
      * Gibt zurück wie viel % des Spielfeldes mit Schiffen gefüllt ist
      *
      * @param rows   Größe des Spielfeldes
@@ -95,6 +101,15 @@ public class PlayingField {
      */
     public int[][] getField() {
         return this.field;
+    }
+
+    /**
+     * timestamp-Getter
+     *
+     * @return Gibt this.timestamp zurück
+     */
+    public long getTimestamp(){
+        return this.timestamp;
     }
 
     /**
@@ -572,6 +587,7 @@ public class PlayingField {
         this.fieldEnemy[y][x] = 4;
     }
 
+
     /**
      * Weapper für saveGame mit File-Namen Angabe ohne com Angabe
      *
@@ -646,7 +662,10 @@ public class PlayingField {
 
             //nextRow
             s += c.getNextRow() + "\n";
+
         }
+        //timestamp
+        s += this.timestamp + "\n";
 
         //isServer
         s += this.isServer ? "1\n" : "0\n";
@@ -784,7 +803,11 @@ public class PlayingField {
             //nextRow
             c.setNextRow(s.nextInt());
             s.skip("\n");
+
         }
+        //Timestamp
+        this.timestamp = s.nextLong();
+        s.skip("\n");
 
         //isServer
         this.isServer = s.nextInt() == 1;

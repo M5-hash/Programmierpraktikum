@@ -2,6 +2,7 @@ package src;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.Random;
 
 public abstract class ComPlayer {
@@ -28,6 +29,24 @@ public abstract class ComPlayer {
      */
     public ComPlayer() throws FileNotFoundException {
         pf = new PlayingField();
+    }
+
+    /**
+     * pf-Getter
+     *
+     * @return this.pf
+     */
+    public PlayingField getPlayingField(){
+        return this.pf;
+    }
+
+    /**
+     * pf-Setter
+     *
+     * @param pf Das zu setzende PlayingField
+     */
+    public void setPlayingField(PlayingField pf){
+        this.pf = pf;
     }
 
     /**

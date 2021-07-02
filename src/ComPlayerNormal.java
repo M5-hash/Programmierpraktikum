@@ -41,7 +41,7 @@ public class ComPlayerNormal extends ComPlayer {
     }
 
     /**
-     * Parameterloser Konstruktor, falls man das Spiel laden möchte
+     * Konstruktor, falls man das Spiel laden möchte
      *
      * @param id Die ID die an loadGame(..) übergeben wird
      * @throws FileNotFoundException Wenn die zugehörige Speicherdatei nicht existiert
