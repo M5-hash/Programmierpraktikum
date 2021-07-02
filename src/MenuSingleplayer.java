@@ -39,7 +39,7 @@ public class MenuSingleplayer {
         menuPanel = new CustomPanel(ImageLoader.getImage(ImageLoader.STARTMENU_BG));
         menuPanel.setLayout(menuLayout);
 
-        menuInformation = new MenuInformation(ImageLoader.getImage(ImageLoader.STARTMENU_BTN_TEXTFIELD_EICH), TextMulitplayer, menuFrame);
+        menuInformation = new MenuInformation(ImageLoader.getImage(ImageLoader.STARTMENU_BTN_TEXTFIELD_EICH), TextSingleplayer, menuFrame);
         makeConstraints(menuInformation, 0, 0, 4);
 
         buttonMenuStart = new MenuButton("MAIN MENU", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
@@ -88,7 +88,7 @@ public class MenuSingleplayer {
 
         makeConstraints(buttonPanel, 1, 4, 2);
 
-        buttonLoadGame = new LoadGameButton(menuFrame, "LOAD GAME", ImageLoader.getImage(ImageLoader.MENU_BUTTON), false);
+        buttonLoadGame = new LoadGameButton(menuFrame, menuPanel, "LOAD GAME", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
         makeConstraints(buttonLoadGame, 1, 6, 2);
 
         buttonQuitGame = new QuitButton();

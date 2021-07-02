@@ -2,20 +2,18 @@ package src.components;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
 
 import static src.FontLoader.Pokemon;
 
-public class LoadGameButton extends JButton {
+public class SaveGameButton extends JButton {
 
     public Image image;
 
-    public LoadGameButton(JFrame menuFrame, JPanel menuPanel, String button_title, BufferedImage image) {
-        this.image = image;
-
+    public SaveGameButton(String button_title, BufferedImage image) {
         setText(button_title);
         setBorder(new LineBorder(Color.darkGray));
         setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -26,11 +24,17 @@ public class LoadGameButton extends JButton {
         setHorizontalTextPosition(CENTER);
         addActionListener(e -> {
             JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+            jfc.setDialogTitle("Choose a directory to save your file: ");
+            jfc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+            jfc.setDialogTitle("Sava a File");
+            FileNameExtensionFilter filter = new FileNameExtensionFilter("Text File", "txt");
+            jfc.setFileFilter(filter);
 
-            int returnValue = jfc.showOpenDialog(null);
+            int returnValue = jfc.showSaveDialog(null);
             if (returnValue == JFileChooser.APPROVE_OPTION) {
-                File selectedFile = jfc.getSelectedFile();
-                System.out.println(selectedFile.getAbsolutePath());
+                if (jfc.getSelectedFile().isDirectory()) {
+                    System.out.println("You selected the directory: " + jfc.getSelectedFile());
+                }
             }
         });
         addActionListener(e -> {

@@ -41,34 +41,22 @@ public class config {
             You  can  select  the  difficulty  of  the  game\s\040
             by  clicking  the  EASY  or NORMAL button.
 
-            You  can  also  select  the  size  of the  Pokemon\s
-            by  clicking  the  size  button.""";
+            You  can  also  load  an  old  game\s
+            by  clicking  the  load  game  button.""";
 
     public static String  TextMulitplayer           =  """
-            You  can  either  join  a  game  or host  a game.
-            Please  enter  your  IP  before  starting  the  game.\040
-
-            You  can  also  select  the  size  of the  Pokemon\s
-            by  clicking  the  size  button.""";
-
+            You  can  either  join  a  game  or host  a  game.
+            Please  enter  your  IP  before  joining  a  game.\040
+            """;
 
     public static String  TextOptions               = """
-            You  can  select  fullscreen  mode  and  resolution  here.
-
-            You  can  also  select  the  size  of the  Pokemon\s
-            by  clicking  the  size  button.""";
-
-    public static String  TextGame                  =  """
-            You  can  select  fullscreen  mode  and  resolution  here.
-
-            You  can  also  select  the  size  of the  Pokemon\s
-            by  clicking  the  size  button.""";
-
+            You  can  select  fullscreen  mode,  resolution\s
+            and  change  the  theme  of  the  game  here.
+            .""";
 
     public static String  TextSize                  =  """
-            You  can  set  the  amount  of  size  2, 3, 4 and 5 Pokemon's
+            You  can  set  the  amount  of  size  2, 3, 4 and 5 Pokemon
             as  well  as  the  size  of  the  playing  field.\040
 
-            You  can  also  select  the  size  of the  Pokemon\s
-            by  clicking  the  size  button.""";
+           """;
 }

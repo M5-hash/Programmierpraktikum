@@ -108,8 +108,8 @@ public class SpielWindow extends JPanel {
         buttonDelete      = new DeleteButton();
         buttonReady       = new MenuButton("START GAME",   ImageLoader.getImage(ImageLoader.MENU_BUTTON), "Das Spiel kann erst gestartet werden, wenn alle Schiffe gesetzt sind");
         buttonMenuStart   = new MenuButton("MAIN MENU",    ImageLoader.getImage(ImageLoader.MENU_BUTTON));
-        buttonSaveGame    = new MenuButton("SAVE GAME",    ImageLoader.getImage(ImageLoader.MENU_BUTTON));
-        buttonLoadGame    = new LoadGameButton(frame, "LOAD GAME",    ImageLoader.getImage(ImageLoader.MENU_BUTTON), false);
+        buttonSaveGame    = new SaveGameButton("SAVE GAME",    ImageLoader.getImage(ImageLoader.MENU_BUTTON));
+        buttonLoadGame    = new LoadGameButton(frame, menuPanel, "LOAD GAME",    ImageLoader.getImage(ImageLoader.MENU_BUTTON));
         buttonQuitGame    = new QuitButton();
         btn_size2         = new ToggleButton("size 2: " + size2, ImageLoader.getImage(ImageLoader.RED), ImageLoader.getImage(ImageLoader.MENU_BUTTON2), ImageLoader.getImage(ImageLoader.GAME_BTN_BALL1));
         btn_size3         = new ToggleButton("size 3: " + size3, ImageLoader.getImage(ImageLoader.RED), ImageLoader.getImage(ImageLoader.MENU_BUTTON2), ImageLoader.getImage(ImageLoader.GAME_BTN_BALL2));
@@ -202,26 +202,8 @@ public class SpielWindow extends JPanel {
                 ioException.printStackTrace();
             }
         });
-        buttonSaveGame.addActionListener(e -> {
-            JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
-            jfc.setDialogTitle("Choose a directory to save your file: ");
-            jfc.setFileSelectionMode(JFileChooser.FILES_ONLY);
-            jfc.setDialogTitle("Sava a File");
-            FileNameExtensionFilter filter = new FileNameExtensionFilter("Text File", "txt");
-            jfc.setFileFilter(filter);
-
-            int returnValue = jfc.showSaveDialog(null);
-            if (returnValue == JFileChooser.APPROVE_OPTION) {
-                if (jfc.getSelectedFile().isDirectory()) {
-                    System.out.println("You selected the directory: " + jfc.getSelectedFile());
-                }
-            }
-        });
         gamePanel1.add(buttonMenuStart);
         gamePanel1.add(buttonSaveGame);
-        if(!GameMode){
-            gamePanel1.add(buttonLoadGame);
-        }
         gamePanel1.add(buttonQuitGame);
 
         gamePanel2.add(btn_size2);
