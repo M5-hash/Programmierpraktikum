@@ -14,6 +14,8 @@ public class SaveGameButton extends JButton {
     public Image image;
 
     public SaveGameButton(String button_title, BufferedImage image) {
+        this.image = image;
+
         setText(button_title);
         setBorder(new LineBorder(Color.darkGray));
         setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));

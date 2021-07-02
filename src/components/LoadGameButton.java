@@ -15,6 +15,7 @@ import java.util.Scanner;
 import java.util.stream.Stream;
 
 import static src.FontLoader.Pokemon;
+import static src.config.GameMode;
 
 public class LoadGameButton extends JButton {
 
@@ -38,7 +39,7 @@ public class LoadGameButton extends JButton {
             if (returnValue == JFileChooser.APPROVE_OPTION) {
                 File selectedFile = jfc.getSelectedFile();
                 try {
-                    if (multiplayer) {
+                    if (GameMode) {
                         //TODO this.loadGameMultiplayer(selectedFile.getAbsolutePath());
                     } else {
                         this.loadGameSingleplayer(selectedFile.getAbsolutePath());
