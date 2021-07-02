@@ -58,7 +58,7 @@ public class SaveGameButton extends JButton {
                         //SchiffeVersenkenHSAalenSaves-Ordner überprüfen
                         String fpath = System.getProperty("java.io.tmpdir") + File.separator + "SchiffeVersenkenHSAalenSaves";
                         File directory = new File(fpath);
-                        if (!directory.exists()) throw new FileNotFoundException("Temp-Ordner existiert nicht");
+                        if (!directory.exists()) directory.mkdir();
                         com.saveGame(fpath + File.separator + pf.getTimestamp() + fname);
                     }
                 } catch (Exception ex) {

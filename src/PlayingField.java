@@ -604,7 +604,7 @@ public class PlayingField {
 
 
     /**
-     * Weapper für saveGame mit File-Namen Angabe ohne com Angabe
+     * Wrapper für saveGame mit File-Namen Angabe ohne com Angabe
      *
      * @param file Absoluter Pfad + Dateiname
      * @return Hashcode bzw. ID die als Save Nachricht über das Netzwerk geschickt wird
