@@ -53,7 +53,7 @@ public class PanelHost extends JPanel {
         scrollPane      = new JScrollPane(listIP);
         buttonPanel     = new JPanel(new GridLayout(1, 0, 5,5));
         buttonCancel    = new MenuButton("CANCEL", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
-        buttonLoadGame  = new LoadGameButton("LOAD GAME", ImageLoader.getImage(ImageLoader.MENU_BUTTON), true);
+        buttonLoadGame  = new LoadGameButton(menuFrame, "LOAD GAME", ImageLoader.getImage(ImageLoader.MENU_BUTTON), true);
         buttonConfirm   = new MenuButton("START GAME", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
 
         buttonPanel.setOpaque(false);

@@ -109,8 +109,7 @@ public class SpielWindow extends JPanel {
         buttonReady       = new MenuButton("START GAME",   ImageLoader.getImage(ImageLoader.MENU_BUTTON), "Das Spiel kann erst gestartet werden, wenn alle Schiffe gesetzt sind");
         buttonMenuStart   = new MenuButton("MAIN MENU",    ImageLoader.getImage(ImageLoader.MENU_BUTTON));
         buttonSaveGame    = new MenuButton("SAVE GAME",    ImageLoader.getImage(ImageLoader.MENU_BUTTON));
-        buttonLoadGame    = new LoadGameButton("LOAD GAME",    ImageLoader.getImage(ImageLoader.MENU_BUTTON), true);
-//        buttonMenuOptions = new MenuButton("OPTIONS",      ImageLoader.getImage(ImageLoader.MENU_BUTTON));
+        buttonLoadGame    = new LoadGameButton(frame, "LOAD GAME",    ImageLoader.getImage(ImageLoader.MENU_BUTTON), false);
         buttonQuitGame    = new QuitButton();
         btn_size2         = new ToggleButton("size 2: " + size2, ImageLoader.getImage(ImageLoader.RED), ImageLoader.getImage(ImageLoader.MENU_BUTTON2), ImageLoader.getImage(ImageLoader.GAME_BTN_BALL1));
         btn_size3         = new ToggleButton("size 3: " + size3, ImageLoader.getImage(ImageLoader.RED), ImageLoader.getImage(ImageLoader.MENU_BUTTON2), ImageLoader.getImage(ImageLoader.GAME_BTN_BALL2));
@@ -220,8 +219,9 @@ public class SpielWindow extends JPanel {
         });
         gamePanel1.add(buttonMenuStart);
         gamePanel1.add(buttonSaveGame);
-        gamePanel1.add(buttonLoadGame);
-//        gamePanel1.add(buttonMenuOptions);
+        if(!GameMode){
+            gamePanel1.add(buttonLoadGame);
+        }
         gamePanel1.add(buttonQuitGame);
 
         gamePanel2.add(btn_size2);

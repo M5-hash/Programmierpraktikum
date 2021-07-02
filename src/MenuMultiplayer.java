@@ -16,7 +16,6 @@ public class MenuMultiplayer {
     JButton             buttonMenuStart;
     JButton             buttonMenuHost;
     JButton             buttonJoin;
-    JButton             buttonLoadGame;
     JButton             buttonQuitGame;
     JButton             buttonConfirm;
     JButton             buttonCancel;
@@ -45,7 +44,6 @@ public class MenuMultiplayer {
         buttonPanel2    = new ButtonPanel();
         buttonJoin      = new MenuButton("JOIN GAME", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
         buttonMenuHost  = new MenuButton("HOST GAME", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
-        buttonLoadGame  = new LoadGameButton("LOAD GAME",  ImageLoader.getImage(ImageLoader.MENU_BUTTON), true);
         buttonQuitGame  = new QuitButton();
         buttonConfirm   = new MenuButton("CONFIRM",  ImageLoader.getImage(ImageLoader.MENU_BUTTON));
         buttonCancel    = new MenuButton("CANCEL",  ImageLoader.getImage(ImageLoader.MENU_BUTTON));
@@ -119,10 +117,7 @@ public class MenuMultiplayer {
         makeConstraints(menuInformation, 0, 0, 4, 1);
         makeConstraints(buttonMenuStart, 1, 2, 2, 1);
         makeConstraints(buttonPanel1, 1, 4, 2, 1);
-//        makeConstraints(getIP, 1, 4, 2, 1);
-//        makeConstraints(buttonLoadGame, 1, 6, 2, 1);
         makeConstraints(getIP, 1, 6, 2, 1);
-//        makeConstraints(buttonPanel2, 1, 6, 2, 1);
         makeConstraints(buttonQuitGame, 1, 8, 2, 1);
 
         menuFrame.add(this.menuPanel);
