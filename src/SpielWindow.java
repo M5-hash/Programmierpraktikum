@@ -49,6 +49,12 @@ public class SpielWindow extends JPanel {
         makeComponents(frame);
     }
 
+    public SpielWindow(JFrame frame, PlayingField pf, ComPlayer Com) {
+        this.playingField = pf;
+        this.Com = Com ;
+        makeComponents(frame, false);
+    }
+
     public SpielWindow(JFrame frame, Client Client){
         client = Client ;
         playingField = Client.pf ;
@@ -62,15 +68,18 @@ public class SpielWindow extends JPanel {
         makeComponents(frame);
         Multclient = false ;
     }
+    private void makeComponents(JFrame frame){
+        makeComponents(frame, true);
+    }
 
-    private void makeComponents(JFrame frame) {
+    private void makeComponents(JFrame frame, boolean setCom) {
 
         sumofships = size2 + size3 + size4 + size5;
         System.out.println("sumofships" + sumofships);
         frameheigth = frame.getHeight();
         framewidth = frame.getWidth();
 
-        if(SpielFeld1 == 1 || SpielFeld2 == 1){
+        if(setCom && (SpielFeld1 == 1 || SpielFeld2 == 1)){
             if(KIisEasy){
                 try {
                     Com = new ComPlayerEasy(new PlayingField(fieldsize, calculateships(), false)) ;

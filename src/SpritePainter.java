@@ -1,13 +1,14 @@
 package src;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.WritableRaster;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.Timer;
+import java.util.ArrayList;
+import java.util.Objects;
+import java.util.Random;
 
 import static src.Tile.field_size;
 import static src.config.fieldsize;
@@ -58,8 +59,8 @@ public class SpritePainter {
         this.frame = frame;
         Schiffteil();
         if (selectedTheme.equals("Pokemon")) {
-             PokemonAnimator();
-            }
+            PokemonAnimator();
+        }
     }
 
     static int fetchImg(String Schiffdir) {
@@ -84,19 +85,17 @@ public class SpritePainter {
     private static BufferedImage colorshiftpng(BufferedImage image, String Schiff_dir) {
 
 
+        if (selectedTheme.equals("Pokemon")) {
 
-
-        if(selectedTheme.equals("Pokemon")){
-
-            if(fits){
-                return Bild.BildLoader("src/Images/greenOutline.png") ;
+            if (fits) {
+                return Bild.BildLoader("src/Images/greenOutline.png");
             } else {
-                return Bild.BildLoader("src/Images/redOutline.png")  ;
+                return Bild.BildLoader("src/Images/redOutline.png");
             }
 
         } else {
 
-            BufferedImage copy ;
+            BufferedImage copy;
 
             copy = deepCopy(image);
 
@@ -159,7 +158,7 @@ public class SpritePainter {
     }
 
     /**
-     *          Das Array, welches verwendet wird um die Pokemon zu zeichnen wird geupdated
+     * Das Array, welches verwendet wird um die Pokemon zu zeichnen wird geupdated
      */
     void updatePokemon() {
 
@@ -185,7 +184,10 @@ public class SpritePainter {
             }
         }
 
-        frame.tile2.allowchange = false;
+        if (frame.tile2.field != 2) {
+            frame.tile2.allowchange = false;
+        }
+
 
     }
 
@@ -314,15 +316,14 @@ public class SpritePainter {
 
         //Die größe des Rahmens um das Spielfeld herum wird hier berchnet, sodass alle Schiffe an genau der richtigen Position sind.
         int SizeofBorder = Math.max(18, TileSize.Tile_Size / 12);
-        int isX ;
-        int isY ;
-        int picSize ;
+        int isX;
+        int isY;
+        int picSize;
 
 
         //Abhänig von dem Spielfeld das Angezeigt werden soll wird hier ein anderes Array eingelesen, sodass die Informationen auch der Situation entsprechen
         switch (fieldof) {
-            case 1 ->
-                dummy = pf.getFieldEnemy();
+            case 1 -> dummy = pf.getFieldEnemy();
 
             case 2 -> {
                 if (frame.Multclient) {
@@ -341,9 +342,9 @@ public class SpritePainter {
         for (int y = 0; y < dummy.length; y++) {
             for (int x = 0; x < dummy[0].length; x++) {
 
-                isX = (x * TileSize.Tile_Size + SizeofBorder) ;
-                isY = (y * TileSize.Tile_Size + SizeofBorder) ;
-                picSize = TileSize.Tile_Size ;
+                isX = (x * TileSize.Tile_Size + SizeofBorder);
+                isY = (y * TileSize.Tile_Size + SizeofBorder);
+                picSize = TileSize.Tile_Size;
 
                 //checkt ob es sich bei dem Spielfeld auch um das des Spielers handelt
                 if (fieldof == 0 || fieldof == 4) {
@@ -423,9 +424,9 @@ public class SpritePainter {
                     //Es wird auch eine Variable gesetzt, die angibt, dass eine etwas gezeichnet werden muss oder eben nicht
                     if (selectedTheme.equals("Pokemon")) {
 
-                        isX = (x * TileSize.Tile_Size + SizeofBorder) + 1 ;
+                        isX = (x * TileSize.Tile_Size + SizeofBorder) + 1;
                         isY = (y * TileSize.Tile_Size + SizeofBorder) + 1;
-                        picSize = TileSize.Tile_Size - 2;
+                        picSize = TileSize.Tile_Size - 1;
 
                         switch (dummy[y][x]) {
                             /*
@@ -461,54 +462,50 @@ public class SpritePainter {
                                 //Schiff kann dort nicht sein
 
                             case 5:
-                                if (fieldsize < 6) {
-                                    Schiffdir = "src/Images/Pokemon4CutGraesser.jpg";
-                                } else {
-                                    Schiffdir = "src/Images/fullCutGrass.jpg";
-                                }
+                                Schiffdir = "src/Images/fullCutGrass.jpg";
                                 dosmthng = true;
                                 break;
                             //Schiff war dort nicht
                         }
                     } else {
 
-                            switch (dummy[y][x]) {
-                                /*
-                                 * 0 = Wasser
-                                 * 1 = Abgeschossenes Schiffsteil
-                                 * 2 = Komplett zerstört
-                                 * 3 = Normales Schiffsteil
-                                 * 4 = Geplantes Schiffsteil, noch nicht gesetzt
-                                 * 5 = Wasser abgeschossen
-                                 */
+                        switch (dummy[y][x]) {
+                            /*
+                             * 0 = Wasser
+                             * 1 = Abgeschossenes Schiffsteil
+                             * 2 = Komplett zerstört
+                             * 3 = Normales Schiffsteil
+                             * 4 = Geplantes Schiffsteil, noch nicht gesetzt
+                             * 5 = Wasser abgeschossen
+                             */
 
-                                case 0:
-                                    break;
+                            case 0:
+                                break;
 
-                                case 1:
-                                    Schiffdir = "src/Images/BurningTile.png";
-                                    dosmthng = true;
-                                    //Normaler Pokeball (kein Pokemon mehr)
-                                    break;
+                            case 1:
+                                Schiffdir = "src/Images/BurningTile.png";
+                                dosmthng = true;
+                                //Normaler Pokeball (kein Pokemon mehr)
+                                break;
 
-                                case 2:
-                                    Schiffdir = "src/Images/Mitte32truetrue.png";
-                                    dosmthng = true;
-                                    //ausgegrauter Pokeball (Das ganze Schiff zerstört)
-                                    break;
+                            case 2:
+                                Schiffdir = "src/Images/Mitte32truetrue.png";
+                                dosmthng = true;
+                                //ausgegrauter Pokeball (Das ganze Schiff zerstört)
+                                break;
 
-                                case 3:
-                                    //Sollte es nicht geben
-                                    break;
+                            case 3:
+                                //Sollte es nicht geben
+                                break;
 
-                                case 4:
-                                    //Schiff kann dort nicht sein
+                            case 4:
+                                //Schiff kann dort nicht sein
 
-                                case 5:
-                                   Schiffdir = "src/Images/WaterHitCircle.png" ;
-                                    dosmthng = true;
-                                    break;
-                                //Schiff war dort nicht
+                            case 5:
+                                Schiffdir = "src/Images/WaterHitCircle.png";
+                                dosmthng = true;
+                                break;
+                            //Schiff war dort nicht
 
                         }
                     }
@@ -575,7 +572,6 @@ public class SpritePainter {
     public void Pokemonpicker(Graphics g) {
 
 
-
         //Das Tileset Bild wird eingeladen
         BufferedImage PokemonBild = Bild.BildLoader("src/Images/PokemonTileSetremove.png");
 
@@ -585,7 +581,6 @@ public class SpritePainter {
 
             //Es wird abgefragt ob es zu Änderungen im Array kam
             if (!Tile.fightstart || Objects.requireNonNull(frame.tile2).allowchange) updatePokemon();
-
 
 
             //durch die 2 for Schleifen wird das gesamte Array abgelaufen
@@ -598,8 +593,8 @@ public class SpritePainter {
                         Pokemon[y][x] = rd.nextInt(152) * 4;
                     }
 
-                    int index ;
-                    if(Pokemon[y][x] >= 0){
+                    int index;
+                    if (Pokemon[y][x] >= 0) {
                         index = Pokemon[y][x] + addnumber;
                     } else {
                         index = Pokemon[y][x];
@@ -697,7 +692,7 @@ public class SpritePainter {
         Timer t;
 
         ActionListener taskPerformer = evt -> {
-            addnumber = ++addnumber % 4 ;
+            addnumber = ++addnumber % 4;
         };
         t = new javax.swing.Timer(420, taskPerformer);
         t.start();

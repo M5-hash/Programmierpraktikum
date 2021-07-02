@@ -10,18 +10,17 @@ import static src.config.selectedTheme;
 public class Tile extends JPanel {
 
     public static int field_size;
-
-    BufferedImage Image;
-
     static boolean fightstart = false;
     private static int counter = 0;
     private final Bildloader Bild = new Bildloader();
     private final int[][] Feld;
-    BufferedImage Border ;
+    BufferedImage Image;
+    BufferedImage Border;
+
     /**
-     * @param x         int gibt die Größe des zu zeichnenden Spielfeldes weiter
-     *
-     *                  Zeichnet die individuellen Tiles des Spielfeldes
+     * @param x int gibt die Größe des zu zeichnenden Spielfeldes weiter
+     *          <p>
+     *          Zeichnet die individuellen Tiles des Spielfeldes
      */
     public Tile(int x) {
         field_size = x;
@@ -32,9 +31,9 @@ public class Tile extends JPanel {
 
     /**
      * @return boolean fightstart
-     *
-     *          true --> Es wird gekämpft / platzieren ist vorbei
-     *          false --> Es wird nicht gekämpft / platzieren ist vorbei
+     * <p>
+     * true --> Es wird gekämpft / platzieren ist vorbei
+     * false --> Es wird nicht gekämpft / platzieren ist vorbei
      */
     public static boolean isFightstart() {
         return fightstart;
@@ -42,7 +41,7 @@ public class Tile extends JPanel {
 
     /**
      * @param g Übergebenes Graphics Object
-     *
+     *          <p>
      *          Die Methode zeichnet dem im Konstruktor übergebenen Array entsprechend das Spielfeld
      */
     public void DrawLayer(Graphics g) {
@@ -58,14 +57,14 @@ public class Tile extends JPanel {
         //Hier wird die dicke des Rahmens definiert, welcher das Spielfeld umgibt
         //Dieser skaliert auch mit der größe der individuellen Felder
         // TODO das das nicht mehr skaliert und einen guten Standard Wert wählen, da das so keine Sinn macht
-        int SizeofBorder = Math.max(18, TileSize.Tile_Size / 12) ;
+        int SizeofBorder = Math.max(18, TileSize.Tile_Size / 12);
 
         //Die Größe des Gesamten Panels, welches die Größe des Spielfelds und die Größe des Rahmens beinhaltet
-        int Size = field_size * TileSize.Tile_Size + 2 * SizeofBorder ;
+        int Size = field_size * TileSize.Tile_Size + 2 * SizeofBorder;
 
         //Zeichnet den Rahmen zuerst, sodass das Spielfeld ihn übermalen kann, da er aber Größer ist als das Spielfeld
         //bleibt er immer sichtbar
-        g.drawImage(Border, 0, 0, Size, Size, null );
+        g.drawImage(Border, 0, 0, Size, Size, null);
 
 
         //Läuft das gesamte Array ab
@@ -122,11 +121,7 @@ public class Tile extends JPanel {
                 } else {
 
                     //Da es sich bei dem Pokemon Theme um statische Bilder handelt kann das Bild einfach geladen...
-                    if(field_size > 6){
-                        Image = Bild.BildLoader("src/images/PokemonGrass.jpg") ;
-                    } else{
-                        Image = Bild.BildLoader("src/Images/Pokemon4Graesser.jpg");
-                    }
+                    Image = Bild.BildLoader("src/images/PokemonGrass.jpg");
 
 
                     //... und dann dem Array entsprechend gezeichnet werden
@@ -152,9 +147,8 @@ public class Tile extends JPanel {
         }
 
         //Da man jeweils x + 1 Linien braucht um x Felder zu umranden werden hier die letzten 2 Striche gezeichnet
-        g2.drawLine(field_size * TileSize.Tile_Size + SizeofBorder, SizeofBorder,field_size  * TileSize.Tile_Size + SizeofBorder, field_size * TileSize.Tile_Size + SizeofBorder);
+        g2.drawLine(field_size * TileSize.Tile_Size + SizeofBorder, SizeofBorder, field_size * TileSize.Tile_Size + SizeofBorder, field_size * TileSize.Tile_Size + SizeofBorder);
         g2.drawLine(SizeofBorder, field_size * TileSize.Tile_Size + SizeofBorder, field_size * TileSize.Tile_Size + SizeofBorder, field_size * TileSize.Tile_Size + SizeofBorder);
-
 
 
     }
@@ -162,7 +156,7 @@ public class Tile extends JPanel {
     /**
      * @param Ebene Übergebenes int[][] Object
      *              <p>
-     *
+     *              <p>
      *              Hier werden zufällige Werte den Feldern zugewiesen, sodass der Startframe des Tiles spezifisch ist.
      *              Da es so besser aussieht.
      */
@@ -186,42 +180,42 @@ public class Tile extends JPanel {
 
     /**
      * @param g Übergebenes Graphics Object
-     *
+     *          <p>
      *          Zeigt dem Spieler das er gewonnen hat
      */
     public void YouWin(Graphics g) {
         //Garantiert, dass das genze Panel gefüllt wird
-        int SizeofBorder = Math.max(18, TileSize.Tile_Size / 12) ;
-        int Size = field_size * TileSize.Tile_Size + 2 * SizeofBorder ;
+        int SizeofBorder = Math.max(18, TileSize.Tile_Size / 12);
+        int Size = field_size * TileSize.Tile_Size + 2 * SizeofBorder;
 
         //zeichnet den Hintergrund/Grenze des Panels
-        g.drawImage(Border, 0, 0, Size, Size, null );
+        g.drawImage(Border, 0, 0, Size, Size, null);
 
-        BufferedImage WinScreen = Bild.BildLoader("src/Images/youwon.png") ;
+        BufferedImage WinScreen = Bild.BildLoader("src/Images/youwon.png");
 
         //Das Bild, das einem sagt, dass man gewonnen hat
-        g.drawImage(WinScreen,SizeofBorder,SizeofBorder, Size - 2 * SizeofBorder, Size - 2 * SizeofBorder, null) ;
+        g.drawImage(WinScreen, SizeofBorder, SizeofBorder, Size - 2 * SizeofBorder, Size - 2 * SizeofBorder, null);
 
 
     }
 
     /**
      * @param g Übergebenes Graphics Object
-     *
+     *          <p>
      *          Zeigt dem Spieler das er verloren hat
      */
     public void YouLost(Graphics g) {
         //Garantiert, dass das genze Panel gefüllt wird
-        int SizeofBorder = Math.max(18, TileSize.Tile_Size / 12) ;
-        int Size = field_size * TileSize.Tile_Size + 2 * SizeofBorder ;
+        int SizeofBorder = Math.max(18, TileSize.Tile_Size / 12);
+        int Size = field_size * TileSize.Tile_Size + 2 * SizeofBorder;
 
         //zeichnet den Hintergrund/Grenze des Panels
-        g.drawImage(Border, 0, 0, Size, Size, null );
+        g.drawImage(Border, 0, 0, Size, Size, null);
 
-        BufferedImage LossScreen = Bild.BildLoader("src/Images/youlost.png") ;
+        BufferedImage LossScreen = Bild.BildLoader("src/Images/youlost.png");
 
         //Das Bild, das einem sagt, dass man verloren hat
-        g.drawImage(LossScreen,SizeofBorder,SizeofBorder, Size - 2 * SizeofBorder, Size - 2 * SizeofBorder, null) ;
+        g.drawImage(LossScreen, SizeofBorder, SizeofBorder, Size - 2 * SizeofBorder, Size - 2 * SizeofBorder, null);
 
 
     }

@@ -28,7 +28,7 @@ public class TilePainter extends JPanel implements MouseMotionListener {
     int[] groessen = {0, 0, size2, size3, size4, size5};
     boolean PlayerTurn = true;
     int field;
-    boolean allowchange;
+    boolean allowchange = true;
     boolean deleting;
     SpritePainter hier;
     SpritePainter Predicted;
@@ -398,7 +398,7 @@ public class TilePainter extends JPanel implements MouseMotionListener {
             frame.Z.stopdrawing();
 
             //checkt ab ob der Computer bereits verloren hat
-        } else if (Tile.fightstart && frame.tile2.field == 1 && Computer.gameover()) {
+        } else if (Tile.fightstart && pf.getEnemyShipsDestroyed() >= sumofships) {
             //Gibt weiter, das nicht mehr das Spielfeld sondern der win Screen Angezeigt werden soll
             frame.tile.Ebene.YouWin(g);
             //Schaltet die Zielhilfe aus (X und Y Anzeige über dem Spielfeld)
