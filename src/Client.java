@@ -15,7 +15,6 @@ public class Client extends Com_base {
         this.s = new Socket(this.IP, this.port);
         this.in = new BufferedReader(new InputStreamReader(s.getInputStream()));
         this.out = new OutputStreamWriter(s.getOutputStream());
-        this.usr = new BufferedReader(new InputStreamReader(System.in));
         this.pf = setupPlayingfield();
 /*
         Thread t = new Thread() {
@@ -38,18 +37,34 @@ public class Client extends Com_base {
         PlayingField pf_holder = null;
 
         String[] in_size = loopCheckIN().split(" ");
-        System.out.println("true");
+
         if (in_size[0].equals("size")) {
-            System.out.println("true");
+            config.fieldsize = Integer.parseInt(in_size[1]);
+            setTurn(true);
             Send("done");
 
 
             String[] in_ships_Str = loopCheckIN().split(" ");
-            pf_holder = new PlayingField(Integer.parseInt(in_size[1]), ship_array_toInt(in_ships_Str, 1), role_server);
+            int[] ships_int_arr = ship_array_toInt(in_ships_Str, 1);
+            config.size2 = 0;
+            config.size3 = 0;
+            config.size4 = 0;
+            config.size5 = 0;
 
+            for(int i = 0; i<ships_int_arr.length; i++) {
+                if (ships_int_arr[i]==2){config.size2++;}
+                else if (ships_int_arr[i]==3){config.size3++;}
+                else if (ships_int_arr[i]==4){config.size4++;}
+                else if (ships_int_arr[i]==5){config.size5++;}
+            }
+            pf_holder = new PlayingField(Integer.parseInt(in_size[1]), ships_int_arr, role_server);
+
+            setTurn(true);
             Send("done");
 
             if (loopCheckIN().equals("ready")) {
+
+                setTurn(true);
                 Send("ready");
             }
         }
@@ -59,15 +74,5 @@ public class Client extends Com_base {
         }
         this.myTurn = false;
         return pf_holder;
-    }
-
-        public void ClientCommunicate() throws Exception {
-        while (true) {
-            if(!in_check()) break;
-            Receive();
-
-            if(!out_check()) break;
-            Send("C");
-        }
     }
 }

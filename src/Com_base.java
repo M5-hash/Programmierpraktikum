@@ -13,7 +13,6 @@ public abstract class Com_base {
     protected Socket s;
     protected BufferedReader in;
     protected Writer out;
-    protected BufferedReader usr;
     protected String line;
     protected boolean setup;
     public PlayingField pf;
@@ -39,11 +38,15 @@ public abstract class Com_base {
     }
 
     public void Send(String input) throws Exception {
+        if(this.myTurn){
+            this.out.write(String.format("%s%n", input));
+            TimeUnit.MILLISECONDS.sleep(250);
+            this.out.flush();
+        }
         this.myTurn = false;
-        this.out.write(String.format("%s%n", input));
-        TimeUnit.MILLISECONDS.sleep(250);
-        this.out.flush();
     }
+
+
 
     public String Receive(){
         System.out.println(this.line);
@@ -51,15 +54,9 @@ public abstract class Com_base {
         return this.line;
     }
 
-
     public void KillSocket() throws IOException{
         this.s.shutdownOutput();
         System.out.println("Connection closed.");
-    }
-
-    public boolean out_check() throws IOException{
-        this.line = this.usr.readLine();
-        return this.line != null && !this.line.equals("");
     }
 
     public String loopCheckIN() throws IOException{
@@ -72,14 +69,6 @@ public abstract class Com_base {
         return hold;
     }
 
-    public void loopCheckOUT(String message) throws Exception{
-        while (true) {
-            if(!out_check()) break;
-            Send(message);
-        }
-    }
-
-
     public boolean in_check() throws IOException {
         this.line = this.in.readLine();
         if (this.line == null || this.line.equals("")) {
@@ -89,7 +78,7 @@ public abstract class Com_base {
     }
 
     protected void message_check() throws Exception {
-
+            setTurn(true);
             String in = loopCheckIN();
             String[] holder = in.split(" ");
             if (holder[0].equals("shot")) {
@@ -119,8 +108,9 @@ public abstract class Com_base {
                     pf.didHit(2, this.lastX, this.lastY);
                     this.myTurn = true;
                 }
+
             } else if (holder[0].equals("save")) {
-                //saveGame
+                pf.saveGame(Long.parseLong(holder[1]));
             } else if (holder[0].equals("ready")) {
                 this.myTurn = true;
             } else if (holder[0].equals("pass")) {
@@ -128,14 +118,6 @@ public abstract class Com_base {
             }
 
     }
-    protected void run() throws Exception{
-        while(true){
-            if(this.in_check() == true){
-                this.message_check();
-            }
-        }
-    }
-
 
 
     protected int[] ship_array_toInt(String[] in_ships, int begin){

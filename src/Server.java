@@ -18,7 +18,6 @@ public class Server extends Com_base {
         this.s = this.ss.accept();
         this.in = new BufferedReader(new InputStreamReader(this.s.getInputStream()));
         this.out = new OutputStreamWriter(this.s.getOutputStream());
-        this.usr = new BufferedReader(new InputStreamReader(System.in));
         this.pf = setupPlayingfield(start_mode, in_size, in_ships);
 
 /*
@@ -45,17 +44,20 @@ public class Server extends Com_base {
 
             pf_holder = new PlayingField(in_size, ship_array_toInt(in_ships.split(" "), 0), role_server);
             TimeUnit.SECONDS.sleep(5);
+
+            setTurn(true);
             Send("size "+ in_size);
 
             if(loopCheckIN().equals("done")){
 
+                setTurn(true);
                 Send("ships " + in_ships);
             }
 
 
             if(loopCheckIN().equals("done")){
 
-
+                setTurn(true);
                 Send("ready");
             }
             if(loopCheckIN().equals("ready"));
@@ -68,17 +70,5 @@ public class Server extends Com_base {
 
         this.myTurn = true;
         return pf_holder;
-    }
-
-
-
-    public void ServerCommunicate() throws Exception {
-        while (true) {
-            if(!out_check()) break;
-            Send("S");
-
-            if(!in_check()) break;
-            Receive();
-        }
     }
 }
