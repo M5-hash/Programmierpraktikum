@@ -37,9 +37,8 @@ public class SpielWindow extends JPanel {
     ToggleButton    btn_size4;
     ToggleButton    btn_size5;
 
-    private ComPlayer Com;
     private PlayingField playingField;
-
+    private ComPlayer Com;
 
     public SpielWindow(JFrame frame) throws IOException, FontFormatException {
         playingField = new PlayingField(fieldsize, calculateships(), true);
@@ -123,7 +122,7 @@ public class SpielWindow extends JPanel {
         buttonDelete      = new DeleteButton();
         buttonReady       = new MenuButton("START GAME",   ImageLoader.getImage(ImageLoader.MENU_BUTTON), "Das Spiel kann erst gestartet werden, wenn alle Schiffe gesetzt sind");
         buttonMenuStart   = new MenuButton("MAIN MENU",    ImageLoader.getImage(ImageLoader.MENU_BUTTON));
-        buttonSaveGame    = new SaveGameButton("SAVE GAME",    ImageLoader.getImage(ImageLoader.MENU_BUTTON), this.playingField, this.Com);
+        buttonSaveGame    = new SaveGameButton("SAVE GAME",    ImageLoader.getImage(ImageLoader.MENU_BUTTON), this);
         buttonLoadGame    = new LoadGameButton(frame, menuPanel, "LOAD GAME",    ImageLoader.getImage(ImageLoader.MENU_BUTTON));
         buttonQuitGame    = new QuitButton();
         btn_size2         = new ToggleButton("size 2: " + size2, ImageLoader.getImage(ImageLoader.RED), ImageLoader.getImage(ImageLoader.MENU_BUTTON2), ImageLoader.getImage(ImageLoader.GAME_BTN_BALL1));
@@ -303,4 +302,22 @@ public class SpielWindow extends JPanel {
 
         return compiledArray;
     }
+
+
+    public ComPlayer getCom(){
+        return this.Com;
+    }
+
+    public PlayingField getPlayingField(){
+        return this.playingField;
+    }
+
+    public Server getServer(){
+        return this.server;
+    }
+
+    public Client getClient(){
+        return this.client;
+    }
+
 }

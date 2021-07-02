@@ -9,15 +9,12 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
-import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Pattern;
-import java.util.stream.Stream;
 
 import static src.FontLoader.Pokemon;
 import static src.config.GameMode;
+import static src.config.filepath;
 
 public class LoadGameButton extends JButton {
 
@@ -43,9 +40,11 @@ public class LoadGameButton extends JButton {
             int returnValue = jfc.showOpenDialog(null);
             if (returnValue == JFileChooser.APPROVE_OPTION) {
                 File selectedFile = jfc.getSelectedFile();
+                if(!selectedFile.exists()) return;
+
                 try {
                     if (GameMode) {
-                        //TODO this.loadGameMultiplayer(selectedFile.getAbsolutePath());
+                        filepath = selectedFile.getAbsolutePath();
                     } else {
                         this.loadGameSingleplayer(selectedFile.getAbsolutePath());
                         menuPanel.setVisible(false);
@@ -81,7 +80,7 @@ public class LoadGameButton extends JButton {
      */
     private void loadGameSingleplayer(String file) throws Exception {
         File f = new File(file);
-        if (!f.exists()) throw new FileNotFoundException();
+
         //com Wert ermitteln
         Scanner s = new Scanner(f);
         int com = s.nextInt();
