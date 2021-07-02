@@ -1,6 +1,6 @@
 package src;
 
-import javax.swing.*;
+import javax.swing.Timer;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -352,6 +352,15 @@ public class SpritePainter {
 
                     //Wenn das Schiff getroffen wurde, dann ist das Array an der Stelle entweder 1 (Teil getroffen aber Schiff gibt es noch) oder 2 (Teil und gesamtes Schiff zerstört)
                     IsHit = pf.getField()[y][x] == 1 || pf.getField()[y][x] == 2;
+                    if(pf.getField()[y][x] == 5){
+
+                        BufferedImage dummyImg = Bild.BildLoader("src/Images/WaterHitCircle.png");
+
+                        g.drawImage(dummyImg, isX,
+                                isY,
+                                picSize,
+                                picSize, null);
+                    }
 
                     //Die Art des Schiffteils wird ausgelesen und dieser wird dann ein Bild zugewiesen
                     //Es wird auch eine Variable gesetzt, die angibt das etwas gezeichnet werden muss oder eben nicht
@@ -691,10 +700,8 @@ public class SpritePainter {
     public void PokemonAnimator() {
         Timer t;
 
-        ActionListener taskPerformer = evt -> {
-            addnumber = ++addnumber % 4;
-        };
-        t = new javax.swing.Timer(420, taskPerformer);
+        ActionListener taskPerformer = evt -> addnumber = ++addnumber % 4;
+        t = new javax.swing.Timer(650, taskPerformer);
         t.start();
     }
 
