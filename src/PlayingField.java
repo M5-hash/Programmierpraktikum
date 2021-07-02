@@ -109,6 +109,15 @@ public class PlayingField {
     }
 
     /**
+     * status-Getter
+     *
+     * @return this.status
+     */
+    public int getStatus(){
+        return this.status;
+    }
+
+    /**
      * enemyShipsDestroyed-Getter
      *
      * @return this.enemyShipsDestroyed
