@@ -3,10 +3,7 @@ package src;
 
 import src.components.*;
 
-
 import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -52,6 +49,15 @@ public class SpielWindow extends JPanel {
         this.playingField = pf;
         this.Com = Com ;
         makeComponents(frame, false);
+        tile.AnzSchiffe = sumofships ;
+        tile2.PlayerTurn = pf.getStatus() == 1;
+        if(selectedTheme.equals("Pokemon")){
+            //Daten reinladen
+            tile.hier.updatePokemon();
+            //Daten updaten
+            tile.hier.updatePokemon();
+        }
+        gamestart();
     }
 
     public SpielWindow(JFrame frame, Client Client){
@@ -159,30 +165,7 @@ public class SpielWindow extends JPanel {
         buttonGroup.add(btn_size5);
         buttonReady.addActionListener(e -> {
 
-            if(tile.AnzSchiffe == sumofships){
-                Tile.fightstart = true;
-                tile.AnzSchiffe = 0 ;
-                if(Tile.isFightstart()){
-                    Z.           setBounds(framewidth * 62 / 100, frameheigth * 17 / 100, framewidth * 25 / 100, frameheigth * 10/ 100);
-                }
-                gamePanel1.setVisible(true);
-                gamePanel2.setVisible(false);
-                if(SpielFeld2 == 2 && Multclient){
-                    try {
-                        do{
-                            client.message_check();
-                            tile.repaint();
-                            //tile.revalidate();
-
-                        }while(!client.myTurn);
-                    } catch (Exception f) {
-                        f.printStackTrace();
-                    }
-                }
-            } else
-            {
-                setToolTipText("Es wurden noch nicht alle Schiffe platziert");
-            }
+            gamestart();
 
         });
         buttonDelete.addActionListener(e -> {
@@ -247,7 +230,6 @@ public class SpielWindow extends JPanel {
                 Rectangle b = frame.getBounds();
                 int Borderwidth = 2 * Math.max(18, TileSize.Tile_Size / 8);
 
-                //TODO rework put check in resizer as very small and very big fieldsizes mess everything up
                 if (framewidth != frame.getWidth()) {
                     framewidth = frame.getWidth();
                     frameheigth = frame.getHeight();
@@ -278,6 +260,30 @@ public class SpielWindow extends JPanel {
             menuPanel.revalidate();
         });
         timer.start();
+    }
+
+    private void gamestart(){
+        if(tile.AnzSchiffe == sumofships){
+            Tile.fightstart = true;
+            tile.AnzSchiffe = 0 ;
+            if(Tile.isFightstart()){
+                Z.           setBounds(framewidth * 62 / 100, frameheigth * 17 / 100, framewidth * 25 / 100, frameheigth * 10/ 100);
+            }
+            gamePanel1.setVisible(true);
+            gamePanel2.setVisible(false);
+            if(SpielFeld2 == 2 && Multclient){
+                try {
+                    do{
+                        client.message_check();
+                        tile.repaint();
+                        //tile.revalidate();
+
+                    }while(!client.myTurn);
+                } catch (Exception f) {
+                    f.printStackTrace();
+                }
+            }
+        }
     }
 
     static int[] calculateships() {

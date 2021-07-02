@@ -217,9 +217,7 @@ public class Tile extends JPanel {
         //Das Bild, das einem sagt, dass man verloren hat
         g.drawImage(LossScreen, SizeofBorder, SizeofBorder, Size - 2 * SizeofBorder, Size - 2 * SizeofBorder, null);
 
-
     }
-
 
 }
 
