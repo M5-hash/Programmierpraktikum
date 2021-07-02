@@ -598,8 +598,13 @@ public class SpritePainter {
                         Pokemon[y][x] = rd.nextInt(152) * 4;
                     }
 
+                    int index ;
+                    if(Pokemon[y][x] >= 0){
+                        index = Pokemon[y][x] + addnumber;
+                    } else {
+                        index = Pokemon[y][x];
+                    }
 
-                    int index = Pokemon[y][x] + addnumber;
                     int yOffset = 0;
 
                     //Höhe & Breite per Tile 80
@@ -617,7 +622,16 @@ public class SpritePainter {
                     //checkt ab, ob es hier etwas zu zeichnen gibt
                     if (Pokemon[y][x] != 0) {
 
-                        if (Pokemon[y][x] == -2) {
+                        if (Pokemon[y][x] == -3) {
+
+                            BufferedImage dummyImg = Bild.BildLoader("src/Images/PokemonCutGrass.jpg");
+
+                            g.drawImage(dummyImg, (x * TileSize.Tile_Size + SizeofBorder),
+                                    (y * TileSize.Tile_Size + SizeofBorder),
+                                    TileSize.Tile_Size,
+                                    TileSize.Tile_Size, null);
+
+                        } else if (Pokemon[y][x] == -2) {
 
                             BufferedImage dummyImg = Bild.BildLoader("src/Images/SniperScope.png");
 
@@ -684,7 +698,6 @@ public class SpritePainter {
 
         ActionListener taskPerformer = evt -> {
             addnumber = ++addnumber % 4 ;
-            System.out.println(addnumber);
         };
         t = new javax.swing.Timer(420, taskPerformer);
         t.start();
