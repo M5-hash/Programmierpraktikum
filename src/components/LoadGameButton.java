@@ -10,8 +10,10 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.List;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 import static src.FontLoader.Pokemon;
@@ -20,6 +22,9 @@ import static src.config.GameMode;
 public class LoadGameButton extends JButton {
 
     public Image image;
+
+    private PlayingField pf;
+    private ComPlayer com;
 
     public LoadGameButton(JFrame menuFrame, JPanel menuPanel, String button_title, BufferedImage image) {
         this.image = image;
@@ -43,6 +48,9 @@ public class LoadGameButton extends JButton {
                         //TODO this.loadGameMultiplayer(selectedFile.getAbsolutePath());
                     } else {
                         this.loadGameSingleplayer(selectedFile.getAbsolutePath());
+                        menuPanel.setVisible(false);
+                        menuFrame.dispose();
+                        new SpielWindow(menuFrame, this.pf, this.com);
                     }
                 } catch (Exception fileNotFoundException) {
                     fileNotFoundException.printStackTrace();
@@ -83,20 +91,16 @@ public class LoadGameButton extends JButton {
         String fpath = System.getProperty("java.io.tmpdir") + File.separator + "SchiffeVersenkenHSAalenSaves";
         File directory = new File(fpath);
         if (!directory.exists()) throw new FileNotFoundException("Temp-Ordner existiert nicht");
-        String[] fileArr = file.split(File.separator);
+        String[] fileArr = file.split(Pattern.quote(System.getProperty("file.separator")));
         String filename = fileArr[fileArr.length - 1];
 
         //Spieler PF
-        PlayingField pf = new PlayingField();
-        pf.loadGame(file);
+        this.pf = new PlayingField();
+        this.pf.loadGame(file);
 
-        String fileCom = fpath + File.separator + pf.getTimestamp() + filename;
+        String fileCom = fpath + File.separator + this.pf.getTimestamp() + filename;
 
-        ComPlayer c;
-        if (com == 1) c = new ComPlayerEasy(fileCom);
-        else c = new ComPlayerNormal(fileCom);
-
-        //pf, c
-        //TODO Spiel starten mit Daten, this.startGame
+        if (com == 1) this.com = new ComPlayerEasy(fileCom);
+        else this.com = new ComPlayerNormal(fileCom);
     }
 }

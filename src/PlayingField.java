@@ -667,7 +667,11 @@ public class PlayingField {
             ComPlayerNormal c = (ComPlayerNormal) com;
 
             //lastCoords
-            s += c.getLastCoords()[0] + "," + c.getLastCoords()[1] + "\n";
+            if(c.getLastCoords() == null){
+                s += "NULL\n";
+            }else {
+                s += c.getLastCoords()[0] + "," + c.getLastCoords()[1] + "\n";
+            }
 
             //rowSeq
             for (Integer i : c.getRowSeq()) {
@@ -805,9 +809,11 @@ public class PlayingField {
 
             //lastCoords
             String str = s.nextLine();
-            c.setLastCoords(Stream.of(str.split(","))
-                    .mapToInt(Integer::parseInt)
-                    .toArray());
+            if(!str.equals("NULL")){
+                c.setLastCoords(Stream.of(str.split(","))
+                        .mapToInt(Integer::parseInt)
+                        .toArray());
+            }
 
             //rowSeq
             str = s.nextLine();
