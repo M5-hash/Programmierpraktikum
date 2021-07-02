@@ -225,6 +225,7 @@ public class TilePainter extends JPanel implements MouseMotionListener {
                                                     KItimer = new Timer(300, taskPerformer);
                                                     KItimer.setRepeats(false);
                                                     KItimer.start();
+                                                    System.out.println(Arrays.deepToString(frame.tile.hier.Pokemon).replace("],", "],\n"));
 
                                                 }
 
@@ -242,7 +243,7 @@ public class TilePainter extends JPanel implements MouseMotionListener {
                                     String xString = xFeld + " ";
                                     String yString = "" + yFeld;
 
-                                    System.out.println(Arrays.deepToString(pf.getFieldEnemy()).replace("],", "],\n"));
+                                    System.out.println(Arrays.deepToString(pf.getField()).replace("],", "],\n"));
 
                                     System.out.println("shot " + xString + yString);
 
@@ -268,7 +269,7 @@ public class TilePainter extends JPanel implements MouseMotionListener {
                                     String xString = xFeld + " ";
                                     String yString = "" + yFeld;
 
-                                    System.out.println(Arrays.deepToString(pf.getFieldEnemy()).replace("],", "],\n"));
+                                    System.out.println(Arrays.deepToString(pf.getField()).replace("],", "],\n"));
 
                                     System.out.println("shot " + xString + yString);
 
@@ -362,6 +363,7 @@ public class TilePainter extends JPanel implements MouseMotionListener {
         PosY = posY;
     }
 
+    //TODO wird wahrscheinlich entfernt
     public void switchUsable() {
         usable = !usable;
         if (usable) {
@@ -497,16 +499,6 @@ public class TilePainter extends JPanel implements MouseMotionListener {
             //Sagt der visuellen Vorhersage, dass die Maus sich auf einem anderen Feld befindet und diese ihre
             //Werte erneuern muss
 
-        }
-    }
-
-    public void clearAll(PlayingField pf) {
-
-        this.pf = pf;
-
-        hier.pf = pf;
-        if (field == 0) {
-            Predicted.pf = pf;
         }
     }
 }

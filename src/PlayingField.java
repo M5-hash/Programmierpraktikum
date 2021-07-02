@@ -1,6 +1,7 @@
 package src;
 
 import java.io.*;
+import java.sql.Timestamp;
 import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
@@ -45,6 +46,11 @@ public class PlayingField {
     private int ships = 0;
 
     /**
+     * Anzahl der vom Gegner besiegten Schiffe
+     */
+    private int enemyShipsDestroyed = 0;
+
+    /**
      * Die erlaubten Schiffe die platziert werden dürfen
      */
     private int[] allowedShips;
@@ -55,6 +61,11 @@ public class PlayingField {
      * 2 = Computerspieler Mittel
      */
     private int com = 0;
+
+    /**
+     * Timestamp für Speicherdateien
+     */
+    protected long timestamp = new Timestamp(System.currentTimeMillis()).getTime();
 
     /**
      * Gibt zurück wie viel % des Spielfeldes mit Schiffen gefüllt ist
@@ -95,6 +106,24 @@ public class PlayingField {
      */
     public int[][] getField() {
         return this.field;
+    }
+
+    /**
+     * enemyShipsDestroyed-Getter
+     *
+     * @return this.enemyShipsDestroyed
+     */
+    public int getEnemyShipsDestroyed(){
+        return this.enemyShipsDestroyed;
+    }
+
+    /**
+     * timestamp-Getter
+     *
+     * @return Gibt this.timestamp zurück
+     */
+    public long getTimestamp(){
+        return this.timestamp;
     }
 
     /**
@@ -140,7 +169,7 @@ public class PlayingField {
      * [0] X-Koordinate vom Kopf
      * [1] Y-Koordinate vom Kopf
      * [2] 1 == Horizontal, 0 == Vertikal
-     * @throws Exception, wenn x/y auserhalb des Spielfeldes
+     * @throws Exception wenn x/y auserhalb des Spielfeldes
      */
     public static int[] getDirHeadOfShipStatic(int[][] field, int x, int y) throws Exception {
         int[] data = PlayingField.getHeadOfShip(field, x, y);
@@ -224,7 +253,7 @@ public class PlayingField {
      * @param x X-Koordinate eines Schiffteiles
      * @param y Y-Koordinate eines Schiffteiles
      * @return int[]{ x, y, 1 (horizontal) bzw. 0 (vertikal) }
-     * @throws Exception
+     * @throws Exception wenn x/y auserhalb des Spielfeldes
      */
     public int[] getDirHeadOfShip(int x, int y) throws Exception {
         return PlayingField.getDirHeadOfShipStatic(this.field, x, y);
@@ -408,6 +437,7 @@ public class PlayingField {
                 //Komplettes Schiff mit 2 Markieren
                 int[] xyh = PlayingField.getDirHeadOfShipStatic(this.fieldEnemy, x, y);
                 markEnemyShipDestroyed(xyh[0], xyh[1], xyh[2] == 1);
+                this.enemyShipsDestroyed++;
             }
             default -> throw new Exception("Parameter (" + hit + ") nicht im Bereich von 0 bis 2");
         }
@@ -572,6 +602,7 @@ public class PlayingField {
         this.fieldEnemy[y][x] = 4;
     }
 
+
     /**
      * Weapper für saveGame mit File-Namen Angabe ohne com Angabe
      *
@@ -586,7 +617,7 @@ public class PlayingField {
     /**
      * Wrapper für saveGame ohne com Angabe
      *
-     * @param id
+     * @param id Long-ID die zum Spiel speichern verwendet wird
      */
     public void saveGame(long id) throws IOException {
         this.saveGame(id, null);
@@ -597,7 +628,7 @@ public class PlayingField {
      * Wird verwendet, wenn man als Client spielt und den Dateinamen nicht selber auswählt.
      * In dem Fall wird vom Gegenüber eine ID übergeben.
      *
-     * @param id
+     * @param id Long-ID die zum Spiel speichern verwendet wird
      * @param com Wenn es das PlayingField eines Computer-Spielers ist, diesen mitgeben, sonst null
      * @throws IOException Wenn die Datei nicht erstellt/beschrieben werden kann
      */
@@ -646,7 +677,13 @@ public class PlayingField {
 
             //nextRow
             s += c.getNextRow() + "\n";
+
         }
+        //timestamp
+        s += this.timestamp + "\n";
+
+        //enemyShipsDestroyed
+        s += this.enemyShipsDestroyed + "\n";
 
         //isServer
         s += this.isServer ? "1\n" : "0\n";
@@ -680,8 +717,7 @@ public class PlayingField {
         //long Hashcode für file ermitteln
         String[] filenameSplit = file.split(Pattern.quote(System.getProperty("file.separator")));
         String filename = filenameSplit[filenameSplit.length - 1];
-        long hash = UUID.nameUUIDFromBytes(filename.getBytes()).getMostSignificantBits();
-        return hash;
+        return UUID.nameUUIDFromBytes(filename.getBytes()).getMostSignificantBits();
     }
 
     /**
@@ -775,16 +811,24 @@ public class PlayingField {
 
             //rowSeq
             str = s.nextLine();
-            List<Integer> l = new ArrayList<Integer>();
+            List<Integer> l = new ArrayList<>();
             for (int i : Stream.of(str.split(",")).mapToInt(Integer::parseInt).toArray()) {
-                l.add(Integer.valueOf(i));
+                l.add(i);
             }
             c.setRowSeq(l);
 
             //nextRow
             c.setNextRow(s.nextInt());
             s.skip("\n");
+
         }
+        //Timestamp
+        this.timestamp = s.nextLong();
+        s.skip("\n");
+
+        //enemyShipsDestroyed
+        this.enemyShipsDestroyed = s.nextInt();
+        s.skip("\n");
 
         //isServer
         this.isServer = s.nextInt() == 1;
