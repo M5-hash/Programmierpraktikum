@@ -177,7 +177,6 @@ public class SpielWindow extends JPanel {
         dummybutton.addActionListener(e -> {
 
             try {
-
                 Online.message_check();
             } catch (Exception exception) {
                 exception.printStackTrace();
@@ -365,7 +364,7 @@ public class SpielWindow extends JPanel {
             }
             gamePanel1.setVisible(true);
             gamePanel2.setVisible(false);
-            if(SpielFeld2 == 2 && Multclient){
+            if((Online.loaded|| SpielFeld2 == 2) && Multclient){
                 try {
                     Thread t1 = new Thread(new Runnable() {
                         public void run()

@@ -87,6 +87,7 @@ public abstract class Com_base {
             if (!in_check()) break;
             hold = Receive();
         }
+        System.out.println(hold);
         return hold;
     }
 
@@ -94,7 +95,7 @@ public abstract class Com_base {
         try {
             this.line = this.in.readLine();
         } catch (IOException e) {
-            e.printStackTrace();
+            KillSocket();
         }
 
         if (this.line == null || this.line.equals("")) {

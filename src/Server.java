@@ -38,6 +38,8 @@ public class Server extends Com_base {
 
             pf_holder.loadGame(config.filepath);
             TimeUnit.MILLISECONDS.sleep(100);
+            loaded = true;
+            setTurn(true);
             this.Send("load "+pf_holder.getFilenameLongID(config.filepath));
         }
         else {
