@@ -41,7 +41,7 @@ public class Server extends Com_base {
         }
         else {
             pf_holder = new PlayingField(in_size, ship_array_toInt(in_ships.split(" "), 0), role_server);
-            TimeUnit.SECONDS.sleep(5);
+            TimeUnit.MILLISECONDS.sleep(100);
 
             setTurn(true);
             Send("size " + in_size);
