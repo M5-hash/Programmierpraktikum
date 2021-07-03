@@ -42,19 +42,19 @@ public class Server extends Com_base {
         setTurn(true);
         Send("size " + in_size);
 
-        if (loopCheckIN().equals("done")) {
+        if (loopCheckIN(false).equals("done")) {
 
             setTurn(true);
             Send("ships " + in_ships);
         }
 
 
-        if (loopCheckIN().equals("done")) {
+        if (loopCheckIN(false).equals("done")) {
 
             setTurn(true);
             Send("ready");
         }
-        if (loopCheckIN().equals("ready")) ;
+        if (loopCheckIN(false).equals("ready")) ;
 
 
         this.myTurn = true;
