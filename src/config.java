@@ -47,6 +47,7 @@ public class config {
     public static boolean   GameMode                = false; // false = Singleplayer; true = Multiplayer
     public static int       SpielFeld1              = 0; // 0 = Spieler ; 1 = GegnerKI ; 2 = GegnerOnline
     public static int       SpielFeld2              = 1; // 0 = Spieler ; 1 = GegnerKI ; 2 = GegnerOnline
+    public static boolean   onlineCom               = false;
 
     public static boolean   change                  = false;
     public static int       framewidth              = 0;

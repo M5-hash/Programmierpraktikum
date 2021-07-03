@@ -1,56 +1,58 @@
 package src;
 
 import src.components.*;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+
 import static src.config.*;
 
 
 public class MenuMultiplayer {
 
-    GridBagLayout       menuLayout;
-    GridBagConstraints  constraints;
-    JButton             buttonMenuStart;
-    JButton             buttonMenuHost;
-    JButton             buttonJoin;
-    JButton             buttonQuitGame;
-    JButton             buttonConfirm;
-    JButton             buttonCancel;
-    JPanel              getIP;
-    JPanel              menuInformation;
-    JPanel              buttonPanel1;
-    JPanel              buttonPanel2;
-    JPanel              menuPanel;
-    JFrame              menuFrame;
+    GridBagLayout menuLayout;
+    GridBagConstraints constraints;
+    JButton buttonMenuStart;
+    JButton buttonMenuHost;
+    JButton buttonJoin;
+    JButton buttonQuitGame;
+    JButton buttonConfirm;
+    JButton buttonCancel;
+    JPanel getIP;
+    JPanel menuInformation;
+    JPanel buttonPanel1;
+    JPanel buttonPanel2;
+    JPanel menuPanel;
+    JFrame menuFrame;
 
     public MenuMultiplayer(JFrame menuFrame, JPanel menuMain) throws IOException, FontFormatException {
         this.menuFrame = menuFrame;
 
-        int COL         = (INITIAL_WIDTH  * 22 / 100) - 10;
-        int C_GAP       = (INITIAL_WIDTH  * 28 / 100) - 10;
-        int ROW_INFO    = (INITIAL_HEIGHT * 33 / 100) - 10;
-        int ROW         = (INITIAL_HEIGHT * 10 / 100) - 10;
-        int R_GAP       = (INITIAL_HEIGHT * 2) / 100;
+        int COL = (INITIAL_WIDTH * 22 / 100) - 10;
+        int C_GAP = (INITIAL_WIDTH * 28 / 100) - 10;
+        int ROW_INFO = (INITIAL_HEIGHT * 33 / 100) - 10;
+        int ROW = (INITIAL_HEIGHT * 10 / 100) - 10;
+        int R_GAP = (INITIAL_HEIGHT * 2) / 100;
 
-        menuLayout      = new GridBagLayout();
-        constraints     = new GridBagConstraints();
-        menuPanel       = new CustomPanel(ImageLoader.getImage(ImageLoader.STARTMENU_BG));
+        menuLayout = new GridBagLayout();
+        constraints = new GridBagConstraints();
+        menuPanel = new CustomPanel(ImageLoader.getImage(ImageLoader.STARTMENU_BG));
         menuInformation = new MenuInformation(ImageLoader.getImage(ImageLoader.STARTMENU_BTN_TEXTFIELD_EICH), TextMulitplayer, menuFrame);
         buttonMenuStart = new MenuButton("MAIN MENU", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
-        buttonPanel1    = new ButtonPanel();
-        buttonPanel2    = new ButtonPanel();
-        buttonJoin      = new MenuButton("JOIN GAME", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
-        buttonMenuHost  = new MenuButton("HOST GAME", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
-        buttonQuitGame  = new QuitButton();
-        buttonConfirm   = new MenuButton("CONFIRM",  ImageLoader.getImage(ImageLoader.MENU_BUTTON));
-        buttonCancel    = new MenuButton("CANCEL",  ImageLoader.getImage(ImageLoader.MENU_BUTTON));
-        getIP           = new TextFieldIP("ENTER IP");
+        buttonPanel1 = new ButtonPanel();
+        buttonPanel2 = new ButtonPanel();
+        buttonJoin = new MenuButton("JOIN GAME", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
+        buttonMenuHost = new MenuButton("HOST GAME", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
+        buttonQuitGame = new QuitButton();
+        buttonConfirm = new MenuButton("CONFIRM", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
+        buttonCancel = new MenuButton("CANCEL", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
+        getIP = new TextFieldIP("ENTER IP");
 
-        menuLayout.columnWidths = new int[] {C_GAP, COL, COL, C_GAP};
-        menuLayout.rowHeights   = new int[] {ROW_INFO, R_GAP, ROW, R_GAP, ROW, R_GAP, ROW, R_GAP, ROW, ROW};
+        menuLayout.columnWidths = new int[]{C_GAP, COL, COL, C_GAP};
+        menuLayout.rowHeights = new int[]{ROW_INFO, R_GAP, ROW, R_GAP, ROW, R_GAP, ROW, R_GAP, ROW, ROW};
         menuPanel.setLayout(menuLayout);
 
         buttonMenuStart.addActionListener(e -> {
@@ -61,42 +63,45 @@ public class MenuMultiplayer {
             menuMain.setVisible(true);
         });
         buttonJoin.addActionListener(e -> {
-                if(IP.equals("") || IP.equals("ENTER IP")){
-                    JOptionPane.showMessageDialog(null, "PLEASE ENTER AN IP");
-                } else {
+            if (IP.equals("") || IP.equals("ENTER IP")) {
+                JOptionPane.showMessageDialog(null, "PLEASE ENTER AN IP");
+            } else {
 
-                    SpielFeld2 = 2 ;
+                SpielFeld2 = 2;
 
-                    String[] options = new String[] {"Player", "Computer", "Cancel"};
-                    ImageIcon icon = new ImageIcon("");
-                    int x = JOptionPane.showOptionDialog(menuFrame, "Wollen Sie selbst spielen oder als Computer?",
-                            "Selfplay or KI", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, icon, options, options[0]);
+                String[] options = new String[]{"Player", "Computer", "Cancel"};
+                ImageIcon icon = new ImageIcon("");
+                int x = JOptionPane.showOptionDialog(menuFrame, "Wollen Sie selbst spielen oder als Computer?",
+                        "Selfplay or KI", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, icon, options, options[0]);
 
-                    if(x == 0){
-                        menuPanel.setVisible(false);
-                        menuFrame.dispose();
-                        // Create SpielWindow and display it
-                        try {
-                            Client client = new Client(IP);
-                            SpielFeld1 = 0 ;
-                            new SpielWindow(menuFrame, client); //warum wird hier kein SpielWindow übergeben  ?
-                        } catch (Exception ioException) {
-                            ioException.printStackTrace();
-                        }
-                    } else if (x == 1){
-                        menuPanel.setVisible(false);
-                        menuFrame.dispose();
-                        // Create SpielWindow and display it
+                if (x == 0) {
+                    onlineCom = false;
+                    menuPanel.setVisible(false);
+                    menuFrame.dispose();
+                    // Create SpielWindow and display it
+                    try {
+                        Client client = new Client(IP);
+                        SpielFeld1 = 0;
+                        new SpielWindow(menuFrame, client); //warum wird hier kein SpielWindow übergeben  ?
+                    } catch (Exception ioException) {
+                        ioException.printStackTrace();
+                    }
+                } else if (x == 1) {
+                    onlineCom = true;
+                    menuPanel.setVisible(false);
+                    menuFrame.dispose();
+                    // Create SpielWindow and display it
 //                try {
 //                    SpielFeld1 = 1 ;
 //                    //new SpielWindow(menuFrame, server, );    //Gleiche frage:Warum wird hier kein Spielfeld übergeben, die Ergebnisse von Schüssen werden in der GUI nie erfasst, die Daten sollen auch weitergeschickt werden
 //                } catch (IOException | FontFormatException ioException) {
 //                    ioException.printStackTrace();
 //                }
-                    } else {
-                        System.out.println("no");
-                    }
-        }});
+                } else {
+                    System.out.println("no");
+                }
+            }
+        });
         buttonMenuHost.addActionListener(e -> {
             menuPanel.setVisible(false);
             GameMode = true;
