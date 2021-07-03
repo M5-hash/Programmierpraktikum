@@ -101,7 +101,7 @@ public abstract class Com_base {
     }
 
     protected void message_check() throws Exception {
-
+        frame.Turn.switchTurn(false);
         String in = loopCheckIN(true);
         String[] holder = in.split(" ");
         if (holder[0].equals("shot")) {
@@ -133,43 +133,31 @@ public abstract class Com_base {
 
             } else if (holder[1].equals("1")) {
                 pf.didHit(1, this.lastX, this.lastY);
-                timeMyTurn();
+                myTurn = true;
             } else if (holder[1].equals("2")) {
                 pf.didHit(2, this.lastX, this.lastY);
                 if (pf.gameover()) {
                     //hier loose Screen
                 }
-                timeMyTurn();
+                myTurn = true;
             }
 
         } else if (holder[0].equals("save")) {
             pf.saveGame(Long.parseLong(holder[1]));
         } else if (holder[0].equals("ready")) {
-            timeMyTurn();
+            myTurn = true;
         } else if (holder[0].equals("pass")) {
-            timeMyTurn();
+            myTurn = true;
         }
+
         if(myTurn){
             frame.Turn.switchTurn(true);
         }
-        if(myTurn){
+        else{
             frame.Turn.switchTurn(false);
         }
     }
 
-    protected void timeMyTurn() {
-
-        ActionListener taskPerformer = evt -> {
-            if (!first) {
-                myTurn = true;
-                first = true;
-                tStop();
-            }
-            first = false;
-        };
-        t = new javax.swing.Timer(3000, taskPerformer);
-        t.start();
-    }
 
     private void tStop() {
         t.stop();
