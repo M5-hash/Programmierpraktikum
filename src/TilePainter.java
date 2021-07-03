@@ -239,24 +239,11 @@ public class TilePainter extends JPanel implements MouseMotionListener {
         frame.Online.setXY(PosX, PosY);
         try {
             frame.Online.Send("shot " + xString + yString);
-            frame.repaint();
-            frame.tile.repaint();
-            frame.tile2.repaint();
+            frame.dummybutton.doClick();
+
         } catch (Exception ioException) {
             ioException.printStackTrace();
         }
-        try {
-            do {
-                frame.Online.message_check();
-                frame.repaint();
-                frame.tile.repaint();
-                frame.tile2.repaint();
-
-            } while (!frame.Online.myTurn);
-        } catch (Exception exception) {
-            exception.printStackTrace();
-        }
-
     }
 
     /**

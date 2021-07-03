@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import static src.config.*;
 
@@ -171,12 +172,24 @@ public class SpielWindow extends JPanel {
         dummybutton.addActionListener(e -> {
 
             try {
+
                 Online.message_check();
             } catch (Exception exception) {
                 exception.printStackTrace();
             }
             if(!Online.myTurn){
-                dummybutton.doClick();
+                Thread t1 = new Thread(new Runnable() {
+                    public void run()
+                    {
+                        try {
+                            TimeUnit.MILLISECONDS.sleep(100);
+                            dummybutton.doClick();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+
+                    }});
+                t1.start();
             }
 
         });
@@ -222,16 +235,18 @@ public class SpielWindow extends JPanel {
                 gamePanel1.setVisible(true);
                 gamePanel2.setVisible(false);
                 if(SpielFeld2 == 2 && Multclient){
-                    try {
-                        do{
-                            Online.message_check();
-                            tile.repaint();
-                            //tile.revalidate();
+                    Thread t1 = new Thread(new Runnable() {
+                        public void run()
+                        {
+                            try {
+                                TimeUnit.MILLISECONDS.sleep(100);
+                                dummybutton.doClick();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
 
-                        }while(!Online.myTurn);
-                    } catch (Exception f) {
-                        f.printStackTrace();
-                    }
+                        }});
+                    t1.start();
                 }
             } else
             {
@@ -344,12 +359,19 @@ public class SpielWindow extends JPanel {
             gamePanel2.setVisible(false);
             if(SpielFeld2 == 2 && Multclient){
                 try {
-                    do{
-                        Online.message_check();
-                        tile.repaint();
-                        //tile.revalidate();
+                    Thread t1 = new Thread(new Runnable() {
+                        public void run()
+                        {
+                            try {
+                                TimeUnit.MILLISECONDS.sleep(100);
+                                dummybutton.doClick();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
 
-                    }while(!Online.myTurn);
+                        }});
+                    t1.start();
+
                 } catch (Exception f) {
                     f.printStackTrace();
                 }
@@ -375,7 +397,6 @@ public class SpielWindow extends JPanel {
 
         return compiledArray;
     }
-
 
     public ComPlayer getCom(){
         return this.Com;
