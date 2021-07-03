@@ -5,7 +5,6 @@ package src;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Arrays;
 
 import static src.config.*;
 
@@ -17,6 +16,9 @@ public class TilePainter extends JPanel implements MouseMotionListener {
     public static boolean horizontal = true;
     private static int groesse = 0;
     private final Tile Ebene;
+    private final int[] groessen = {0, 0, size2, size3, size4, size5};
+    Timer OnlineKI;
+    private MouseListener temp;
     public boolean Onfirstfield = false;
     int AnzSchiffe = 0;
     boolean usable = false;
@@ -32,13 +34,11 @@ public class TilePainter extends JPanel implements MouseMotionListener {
     SpielWindow frame;
     PlayingField pf;
     ComPlayer Computer;
+    private MouseListener temp2;
     Timer KItimer;
     int[] recentshot = new int[2];
     boolean placeable = false;
     boolean MovementHandler;
-    private final MouseListener temp;
-    private final MouseListener temp2;
-    private final int[] groessen = {0, 0, size2, size3, size4, size5};
     private int PosX = 0;
     private int PosY = 0;
 
@@ -60,83 +60,81 @@ public class TilePainter extends JPanel implements MouseMotionListener {
         Computer = Com;
         this.frame = frame;
         field = Feldvon;
-        this.pf = pf;
-        hier = new SpritePainter(field, this, frame, pf);
+        if(!onlineCom) {
+            this.pf = pf;
+            hier = new SpritePainter(field, this, frame, pf);
 
 
-        if (field == 0) {
-            //Da es sich hier nicht um ein normales Feld handelt wird hier 4 == Vorhersage übergeben
-            Predicted = new SpritePainter(4, this, frame, pf);
-        }
+            if (field == 0) {
+                //Da es sich hier nicht um ein normales Feld handelt wird hier 4 == Vorhersage übergeben
+                Predicted = new SpritePainter(4, this, frame, pf);
+            }
 
+            addMouseMotionListener(this);
 
-        addMouseMotionListener(this);
+            //TODO Wenn man im Online Modus nochmal schießt, dann landet des einfach im Buffer und wird später nochmals gesendet
+            addMouseListener(temp = new MouseAdapter() {
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    if (e.getButton() == MouseEvent.BUTTON1) {
 
-        //TODO Wenn man im Online Modus nochmal schießt, dann landet des einfach im Buffer und wird später nochmals gesendet
-        addMouseListener(temp = new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                if (e.getButton() == MouseEvent.BUTTON1) {
+                        //Wenn der Klick sich auf dem Spielfeld befunden hat
+                        if (Onfirstfield) {
 
+                            //Wenn man noch beim platzieren ist
+                            if (!Tile.fightstart && field == 0) {
 
-                    //Wenn der Klick sich auf dem Spielfeld befunden hat
-                    if (Onfirstfield) {
+                                //Wenn man nicht am löschen ist
+                                if (!deleting) {
 
-
-                        //Wenn man noch beim platzieren ist
-                        if (!Tile.fightstart && field == 0) {
-
-                            //Wenn man nicht am löschen ist
-                            if (!deleting) {
-
-                                placingMausklick();
-                            }
-
-                            //Wenn man gerade am Löschen ist
-                            if (deleting) {
-
-                                deleteMausklick();
-                            }
-                        }
-
-                        //Wenn man am schießen/ nicht mehr am platzieren ist
-                        if (Tile.isFightstart()) {
-
-                            //Wenn auf diese Stelle noch nicht geschossen wurde
-                            if (pf.getFieldEnemy()[PosY][PosX] == 0) {
-
-                                //Wenn wir auf dem Spielfeld des Gegners sind
-                                if (field == 1) {
-                                    //Wenn wir einen Computergegner haben
-                                    if (SpielFeld2 == 1) {
-
-                                      KISchussMausklick();
-                                    }
-
+                                    placingMausklick();
                                 }
-                                if (field == 2 && frame.Online.myTurn) {
 
-                                    OnlineMausklick();
+                                //Wenn man gerade am Löschen ist
+                                if (deleting) {
+
+                                    deleteMausklick();
+                                }
+                            }
+
+                            //Wenn man am schießen/ nicht mehr am platzieren ist
+                            if (Tile.isFightstart()) {
+
+                                //Wenn auf diese Stelle noch nicht geschossen wurde
+                                if (pf.getFieldEnemy()[PosY][PosX] == 0) {
+
+                                    //Wenn wir auf dem Spielfeld des Gegners sind
+                                    if (field == 1) {
+                                        //Wenn wir einen Computergegner haben
+                                        if (SpielFeld2 == 1) {
+
+                                            KISchussMausklick();
+                                        }
+
+                                    }
+                                    if (field == 2 && frame.Online.myTurn) {
+
+                                        OnlineMausklick();
+                                    }
                                 }
                             }
                         }
                     }
                 }
-            }
-        });
+            });
 
-        //Erlaubt es dem Nutzer mit der rechten Maustaste zwischen horizontal und vertikal in der Schiffplatzierung zu wechseln
-        addMouseListener(temp2 = new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                if (e.getButton() == MouseEvent.BUTTON3) {
-                    horizontal = !horizontal;
-                    MovementHandler = true;
+            //Erlaubt es dem Nutzer mit der rechten Maustaste zwischen horizontal und vertikal in der Schiffplatzierung zu wechseln
+            addMouseListener(temp2 = new MouseAdapter() {
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    if (e.getButton() == MouseEvent.BUTTON3) {
+                        horizontal = !horizontal;
+                        MovementHandler = true;
+                    }
+
                 }
-
-            }
-        });
-
+            });
+        }
     }
 
     /**
@@ -154,12 +152,12 @@ public class TilePainter extends JPanel implements MouseMotionListener {
     }
 
     /**
-     *Überprüft, ob der Spieler am Zug ist und übergibt den Schuss dann der KI, sowie was getroffen wurde an das eigene PlayingField.
-     *Bei einem Treffer wird auf den nächsten menschlichen Input gewartet, ansonsten ist die KI am Zug, welche solange
-     *weiter schießt, bis diese verfehlt, zwischen jedem Schuss der Ki ist ein delay eingebaut, der es dem Menschen
-     *erlaubt die einzelnen Schüsse nachzuverfolgen.
+     * Überprüft, ob der Spieler am Zug ist und übergibt den Schuss dann der KI, sowie was getroffen wurde an das eigene PlayingField.
+     * Bei einem Treffer wird auf den nächsten menschlichen Input gewartet, ansonsten ist die KI am Zug, welche solange
+     * weiter schießt, bis diese verfehlt, zwischen jedem Schuss der Ki ist ein delay eingebaut, der es dem Menschen
+     * erlaubt die einzelnen Schüsse nachzuverfolgen.
      */
-    private void KISchussMausklick(){
+    private void KISchussMausklick() {
         try {
             //Falls der Spieler gerade am Zug ist
             if (PlayerTurn) {
@@ -225,11 +223,11 @@ public class TilePainter extends JPanel implements MouseMotionListener {
     }
 
     /**
-     *Übergibt den Schuss an die Kommunikation im passenden String Format.
-     *
+     * Übergibt den Schuss an die Kommunikation im passenden String Format.
+     * <p>
      * TODO die repaint können eigentlich entfernt werden, da das ja eindeutig nicht funtkioniert
      */
-    private void OnlineMausklick(){
+    private void OnlineMausklick() {
         String xString = PosX + " ";
         String yString = "" + PosY;
 
@@ -254,10 +252,52 @@ public class TilePainter extends JPanel implements MouseMotionListener {
     }
 
     /**
-     *Übergibt, welches Feld geklickt wurde an das PlayingField, welche das jeweilige Schiff dann entfernt.
-     *Die Menge aller Schiffe sowie die der jeweiligen Schiffsart, welche gesetzt werden kann, wird daraufhin um Eins erhöht.
+     *
      */
-    private void deleteMausklick(){
+    public void OnlineSchussKI() {
+
+        ActionListener OnlinetaskPerformer = evt -> {
+            if (Computer.gameover()) {
+                OnlineKItimerstopper();
+            } else {
+
+                int[] Feld = new int[2];
+                try {
+
+                    // Wohin der Computer schießt
+                    Feld = Computer.doNextShot();
+                    hasshot = true;
+                    recentshot = Feld;
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+                }
+                allowchange = true;
+                frame.Online.setXY(Feld[0], Feld[1]);
+
+                String xString = Feld[0] + " ";
+                String yString = "" + Feld[1];
+
+                try {
+                    frame.Online.Send("shot " + xString + yString);
+                } catch (Exception ioException) {
+                    ioException.printStackTrace();
+                }
+
+                if (Computer.getPlayingField().enemygameover()) {
+                    OnlineKItimerstopper();
+                }
+            }
+        };
+        //300ms sind genug um die einzelnen Schüsse der Ki zu sehen
+        OnlineKI = new Timer(300, OnlinetaskPerformer);
+        OnlineKI.start();
+    }
+
+    /**
+     * Übergibt, welches Feld geklickt wurde an das PlayingField, welche das jeweilige Schiff dann entfernt.
+     * Die Menge aller Schiffe sowie die der jeweiligen Schiffsart, welche gesetzt werden kann, wird daraufhin um Eins erhöht.
+     */
+    private void deleteMausklick() {
         try {
 
             //Die Groesse des gelöschten Schiffes wird zurückgegeben
@@ -294,10 +334,10 @@ public class TilePainter extends JPanel implements MouseMotionListener {
     }
 
     /**
-     *Übergibt, welches Feld geklickt wurde an das PlayingField, welche das jeweilige Schiff dann setzt.
-     *Die Menge der jeweiligen Schiffsart, welche gesetzt werden kann, wird daraufhin um Eins verringert.
+     * Übergibt, welches Feld geklickt wurde an das PlayingField, welche das jeweilige Schiff dann setzt.
+     * Die Menge der jeweiligen Schiffsart, welche gesetzt werden kann, wird daraufhin um Eins verringert.
      */
-    private void placingMausklick(){
+    private void placingMausklick() {
 
         //Wenn es ein Schiff dieser Größe zum setzen gibt und es auch an dieser Stelle auch platzierbar ist
         if (groessen[groesse] > 0 && pf.setShip(groesse, PosX, PosY, horizontal)) {
@@ -380,17 +420,6 @@ public class TilePainter extends JPanel implements MouseMotionListener {
         PosY = posY;
     }
 
-    //TODO wird wahrscheinlich entfernt
-    public void switchUsable() {
-        usable = !usable;
-        if (usable) {
-            this.removeMouseListener(temp);
-            this.removeMouseListener(temp2);
-        } else {
-            this.addMouseListener(temp);
-            this.addMouseListener(temp2);
-        }
-    }
 
     /**
      * @return int[]
@@ -492,6 +521,10 @@ public class TilePainter extends JPanel implements MouseMotionListener {
      */
     private void timerstarter() {
         KItimer.start();
+    }
+
+    private void OnlineKItimerstopper() {
+        OnlineKI.stop();
     }
 
 

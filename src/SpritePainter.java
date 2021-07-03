@@ -349,7 +349,8 @@ public class SpritePainter {
                 if (fieldof == 0 || fieldof == 4) {
 
 
-                    //Wenn das Schiff getroffen wurde, dann ist das Array an der Stelle entweder 1 (Teil getroffen aber Schiff gibt es noch) oder 2 (Teil und gesamtes Schiff zerstört)
+                    //Wenn das Schiff getroffen wurde, dann ist das Array an der Stelle entweder 1 (Teil getroffen
+                    // aber Schiff gibt es noch) oder 2 (Teil und gesamtes Schiff zerstört)
                     IsHit = pf.getField()[y][x] == 1 || pf.getField()[y][x] == 2;
                     if(pf.getField()[y][x] == 5){
 

@@ -49,8 +49,33 @@ public class SpielWindow extends JPanel {
         this.playingField = pf;
         this.Com = Com ;
         makeComponents(frame, false);
+        adjustState(pf.getStatus() == 1);
+    }
+
+    public SpielWindow(JFrame frame, Client Client){
+        Online = Client ;
+        playingField = Client.pf ;
+        makeComponents(frame);
+        Multclient = true ;
+        if(onlineCom){
+            tile.OnlineSchussKI();
+        }
+    }
+
+    public SpielWindow(JFrame frame, Server Server){
+        System.out.println("Wir sind in das SpielWindow gekommen");
+        Online = Server ;
+        playingField = Server.pf ;
+        makeComponents(frame);
+        Multclient = false ;
+        if(onlineCom){
+            tile.OnlineSchussKI();
+        }
+    }
+
+    private void adjustState(boolean pfStatus) {
         tile.AnzSchiffe = sumofships ;
-        tile2.PlayerTurn = pf.getStatus() == 1;
+        tile2.PlayerTurn = pfStatus;
         if(selectedTheme.equals("Pokemon")){
             //Daten reinladen
             tile.hier.updatePokemon();
@@ -60,24 +85,13 @@ public class SpielWindow extends JPanel {
         gamestart();
     }
 
-    public SpielWindow(JFrame frame, Client Client){
-        Online = Client ;
-        playingField = Client.pf ;
-        makeComponents(frame);
-        Multclient = true ;
-    }
-
-    public SpielWindow(JFrame frame, Server Server){
-        Online = Server ;
-        playingField = Server.pf ;
-        makeComponents(frame);
-        Multclient = false ;
-    }
     private void makeComponents(JFrame frame){
         makeComponents(frame, true);
     }
 
     private void makeComponents(JFrame frame, boolean setCom) {
+
+        System.out.println("Wir sind in der makecomponents");
 
         sumofships = size2 + size3 + size4 + size5;
         System.out.println("sumofships" + sumofships);
@@ -275,7 +289,7 @@ public class SpielWindow extends JPanel {
             Tile.fightstart = true;
             tile.AnzSchiffe = 0 ;
             if(Tile.isFightstart()){
-                Z.           setBounds(framewidth * 62 / 100, frameheigth * 17 / 100, framewidth * 25 / 100, frameheigth * 10/ 100);
+                Z.setBounds(framewidth * 62 / 100, frameheigth * 17 / 100, framewidth * 25 / 100, frameheigth * 10/ 100);
             }
             gamePanel1.setVisible(true);
             gamePanel2.setVisible(false);
