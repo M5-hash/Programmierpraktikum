@@ -1,6 +1,7 @@
 package src.components;
 
 import src.ImageLoader;
+import src.MenuSize;
 import src.Server;
 import src.SpielWindow;
 
@@ -66,37 +67,11 @@ public class PanelHost extends JPanel {
             previousPanel.setVisible(true);
         });
         buttonConfirm.addActionListener(e -> {
-            String[] options = new String[] {"Player", "Computer", "Cancel"};
-
-            ImageIcon icon = new ImageIcon("");
-            int x = JOptionPane.showOptionDialog(menuFrame, "Wollen Sie selbst spielen oder als Computer?",
-                    "Selfplay or KI", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, icon, options, options[0]);
-
-            SpielFeld2 = 2 ;
-
-            if(x == 0){
-                menuHost.setVisible(false);
-                menuFrame.dispose();
-                // Create SpielWindow and display it
-                try {
-                    SpielFeld1 = 0 ;
-                    Server server = new Server("setup", fieldsize, getShipString());
-                    SpielWindow MP_Window = new SpielWindow(menuFrame, server);
-                } catch (Exception ioException) {
-                    ioException.printStackTrace();
-                }
-            } else if (x == 1){
-                menuHost.setVisible(false);
-                menuFrame.dispose();
-                // Create SpielWindow and display it
-                try {
-                    SpielFeld1 = 0 ;
-                    Server server = new Server("setup", fieldsize, getShipString());
-                } catch (Exception ioException) {
-                    ioException.printStackTrace();
-                }
-            } else {
-                System.out.println("no");
+            menuHost.setVisible(false);
+            try {
+                new MenuSize(menuFrame, menuHost);
+            } catch (IOException | FontFormatException ioException) {
+                ioException.printStackTrace();
             }
         });
 
@@ -107,25 +82,6 @@ public class PanelHost extends JPanel {
         makeConstraints(scrollPane, 1, 1, 4);
         makeConstraints(buttonPanel, 1, 3, 4);
     }
-
-    private String getShipString() {
-
-        String hold = "";
-        for(int i = 0; i < size2; i++){
-            hold += "2 ";
-        }
-        for(int i = 0; i < size3; i++){
-            hold += "3 ";
-        }
-        for(int i = 0; i < size4; i++){
-            hold += "4 ";
-        }
-        for(int i = 0; i < size5; i++){
-            hold += "5 ";
-        }
-        return hold;
-    }
-
     public static String[] IP_Ausgabe() throws IOException {
         ArrayList<String> IPs = new ArrayList<String>();
         Enumeration<NetworkInterface> nis =
