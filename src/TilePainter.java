@@ -62,12 +62,12 @@ public class TilePainter extends JPanel implements MouseMotionListener {
         Computer = Com;
         this.frame = frame;
         field = Feldvon;
-        if(!onlineCom) {
+
             PickSmallestAvailableSize();
             this.pf = pf;
             hier = new SpritePainter(field,  frame, pf);
 
-
+        if(!onlineCom) {
             if (field == 0) {
                 //Da es sich hier nicht um ein normales Feld handelt wird hier 4 == Vorhersage übergeben
                 Predicted = new SpritePainter(4, frame, pf);
@@ -176,6 +176,7 @@ public class TilePainter extends JPanel implements MouseMotionListener {
 
 
                     hitKI = true;
+                    frame.Turn.switchTurn(PlayerTurn);
 
                     //Timer mit delay wird verwendet, sodas der Spieler die Schüsse der KI nachvollziehen/sehen kann
                     ActionListener taskPerformer = evt -> {
@@ -206,10 +207,12 @@ public class TilePainter extends JPanel implements MouseMotionListener {
                         //Falls nicht getroffen --> Spieler am Zug & und Timer wird beendet
                         if (!hitKI) {
                             PlayerTurn = true;
+                            frame.Turn.switchTurn(PlayerTurn);
                             timerstopper();
                         }
                         if (hitKI) {
                             PlayerTurn = false;
+                            frame.Turn.switchTurn(PlayerTurn);
                             timerstarter();
                         }
                         System.out.println(counter++);

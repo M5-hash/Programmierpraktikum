@@ -1,10 +1,13 @@
 package src.components;
 
+import src.Bildloader;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import static src.FontLoader.Pokemon;
+import static src.config.selectedTheme;
 
 public class MenuInformation extends JPanel {
     int j = 0;
@@ -75,6 +78,10 @@ public class MenuInformation extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        if(!selectedTheme.equals("Pokemon")){
+            Bildloader Bild = new Bildloader() ;
+            bgImage = Bild.BildLoader("src/Images/NavalBackground.jpg") ;
+        }
         g.drawImage(bgImage, 0,0, getWidth(), getHeight(), null);
     }
 }
