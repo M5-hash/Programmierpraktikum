@@ -114,11 +114,11 @@ public class TilePainter extends JPanel implements MouseMotionListener {
                                             KISchussMausklick();
                                         }
 
-                                    }
+                                    } else{
                                     if (field == 2 && frame.Online.myTurn) {
 
                                         OnlineMausklick();
-                                    }
+                                    }}
                                 }
                             }
                         }
