@@ -58,7 +58,7 @@ public class SpielWindow extends JPanel {
     public SpielWindow(JFrame frame, Client Client){
         Online = Client ;
         playingField = Client.pf ;
-        makeComponents(frame, false);
+        makeComponents(frame, onlineCom);
         Multclient = true ;
         if(onlineCom){
             tile.OnlineSchussKI();
@@ -74,7 +74,7 @@ public class SpielWindow extends JPanel {
         System.out.println("Wir sind in das SpielWindow gekommen");
         Online = Server ;
         playingField = Server.pf ;
-        makeComponents(frame, false);
+        makeComponents(frame, onlineCom);
         Multclient = false ;
         if(onlineCom){
             tile.OnlineSchussKI();
