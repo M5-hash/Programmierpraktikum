@@ -750,11 +750,11 @@ public class PlayingField {
      * @return String mit Zeilenumbruch
      */
     private String getSaveString2DArray(int[][] field) {
-        String s = "";
+        StringBuilder s = new StringBuilder();
 
-        for (int y = 0; y < field.length; y++) {
+        for (int[] ints : field) {
             for (int x = 0; x < field.length; x++) {
-                s += field[y][x];
+                s.append(ints[x]);
             }
         }
 
@@ -765,22 +765,20 @@ public class PlayingField {
      * Wrapper für loadGame ohne com Angabe
      *
      * @param id ID der Speicherdatei, welche z.B. beim Netzwerkspiel vom Server beim Speichern zugeteilt wird
-     * @return True: Laden war erfolgreich, False: Laden war nicht erfolgreich
      * @throws FileNotFoundException Kein Zugriff auf den Temp Ordner
      */
-    public boolean loadGame(long id) throws FileNotFoundException {
-        return this.loadGame(id, null);
+    public void loadGame(long id) throws FileNotFoundException {
+        this.loadGame(id, null);
     }
 
     /**
      * Wrapper für loadGame ohne com Angabe
      *
      * @param file Absoluter Pfad der Speicherdatei
-     * @return True: Laden war erfolgreich, False: Laden war nicht erfolgreich
      * @throws FileNotFoundException Kein Zugriff auf den Temp Ordner
      */
-    public boolean loadGame(String file) throws FileNotFoundException {
-        return this.loadGame(file, null);
+    public void loadGame(String file) throws FileNotFoundException {
+        this.loadGame(file, null);
     }
 
     /**
@@ -788,20 +786,19 @@ public class PlayingField {
      *
      * @param id  ID der Speicherdatei, welche z.B. beim Netzwerkspiel vom Server beim Speichern zugeteilt wird
      * @param com Wenn es das PlayingField eines Computer-Spielers ist, diesen mitgeben, sonst null
-     * @return True: Laden war erfolgreich, False: Laden war nicht erfolgreich
      */
-    public boolean loadGame(long id, ComPlayer com) throws FileNotFoundException {
+    public void loadGame(long id, ComPlayer com) throws FileNotFoundException {
         String f = System.getProperty("java.io.tmpdir") + File.separator + "SchiffeVersenkenHSAalenSaves";
 
         //SchiffeVersenkenHSAalenSaves-Ordner überprüfen
         File directory = new File(f);
-        if (!directory.exists()) return false;
+        if (!directory.exists()) throw new FileNotFoundException("Temp-Ordner existiert nicht");
 
         //File-Objekt erstellen
         File file = new File(f + File.separator + id + "_save.txt");
 
         //Mit Dateinamen jetzt das Spiel laden
-        return this.loadGame(file.getAbsolutePath(), com);
+        this.loadGame(file.getAbsolutePath(), com);
     }
 
     /**
@@ -809,13 +806,13 @@ public class PlayingField {
      *
      * @param file Absoluter Pfad und Dateinamen
      * @param com  Wenn es das PlayingField eines Computer-Spielers ist, diesen mitgeben, sonst null
-     * @return True: Erfolgreich, False: Datei existiert nicht bzw. ist nicht lesbar
-     * @throws FileNotFoundException Sollte nie auftreten, da per return abgebrochen wird
+     * @throws FileNotFoundException wird geworfen, wenn die Datei nicht lesbar ist
      */
-    public boolean loadGame(String file, ComPlayer com) throws FileNotFoundException {
+    public void loadGame(String file, ComPlayer com) throws FileNotFoundException {
         //Prüfen ob die Datei existiert
         File f = new File(file);
-        if (!f.exists()) return false;
+        if (!f.exists())
+            throw new FileNotFoundException("Die Speicherdatei existiert nicht oder kann nicht gelesen werden!");
 
         Scanner s = new Scanner(f);
 
@@ -884,8 +881,6 @@ public class PlayingField {
         this.fieldEnemy = this.saveStringTo2DArray(s.nextLine(), fieldLen);
 
         s.close();
-
-        return true;
     }
 
     /**
