@@ -16,8 +16,6 @@ public class SpielWindow extends JPanel {
 
     boolean Multclient ;
 
-    Client          client;
-    Server          server;
     TilePainter     tile2;
     TilePainter     tile;
     Zielhilfe       Z;
@@ -37,6 +35,7 @@ public class SpielWindow extends JPanel {
     ToggleButton    btn_size4;
     ToggleButton    btn_size5;
 
+    Com_base Online ;
     private ComPlayer Com;
     private PlayingField playingField;
 
@@ -62,14 +61,14 @@ public class SpielWindow extends JPanel {
     }
 
     public SpielWindow(JFrame frame, Client Client){
-        client = Client ;
+        Online = Client ;
         playingField = Client.pf ;
         makeComponents(frame);
         Multclient = true ;
     }
 
     public SpielWindow(JFrame frame, Server Server){
-        this.server = Server ;
+        Online = Server ;
         playingField = Server.pf ;
         makeComponents(frame);
         Multclient = false ;
@@ -126,10 +125,18 @@ public class SpielWindow extends JPanel {
         buttonSaveGame    = new SaveGameButton("SAVE GAME",    ImageLoader.getImage(ImageLoader.MENU_BUTTON), this.playingField, this.Com);
         buttonLoadGame    = new LoadGameButton(frame, menuPanel, "LOAD GAME",    ImageLoader.getImage(ImageLoader.MENU_BUTTON));
         buttonQuitGame    = new QuitButton();
-        btn_size2         = new ToggleButton("size 2: " + size2, ImageLoader.getImage(ImageLoader.RED), ImageLoader.getImage(ImageLoader.MENU_BUTTON2), ImageLoader.getImage(ImageLoader.GAME_BTN_BALL1));
-        btn_size3         = new ToggleButton("size 3: " + size3, ImageLoader.getImage(ImageLoader.RED), ImageLoader.getImage(ImageLoader.MENU_BUTTON2), ImageLoader.getImage(ImageLoader.GAME_BTN_BALL2));
-        btn_size4         = new ToggleButton("size 4: " + size4, ImageLoader.getImage(ImageLoader.RED), ImageLoader.getImage(ImageLoader.MENU_BUTTON2), ImageLoader.getImage(ImageLoader.GAME_BTN_BALL3));
-        btn_size5         = new ToggleButton("size 5: " + size5, ImageLoader.getImage(ImageLoader.RED), ImageLoader.getImage(ImageLoader.MENU_BUTTON2), ImageLoader.getImage(ImageLoader.GAME_BTN_BALL4));
+        if(selectedTheme.equals("Pokemon")){
+            btn_size2         = new ToggleButton("size 2: " + size2, ImageLoader.getImage(ImageLoader.RED), ImageLoader.getImage(ImageLoader.MENU_BUTTON2), ImageLoader.getImage(ImageLoader.GAME_BTN_BALL1));
+            btn_size3         = new ToggleButton("size 3: " + size3, ImageLoader.getImage(ImageLoader.RED), ImageLoader.getImage(ImageLoader.MENU_BUTTON2), ImageLoader.getImage(ImageLoader.GAME_BTN_BALL2));
+            btn_size4         = new ToggleButton("size 4: " + size4, ImageLoader.getImage(ImageLoader.RED), ImageLoader.getImage(ImageLoader.MENU_BUTTON2), ImageLoader.getImage(ImageLoader.GAME_BTN_BALL3));
+            btn_size5         = new ToggleButton("size 5: " + size5, ImageLoader.getImage(ImageLoader.RED), ImageLoader.getImage(ImageLoader.MENU_BUTTON2), ImageLoader.getImage(ImageLoader.GAME_BTN_BALL4));
+        } else {
+            Bildloader Bild = new Bildloader() ;
+            btn_size2         = new ToggleButton("size 2: " + size2, ImageLoader.getImage(ImageLoader.RED), ImageLoader.getImage(ImageLoader.MENU_BUTTON2), Bild.BildLoader("src/Images/2Stern.png"));
+            btn_size3         = new ToggleButton("size 3: " + size3, ImageLoader.getImage(ImageLoader.RED), ImageLoader.getImage(ImageLoader.MENU_BUTTON2), Bild.BildLoader("src/Images/3Stern.png"));
+            btn_size4         = new ToggleButton("size 4: " + size4, ImageLoader.getImage(ImageLoader.RED), ImageLoader.getImage(ImageLoader.MENU_BUTTON2), Bild.BildLoader("src/Images/4Stern.png"));
+            btn_size5         = new ToggleButton("size 5: " + size5, ImageLoader.getImage(ImageLoader.RED), ImageLoader.getImage(ImageLoader.MENU_BUTTON2), Bild.BildLoader("src/Images/5Stern.png"));
+        }
         gamePanel1        = new JPanel();
         gamePanel2        = new JPanel();
         buttonGroup       = new ButtonGroup();
@@ -275,11 +282,11 @@ public class SpielWindow extends JPanel {
             if(SpielFeld2 == 2 && Multclient){
                 try {
                     do{
-                        client.message_check();
+                        Online.message_check();
                         tile.repaint();
                         //tile.revalidate();
 
-                    }while(!client.myTurn);
+                    }while(!Online.myTurn);
                 } catch (Exception f) {
                     f.printStackTrace();
                 }

@@ -327,11 +327,10 @@ public class SpritePainter {
 
             case 2 -> {
                 if (frame.Multclient) {
-                    dummy = frame.client.pf.getFieldEnemy();
+                    dummy = frame.Online.pf.getFieldEnemy();
                 } else {
-                    dummy = frame.server.pf.getFieldEnemy();
+                    dummy = frame.Online.pf.getFieldEnemy();
                 }
-                //case "Vorhersage" -> Vorhersage;
             }
 
             default -> dummy = BugHeckMeck;
