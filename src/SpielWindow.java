@@ -33,6 +33,7 @@ public class SpielWindow extends JPanel {
     ToggleButton    btn_size3;
     ToggleButton    btn_size4;
     ToggleButton    btn_size5;
+    MenuButton dummybutton = new MenuButton("DUMMY BUTTON", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
 
     Com_base Online ;
     private ComPlayer Com;
@@ -137,7 +138,7 @@ public class SpielWindow extends JPanel {
         frameheigth = frame.getHeight();
         framewidth = frame.getWidth();
 
-        MenuButton dummybutton = new MenuButton("DUMMY BUTTON", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
+
         tile              = new TilePainter(fieldsize, SpielFeld1, this, Com, playingField);
         tile2             = new TilePainter(fieldsize, SpielFeld2, this, Com, playingField);
         Z                 = new Zielhilfe(this, frame);
