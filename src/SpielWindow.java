@@ -368,6 +368,7 @@ public class SpielWindow extends JPanel {
                         public void run()
                         {
                             try {
+                                Turn.switchTurn(false);
                                 TimeUnit.MILLISECONDS.sleep(100);
                                 dummybutton.doClick();
                             } catch (InterruptedException e) {

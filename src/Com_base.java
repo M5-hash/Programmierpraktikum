@@ -149,8 +149,12 @@ public abstract class Com_base {
         } else if (holder[0].equals("pass")) {
             timeMyTurn();
         }
-        frame.repaint();
-
+        if(myTurn){
+            frame.Turn.switchTurn(true);
+        }
+        if(myTurn){
+            frame.Turn.switchTurn(false);
+        }
     }
 
     protected void timeMyTurn() {
