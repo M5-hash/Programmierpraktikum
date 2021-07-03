@@ -437,6 +437,10 @@ public class TilePainter extends JPanel implements MouseMotionListener {
         return recentshot;
     }
 
+    public void paintComponent(){
+        paintComponent(Test);
+    }
+
     /**
      * @param g Graphics Object
      *          <p>
@@ -446,8 +450,6 @@ public class TilePainter extends JPanel implements MouseMotionListener {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Test = g ;
-
-        System.out.println("Hallo ich bin die PaintComponent von Tile und ich wurde aufgerufen");
 
         setOpaque(false);
 
@@ -574,6 +576,11 @@ public class TilePainter extends JPanel implements MouseMotionListener {
 
         }
     }
+
+   public void updateComponent(){
+
+   }
+
 
     private void PickSmallestAvailableSize() {
         for(int i = 2; i <= 5 ; i++){
