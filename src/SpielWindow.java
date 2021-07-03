@@ -61,8 +61,9 @@ public class SpielWindow extends JPanel {
         if(onlineCom){
             tile.OnlineSchussKI();
         }
-        adjustState(playingField.getStatus() == 1);
+
         if(Online.getLoaded()){
+            adjustState(playingField.getStatus() == 1);
             gamestart();
         }
     }
@@ -76,8 +77,9 @@ public class SpielWindow extends JPanel {
         if(onlineCom){
             tile.OnlineSchussKI();
         }
-        adjustState(playingField.getStatus() == 1);
+
         if(Online.getLoaded()){
+            adjustState(playingField.getStatus() == 1);
             gamestart();
         }
     }
@@ -195,7 +197,30 @@ public class SpielWindow extends JPanel {
         buttonGroup.add(btn_size5);
         buttonReady.addActionListener(e -> {
 
-            gamestart();
+            if(tile.AnzSchiffe == sumofships){
+                Tile.fightstart = true;
+                tile.AnzSchiffe = 0 ;
+                if(Tile.isFightstart()){
+                    Z.           setBounds(framewidth * 62 / 100, frameheigth * 17 / 100, framewidth * 25 / 100, frameheigth * 10/ 100);
+                }
+                gamePanel1.setVisible(true);
+                gamePanel2.setVisible(false);
+                if(SpielFeld2 == 2 && Multclient){
+                    try {
+                        do{
+                            Online.message_check();
+                            tile.repaint();
+                            //tile.revalidate();
+
+                        }while(!Online.myTurn);
+                    } catch (Exception f) {
+                        f.printStackTrace();
+                    }
+                }
+            } else
+            {
+                setToolTipText("Es wurden noch nicht alle Schiffe platziert");
+            }
 
         });
         buttonDelete.addActionListener(e -> {
@@ -313,6 +338,8 @@ public class SpielWindow extends JPanel {
                     f.printStackTrace();
                 }
             }
+        } else {
+            System.out.println("Nicht alle Schiffe gesetzt");
         }
     }
 
