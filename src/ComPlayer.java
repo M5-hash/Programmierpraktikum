@@ -138,8 +138,8 @@ public abstract class ComPlayer {
      * @return True: Laden erfolgreich
      * @throws FileNotFoundException Wenn die dazugehörige Datei nicht existiert
      */
-    protected boolean loadGame(long id) throws FileNotFoundException {
-        return pf.loadGame(id, this);
+    protected void loadGame(long id) throws FileNotFoundException {
+        pf.loadGame(id, this);
     }
 
     /**
@@ -149,8 +149,8 @@ public abstract class ComPlayer {
      * @return True: Laden erfolgreich, False: Laden nicht erfolgreich
      * @throws FileNotFoundException Wenn die dazugehörige Datei nicht existiert
      */
-    protected boolean loadGame(String file) throws FileNotFoundException {
-        return pf.loadGame(file, this);
+    protected void loadGame(String file) throws FileNotFoundException {
+        pf.loadGame(file, this);
     }
 
     /**
