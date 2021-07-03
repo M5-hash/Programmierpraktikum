@@ -1,16 +1,48 @@
 package src;
 
+/**
+ * <h1>Config</h1>
+ *
+ * <p>Die Config dient zur Implementierung von Werten,
+ * die in den meisten Klassen verwendet werden.
+ */
 public class config {
-
-    // Initial frame size
+    /**
+     * <p>Vorgegebene Breite und Höhe des Frames beim Erstellen des Hauptmenü</p>
+     *
+     * <p>INITIAL_WIDTH    Breite des Frames</p>
+     * <p>INITIAL_HEIGHT   Höhe des Frames</p>
+     *
+     */
     public static int       INITIAL_WIDTH           = 640;
     public static int       INITIAL_HEIGHT          = 480;
 
-    // Spielwindow default size
+    /**
+     * Default Werte des SpielWindow
+     * Werte können in den {@link MenuOptions} abgeändert werden.
+     * @param   GF_WIDTH    Breite des SpielWindow
+     * @param   GF_HEIGHT   Höhe des SpielWindow
+     */
     public static int       GF_WIDTH                = 1920;
     public static int       GF_HEIGHT               = 1080;
 
-    // The difficulties of the game
+    /**
+     * <p>Default Werte zur Erstellung der Spielfelder.
+     * Legt fest ob Online oder Offline gespielt wird,
+     * ob Mensch oder Computer spielt, sowie die
+     * Schwierigkeitsstufe der KI im Falle, dass die
+     * KI spielt.</p>
+     * @param   KIisEasy    True - Schwierigkeitsstufe Easy
+     *                      False - Schwierigkeitsstufe Normal
+     * @param   GameMode    True - Es wird Online gespielt
+     *                      False - Es wird Offline gespielt
+     * @param   Spielfeld1  0 - Mensch verwendet das Feld
+     *                      1 - KI verwendet das Feld
+     *                      2 - Multiplayer
+     * @param   Spielfeld2  0 - Mensch verwendet das Feld
+     *                      1 - KI verwendet das Feld
+     *                      2 - Multiplayer
+     */
     public static boolean   KIisEasy                = false;
     public static boolean   GameMode                = false; // false = Singleplayer; true = Multiplayer
     public static int       SpielFeld1              = 0; // 0 = Spieler ; 1 = GegnerKI ; 2 = GegnerOnline

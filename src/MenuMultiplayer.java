@@ -101,8 +101,8 @@ public class MenuMultiplayer {
             menuPanel.setVisible(false);
             GameMode = true;
             try {
-                new MenuSize(menuFrame, menuPanel);
-            } catch (IOException | FontFormatException ioException) {
+                new MenuHost(menuFrame, menuPanel);
+            } catch (IOException ioException) {
                 ioException.printStackTrace();
             }
         });
