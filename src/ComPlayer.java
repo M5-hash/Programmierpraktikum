@@ -2,7 +2,6 @@ package src;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.sql.Timestamp;
 import java.util.Random;
 
 /**
@@ -28,9 +27,8 @@ public abstract class ComPlayer {
     /**
      * Parameterloser Konstruktor, falls man das Spiel laden möchte
      *
-     * @throws FileNotFoundException Wenn die zugehörige Speicherdatei nicht existiert
      */
-    public ComPlayer() throws FileNotFoundException {
+    public ComPlayer() {
         pf = new PlayingField();
     }
 
@@ -135,7 +133,6 @@ public abstract class ComPlayer {
      * Laden der Computer-Spieler-Sicht, per ID
      *
      * @param id ID die man über das Netzwerk bekommt
-     * @return True: Laden erfolgreich
      * @throws FileNotFoundException Wenn die dazugehörige Datei nicht existiert
      */
     protected void loadGame(long id) throws FileNotFoundException {
@@ -146,7 +143,6 @@ public abstract class ComPlayer {
      * Laden der Computer-Spieler-Sicht, per File
      *
      * @param file Dateipfad und Dateiname
-     * @return True: Laden erfolgreich, False: Laden nicht erfolgreich
      * @throws FileNotFoundException Wenn die dazugehörige Datei nicht existiert
      */
     protected void loadGame(String file) throws FileNotFoundException {
@@ -154,6 +150,7 @@ public abstract class ComPlayer {
     }
 
     /**
+     * PlayingField-saveGame Wrapper
      * Speichern des Computer-Spieler-Spielstandes
      *
      * @param id ID die man über das Netzwerk bekommt
