@@ -79,6 +79,7 @@ public class LoadGameButton extends JButton {
         // Create SpielWindow and display it
         try {
             SpielFeld1 = 0;
+            SpielFeld2 = 2;
             Server server = new Server(fieldsize, null);
             server.setSpielwindow(new SpielWindow(menuFrame, server));
         } catch (Exception ioException) {
