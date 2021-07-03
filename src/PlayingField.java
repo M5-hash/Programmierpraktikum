@@ -515,6 +515,15 @@ public class PlayingField {
     }
 
     /**
+     * Gibt zurück ob alle Gegnerschiffe zerstört wurden
+     *
+     * @return True: Gegner verloren
+     */
+    public boolean enemygameover(){
+        return this.allowedShips.length == this.enemyShipsDestroyed;
+    }
+
+    /**
      * Verändert alle Notfinal-Werte auf dem Spielfeld in set
      *
      * @param set Status in den die Notfinal-Werte umgeändert werden sollen
@@ -908,6 +917,7 @@ public class PlayingField {
 
             ComPlayer c1 = new ComPlayerNormal(new PlayingField(10, allowedships, true));
             ComPlayer c2 = new ComPlayerNormal(new PlayingField(10, allowedships, false));
+
             int i = 0;
             long l = 5836008514751432134L;
             long l2 = 4836008514751432134L;

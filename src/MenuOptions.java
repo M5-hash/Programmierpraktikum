@@ -10,13 +10,15 @@ import static javax.swing.SwingConstants.CENTER;
 import static src.FontLoader.Pokemon;
 import static src.config.*;
 
+/**
+ * Optionen des Hauptmenü
+ */
 public class MenuOptions {
     GridBagLayout menuLayout;
     GridBagConstraints constraints;
     JButton buttonMenuStart;
     JPanel cbResolutions;
     JPanel cbThemes;
-    JButton buttonShipSize;
     JButton buttonQuitGame;
     JPanel cbFullscreen;
     JPanel menuInformation;

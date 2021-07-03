@@ -2,7 +2,9 @@ package src.components;
 
 import src.ImageLoader;
 import src.MenuHost;
+import src.Server;
 import src.SpielWindow;
+
 import javax.swing.*;
 import javax.swing.plaf.metal.MetalButtonUI;
 import java.awt.*;
@@ -12,7 +14,7 @@ import java.io.IOException;
 import static src.FontLoader.Pokemon;
 import static src.config.*;
 
-public class PanelSize extends JPanel{
+public class PanelSize extends JPanel {
 
     private final BufferedImage background;
 
@@ -25,27 +27,27 @@ public class PanelSize extends JPanel{
     int temp_fieldsleft = 16;
     int temp_sumofships = sumofships;
 
-    GridBagConstraints  constraints;
-    GridBagLayout       menuLayout;
-    JButton             buttonCancel;
-    JButton             buttonApply;
-    JSlider             menuSlider1;
-    JSlider             menuSlider2;
-    JSlider             menuSlider3;
-    JSlider             menuSlider4;
-    JSlider             menuSlider5;
-    JLabel              menuCounter;
-    JLabel              menuSlidername1;
-    JLabel              menuSlidername2;
-    JLabel              menuSlidername3;
-    JLabel              menuSlidername4;
-    JLabel              menuSlidername5;
-    JTextField          textField1;
-    JTextField          textField2;
-    JTextField          textField3;
-    JTextField          textField4;
-    JTextField          textField5;
-    JPanel              buttonPanel;
+    GridBagConstraints constraints;
+    GridBagLayout menuLayout;
+    JButton buttonCancel;
+    JButton buttonApply;
+    JSlider menuSlider1;
+    JSlider menuSlider2;
+    JSlider menuSlider3;
+    JSlider menuSlider4;
+    JSlider menuSlider5;
+    JLabel menuCounter;
+    JLabel menuSlidername1;
+    JLabel menuSlidername2;
+    JLabel menuSlidername3;
+    JLabel menuSlidername4;
+    JLabel menuSlidername5;
+    JTextField textField1;
+    JTextField textField2;
+    JTextField textField3;
+    JTextField textField4;
+    JTextField textField5;
+    JPanel buttonPanel;
 
     public PanelSize(JFrame menuFrame, BufferedImage image, JPanel previousPanel, JPanel menuPanel) {
         this.background = image;
@@ -59,19 +61,19 @@ public class PanelSize extends JPanel{
         int COL = width * 60 / 100;
         int ROW = ((height - C_GAP2) / 7) - 10;
         menuLayout = new GridBagLayout();
-        menuLayout.columnWidths = new int[] {C_GAP2, C_GAP, C_GAP, COL, C_GAP2};
-        menuLayout.rowHeights = new int[] {C_GAP2, ROW, ROW, ROW, ROW, ROW, ROW, ROW, C_GAP2};
+        menuLayout.columnWidths = new int[]{C_GAP2, C_GAP, C_GAP, COL, C_GAP2};
+        menuLayout.rowHeights = new int[]{C_GAP2, ROW, ROW, ROW, ROW, ROW, ROW, ROW, C_GAP2};
         constraints = new GridBagConstraints();
 
         setLayout(menuLayout);
 
-        buttonPanel = new JPanel(new GridLayout(1,0,5,5));
+        buttonPanel = new JPanel(new GridLayout(1, 0, 5, 5));
         buttonPanel.setOpaque(false);
 
         menuCounter = new JLabel();
         menuCounter.setText("Fields left: " + temp_fieldsleft);
         menuCounter.setFont(Pokemon);
-        makeConstraints(menuCounter, 1, 1,  3);
+        makeConstraints(menuCounter, 1, 1, 3);
 
         menuSlidername1 = new JLabel("Fieldsize");
         menuSlidername1.setFont(Pokemon.deriveFont(11f));
@@ -97,7 +99,7 @@ public class PanelSize extends JPanel{
         textField1.addActionListener(e -> {
             String typed = textField1.getText();
             menuSlider1.setValue(5);
-            if(!typed.matches("\\d+") || typed.length() > 3 ) {
+            if (!typed.matches("\\d+") || typed.length() > 3) {
                 return;
             }
             int value = Integer.parseInt(typed);
@@ -107,49 +109,49 @@ public class PanelSize extends JPanel{
 
         textField2 = new sizeTextfield(size2);
         textField2.addActionListener(e -> {
-                String typed = textField2.getText();
-                menuSlider2.setValue(0);
-                if(!typed.matches("\\d+") || typed.length() > 3) {
-                    return;
-                }
-                int value = Integer.parseInt(typed);
-                menuSlider2.setValue(value);
+            String typed = textField2.getText();
+            menuSlider2.setValue(0);
+            if (!typed.matches("\\d+") || typed.length() > 3) {
+                return;
+            }
+            int value = Integer.parseInt(typed);
+            menuSlider2.setValue(value);
         });
         makeConstraints(textField2, 2, 3, 1);
 
         textField3 = new sizeTextfield(size3);
         textField3.addActionListener(e -> {
-                String typed = textField3.getText();
-                menuSlider3.setValue(0);
-                if(!typed.matches("\\d+") || typed.length() > 3) {
-                    return;
-                }
-                int value = Integer.parseInt(typed);
-                menuSlider3.setValue(value);
+            String typed = textField3.getText();
+            menuSlider3.setValue(0);
+            if (!typed.matches("\\d+") || typed.length() > 3) {
+                return;
+            }
+            int value = Integer.parseInt(typed);
+            menuSlider3.setValue(value);
         });
         makeConstraints(textField3, 2, 4, 1);
 
         textField4 = new sizeTextfield(size4);
         textField4.addActionListener(e -> {
-                String typed = textField4.getText();
-                menuSlider4.setValue(0);
-                if(!typed.matches("\\d+") || typed.length() > 3) {
-                    return;
-                }
-                int value = Integer.parseInt(typed);
-                menuSlider4.setValue(value);
+            String typed = textField4.getText();
+            menuSlider4.setValue(0);
+            if (!typed.matches("\\d+") || typed.length() > 3) {
+                return;
+            }
+            int value = Integer.parseInt(typed);
+            menuSlider4.setValue(value);
         });
         makeConstraints(textField4, 2, 5, 1);
 
         textField5 = new sizeTextfield(size5);
         textField5.addActionListener(e -> {
-                String typed = textField5.getText();
-                menuSlider5.setValue(0);
-                if(!typed.matches("\\d+") || typed.length() > 3) {
-                    return;
-                }
-                int value = Integer.parseInt(typed);
-                menuSlider5.setValue(value);
+            String typed = textField5.getText();
+            menuSlider5.setValue(0);
+            if (!typed.matches("\\d+") || typed.length() > 3) {
+                return;
+            }
+            int value = Integer.parseInt(typed);
+            menuSlider5.setValue(value);
         });
         makeConstraints(textField5, 2, 6, 1);
 
@@ -197,8 +199,6 @@ public class PanelSize extends JPanel{
 
         buttonApply = new MenuButton("CONFIRM", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
         buttonApply.addActionListener(e -> {
-            menuPanel.setVisible(false);
-
             fieldsize = menuSlider1.getValue();
             size2 = menuSlider2.getValue();
             size3 = menuSlider3.getValue();
@@ -211,14 +211,45 @@ public class PanelSize extends JPanel{
             System.out.println("Size 3 Pokemon: " + size3);
             System.out.println("Size 4 Pokemon: " + size4);
             System.out.println("Size 5 Pokemon: " + size5);
-            if(GameMode){
-                try {
-                    new MenuHost(menuFrame, menuPanel);
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
+            if (GameMode) {
+                String[] options = new String[]{"Player", "Computer", "Cancel"};
+
+                ImageIcon icon = new ImageIcon("");
+                int x = JOptionPane.showOptionDialog(menuFrame, "Wollen Sie selbst spielen oder als Computer?",
+                        "Selfplay or KI", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, icon, options, options[0]);
+
+                SpielFeld2 = 2;
+
+                if (x == 0) {
+                    onlineCom = false;
+                    menuPanel.setVisible(false);
+                    menuFrame.dispose();
+                    // Create SpielWindow and display it
+                    try {
+                        SpielFeld1 = 0;
+                        Server server = new Server("setup", fieldsize, getShipString());
+                        SpielWindow MP_Window = new SpielWindow(menuFrame, server);
+                    } catch (Exception ioException) {
+                        ioException.printStackTrace();
+                    }
+                } else if (x == 1) {
+                    onlineCom = true;
+                    menuPanel.setVisible(false);
+                    menuFrame.dispose();
+                    // Create SpielWindow and display it
+                    try {
+                        SpielFeld1 = 0;
+                        Server server = new Server("setup", fieldsize, getShipString());
+                    } catch (Exception ioException) {
+                        ioException.printStackTrace();
+                    }
+                } else {
+                    System.out.println("no");
                 }
             } else {
                 try {
+                    menuPanel.setVisible(false);
+                    menuFrame.dispose();
                     new SpielWindow(menuFrame);
                 } catch (IOException | FontFormatException ioException) {
                     ioException.printStackTrace();
@@ -231,10 +262,10 @@ public class PanelSize extends JPanel{
         buttonCancel.addActionListener(e -> {
             menuPanel.setVisible(false);
             temp_fieldsize = 10;
-            temp_size2     = 1;
-            temp_size3     = 1;
-            temp_size4     = 1;
-            temp_size5     = 1;
+            temp_size2 = 1;
+            temp_size3 = 1;
+            temp_size4 = 1;
+            temp_size5 = 1;
             System.out.println("------------------");
             System.out.println("CANCELLED");
             System.out.println("Fieldsize: " + fieldsize);
@@ -248,22 +279,40 @@ public class PanelSize extends JPanel{
         makeConstraints(buttonPanel, 1, 7, 3);
     }
 
-    private void UpdateMenuCounter() {
-        temp_fieldsize  = menuSlider1.getValue();
-        temp_fields     = temp_fieldsize * temp_fieldsize ;
-        temp_size2      = menuSlider2.getValue() * 2;
-        temp_size3      = menuSlider3.getValue() * 3;
-        temp_size4      = menuSlider4.getValue() * 4;
-        temp_size5      = menuSlider5.getValue() * 5;
+    private String getShipString() {
 
-        temp_fieldsleft = (temp_fields * 30 / 100) - temp_size2 - temp_size3 - temp_size4 - temp_size5 ;
+        String hold = "";
+        for (int i = 0; i < size2; i++) {
+            hold += "2 ";
+        }
+        for (int i = 0; i < size3; i++) {
+            hold += "3 ";
+        }
+        for (int i = 0; i < size4; i++) {
+            hold += "4 ";
+        }
+        for (int i = 0; i < size5; i++) {
+            hold += "5 ";
+        }
+        return hold;
+    }
+
+    private void UpdateMenuCounter() {
+        temp_fieldsize = menuSlider1.getValue();
+        temp_fields = temp_fieldsize * temp_fieldsize;
+        temp_size2 = menuSlider2.getValue() * 2;
+        temp_size3 = menuSlider3.getValue() * 3;
+        temp_size4 = menuSlider4.getValue() * 4;
+        temp_size5 = menuSlider5.getValue() * 5;
+
+        temp_fieldsleft = (temp_fields * 30 / 100) - temp_size2 - temp_size3 - temp_size4 - temp_size5;
         menuCounter.setText(String.valueOf(temp_fieldsleft));
 
-        if(temp_fieldsleft < 0) {
+        if (temp_fieldsleft < 0) {
             temp_fieldsleft = Math.abs(temp_fieldsleft);
             menuCounter.setForeground(Color.red);
-            buttonApply.setUI(new MetalButtonUI(){
-                protected Color getDisabledTextColor(){
+            buttonApply.setUI(new MetalButtonUI() {
+                protected Color getDisabledTextColor() {
                     return Color.red;
                 }
             });

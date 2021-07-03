@@ -122,7 +122,7 @@ public class SpielWindow extends JPanel {
         buttonDelete      = new DeleteButton();
         buttonReady       = new MenuButton("START GAME",   ImageLoader.getImage(ImageLoader.MENU_BUTTON), "Das Spiel kann erst gestartet werden, wenn alle Schiffe gesetzt sind");
         buttonMenuStart   = new MenuButton("MAIN MENU",    ImageLoader.getImage(ImageLoader.MENU_BUTTON));
-        buttonSaveGame    = new SaveGameButton("SAVE GAME",    ImageLoader.getImage(ImageLoader.MENU_BUTTON), this.playingField, this.Com);
+        buttonSaveGame    = new SaveGameButton("SAVE GAME",    ImageLoader.getImage(ImageLoader.MENU_BUTTON), this);
         buttonLoadGame    = new LoadGameButton(frame, menuPanel, "LOAD GAME",    ImageLoader.getImage(ImageLoader.MENU_BUTTON));
         buttonQuitGame    = new QuitButton();
         if(selectedTheme.equals("Pokemon")){
@@ -310,4 +310,18 @@ public class SpielWindow extends JPanel {
 
         return compiledArray;
     }
+
+
+    public ComPlayer getCom(){
+        return this.Com;
+    }
+
+    public PlayingField getPlayingField(){
+        return this.playingField;
+    }
+
+    public Com_base getServer(){
+        return this.Online;
+    }
+
 }
