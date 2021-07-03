@@ -65,6 +65,7 @@ public class SpielWindow extends JPanel {
         playingField = Client.pf ;
         makeComponents(frame);
         Multclient = true ;
+        Online.setSpielwindow(this);
     }
 
     public SpielWindow(JFrame frame, Server Server){
@@ -72,6 +73,7 @@ public class SpielWindow extends JPanel {
         playingField = Server.pf ;
         makeComponents(frame);
         Multclient = false ;
+        Online.setSpielwindow(this);
     }
     private void makeComponents(JFrame frame){
         makeComponents(frame, true);
@@ -284,7 +286,7 @@ public class SpielWindow extends JPanel {
                     do{
                         Online.message_check();
                         tile.repaint();
-                        //tile.revalidate();
+
 
                     }while(!Online.myTurn);
                 } catch (Exception f) {

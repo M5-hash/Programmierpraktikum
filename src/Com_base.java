@@ -1,14 +1,15 @@
 package src;
-
+import javax.swing.Timer;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Writer;
 import java.net.Socket;
 import java.util.concurrent.TimeUnit;
 
+
 public abstract class Com_base {
-
-
+    protected ComPlayer comPl;
     protected final int port;
     protected Socket s;
     protected BufferedReader in;
@@ -21,6 +22,9 @@ public abstract class Com_base {
     protected int lastY;
     protected boolean role_server;
     protected boolean loopBreaker;
+    private Timer t;
+    protected boolean first = true;
+    private SpielWindow frame;
 
     public Com_base(){
         this.port = 50000;
@@ -39,8 +43,8 @@ public abstract class Com_base {
 
     public void Send(String input) throws Exception {
         if(this.myTurn){
-            this.out.write(String.format("%s%n", input));
             TimeUnit.MILLISECONDS.sleep(250);
+            this.out.write(String.format("%s%n", input));
             this.out.flush();
         }
         this.myTurn = false;
@@ -61,8 +65,10 @@ public abstract class Com_base {
 
     public String loopCheckIN() throws IOException{
         this.loopBreaker = true;
+        frame.repaint();
         String hold = "";
         while(this.loopBreaker) {
+
             if(!in_check()) break;
             hold = Receive();
         }
@@ -71,10 +77,17 @@ public abstract class Com_base {
 
     public boolean in_check() throws IOException {
         this.line = this.in.readLine();
+        this.frame.repaint();
+        this.frame.tile.repaint();
+        this.frame.tile2.repaint();
         if (this.line == null || this.line.equals("")) {
             return false;
         }
         return true;
+    }
+
+    public void setSpielwindow(SpielWindow frame){
+        this.frame = frame;
     }
 
     protected void message_check() throws Exception {
@@ -94,6 +107,10 @@ public abstract class Com_base {
                     this.myTurn = false;
                 } else if (hit == 2) {
                     Send("answer 2");
+                    if(pf.enemygameover()){
+                        //Win Screen
+                        KillSocket();
+                    }
                     this.myTurn = false;
                 }
             } else if (holder[0].equals("answer")) {
@@ -103,22 +120,41 @@ public abstract class Com_base {
                     this.myTurn = false;
                 } else if (holder[1].equals("1")) {
                     pf.didHit(1, this.lastX, this.lastY);
-                    this.myTurn = true;
+                    timeMyTurn();
                 } else if (holder[1].equals("2")) {
                     pf.didHit(2, this.lastX, this.lastY);
-                    this.myTurn = true;
+                    if(pf.gameover()){
+                        //hier loose Screen
+                    }
+                    timeMyTurn();
                 }
 
             } else if (holder[0].equals("save")) {
                 pf.saveGame(Long.parseLong(holder[1]));
             } else if (holder[0].equals("ready")) {
-                this.myTurn = true;
+                timeMyTurn();
             } else if (holder[0].equals("pass")) {
-                this.myTurn = true;
+                timeMyTurn();
             }
-
+            frame.repaint();
     }
 
+    protected void timeMyTurn(){
+
+        ActionListener taskPerformer = evt -> {
+            if(!first) {
+                myTurn = true;
+                first=true;
+                tStop();
+            }
+            first=false;
+        };
+        t = new javax.swing.Timer(3000, taskPerformer);
+        t.start();
+    }
+    private void tStop(){
+        t.stop();
+    }
 
     protected int[] ship_array_toInt(String[] in_ships, int begin){
         int [] out_ships = new int[in_ships.length-begin];

@@ -1,8 +1,9 @@
 package src;
 
-import javax.swing.*;
+import java.lang.Thread;
 import java.net.*;
 import java.io.*;
+
 
 public class Client extends Com_base {
 
@@ -16,21 +17,7 @@ public class Client extends Com_base {
         this.in = new BufferedReader(new InputStreamReader(s.getInputStream()));
         this.out = new OutputStreamWriter(s.getOutputStream());
         this.pf = setupPlayingfield();
-/*
-        Thread t = new Thread() {
-            public void run(){
-                try{
-                    while (true) {
-                        message_check(loopCheckIN());
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        };
-        t.start();
-*/
-        System.out.println("Working");
+
     }
 
     protected PlayingField setupPlayingfield() throws Exception {
@@ -68,10 +55,11 @@ public class Client extends Com_base {
                 Send("ready");
             }
         }
-        else {
+        else{
             pf_holder = new PlayingField();
             pf_holder.loadGame(Long.valueOf(in_size[1]));
         }
+
         this.myTurn = false;
         return pf_holder;
     }

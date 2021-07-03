@@ -11,62 +11,51 @@ public class Server extends Com_base {
     private ServerSocket ss;
 
 
-    public Server(String start_mode, int in_size, String in_ships) throws Exception{
+    public Server(int in_size, String in_ships) throws Exception {
         super();
         this.role_server = true;
         this.ss = new ServerSocket(this.port);
         this.s = this.ss.accept();
         this.in = new BufferedReader(new InputStreamReader(this.s.getInputStream()));
         this.out = new OutputStreamWriter(this.s.getOutputStream());
-        this.pf = setupPlayingfield(start_mode, in_size, in_ships);
-
-/*
-        Thread t = new Thread() {
-            public void run(){
-                try{
-                    while (true) {
-                        message_check(loopCheckIN());
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        };
-        t.start();
-*/
-
+        this.pf = setupPlayingfield(in_size, in_ships);
+        if(config.onlineCom) {
+            this.comPl = new ComPlayerNormal(this.pf);
+        }
         System.out.println("Working");
+
     }
 
-    protected PlayingField setupPlayingfield(String start_mode, int in_size, String in_ships) throws Exception{
-        PlayingField pf_holder;
-        if(start_mode.equals("setup")){
 
-            pf_holder = new PlayingField(in_size, ship_array_toInt(in_ships.split(" "), 0), role_server);
-            TimeUnit.SECONDS.sleep(5);
+
+    protected void FilePathCheck() throws Exception {
+        if (!config.filepath.equals("")) {
+            pf.loadGame(config.filepath);
+        }
+    }
+
+    protected PlayingField setupPlayingfield(int in_size, String in_ships) throws Exception {
+        PlayingField pf_holder;
+        pf_holder = new PlayingField(in_size, ship_array_toInt(in_ships.split(" "), 0), role_server);
+        TimeUnit.SECONDS.sleep(5);
+
+        setTurn(true);
+        Send("size " + in_size);
+
+        if (loopCheckIN().equals("done")) {
 
             setTurn(true);
-            Send("size "+ in_size);
-
-            if(loopCheckIN().equals("done")){
-
-                setTurn(true);
-                Send("ships " + in_ships);
-            }
-
-
-            if(loopCheckIN().equals("done")){
-
-                setTurn(true);
-                Send("ready");
-            }
-            if(loopCheckIN().equals("ready"));
+            Send("ships " + in_ships);
         }
 
-        else{
-            pf_holder = new PlayingField();
-            pf_holder.loadGame(Long.valueOf(start_mode.split(" ")[1]));
+
+        if (loopCheckIN().equals("done")) {
+
+            setTurn(true);
+            Send("ready");
         }
+        if (loopCheckIN().equals("ready")) ;
+
 
         this.myTurn = true;
         return pf_holder;
