@@ -26,7 +26,6 @@ public class SpritePainter {
     int[][] Pokemon = new int[field_size][field_size];
     int fieldof;
     SpielWindow frame;
-    TilePainter Interface;
     PlayingField pf;
     int addnumber;
     boolean IsHit = false;
@@ -44,18 +43,21 @@ public class SpritePainter {
 
     private int[][] BugHeckMeck = new int[fieldsize][fieldsize];
 
+
     /**
-     * @param Feldvon gibt an für wenn die Schiffe gezeichnet werden
-     *                "Spieler" = Spieler
-     *                "GegnerKI" = Computer Gegner
-     *                "GegnerMensch" = OnlineGegners / Menschlicher Gegner
-     *                "Preview" = Feld wird verwendet um das setzen des Spieler besser darzustellen
+     * @param Feldvon       gibt an für wenn die Schiffe gezeichnet werden
+     *                      "Spieler" = Spieler
+     *                      "GegnerKI" = Computer Gegner
+     *                      "GegnerMensch" = OnlineGegners / Menschlicher Gegner
+     *                      "Preview" = Feld wird verwendet um das setzen des Spieler besser darzustellen
+     *
+     * @param frame
+     * @param playingField
      */
-    public SpritePainter(int Feldvon, TilePainter Kontakt, SpielWindow frame, PlayingField playingField) {
+    public SpritePainter(int Feldvon, SpielWindow frame, PlayingField playingField) {
 
         pf = playingField;
         fieldof = Feldvon;
-        Interface = Kontakt;
         this.frame = frame;
         Schiffteil();
         if (selectedTheme.equals("Pokemon")) {
@@ -63,6 +65,11 @@ public class SpritePainter {
         }
     }
 
+    /**
+     * @param Schiffdir String wird verwendet um die spezifischen Bilder zu identifizieren
+     * @return  int gibt die Stelle in der Liste zurück, wo sich das gewünschte Bild befindet
+     *          -1 falls es sich noch nicht in der Liste befindet
+     */
     static int fetchImg(String Schiffdir) {
         if (counter > 0) {                                                        // Macht sicher, dass die zuladende Datei auch eine neue Datei ist. Falls die Datei schon einmal geladen wurde, wurde Sie gespeichert
             for (int i = 0; i < Loaded.size(); i++) {// Aus diesem Speicher wird Sie nun wieder ausgelesen
@@ -80,7 +87,7 @@ public class SpritePainter {
      * @param Schiff_dir Übergibt den Pfad des Bildes
      * @return Rückgabe des bearbeiteten BufferedImage
      * <p>
-     * Verändert die Färbung, der in der Preview verwendeten BufferedImages, sodass diese direkt angeben, ob Sie gesetzt werden können
+     * Verändert die Färbung, der in der Preview verwendeten BufferedImages, sodass diese direkt anzeigen ob Sie gesetzt werden können
      */
     private static BufferedImage colorshiftpng(BufferedImage image, String Schiff_dir) {
 
@@ -148,7 +155,8 @@ public class SpritePainter {
      * @param bi Gibt zu klonendes Bild an die Methode weiter
      * @return gibt das geklonte BufferedImage zurück
      * <p>
-     * Methode garantiert, dass es sich um verschieden BufferedImage Objekte handelt
+     * Methode garantiert, dass es sich um verschieden BufferedImage Objekte handelt, sodass Änderungen an der Kopie
+     * das Original nicht beeinflussen
      */
     static BufferedImage deepCopy(BufferedImage bi) {
         ColorModel cm = bi.getColorModel();
@@ -158,7 +166,8 @@ public class SpritePainter {
     }
 
     /**
-     * Das Array, welches verwendet wird um die Pokemon zu zeichnen wird geupdated
+     * Das Array, welches verwendet wird um die Pokemon zu zeichnen wird geupdated, jeder Stelle an der ein Schiff ist,
+     * wird zufällig ein Pokemon zugewiesen
      */
     void updatePokemon() {
 
@@ -578,7 +587,13 @@ public class SpritePainter {
 
     }
 
-    public void Pokemonpicker(Graphics g) {
+    /**
+     * @param g Graphic Object
+     *
+     *          Zeichnet das jeweilige Pokemon an der passenden Stelle im Spielfeld, das jeweilige Pokemon und deren
+     *          Position wird durch updatePokemon vorgegeben
+     */
+    public void PokemonZeichner(Graphics g) {
 
 
         //Das Tileset Bild wird eingeladen
@@ -697,6 +712,10 @@ public class SpritePainter {
         }
     }
 
+    /**
+     * Verschiebt alle 650 ms durch addnumber die das quellbild der Pokemon, wodurch deren Darstellung sich ändert
+     * und diese animiert erscheinen
+     */
     public void PokemonAnimator() {
         Timer t;
 

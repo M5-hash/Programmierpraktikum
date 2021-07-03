@@ -63,13 +63,14 @@ public class TilePainter extends JPanel implements MouseMotionListener {
         this.frame = frame;
         field = Feldvon;
         if(!onlineCom) {
+            PickSmallestAvailableSize();
             this.pf = pf;
-            hier = new SpritePainter(field, this, frame, pf);
+            hier = new SpritePainter(field,  frame, pf);
 
 
             if (field == 0) {
                 //Da es sich hier nicht um ein normales Feld handelt wird hier 4 == Vorhersage übergeben
-                Predicted = new SpritePainter(4, this, frame, pf);
+                Predicted = new SpritePainter(4, frame, pf);
             }
 
             addMouseMotionListener(this);
@@ -227,7 +228,7 @@ public class TilePainter extends JPanel implements MouseMotionListener {
     /**
      * Übergibt den Schuss an die Kommunikation im passenden String Format.
      * <p>
-     * TODO die repaint können eigentlich entfernt werden, da das ja eindeutig nicht funtkioniert
+     * TODO die repaint können eigentlich entfernt werden, da das ja eindeutig nicht funktioniert
      */
     private void OnlineMausklick() {
         String xString = PosX + " ";
@@ -259,7 +260,7 @@ public class TilePainter extends JPanel implements MouseMotionListener {
     }
 
     /**
-     *Methode die dafür sorgt, dass die KI im Online Modus zurückschießt
+     *Methode die dafür sorgt, dass die KI im Online Modus schießt
      */
     public void OnlineSchussKI() {
 
@@ -376,6 +377,9 @@ public class TilePainter extends JPanel implements MouseMotionListener {
             }
 
         }
+        if(groessen[groesse] == 0){
+            PickSmallestAvailableSize();
+        }
     }
 
     /**
@@ -481,7 +485,7 @@ public class TilePainter extends JPanel implements MouseMotionListener {
                 //Überprüfung auf gewähltes Theme
                 if (selectedTheme.equals("Pokemon")) {
                     //Zeichnet die Sprites aber alle haben Pokemon Thematik
-                    hier.Pokemonpicker(g);
+                    hier.PokemonZeichner(g);
                 } else {
                     //Zeichnet die Sprites aber alles hat eine klassische Schiff Thematik
                     hier.Schiffzeichner(g);
@@ -577,15 +581,14 @@ public class TilePainter extends JPanel implements MouseMotionListener {
         }
     }
 
-   public void updateComponent(){
-
-   }
-
-
+    /**
+     * Setzt das ausgewählte Schiff auf das momentan kleinstmögliche
+     */
     private void PickSmallestAvailableSize() {
         for(int i = 2; i <= 5 ; i++){
             if(groessen[i] != 0){
-                repaint();
+                groesse = i ;
+                break;
             }
         }
     }

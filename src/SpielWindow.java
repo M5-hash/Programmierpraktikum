@@ -13,7 +13,6 @@ import static src.config.*;
 
 public class SpielWindow extends JPanel {
 
-
     boolean Multclient ;
 
     TilePainter     tile2;
@@ -138,6 +137,7 @@ public class SpielWindow extends JPanel {
         frameheigth = frame.getHeight();
         framewidth = frame.getWidth();
 
+        MenuButton dummybutton = new MenuButton("DUMMY BUTTON", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
         tile              = new TilePainter(fieldsize, SpielFeld1, this, Com, playingField);
         tile2             = new TilePainter(fieldsize, SpielFeld2, this, Com, playingField);
         Z                 = new Zielhilfe(this, frame);
@@ -164,6 +164,21 @@ public class SpielWindow extends JPanel {
         gamePanel1        = new JPanel();
         gamePanel2        = new JPanel();
         buttonGroup       = new ButtonGroup();
+
+        dummybutton.setBounds(-100,-100,1,1);
+
+        dummybutton.addActionListener(e -> {
+
+            try {
+                Online.message_check();
+            } catch (Exception exception) {
+                exception.printStackTrace();
+            }
+            if(!Online.myTurn){
+                dummybutton.doClick();
+            }
+
+        });
 
         menuPanel. setLayout(null);
 
