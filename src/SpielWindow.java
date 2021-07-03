@@ -50,6 +50,7 @@ public class SpielWindow extends JPanel {
         this.Com = Com ;
         makeComponents(frame, false);
         adjustState(pf.getStatus() == 1);
+        gamestart();
     }
 
     public SpielWindow(JFrame frame, Client Client){
@@ -61,6 +62,9 @@ public class SpielWindow extends JPanel {
             tile.OnlineSchussKI();
         }
         adjustState(playingField.getStatus() == 1);
+        if(Online.getLoaded()){
+            gamestart();
+        }
     }
 
     public SpielWindow(JFrame frame, Server Server){
@@ -73,6 +77,9 @@ public class SpielWindow extends JPanel {
             tile.OnlineSchussKI();
         }
         adjustState(playingField.getStatus() == 1);
+        if(Online.getLoaded()){
+            gamestart();
+        }
     }
 
     private void adjustState(boolean pfStatus) {
@@ -84,7 +91,6 @@ public class SpielWindow extends JPanel {
             //Daten updaten
             tile.hier.updatePokemon();
         }
-        gamestart();
     }
 
     private void makeComponents(JFrame frame){
