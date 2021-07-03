@@ -71,17 +71,6 @@ public class PlayingField {
     protected long timestamp = new Timestamp(System.currentTimeMillis()).getTime();
 
     /**
-     * Gibt zurück wie viel % des Spielfeldes mit Schiffen gefüllt ist
-     *
-     * @param rows   Größe des Spielfeldes
-     * @param sparts Anzahl der Schiffsteile
-     * @return Prozentuale Angabe der Schiffe im Vergleich zum Wasser
-     */
-    public static int shipsPercentage(int rows, int sparts) {
-        return (int) ((double) sparts / (double) (rows * rows));
-    }
-
-    /**
      * Leerer-Konstruktor, um ein PlayingField zu erstellen, welches seine Daten über this.loadGame erhält
      */
     public PlayingField() {
@@ -453,9 +442,6 @@ public class PlayingField {
             }
             default -> throw new Exception("Parameter (" + hit + ") nicht im Bereich von 0 bis 2");
         }
-
-        //System.out.println("didHit:");
-        //System.out.println(Arrays.deepToString(this.fieldEnemy).replace("]", "]\n"));
     }
 
     /**
@@ -658,7 +644,9 @@ public class PlayingField {
 
         //SchiffeVersenkenHSAalenSaves-Ordner erstellen
         File directory = new File(f);
-        if (!directory.exists()) directory.mkdir();
+        if (!directory.exists())
+            if(!directory.mkdir())
+                throw new IOException("Temp-Ordner konnte nicht erstellt werden");
 
         //Speicherdatei erstellen bzw überschreiben
         File file = new File(f + File.separator + id + "_save.txt");
@@ -680,62 +668,62 @@ public class PlayingField {
         FileWriter fw = new FileWriter(save.getAbsoluteFile());
         BufferedWriter bw = new BufferedWriter(fw);
 
-        String s = "";
+        StringBuilder s = new StringBuilder();
 
         //com
-        s += this.com + "\n";
+        s.append(this.com).append("\n");
         if (this.com == 2) {
             ComPlayerNormal c = (ComPlayerNormal) com;
 
             //lastCoords
             if(c.getLastCoords() == null){
-                s += "NULL\n";
+                s.append("NULL\n");
             }else {
-                s += c.getLastCoords()[0] + "," + c.getLastCoords()[1] + "\n";
+                s.append(c.getLastCoords()[0]).append(",").append(c.getLastCoords()[1]).append("\n");
             }
 
             //rowSeq
             for (Integer i : c.getRowSeq()) {
-                s += i + ",";
+                s.append(i).append(",");
             }
-            s = s.substring(0, s.length() - 1) + "\n";
+            s = new StringBuilder(s.substring(0, s.length() - 1) + "\n");
 
             //nextRow
-            s += c.getNextRow() + "\n";
+            s.append(c.getNextRow()).append("\n");
 
         }
         //timestamp
-        s += this.timestamp + "\n";
+        s.append(this.timestamp).append("\n");
 
         //enemyShipsDestroyed
-        s += this.enemyShipsDestroyed + "\n";
+        s.append(this.enemyShipsDestroyed).append("\n");
 
         //isServer
-        s += this.isServer ? "1\n" : "0\n";
+        s.append(this.isServer ? "1\n" : "0\n");
 
         //status
-        s += this.status + "\n";
+        s.append(this.status).append("\n");
 
         //ships
-        s += this.ships + "\n";
+        s.append(this.ships).append("\n");
 
         //allowedShips
         for (int i : this.allowedShips) {
-            s += i + ",";
+            s.append(i).append(",");
         }
-        s = s.substring(0, s.length() - 1) + "\n";
+        s = new StringBuilder(s.substring(0, s.length() - 1) + "\n");
 
         //field.length
-        s += this.field.length + "\n";
+        s.append(this.field.length).append("\n");
 
         //field
-        s += this.getSaveString2DArray(this.field);
+        s.append(this.getSaveString2DArray(this.field));
 
         //fieldEnemy
-        s += this.getSaveString2DArray(this.fieldEnemy);
+        s.append(this.getSaveString2DArray(this.fieldEnemy));
 
         //String abspeichern und die Writer schließen
-        bw.write(s);
+        bw.write(s.toString());
         bw.close();
         fw.close();
 
