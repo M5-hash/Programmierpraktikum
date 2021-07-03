@@ -49,7 +49,7 @@ public class DisplayTurn extends JPanel {
     }
 
     public void switchTurn(boolean Set) {
-        Turn = Set ;
+        Turn = Set;
     }
 
 
