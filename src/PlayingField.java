@@ -6,6 +6,9 @@ import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
+/**
+ * Die Logik des Spielfeldes, und die Daten die der Spieler über den Gegner weiß
+ */
 public class PlayingField {
     /**
      * 0 = Wasser

@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.Random;
 
+/**
+ * Abstrakte ComPlayer-Basis
+ */
 public abstract class ComPlayer {
     /**
      * PlayingField des Computer-Spielers
