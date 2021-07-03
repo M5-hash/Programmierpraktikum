@@ -589,7 +589,7 @@ public class SpritePainter {
             int SizeofBorder = Math.max(18, TileSize.Tile_Size / 12);
 
             //Es wird abgefragt ob es zu Änderungen im Array kam
-            if (!Tile.fightstart || Objects.requireNonNull(frame.tile2).allowchange) updatePokemon();
+            if (!Tile.fightstart) updatePokemon();
 
 
             //durch die 2 for Schleifen wird das gesamte Array abgelaufen
