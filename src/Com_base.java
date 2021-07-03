@@ -28,6 +28,7 @@ public abstract class Com_base {
     private SpielWindow frame;
     protected boolean loaded;
 
+
     public Com_base() {
         this.port = 50000;
         this.setup = false;
@@ -46,7 +47,6 @@ public abstract class Com_base {
 
     public void Send(String input) throws Exception {
         if (this.myTurn) {
-            TimeUnit.MILLISECONDS.sleep(250);
             this.out.write(String.format("%s%n", input));
             this.out.flush();
         }
@@ -101,7 +101,7 @@ public abstract class Com_base {
     }
 
     protected void message_check() throws Exception {
-        setTurn(true);
+
         String in = loopCheckIN(true);
         String[] holder = in.split(" ");
         if (holder[0].equals("shot")) {
@@ -110,24 +110,27 @@ public abstract class Com_base {
 
             int hit = pf.isShot(x, y);
             if (hit == 0) {
+                setTurn(true);
                 Send("answer 0");
-                this.myTurn = false;
+
             } else if (hit == 1) {
+                setTurn(true);
                 Send("answer 1");
-                this.myTurn = false;
+
             } else if (hit == 2) {
+                setTurn(true);
                 Send("answer 2");
                 if (pf.enemygameover()) {
                     //Win Screen
                     KillSocket();
                 }
-                this.myTurn = false;
             }
         } else if (holder[0].equals("answer")) {
             if (holder[1].equals("0")) {
                 pf.didHit(0, this.lastX, this.lastY);
+                setTurn(true);
                 Send("pass");
-                this.myTurn = false;
+
             } else if (holder[1].equals("1")) {
                 pf.didHit(1, this.lastX, this.lastY);
                 timeMyTurn();
@@ -146,12 +149,8 @@ public abstract class Com_base {
         } else if (holder[0].equals("pass")) {
             timeMyTurn();
         }
-        this.frame.revalidate();
-        this.frame.tile.revalidate();
-        frame.tile2.revalidate();
         frame.repaint();
-        frame.tile.repaint();
-        frame.tile2.repaint();
+
     }
 
     protected void timeMyTurn() {
