@@ -72,26 +72,30 @@ public abstract class Com_base {
         this.loopBreaker = true;
         String hold = "";
         while (this.loopBreaker) {
-
-            if (!in_check(repaint)) break;
+            if (repaint) {
+                this.frame.repaint();
+                this.frame.tile.repaint();
+                this.frame.tile2.repaint();
+            }
+            if (!in_check()) break;
             hold = Receive();
         }
         return hold;
     }
 
-    public boolean in_check(boolean repaint) throws IOException {
+    public boolean in_check() throws IOException {
         this.line = this.in.readLine();
-        if (repaint) {
-            this.frame.repaint();
-            this.frame.tile.repaint();
-            this.frame.tile2.repaint();
-        }
+
         if (this.line == null || this.line.equals("")) {
             return false;
         }
         return true;
     }
 
+    /**
+     * Setzt den Parameter frame
+     * @param frame value für this.frame
+     */
     public void setSpielwindow(SpielWindow frame) {
         this.frame = frame;
     }
@@ -142,8 +146,8 @@ public abstract class Com_base {
         } else if (holder[0].equals("pass")) {
             timeMyTurn();
         }
-        frame.revalidate();
-        frame.tile.revalidate();
+        this.frame.revalidate();
+        this.frame.tile.revalidate();
         frame.tile2.revalidate();
         frame.repaint();
         frame.tile.repaint();

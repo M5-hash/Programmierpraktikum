@@ -28,36 +28,41 @@ public class Server extends Com_base {
 
 
 
-    protected void FilePathCheck() throws Exception {
-        if (!config.filepath.equals("")) {
-            pf.loadGame(config.filepath);
-        }
-    }
+
 
     protected PlayingField setupPlayingfield(int in_size, String in_ships) throws Exception {
-        PlayingField pf_holder;
-        pf_holder = new PlayingField(in_size, ship_array_toInt(in_ships.split(" "), 0), role_server);
-        TimeUnit.SECONDS.sleep(5);
+        PlayingField pf_holder ;
 
-        setTurn(true);
-        Send("size " + in_size);
+        if(!config.filepath.equals("")){
+            pf_holder = new PlayingField();
 
-        if (loopCheckIN(false).equals("done")) {
+            pf_holder.loadGame(config.filepath);
+            this.Send(""+pf_holder.getFilenameLongID(config.filepath));
+        }
+        else {
+            pf_holder = new PlayingField(in_size, ship_array_toInt(in_ships.split(" "), 0), role_server);
+            TimeUnit.SECONDS.sleep(5);
 
             setTurn(true);
-            Send("ships " + in_ships);
+            Send("size " + in_size);
+
+            if (loopCheckIN(false).equals("done")) {
+
+                setTurn(true);
+                Send("ships " + in_ships);
+            }
+
+
+            if (loopCheckIN(false).equals("done")) {
+
+                setTurn(true);
+                Send("ready");
+            }
+            if (loopCheckIN(false).equals("ready")) ;
+
+
+            this.myTurn = true;
         }
-
-
-        if (loopCheckIN(false).equals("done")) {
-
-            setTurn(true);
-            Send("ready");
-        }
-        if (loopCheckIN(false).equals("ready")) ;
-
-
-        this.myTurn = true;
         return pf_holder;
     }
 }
