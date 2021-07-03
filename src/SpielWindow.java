@@ -15,6 +15,7 @@ public class SpielWindow extends JPanel {
 
     boolean Multclient ;
 
+    DisplayTurn     Turn;
     TilePainter     tile2;
     TilePainter     tile;
     Zielhilfe       Z;
@@ -139,6 +140,7 @@ public class SpielWindow extends JPanel {
         framewidth = frame.getWidth();
 
 
+        Turn              = new DisplayTurn();
         tile              = new TilePainter(fieldsize, SpielFeld1, this, Com, playingField);
         tile2             = new TilePainter(fieldsize, SpielFeld2, this, Com, playingField);
         Z                 = new Zielhilfe(this, frame);
@@ -280,6 +282,7 @@ public class SpielWindow extends JPanel {
         tile.        setBounds(framewidth * 13 / 100, frameheigth * 25 / 100, framewidth * 25 / 100, framewidth * 25 / 100);
         tile2.       setBounds(framewidth * 62 / 100, frameheigth * 25 / 100, framewidth * 25 / 100, framewidth * 25 / 100);
         Z.           setBounds(framewidth * 13 / 100, frameheigth * 10 / 100, framewidth * 25 / 100, frameheigth * 10/ 100);
+        Turn.        setBounds(framewidth * 40 / 100, frameheigth * 10 / 100, framewidth * 10 / 100, frameheigth * 10 / 100);
         gamePanel1.  setBounds(framewidth * 45 / 100, frameheigth * 25 / 100, framewidth * 10 / 100, framewidth * 14 / 100);
         gamePanel2.  setBounds(framewidth * 45 / 100, frameheigth * 25 / 100, framewidth * 10 / 100, framewidth * 25 / 100);
 
@@ -288,6 +291,7 @@ public class SpielWindow extends JPanel {
         menuPanel.add(tile);
         menuPanel.add(tile2);
         menuPanel.add(Z);
+        menuPanel.add(Turn);
 
         frame.add(menuPanel);
 
@@ -320,6 +324,7 @@ public class SpielWindow extends JPanel {
                 gamePanel1.  setBounds(framewidth * 45 / 100, frameheigth * 25 / 100, framewidth * 10 / 100, framewidth * 14 / 100);
                 gamePanel2.  setBounds(framewidth * 45 / 100, frameheigth * 25 / 100, framewidth * 10 / 100, framewidth * 25 / 100);
                 Z.setBounds(framewidth * isfightstart / 100, frameheigth * 17 / 100, framewidth * 25 / 100, frameheigth * 10/ 100);
+                Turn.        setBounds(framewidth * 40 / 100, frameheigth * 10 / 100, framewidth * 10 / 100, frameheigth * 10 / 100);
 
                 menuPanel.revalidate();
                 menuPanel.repaint();

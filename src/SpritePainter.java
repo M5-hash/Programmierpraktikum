@@ -179,9 +179,7 @@ public class SpritePainter {
                     Pokemon[i][j] = pf.getField()[i][j];
                 } else if (Pokemon[i][j] == 0 && pf.getField()[i][j] == 3) {
                     Pokemon[i][j] = -1;
-                } else if (pf.getField()[i][j] == 1) {
-                    Pokemon[i][j] = -4;
-                } else if (pf.getField()[i][j] == 2) {
+                }  else if (pf.getField()[i][j] == 2) {
                     Pokemon[i][j] = -5;
                 } else if (Pokemon[i][j] == -2) {
                     Pokemon[i][j] = -3;
@@ -604,7 +602,7 @@ public class SpritePainter {
             int SizeofBorder = Math.max(18, TileSize.Tile_Size / 12);
 
             //Es wird abgefragt ob es zu Änderungen im Array kam
-            updatePokemon();
+            if (!Tile.fightstart || Objects.requireNonNull(frame.tile2).allowchange) updatePokemon();
 
 
             //durch die 2 for Schleifen wird das gesamte Array abgelaufen
@@ -618,7 +616,7 @@ public class SpritePainter {
                     }
 
                     int index;
-                    if (Pokemon[y][x] >= 0) {
+                    if (Pokemon[y][x] >= 0 && pf.getField()[y][x] == 3) {
                         index = Pokemon[y][x] + addnumber;
                     } else {
                         index = Pokemon[y][x];
@@ -670,14 +668,7 @@ public class SpritePainter {
 
                         } else {
 
-                            if (Pokemon[y][x] == -4) {
-
-                                BufferedImage dummyImg = Bild.BildLoader("src/Images/redsheen.png");
-
-                                g.drawImage(dummyImg, (x * TileSize.Tile_Size + SizeofBorder),
-                                        (y * TileSize.Tile_Size + SizeofBorder),
-                                        TileSize.Tile_Size,
-                                        TileSize.Tile_Size, null);
+                            if (pf.getField()[y][x] == 1) {
 
                                 g.drawImage(PokemonBild, (x * TileSize.Tile_Size + SizeofBorder),
                                         (y * TileSize.Tile_Size + SizeofBorder),
@@ -690,6 +681,15 @@ public class SpritePainter {
                                         (index + 1) * 80,
                                         (yOffset + 1) * 80,
                                         null);
+                                BufferedImage dummyImg = Bild.BildLoader("src/Images/redsheen.png");
+
+
+                                g.drawImage(dummyImg, (x * TileSize.Tile_Size + SizeofBorder),
+                                        (y * TileSize.Tile_Size + SizeofBorder),
+                                        TileSize.Tile_Size,
+                                        TileSize.Tile_Size, null);
+
+
 
                             }
 
