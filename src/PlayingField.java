@@ -752,9 +752,9 @@ public class PlayingField {
     private String getSaveString2DArray(int[][] field) {
         StringBuilder s = new StringBuilder();
 
-        for (int[] ints : field) {
+        for(int y = 0; y < field.length; y++){
             for (int x = 0; x < field.length; x++) {
-                s.append(ints[x]);
+                s.append(field[y][x]);
             }
         }
 
