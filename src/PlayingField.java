@@ -105,7 +105,7 @@ public class PlayingField {
      *
      * @return this.status
      */
-    public int getStatus(){
+    public int getStatus() {
         return this.status;
     }
 
@@ -114,7 +114,7 @@ public class PlayingField {
      *
      * @return this.enemyShipsDestroyed
      */
-    public int getEnemyShipsDestroyed(){
+    public int getEnemyShipsDestroyed() {
         return this.enemyShipsDestroyed;
     }
 
@@ -123,7 +123,7 @@ public class PlayingField {
      *
      * @return Gibt this.timestamp zurück
      */
-    public long getTimestamp(){
+    public long getTimestamp() {
         return this.timestamp;
     }
 
@@ -188,8 +188,8 @@ public class PlayingField {
      * Überprüft ob Koordinaten im Spielfeld sind, falls nicht wird eine Exception geworfen
      *
      * @param field Das Feld für das überprüft werden soll, ob die Koordinaten enthalten sind
-     * @param x X-Koordinate
-     * @param y Y-Koordinate
+     * @param x     X-Koordinate
+     * @param y     Y-Koordinate
      */
     public static void checkCoordinatesInFieldStatic(int[][] field, int x, int y) throws Exception {
         if (x < 0 || x >= field.length || y < 0 || y > field.length) {
@@ -507,7 +507,7 @@ public class PlayingField {
      *
      * @return True: Gegner verloren
      */
-    public boolean enemygameover(){
+    public boolean enemygameover() {
         return this.allowedShips.length == this.enemyShipsDestroyed;
     }
 
@@ -634,7 +634,7 @@ public class PlayingField {
      * Wird verwendet, wenn man als Client spielt und den Dateinamen nicht selber auswählt.
      * In dem Fall wird vom Gegenüber eine ID übergeben.
      *
-     * @param id Long-ID die zum Spiel speichern verwendet wird
+     * @param id  Long-ID die zum Spiel speichern verwendet wird
      * @param com Wenn es das PlayingField eines Computer-Spielers ist, diesen mitgeben, sonst null
      * @throws IOException Wenn die Datei nicht erstellt/beschrieben werden kann
      */
@@ -644,7 +644,7 @@ public class PlayingField {
         //SchiffeVersenkenHSAalenSaves-Ordner erstellen
         File directory = new File(f);
         if (!directory.exists())
-            if(!directory.mkdir())
+            if (!directory.mkdir())
                 throw new IOException("Temp-Ordner konnte nicht erstellt werden");
 
         //Speicherdatei erstellen bzw überschreiben
@@ -675,9 +675,9 @@ public class PlayingField {
             ComPlayerNormal c = (ComPlayerNormal) com;
 
             //lastCoords
-            if(c.getLastCoords() == null){
+            if (c.getLastCoords() == null) {
                 s.append("NULL\n");
-            }else {
+            } else {
                 s.append(c.getLastCoords()[0]).append(",").append(c.getLastCoords()[1]).append("\n");
             }
 
@@ -726,6 +726,17 @@ public class PlayingField {
         bw.close();
         fw.close();
 
+        //long Hashcode für file ermitteln
+        return getFilenameLongID(file);
+    }
+
+    /**
+     * Erstellt die ID (Long) anhand eines Dateinamens/pfads
+     *
+     * @param file Die Datei für die man die ID benötigt
+     * @return long hash
+     */
+    public long getFilenameLongID(String file) {
         //long Hashcode für file ermitteln
         String[] filenameSplit = file.split(Pattern.quote(System.getProperty("file.separator")));
         String filename = filenameSplit[filenameSplit.length - 1];
@@ -817,7 +828,7 @@ public class PlayingField {
 
             //lastCoords
             String str = s.nextLine();
-            if(!str.equals("NULL")){
+            if (!str.equals("NULL")) {
                 c.setLastCoords(Stream.of(str.split(","))
                         .mapToInt(Integer::parseInt)
                         .toArray());
