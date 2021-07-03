@@ -21,7 +21,7 @@ public class Client extends Com_base {
     }
 
     protected PlayingField setupPlayingfield() throws Exception {
-        PlayingField pf_holder = null;
+        PlayingField pf_holder;
 
         String[] in_size = loopCheckIN(false).split(" ");
 
