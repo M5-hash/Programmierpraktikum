@@ -16,12 +16,25 @@ public class Zielhilfe extends JPanel {
     boolean eitherfield ;
     boolean change;
 
+    /**
+     * @param Window SpielWindow Object
+     * @param frame JFrame Object
+     *
+     *              Zielhilfe stellt die aktuelle Position der Maus dar
+     */
     public Zielhilfe(SpielWindow Window, JFrame frame) {
         spWin = Window;
         this.frame = frame ;
     }
 
 
+    /**
+     * @param g Graphics Object
+     *
+     *          Wenn das Spiel bereits vorbei ist, dann wird die Zeilhilfe nicht gebraucht/gezeichnet.
+     *          Überprüft ob es zu einer Änderung in der Maus Position kam und die, wenn ja wird die Zielhilfe neu gezeichnet.
+     *          Die Position wird von dem momentan verwendeten Feld bezogen.
+     */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -32,11 +45,11 @@ public class Zielhilfe extends JPanel {
 
             if (Tile.isFightstart() ) {
                 change = PosX != spWin.tile2.getPosX() || PosY != spWin.tile2.getPosY();
+                eitherfield = spWin.tile2.getOnfirstfield() ;
             } else {
                 change = PosX != spWin.tile.getPosX() || PosY != spWin.tile.getPosY();
+                eitherfield = spWin.tile.getOnfirstfield() ;
             }
-
-            eitherfield = spWin.tile.getOnfirstfield() || spWin.tile2.getOnfirstfield() ;
 
             if (change && eitherfield) {
                 BildRechner(g);
@@ -45,6 +58,9 @@ public class Zielhilfe extends JPanel {
 
     }
 
+    /**
+     * Verhindert, dass die Zielhilfe gezeichnet wird
+     */
     public void stopdrawing() {
         draw = false;
     }
@@ -52,7 +68,7 @@ public class Zielhilfe extends JPanel {
     /**
      * @param g gibt Graphics Object weiter
      *          <p>
-     *          Wandelt die int X & Y Position in ein Bilderkombination um
+     *          Wandelt die int X & Y Position in eine Bilderkombination um, welche dann leserlich von der GUI dargestellt werden kann
      */
     void BildRechner(Graphics g) {
 
@@ -162,6 +178,11 @@ public class Zielhilfe extends JPanel {
     }
 
 
+    /**
+     * @param x int --> Basis der Potenz, welche berechnet werden soll
+     * @param n int --> Exponent der Potenz, welche berechnet werden soll
+     * @return int berechnete Potenz
+     */
     public int Exponent(int x, int n) {
 
         int dummy = x;

@@ -34,6 +34,7 @@ public class TilePainter extends JPanel implements MouseMotionListener {
     SpielWindow frame;
     PlayingField pf;
     ComPlayer Computer;
+    Graphics Test ;
     private MouseListener temp2;
     Timer KItimer;
     int[] recentshot = new int[2];
@@ -258,7 +259,7 @@ public class TilePainter extends JPanel implements MouseMotionListener {
     }
 
     /**
-     *
+     *Methode die dafür sorgt, dass die KI im Online Modus zurückschießt
      */
     public void OnlineSchussKI() {
 
@@ -444,6 +445,9 @@ public class TilePainter extends JPanel implements MouseMotionListener {
      */
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
+        Test = g ;
+
+        System.out.println("Hallo ich bin die PaintComponent von Tile und ich wurde aufgerufen");
 
         setOpaque(false);
 
@@ -568,6 +572,14 @@ public class TilePainter extends JPanel implements MouseMotionListener {
             //Sagt der visuellen Vorhersage, dass die Maus sich auf einem anderen Feld befindet und diese ihre
             //Werte erneuern muss
 
+        }
+    }
+
+    private void PickSmallestAvailableSize() {
+        for(int i = 2; i <= 5 ; i++){
+            if(groessen[i] != 0){
+                repaint();
+            }
         }
     }
 }
