@@ -60,6 +60,7 @@ public class SpielWindow extends JPanel {
         if(onlineCom){
             tile.OnlineSchussKI();
         }
+        adjustState(playingField.getStatus() == 1);
     }
 
     public SpielWindow(JFrame frame, Server Server){
@@ -71,6 +72,7 @@ public class SpielWindow extends JPanel {
         if(onlineCom){
             tile.OnlineSchussKI();
         }
+        adjustState(playingField.getStatus() == 1);
     }
 
     private void adjustState(boolean pfStatus) {
