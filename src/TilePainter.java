@@ -81,9 +81,6 @@ public class TilePainter extends JPanel implements MouseMotionListener {
                 public void mousePressed(MouseEvent e) {
                     if (e.getButton() == MouseEvent.BUTTON1) {
 
-                        frame.Turn.switchTurn();
-                        frame.Turn.repaint();
-
                         //Wenn der Klick sich auf dem Spielfeld befunden hat
                         if (Onfirstfield) {
 

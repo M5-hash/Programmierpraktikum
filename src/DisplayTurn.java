@@ -6,13 +6,7 @@ import java.awt.*;
 public class DisplayTurn extends JPanel {
 
     Bildloader Bild = new Bildloader();
-    String Zahldir = "Ich bin der String und ich bin ein Platzhalter";
-    Image Zahl; //Nur ein Platzhalter, dass die IDE nicht weint
-    SpielWindow spWin;
-    int PosX = 5;
-    int PosY = 5;
     boolean draw = true;
-    JFrame frame;
     boolean Turn = true;
 
     public DisplayTurn() {
@@ -39,11 +33,10 @@ public class DisplayTurn extends JPanel {
 
             if(Turn){
                 img = Bild.BildLoader("src/Images/fullCutGrass.jpg");
-                g.drawImage(img, 0, 0, getWidth(), getHeight(), null);
             } else {
                 img = Bild.BildLoader("src/Images/redsheen.png");
-                g.drawImage(img, 0, 0, getWidth(), getHeight(), null);
             }
+            g.drawImage(img, 0, 0, getWidth(), getHeight(), null);
         }
 
     }
@@ -56,7 +49,7 @@ public class DisplayTurn extends JPanel {
     }
 
     public void switchTurn() {
-
+        Turn = !Turn ;
     }
 
 
