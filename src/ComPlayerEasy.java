@@ -76,11 +76,10 @@ public class ComPlayerEasy extends ComPlayer {
      * <p>
      * Methode der übergeben wird, ob der nächste Computer-Spieler-Schuss getroffen hat
      *
-     * @param hit 0: Nicht getroffen, 1: Schiff getroffen, 2: Schiff getroffen und versenkt
-     * @throws Exception Wenn davor noch nicht doNextShot aufgerufen wurde
+     * @param hit 0: unwichtig
      */
     @Override
-    public void didHit(int hit) throws Exception {
+    public void didHit(int hit) {
         //Do nothing.
         //Methode ist in ComPlayer abstract, da ComPlayerNormal diese verwendet
         //und wir durch diese leere Implementierung beim Verwenden der Klasse nicht zwischen Easy und Normal unterscheiden müssen
