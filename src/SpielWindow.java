@@ -338,8 +338,8 @@ public class SpielWindow extends JPanel {
                 tile2.       setBounds(framewidth * 62 / 100, frameheigth * 25 / 100, framewidth * 25 / 100, framewidth * 25 / 100);
                 gamePanel1.  setBounds(framewidth * 45 / 100, frameheigth * 25 / 100, framewidth * 10 / 100, framewidth * 14 / 100);
                 gamePanel2.  setBounds(framewidth * 45 / 100, frameheigth * 25 / 100, framewidth * 10 / 100, framewidth * 25 / 100);
-                Z.setBounds(framewidth * isfightstart / 100, frameheigth * 17 / 100, framewidth * 25 / 100, frameheigth * 10/ 100);
-                Turn.        setBounds(framewidth * 40 / 100, frameheigth * 10 / 100, framewidth * 10 / 100, frameheigth * 10 / 100);
+                Z.           setBounds(framewidth * isfightstart / 100, frameheigth * 17 / 100, framewidth * 25 / 100, frameheigth * 10/ 100);
+                Turn.        setBounds(framewidth * 41 / 100, frameheigth * 10 / 100, framewidth * 18 / 100, frameheigth * 10 / 100);
 
                 menuPanel.revalidate();
                 menuPanel.repaint();

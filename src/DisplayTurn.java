@@ -32,9 +32,9 @@ public class DisplayTurn extends JPanel {
             setOpaque(false);
 
             if(Turn){
-                img = Bild.BildLoader("src/Images/fullCutGrass.jpg");
+                img = Bild.BildLoader("src/Images/yourturn.png");
             } else {
-                img = Bild.BildLoader("src/Images/redsheen.png");
+                img = Bild.BildLoader("src/Images/pleasewait.png");
             }
             g.drawImage(img, 0, 0, getWidth(), getHeight(), null);
         }
