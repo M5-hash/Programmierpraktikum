@@ -1,7 +1,5 @@
 package src.components;
 
-import src.ComPlayer;
-import src.PlayingField;
 import src.SpielWindow;
 
 import javax.swing.*;
@@ -51,11 +49,12 @@ public class SaveGameButton extends JButton {
                         //Computer
                         String path = jfc.getSelectedFile().getAbsolutePath();
                         String[] patharr = path.split(Pattern.quote(System.getProperty("file.separator")));
-                        String fname = patharr[patharr.length-1];
+                        String fname = patharr[patharr.length - 1];
                         //SchiffeVersenkenHSAalenSaves-Ordner überprüfen
                         String fpath = System.getProperty("java.io.tmpdir") + File.separator + "SchiffeVersenkenHSAalenSaves";
                         File directory = new File(fpath);
-                        if (!directory.exists()) directory.mkdir();
+                        if (!directory.exists())
+                            if (!directory.mkdir()) throw new Exception("Temp-Ordner existiert nicht");
                         sw.getCom().saveGame(fpath + File.separator + sw.getPlayingField().getTimestamp() + fname);
                     }
                 } catch (Exception ex) {
