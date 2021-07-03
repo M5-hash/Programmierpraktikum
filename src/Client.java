@@ -23,7 +23,7 @@ public class Client extends Com_base {
     protected PlayingField setupPlayingfield() throws Exception {
         PlayingField pf_holder = null;
 
-        String[] in_size = loopCheckIN().split(" ");
+        String[] in_size = loopCheckIN(false).split(" ");
 
         if (in_size[0].equals("size")) {
             config.fieldsize = Integer.parseInt(in_size[1]);
@@ -31,7 +31,7 @@ public class Client extends Com_base {
             Send("done");
 
 
-            String[] in_ships_Str = loopCheckIN().split(" ");
+            String[] in_ships_Str = loopCheckIN(false).split(" ");
             int[] ships_int_arr = ship_array_toInt(in_ships_Str, 1);
             config.size2 = 0;
             config.size3 = 0;
@@ -49,13 +49,14 @@ public class Client extends Com_base {
             setTurn(true);
             Send("done");
 
-            if (loopCheckIN().equals("ready")) {
+            if (loopCheckIN(false).equals("ready")) {
 
                 setTurn(true);
                 Send("ready");
             }
         }
         else{
+            this.loaded = true;
             pf_holder = new PlayingField();
             pf_holder.loadGame(Long.valueOf(in_size[1]));
         }
