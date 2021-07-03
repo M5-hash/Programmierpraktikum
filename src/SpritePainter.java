@@ -297,7 +297,7 @@ public class SpritePainter {
      *          <p>
      *          Zeichnet die Schiffe wie sie durch das in Schiffteil() ermittelt Array vorgegeben werden (Feld von Spieler)
      *          <p>
-     *          Zeichnet was dem Spieler vom Feld seines Gegners bekannt ist (Feld von GegnerKi & GegnerMensch)
+     *          Zeichnet was dem Spieler vom Feld seines Gegners bekannt ist (Feld von GegnerKi und GegnerMensch)
      *          <p>
      *          Zeichnet die Schiffe wie sie durch das in Schiffteil() ermittelt Array vorgegeben werden, aber mit der
      *          weiteren Information ob diese dort überhaupt gesetzt werden dürfen (Feld von Preview)

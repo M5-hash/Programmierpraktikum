@@ -135,6 +135,7 @@ public abstract class ComPlayer {
      * Laden der Computer-Spieler-Sicht, per ID
      *
      * @param id ID die man über das Netzwerk bekommt
+     * @return True: Laden erfolgreich
      * @throws FileNotFoundException Wenn die dazugehörige Datei nicht existiert
      */
     protected boolean loadGame(long id) throws FileNotFoundException {

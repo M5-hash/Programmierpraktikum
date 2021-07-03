@@ -190,7 +190,6 @@ public class PlayingField {
      * @param field Das Feld für das überprüft werden soll, ob die Koordinaten enthalten sind
      * @param x X-Koordinate
      * @param y Y-Koordinate
-     * @throws Exception, wenn X/Y Koordinate nicht im Spielfeld
      */
     public static void checkCoordinatesInFieldStatic(int[][] field, int x, int y) throws Exception {
         if (x < 0 || x >= field.length || y < 0 || y > field.length) {
