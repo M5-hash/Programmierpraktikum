@@ -34,8 +34,13 @@ public class Server extends Com_base {
         PlayingField pf_holder ;
 
         if(!config.filepath.equals("")){
+            pf_holder = new PlayingField();
 
-
+            pf_holder.loadGame(config.filepath);
+            TimeUnit.MILLISECONDS.sleep(100);
+            this.Send("load "+pf_holder.getFilenameLongID(config.filepath));
+        }
+        else {
             pf_holder = new PlayingField(in_size, ship_array_toInt(in_ships.split(" "), 0), role_server);
             TimeUnit.MILLISECONDS.sleep(100);
 
@@ -58,14 +63,6 @@ public class Server extends Com_base {
 
 
             this.myTurn = true;
-
-        }
-        else {
-            pf_holder = new PlayingField();
-
-            pf_holder.loadGame(config.filepath);
-            TimeUnit.MILLISECONDS.sleep(100);
-            this.Send("load " + pf_holder.getFilenameLongID(config.filepath));
         }
         return pf_holder;
     }
