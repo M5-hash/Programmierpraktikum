@@ -49,7 +49,6 @@ public class config {
     public static int       SpielFeld2              = 1; // 0 = Spieler ; 1 = GegnerKI ; 2 = GegnerOnline
     public static boolean   onlineCom               = false;
 
-    public static boolean   change                  = false;
     public static int       framewidth              = 0;
     public static int       frameheigth             = 0;
     public static String    IP                      = "";
