@@ -221,6 +221,7 @@ public class PanelSize extends JPanel {
                 SpielFeld2 = 2;
 
                 if (x == 0) {
+                    onlineCom = false;
                     menuPanel.setVisible(false);
                     menuFrame.dispose();
                     // Create SpielWindow and display it
@@ -232,6 +233,7 @@ public class PanelSize extends JPanel {
                         ioException.printStackTrace();
                     }
                 } else if (x == 1) {
+                    onlineCom = true;
                     menuPanel.setVisible(false);
                     menuFrame.dispose();
                     // Create SpielWindow and display it
