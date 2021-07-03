@@ -179,7 +179,7 @@ public class SpielWindow extends JPanel {
             } catch (Exception exception) {
                 exception.printStackTrace();
             }
-            if(!Online.myTurn){
+            if(!Online.myTurn && !Online.pf.gameover()){
                 Thread t1 = new Thread(new Runnable() {
                     public void run()
                     {

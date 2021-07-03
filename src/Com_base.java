@@ -1,12 +1,10 @@
 package src;
 
-import javax.swing.Timer;
-import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Writer;
 import java.net.Socket;
-import java.util.concurrent.TimeUnit;
+import java.net.SocketException;
 
 
 public abstract class Com_base {
@@ -23,8 +21,6 @@ public abstract class Com_base {
     protected int lastY;
     protected boolean role_server;
     protected boolean loopBreaker;
-    private Timer t;
-    protected boolean first = true;
     private SpielWindow frame;
     protected boolean loaded;
 
@@ -45,10 +41,18 @@ public abstract class Com_base {
         this.lastY = y;
     }
 
-    public void Send(String input) throws Exception {
+    public void Send(String input){
         if (this.myTurn) {
-            this.out.write(String.format("%s%n", input));
-            this.out.flush();
+            try {
+                this.out.write(String.format("%s%n", input));
+                try {
+                    this.out.flush();
+                } catch (SocketException a) {
+                    System.out.println("Shutdown");
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         this.myTurn = false;
     }
@@ -63,12 +67,15 @@ public abstract class Com_base {
         return this.line;
     }
 
-    public void KillSocket() throws IOException {
-        this.s.shutdownOutput();
-        System.out.println("Connection closed.");
+    public void KillSocket() {
+        try {
+            this.s.shutdownOutput();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    public String loopCheckIN(boolean repaint) throws IOException {
+    public String loopCheckIN(boolean repaint){
         this.loopBreaker = true;
         String hold = "";
         while (this.loopBreaker) {
@@ -83,8 +90,12 @@ public abstract class Com_base {
         return hold;
     }
 
-    public boolean in_check() throws IOException {
-        this.line = this.in.readLine();
+    public boolean in_check(){
+        try {
+            this.line = this.in.readLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         if (this.line == null || this.line.equals("")) {
             return false;
@@ -121,7 +132,7 @@ public abstract class Com_base {
                 setTurn(true);
                 Send("answer 2");
                 if (pf.enemygameover()) {
-                    //Win Screen
+                    Send("pass");
                     KillSocket();
                 }
             }
@@ -137,7 +148,7 @@ public abstract class Com_base {
             } else if (holder[1].equals("2")) {
                 pf.didHit(2, this.lastX, this.lastY);
                 if (pf.gameover()) {
-                    //hier loose Screen
+                    myTurn = false;
                 }
                 myTurn = true;
             }
@@ -159,9 +170,6 @@ public abstract class Com_base {
     }
 
 
-    private void tStop() {
-        t.stop();
-    }
 
     protected int[] ship_array_toInt(String[] in_ships, int begin) {
         int[] out_ships = new int[in_ships.length - begin];

@@ -37,11 +37,12 @@ public class Server extends Com_base {
             pf_holder = new PlayingField();
 
             pf_holder.loadGame(config.filepath);
-            this.Send(""+pf_holder.getFilenameLongID(config.filepath));
+            TimeUnit.MILLISECONDS.sleep(100);
+            this.Send("load "+pf_holder.getFilenameLongID(config.filepath));
         }
         else {
             pf_holder = new PlayingField(in_size, ship_array_toInt(in_ships.split(" "), 0), role_server);
-            TimeUnit.SECONDS.sleep(5);
+            TimeUnit.MILLISECONDS.sleep(100);
 
             setTurn(true);
             Send("size " + in_size);

@@ -13,8 +13,7 @@ import java.util.Scanner;
 import java.util.regex.Pattern;
 
 import static src.FontLoader.Pokemon;
-import static src.config.GameMode;
-import static src.config.filepath;
+import static src.config.*;
 
 public class LoadGameButton extends JButton {
 
@@ -45,6 +44,7 @@ public class LoadGameButton extends JButton {
                 try {
                     if (GameMode) {
                         filepath = selectedFile.getAbsolutePath();
+                        this.loadGameMultiplayer(menuFrame, menuPanel);
                     } else {
                         this.loadGameSingleplayer(selectedFile.getAbsolutePath());
                         menuPanel.setVisible(false);
@@ -70,6 +70,20 @@ public class LoadGameButton extends JButton {
     protected void paintComponent(Graphics g) {
         g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
         super.paintComponent(g);
+    }
+
+    private void loadGameMultiplayer(JFrame menuFrame, JPanel menuPanel){
+        onlineCom = false;
+        menuPanel.setVisible(false);
+        menuFrame.dispose();
+        // Create SpielWindow and display it
+        try {
+            SpielFeld1 = 0;
+            Server server = new Server(fieldsize, null);
+            server.setSpielwindow(new SpielWindow(menuFrame, server));
+        } catch (Exception ioException) {
+            ioException.printStackTrace();
+        }
     }
 
     /**
