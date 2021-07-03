@@ -48,8 +48,8 @@ public class DisplayTurn extends JPanel {
         draw = false;
     }
 
-    public void switchTurn() {
-        Turn = !Turn ;
+    public void switchTurn(boolean Set) {
+        Turn = Set ;
     }
 
 
