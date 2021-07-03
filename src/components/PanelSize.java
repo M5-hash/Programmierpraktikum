@@ -227,8 +227,8 @@ public class PanelSize extends JPanel {
                     // Create SpielWindow and display it
                     try {
                         SpielFeld1 = 0;
-                        Server server = new Server("setup", fieldsize, getShipString());
-                        SpielWindow MP_Window = new SpielWindow(menuFrame, server);
+                        Server server = new Server(fieldsize, getShipString());
+                        server.setSpielwindow(new SpielWindow(menuFrame, server));
                     } catch (Exception ioException) {
                         ioException.printStackTrace();
                     }
@@ -239,7 +239,8 @@ public class PanelSize extends JPanel {
                     // Create SpielWindow and display it
                     try {
                         SpielFeld1 = 0;
-                        Server server = new Server("setup", fieldsize, getShipString());
+                        Server server = new Server(fieldsize, getShipString());
+                        server.setSpielwindow(new SpielWindow(menuFrame, server));
                     } catch (Exception ioException) {
                         ioException.printStackTrace();
                     }

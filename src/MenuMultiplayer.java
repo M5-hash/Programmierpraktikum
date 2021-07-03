@@ -82,7 +82,8 @@ public class MenuMultiplayer {
                     try {
                         Client client = new Client(IP);
                         SpielFeld1 = 0;
-                        new SpielWindow(menuFrame, client); //warum wird hier kein SpielWindow übergeben  ?
+                        client.setSpielwindow(new SpielWindow(menuFrame, client)); //warum wird hier kein SpielWindow übergeben  ?
+
                     } catch (Exception ioException) {
                         ioException.printStackTrace();
                     }
