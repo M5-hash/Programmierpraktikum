@@ -57,6 +57,7 @@ public class TilePainter extends JPanel implements MouseMotionListener {
      */
     public TilePainter(int Feldgroesse, int Feldvon, SpielWindow frame, ComPlayer Com, PlayingField pf) {
         Ebene = new Tile(Feldgroesse);
+        System.out.println(AnzSchiffe);
         Computer = Com;
         this.frame = frame;
         field = Feldvon;
