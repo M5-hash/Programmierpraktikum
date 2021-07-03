@@ -58,7 +58,7 @@ public class SpielWindow extends JPanel {
     public SpielWindow(JFrame frame, Client Client){
         Online = Client ;
         playingField = Client.pf ;
-        makeComponents(frame);
+        makeComponents(frame, false);
         Multclient = true ;
         if(onlineCom){
             tile.OnlineSchussKI();
@@ -74,7 +74,7 @@ public class SpielWindow extends JPanel {
         System.out.println("Wir sind in das SpielWindow gekommen");
         Online = Server ;
         playingField = Server.pf ;
-        makeComponents(frame);
+        makeComponents(frame, false);
         Multclient = false ;
         if(onlineCom){
             tile.OnlineSchussKI();
@@ -145,7 +145,7 @@ public class SpielWindow extends JPanel {
         tile              = new TilePainter(fieldsize, SpielFeld1, this, Com, playingField);
         tile2             = new TilePainter(fieldsize, SpielFeld2, this, Com, playingField);
         Z                 = new Zielhilfe(this, frame);
-        menuPanel         = new CustomPanel(ImageLoader.getImage(ImageLoader.GAME_BACKGROUND));
+
         gameLayout        = new GridLayout(0, 1);
         buttonDelete      = new DeleteButton();
         buttonReady       = new MenuButton("START GAME",   ImageLoader.getImage(ImageLoader.MENU_BUTTON), "Das Spiel kann erst gestartet werden, wenn alle Schiffe gesetzt sind");
@@ -153,13 +153,16 @@ public class SpielWindow extends JPanel {
         buttonSaveGame    = new SaveGameButton("SAVE GAME",    ImageLoader.getImage(ImageLoader.MENU_BUTTON), this);
         buttonLoadGame    = new LoadGameButton(frame, menuPanel, "LOAD GAME",    ImageLoader.getImage(ImageLoader.MENU_BUTTON));
         buttonQuitGame    = new QuitButton();
+
         if(selectedTheme.equals("Pokemon")){
+            menuPanel         = new CustomPanel(ImageLoader.getImage(ImageLoader.GAME_BACKGROUND));
             btn_size2         = new ToggleButton("size 2: " + size2, ImageLoader.getImage(ImageLoader.RED), ImageLoader.getImage(ImageLoader.MENU_BUTTON2), ImageLoader.getImage(ImageLoader.GAME_BTN_BALL1));
             btn_size3         = new ToggleButton("size 3: " + size3, ImageLoader.getImage(ImageLoader.RED), ImageLoader.getImage(ImageLoader.MENU_BUTTON2), ImageLoader.getImage(ImageLoader.GAME_BTN_BALL2));
             btn_size4         = new ToggleButton("size 4: " + size4, ImageLoader.getImage(ImageLoader.RED), ImageLoader.getImage(ImageLoader.MENU_BUTTON2), ImageLoader.getImage(ImageLoader.GAME_BTN_BALL3));
             btn_size5         = new ToggleButton("size 5: " + size5, ImageLoader.getImage(ImageLoader.RED), ImageLoader.getImage(ImageLoader.MENU_BUTTON2), ImageLoader.getImage(ImageLoader.GAME_BTN_BALL4));
         } else {
             Bildloader Bild = new Bildloader() ;
+            menuPanel         = new CustomPanel(Bild.BildLoader("src/Images/NavalBackground.jpg"));
             btn_size2         = new ToggleButton("size 2: " + size2, ImageLoader.getImage(ImageLoader.RED), ImageLoader.getImage(ImageLoader.MENU_BUTTON2), Bild.BildLoader("src/Images/2Stern.png"));
             btn_size3         = new ToggleButton("size 3: " + size3, ImageLoader.getImage(ImageLoader.RED), ImageLoader.getImage(ImageLoader.MENU_BUTTON2), Bild.BildLoader("src/Images/3Stern.png"));
             btn_size4         = new ToggleButton("size 4: " + size4, ImageLoader.getImage(ImageLoader.RED), ImageLoader.getImage(ImageLoader.MENU_BUTTON2), Bild.BildLoader("src/Images/4Stern.png"));

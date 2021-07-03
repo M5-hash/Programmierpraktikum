@@ -14,6 +14,7 @@ public class Tile extends JPanel {
     private static int counter = 0;
     private final Bildloader Bild = new Bildloader();
     private final int[][] Feld;
+    boolean scnd ;
     BufferedImage Image;
     BufferedImage Border;
 
@@ -141,7 +142,14 @@ public class Tile extends JPanel {
             }
             //Um das Wasser zu animieren müssen verschieden Frames des Wassers aufgerufen werden, das wird durch die Erhöhung des counters erreicht
             //Um aber zu garantieren, das immer eines der 32 Frames gewählt wird, wird mod 32 gerechnet
-            counter = (counter + 1) % 32;
+            if(scnd){
+                counter = counter + 1;
+                scnd = false ;
+            } else {
+                scnd = true ;
+            }
+
+
 
 
         }
