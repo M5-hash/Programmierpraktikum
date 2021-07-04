@@ -19,7 +19,7 @@ public class Server extends Com_base {
         this.in = new BufferedReader(new InputStreamReader(this.s.getInputStream()));
         this.out = new OutputStreamWriter(this.s.getOutputStream());
         this.pf = setupPlayingfield(in_size, in_ships);
-        if(config.onlineCom) {
+        if(config.onlineCom && !loaded) {
             this.comPl = new ComPlayerNormal(this.pf);
         }
     }
@@ -33,8 +33,13 @@ public class Server extends Com_base {
 
         if(!config.filepath.equals("")){
             pf_holder = new PlayingField();
-
-            pf_holder.loadGame(config.filepath);
+            if (config.onlineCom) {
+                this.comPl = new ComPlayerNormal(config.filepath);
+                pf_holder = comPl.getPlayingField();
+            }
+            else {
+                pf_holder.loadGame(config.filepath);
+            }
             TimeUnit.MILLISECONDS.sleep(100);
             this.loaded = true;
             setTurn(true);

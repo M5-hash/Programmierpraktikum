@@ -161,7 +161,12 @@ public abstract class Com_base {
             }
 
         } else if (holder[0].equals("save")) {
-            pf.saveGame(Long.parseLong(holder[1]));
+            if(!config.onlineCom) {
+                pf.saveGame(Long.parseLong(holder[1]));
+            }
+            else{
+                comPl.saveGame(Long.parseLong(holder[1]));
+            }
         } else if (holder[0].equals("ready")) {
             myTurn = true;
         } else if (holder[0].equals("pass")) {
