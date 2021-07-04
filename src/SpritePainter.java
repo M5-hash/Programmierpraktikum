@@ -332,13 +332,7 @@ public class SpritePainter {
         switch (fieldof) {
             case 1 -> dummy = pf.getFieldEnemy();
 
-            case 2 -> {
-                if (frame.Multclient) {
-                    dummy = frame.Online.getPf().getFieldEnemy();
-                } else {
-                    dummy = frame.Online.getPf().getFieldEnemy();
-                }
-            }
+            case 2 -> dummy = frame.Online.getPf().getFieldEnemy();
 
             default -> dummy = BugHeckMeck;
         }
