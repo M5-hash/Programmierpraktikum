@@ -238,7 +238,7 @@ public class PanelSize extends JPanel {
                     menuFrame.dispose();
                     // Create SpielWindow and display it
                     try {
-                        SpielFeld1 = 1;
+                        SpielFeld1 = 0;
                         Server server = new Server(fieldsize, getShipString());
                         server.setSpielwindow(new SpielWindow(menuFrame, server));
                     } catch (Exception ioException) {
