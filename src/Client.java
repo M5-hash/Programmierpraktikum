@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
+import java.util.concurrent.TimeUnit;
 
 //
 public class Client extends Com_base {
@@ -16,10 +17,16 @@ public class Client extends Com_base {
         super(loadScreen);
         this.role_server = false;
         this.IP = IP_in;
-        try {
-            this.s = new Socket(this.IP, this.port);
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Connection konnte nicht hergestellt werden");
+        for(int i = 0; i < 10; i++){
+            try {
+                this.s = new Socket(this.IP, this.port);
+            } catch (IOException e) {
+                TimeUnit.SECONDS.sleep(1);
+                if(i == 10){
+                    System.exit(1);
+                    JOptionPane.showMessageDialog(null, "Connection konnte nicht hergestellt werden");
+                }
+            }
         }
         this.SocketActive = true;
         this.in = new BufferedReader(new InputStreamReader(s.getInputStream()));
