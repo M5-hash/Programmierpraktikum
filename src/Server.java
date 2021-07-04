@@ -16,6 +16,7 @@ public class Server extends Com_base {
         this.role_server = true;
         this.ss = new ServerSocket(this.port);
         this.s = this.ss.accept();
+        this.SocketActive = true;
         this.in = new BufferedReader(new InputStreamReader(this.s.getInputStream()));
         this.out = new OutputStreamWriter(this.s.getOutputStream());
         this.pf = setupPlayingfield(in_size, in_ships);
