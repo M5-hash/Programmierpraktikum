@@ -13,11 +13,29 @@ import static src.config.*;
  */
 public class TilePainter extends JPanel implements MouseMotionListener {
 
+    /**
+     * Boolean, gibt an ob das zu setzende Schiff horizontal ausgerichtet ist
+     */
     public static boolean horizontal = true;
+    /**
+     * Die Größe des momentan ausgewählten Schiffs, wenn 0 ist kein Schiff ausgewählt
+     */
     private static int groesse = 0;
+    /**
+     * Variable für den Hintergrund
+     */
     private final Tile Ebene;
+    /**
+     * Array für die Anzahl der Größen des Schiffes
+     */
     private final int[] groessen = {0, 0, size2, size3, size4, size5};
+    /**
+     * Falls true --> Maus befindet sich auf dem Spielfeld; false --> Maus befindet sich neben dem Feld
+     */
     public boolean Onfirstfield = false;
+    /**
+     * Anzahl der bis jetzt gesetzten Schiffe
+     */
     int AnzSchiffe = 0;
     int counter;
     boolean hasshot = false;
@@ -53,7 +71,7 @@ public class TilePainter extends JPanel implements MouseMotionListener {
      *                    (platzieren, löschen, schießen), falls die Position der Klicks dies erlaubt
      */
     public TilePainter(int Feldgroesse, int Feldvon, SpielWindow frame, ComPlayer Com, PlayingField pf) {
-        Ebene = new Tile(Feldgroesse, this);
+        Ebene = new Tile(Feldgroesse);
         System.out.println(AnzSchiffe);
         Computer = Com;
         this.frame = frame;

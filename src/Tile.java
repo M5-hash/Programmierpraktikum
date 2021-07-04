@@ -31,9 +31,13 @@ public class Tile extends JPanel {
      * Repräsentation des Spielfeldes, wird verwendet um den jeweiligen Frame des Tiles zu speichern
      */
     private final int[][] Feld;
-
-    TilePainter parent;
+    /**
+     * Image Datei für den Hintergrund
+     */
     BufferedImage Image;
+    /**
+     * Image Datei für den Rahmen
+     */
     BufferedImage Border;
     /**
      * Counter, der durch den das nächste Bild für die Animation gewählt wird
@@ -45,9 +49,8 @@ public class Tile extends JPanel {
      *          <p>
      *          Zeichnet die individuellen Tiles des Spielfeldes
      */
-    public Tile(int x, TilePainter parent) {
+    public Tile(int x) {
         field_size = x;
-        this.parent = parent;
         Feld = new int[field_size][field_size];
         DummyLeser(Feld);
         Border = Bild.BildLoader("src/Images/Border.jpg");
@@ -167,9 +170,7 @@ public class Tile extends JPanel {
         }
         //Um das Wasser zu animieren müssen verschieden Frames des Wassers aufgerufen werden, das wird durch die Erhöhung des counters erreicht
         //Um aber zu garantieren, das immer eines der 32 Frames gewählt wird, wird mod 32 gerechnet
-
         counter += 1 % 32;
-        System.out.println(parent.field + "Counter ist auf: " + counter);
 
 
         //Da man jeweils x + 1 Linien braucht um x Felder zu umranden werden hier die letzten 2 Striche gezeichnet
