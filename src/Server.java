@@ -14,7 +14,7 @@ public class Server extends Com_base {
     /**
      * Erwartet Verbindungsversuch durch einen Socket und etabliert die Socket-Verbindung
      */
-    private ServerSocket ss;
+    private ServerSocket serverSocket;
 
     /**
      * Vermerkt true in RoleServer
@@ -35,8 +35,8 @@ public class Server extends Com_base {
         this.RoleServer = true;
 
         try {
-            this.ss = new ServerSocket(this.port);
-            this.socket = this.ss.accept();
+            this.serverSocket = new ServerSocket(this.port);
+            this.socket = this.serverSocket.accept();
             this.SocketActive = true;
             this.in = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
             this.out = new OutputStreamWriter(this.socket.getOutputStream());
@@ -60,7 +60,7 @@ public class Server extends Com_base {
     /**
      * Setzt das Playingfield des neuen oder geladenen Spiels auf
      * Sendet entsprechende Befehle an den Client, damit dieser sein eigenes Playingfield aufsetzen kann
-     *
+     * <p>
      * Bei Problemen beim Aufsetzen von Spielfeld oder ComPlayer, wird eine Fehlermeldung ausgegeben und das Spiel nach
      * kurzer Zeit beendet
      *

@@ -170,11 +170,16 @@ public abstract class Com_base {
 
     /**
      * Beendet die Socketverbindung und vermerkt dies mit false in SocketActive
+     * Beendet alle genutzten Reader und Writer
      */
     public void KillSocket() {
         try {
             this.SocketActive = false;
+            this.in.close();
+            this.out.close();
             this.socket.shutdownOutput();
+            this.socket.shutdownInput();
+            this.socket.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
