@@ -213,6 +213,8 @@ public class SpielWindow extends JPanel {
                 }
                 tile2.setPosX(hold[0]);
                 tile2.setPosY(hold[1]);
+                Online.lastX = hold[0];
+                Online.lastY = hold[1];
                 Online.Send("shot " + hold[0] + " " + hold[1]);
 
                 try {
@@ -445,6 +447,8 @@ public class SpielWindow extends JPanel {
                 }
                 tile2.setPosX(hold[0]);
                 tile2.setPosY(hold[1]);
+                Online.lastX = hold[0];
+                Online.lastY = hold[1];
                 Online.Send("shot " + hold[0] + " " + hold[1]);
                 try {
 
