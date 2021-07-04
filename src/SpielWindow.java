@@ -58,8 +58,8 @@ public class SpielWindow extends JPanel {
     public SpielWindow(JFrame frame, Client Client){
         Online = Client ;
         playingField = Client.pf ;
-        makeComponents(frame, onlineCom);
         Multclient = true ;
+        makeComponents(frame, onlineCom);
         if(onlineCom){
             tile.OnlineSchussKI();
             tile.AnzSchiffe = sumofships;
@@ -76,8 +76,8 @@ public class SpielWindow extends JPanel {
         System.out.println("Wir sind in das SpielWindow gekommen");
         Online = Server ;
         playingField = Server.pf ;
-        makeComponents(frame, onlineCom);
         Multclient = false ;
+        makeComponents(frame, onlineCom);
         if(onlineCom){
             tile.OnlineSchussKI();
             tile.AnzSchiffe = sumofships;
