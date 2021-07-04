@@ -11,13 +11,23 @@ import static src.config.selectedTheme ;
 import static src.FontLoader.Pokemon;
 
 /**
- * Button, welcher die zwischen der Lösch und Platzieren Funktion hin und her wechselt
+ * Button, welcher zwischen der Lösch und Platzieren Funktion hin und her wechselt
  */
 public class DeleteButton extends JButton {
 
+    /**
+     * Gibt an, ob man momentan löscht
+     */
     boolean deleting;
+
+    /**
+     * Bildloader, sodass auch Bilder geladen werden
+     */
     Bildloader Bild = new Bildloader();
 
+    /**
+     * Initalisiert den DeleteButton mit den richtigen Eigenschaften
+     */
     public DeleteButton() {
         super("DELETE");
         setBorder(new LineBorder(Color.darkGray));
@@ -28,6 +38,9 @@ public class DeleteButton extends JButton {
 
     }
 
+    /**
+     * Wechselt beim Aufruf von Platzieren zu Löschen bzw von Löschen zu Platzieren
+     */
     public void switchDeleting() {
         this.deleting = !deleting;
         if(!deleting){
@@ -37,6 +50,11 @@ public class DeleteButton extends JButton {
         }
     }
 
+    /**
+     * @param g Graphics Object
+     *
+     *          Checkt das momentane Theme und ob platziert oder gelöscht wird und zeichnet den Button dann passend
+     */
     @Override
     protected void paintComponent(Graphics g) {
 

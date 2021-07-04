@@ -53,7 +53,7 @@ public class TilePainter extends JPanel implements MouseMotionListener {
      *                    (platzieren, löschen, schießen), falls die Position der Klicks dies erlaubt
      */
     public TilePainter(int Feldgroesse, int Feldvon, SpielWindow frame, ComPlayer Com, PlayingField pf) {
-        Ebene = new Tile(Feldgroesse);
+        Ebene = new Tile(Feldgroesse, this);
         System.out.println(AnzSchiffe);
         Computer = Com;
         this.frame = frame;
