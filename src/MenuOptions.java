@@ -26,6 +26,13 @@ public class MenuOptions {
     JPanel menuPanel;
     JFrame menuFrame;
 
+    /**
+     * Components werden hier erstellt
+     * @param menuFrame Frame des Hauptmenü
+     * @param menuMain Panel mit Compenents des Startmenü
+     * @throws IOException Fehler beim Laden der Grafiken
+     * @throws FontFormatException Fehler beim Laden der Font
+     */
     public MenuOptions(JFrame menuFrame, JPanel menuMain) throws IOException, FontFormatException {
         this.menuFrame = menuFrame;
 
@@ -66,7 +73,7 @@ public class MenuOptions {
         buttonPanel = new ButtonPanel();
 
         cbResolutions = new CustomComboBox(Resolutions, Pokemon.deriveFont(11f));
-        cbThemes = new CustomComboBox2(Themes, Pokemon.deriveFont(11f));
+        cbThemes = new CustomComboBox2(Themes, Pokemon.deriveFont(11f), menuFrame);
 
         buttonPanel.add(cbResolutions);
         buttonPanel.add(cbThemes);
@@ -78,6 +85,13 @@ public class MenuOptions {
         menuFrame.add(menuPanel);
     }
 
+    /**
+     * Legt Größe und Position der Components fest
+     * @param comp Ein Swing Component, welcher in constraints embedded werden soll.
+     * @param gridx X-Position auf der X-Achse
+     * @param gridy Y-Position auf der Y-Achse
+     * @param gridwidth Breite des Components
+     */
     private void makeConstraints(JComponent comp, int gridx, int gridy, int gridwidth) {
         constraints.gridx = gridx;
         constraints.gridy = gridy;

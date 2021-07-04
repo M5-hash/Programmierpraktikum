@@ -24,8 +24,8 @@ public class MenuStart {
 
     /**
      * Erstellung der Components im Startmenü
-     * @throws IOException
-     * @throws FontFormatException
+     * @throws IOException Fehler beim Laden der Grafiken
+     * @throws FontFormatException Fehler beim Laden der Font
      */
     public MenuStart() throws IOException, FontFormatException {
         // Custom Frame

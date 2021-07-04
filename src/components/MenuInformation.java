@@ -80,8 +80,13 @@ public class MenuInformation extends JPanel {
         super.paintComponent(g);
         if(!selectedTheme.equals("Pokemon")){
             Bildloader Bild = new Bildloader() ;
-            bgImage = Bild.BildLoader("src/Images/NavalBackground.jpg") ;
+            bgImage = Bild.BildLoader("src/Images/captain-iglo.png") ;
+            g.drawImage(bgImage, 0,0, getWidth() / 5, getHeight() / 2, null);
+        } else{
+            Bildloader Bild = new Bildloader() ;
+            bgImage = Bild.BildLoader("assets/textfeld_eich1.png") ;
+            g.drawImage(bgImage, 0,0, getWidth(), getHeight(), null);
         }
-        g.drawImage(bgImage, 0,0, getWidth(), getHeight(), null);
+
     }
 }
