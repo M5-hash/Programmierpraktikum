@@ -199,7 +199,7 @@ public class Tile extends JPanel {
         //zeichnet den Hintergrund/Grenze des Panels
         g.drawImage(Border, 0, 0, Size, Size, null);
 
-        BufferedImage WinScreen = Bild.BildLoader("src/Images/youwon.png");
+        BufferedImage WinScreen = Bild.BildLoader("src/Images/YWPD.png");
 
         //Das Bild, das einem sagt, dass man gewonnen hat
         g.drawImage(WinScreen, SizeofBorder, SizeofBorder, Size - 2 * SizeofBorder, Size - 2 * SizeofBorder, null);
