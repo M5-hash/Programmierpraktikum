@@ -291,7 +291,6 @@ public class TilePainter extends JPanel implements MouseMotionListener {
 
     /**
      * Übergibt den Schuss an die Kommunikation im passenden String Format.
-     * <p>
      */
     private void OnlineMausklick() {
         String xString = PosX + " ";
@@ -550,10 +549,8 @@ public class TilePainter extends JPanel implements MouseMotionListener {
 
     /**
      * @param e gibt MouseEvent weiter
-     *          <p>
      *          setzt die Pos Variablen auf das Tile auf dem sich die Maus momentan befindet und sagt der Vorhersage,
      *          ob diese sich neue Werte für die Anzeige holen muss
-     *          <p>
      */
     @Override
     public void mouseMoved(MouseEvent e) {
