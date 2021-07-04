@@ -78,7 +78,7 @@ public class ComPlayerNormal extends ComPlayer {
      * @param rows Größenangabe
      */
     private void setRowSeq(int rows) {
-        this.rowSeq = new ArrayList<Integer>();
+        this.rowSeq = new ArrayList<>();
         for (int i = 0; i < rows; i++) {
             this.rowSeq.add(i);
         }
@@ -148,7 +148,7 @@ public class ComPlayerNormal extends ComPlayer {
     @Override
     public int[] doNextShot() throws Exception {
         int[] hit = this.findHit();
-        int[] next = null;
+        int[] next;
 
         if (hit == null) {
             //Schach-Pattern schießen
@@ -171,7 +171,7 @@ public class ComPlayerNormal extends ComPlayer {
      * und gibt passende X/Y-Koordinaten zurück
      *
      * @return int[]{x,y}
-     * @throws Exception
+     * @throws Exception Wenn alle Möglichkeiten ausgeschöpft wurden
      */
     private int[] findNextCheckPattern() throws Exception {
         if (this.nextRow < 0) {
@@ -230,15 +230,13 @@ public class ComPlayerNormal extends ComPlayer {
         if ((x - 1 >= 0 && this.pf.getFieldEnemy()[y][x - 1] == 1) || (x + 1 < this.pf.getFieldEnemy().length && this.pf.getFieldEnemy()[y][x + 1] == 1))
             horizontal = true;
             //Oben oder Unten abgeschossenes Schiffsteil => Vertikal
-        else if ((y - 1 >= 0 && this.pf.getFieldEnemy()[y - 1][x] == 1) || (y + 1 < this.pf.getFieldEnemy().length && this.pf.getFieldEnemy()[y + 1][x] == 1))
+        else //Keine andere Möglichkeit als Vertikal
+            if ((y - 1 >= 0 && this.pf.getFieldEnemy()[y - 1][x] == 1) || (y + 1 < this.pf.getFieldEnemy().length && this.pf.getFieldEnemy()[y + 1][x] == 1))
             horizontal = false;
             //Wenn Kein Schiffsteil daneben, überprüfen ob ein nicht abgeschossenes Feld in der horizontalen Nähe
-        else if ((x - 1 >= 0 && this.pf.getFieldEnemy()[y][x - 1] == 0) || (x + 1 < this.pf.getFieldEnemy().length && this.pf.getFieldEnemy()[y][x + 1] == 0))
-            horizontal = true;
-            //Keine andere Möglichkeit als Vertikal
-        else horizontal = false;
+        else horizontal = (x - 1 >= 0 && this.pf.getFieldEnemy()[y][x - 1] == 0) || (x + 1 < this.pf.getFieldEnemy().length && this.pf.getFieldEnemy()[y][x + 1] == 0);
 
-        int[] possibleShot = null;
+        int[] possibleShot;
         if (horizontal) {
             //Links überprüfen
             possibleShot = potentialShipNeighboringField(x, y, -1, 0);

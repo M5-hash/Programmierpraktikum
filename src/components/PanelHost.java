@@ -2,8 +2,6 @@ package src.components;
 
 import src.ImageLoader;
 import src.MenuSize;
-import src.Server;
-import src.SpielWindow;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -14,8 +12,6 @@ import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.util.ArrayList;
 import java.util.Enumeration;
-
-import static src.config.*;
 
 public class PanelHost extends JPanel {
 
@@ -83,7 +79,7 @@ public class PanelHost extends JPanel {
         makeConstraints(buttonPanel, 1, 3, 4);
     }
     public static String[] IP_Ausgabe() throws IOException {
-        ArrayList<String> IPs = new ArrayList<String>();
+        ArrayList<String> IPs = new ArrayList<>();
         Enumeration<NetworkInterface> nis =
                 NetworkInterface.getNetworkInterfaces();
         while (nis.hasMoreElements()) {

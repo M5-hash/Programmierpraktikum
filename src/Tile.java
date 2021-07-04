@@ -62,7 +62,6 @@ public class Tile extends JPanel {
 
         //Hier wird die dicke des Rahmens definiert, welcher das Spielfeld umgibt
         //Dieser skaliert auch mit der größe der individuellen Felder
-        // TODO das das nicht mehr skaliert und einen guten Standard Wert wählen, da das so keine Sinn macht
         int SizeofBorder = Math.max(18, TileSize.Tile_Size / 12);
 
         //Die Größe des Gesamten Panels, welches die Größe des Spielfelds und die Größe des Rahmens beinhaltet
