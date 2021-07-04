@@ -4,7 +4,7 @@ import java.lang.Thread;
 import java.net.*;
 import java.io.*;
 
-
+//
 public class Client extends Com_base {
 
     private final String IP;

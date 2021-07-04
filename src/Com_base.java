@@ -6,7 +6,7 @@ import java.io.Writer;
 import java.net.Socket;
 import java.net.SocketException;
 
-
+//
 public abstract class Com_base {
     protected ComPlayer comPl;
     protected final int port;
