@@ -80,7 +80,7 @@ public class MenuMultiplayer {
                     onlineCom = false;
                     // Create SpielWindow and display it
                     try {
-                        Client client = new Client(IP, menuFrame);
+                        Client client = new Client(IP);
                         SpielFeld1 = 0;
                         client.setSpielwindow(new SpielWindow(menuFrame, client));
 
@@ -91,7 +91,7 @@ public class MenuMultiplayer {
                     onlineCom = true;
                     try {
 
-                        Client client = new Client(IP, menuFrame);
+                        Client client = new Client(IP);
                         SpielFeld1 = 0;
                         client.setSpielwindow(new SpielWindow(menuFrame, client));
 

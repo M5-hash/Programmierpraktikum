@@ -13,19 +13,28 @@ public class Client extends Com_base {
 
     private final String IP;
 
-    public Client(String IP_in, JFrame loadScreen) throws Exception{
-        super(loadScreen);
+    public Client(String IP_in) throws Exception{
+        super();
         this.role_server = false;
         this.IP = IP_in;
         for(int i = 0; i < 10; i++){
             try {
                 this.s = new Socket(this.IP, this.port);
-            } catch (IOException e) {
+                i = 10;
+            } catch (IOException e){
                 TimeUnit.SECONDS.sleep(1);
-                if(i == 10){
-                    System.exit(1);
+                if(i == 9){
                     JOptionPane.showMessageDialog(null, "Connection konnte nicht hergestellt werden");
                     TimeUnit.SECONDS.sleep(5);
+                    System.exit(1);
+                }
+            }catch (NullPointerException n)
+            {
+                TimeUnit.SECONDS.sleep(1);
+                if(i == 9){
+                    JOptionPane.showMessageDialog(null, "Connection konnte nicht hergestellt werden");
+                    TimeUnit.SECONDS.sleep(5);
+                    System.exit(1);
                 }
             }
         }

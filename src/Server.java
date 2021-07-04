@@ -8,12 +8,13 @@ import java.util.concurrent.TimeUnit;
 public class Server extends Com_base {
 
 
+
+
     private ServerSocket ss;
 
 
-    public Server(int in_size, String in_ships, JFrame loadScreen) throws Exception{
-        super(loadScreen);
-        loadScreen.dispose();
+    public Server(int in_size, String in_ships) throws Exception{
+        super();
 
         this.role_server = true;
         try{
