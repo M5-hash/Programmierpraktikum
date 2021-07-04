@@ -13,19 +13,28 @@ public class Client extends Com_base {
 
     private final String IP;
 
-    public Client(String IP_in, JFrame loadScreen) throws Exception{
-        super(loadScreen);
+    public Client(String IP_in) throws Exception{
+        super();
         this.role_server = false;
         this.IP = IP_in;
         for(int i = 0; i < 10; i++){
             try {
                 this.s = new Socket(this.IP, this.port);
-            } catch (IOException e) {
+                i = 10;
+            } catch (IOException e){
                 TimeUnit.SECONDS.sleep(1);
-                if(i == 10){
-                    System.exit(1);
+                if(i == 9){
                     JOptionPane.showMessageDialog(null, "Connection konnte nicht hergestellt werden");
                     TimeUnit.SECONDS.sleep(5);
+                    System.exit(1);
+                }
+            }catch (NullPointerException n)
+            {
+                TimeUnit.SECONDS.sleep(1);
+                if(i == 9){
+                    JOptionPane.showMessageDialog(null, "Connection konnte nicht hergestellt werden");
+                    TimeUnit.SECONDS.sleep(5);
+                    System.exit(1);
                 }
             }
         }
@@ -43,15 +52,15 @@ public class Client extends Com_base {
     protected PlayingField setupPlayingfield() throws Exception {
         PlayingField pf_holder;
 
-        String[] in_size = loopCheckIN(false).split(" ");
+        String[] in_size = ReceiveCheckedInputStream().split(" ");
 
         if (in_size[0].equals("size")) {
             config.fieldsize = Integer.parseInt(in_size[1]);
-            setTurn(true);
+            setMyTurn(true);
             Send("done");
 
 
-            String[] in_ships_Str = loopCheckIN(false).split(" ");
+            String[] in_ships_Str = ReceiveCheckedInputStream().split(" ");
             int[] ships_int_arr = ship_array_toInt(in_ships_Str, 1);
             config.size2 = 0;
             config.size3 = 0;
@@ -66,12 +75,12 @@ public class Client extends Com_base {
             }
             pf_holder = new PlayingField(Integer.parseInt(in_size[1]), ships_int_arr, role_server);
 
-            setTurn(true);
+            setMyTurn(true);
             Send("done");
 
-            if (loopCheckIN(false).equals("ready")) {
+            if (ReceiveCheckedInputStream().equals("ready")) {
 
-                setTurn(true);
+                setMyTurn(true);
                 Send("ready");
             }
         }

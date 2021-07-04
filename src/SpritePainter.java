@@ -415,7 +415,6 @@ public class SpritePainter {
                             System.out.println(dummy[y][x]);
                             System.out.println("Gamer, dass ist aber dick nicht Gut mein bester, das sollte nämlich nicht gehen");
                             System.out.println("Es gibt also einen Fehler in der Schiffteil Methode");
-                            Schiffdir = "src/Images/PokeTest32.jpg";
 
                     }
 

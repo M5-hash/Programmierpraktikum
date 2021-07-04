@@ -9,27 +9,45 @@ import static src.config.selectedTheme;
 
 /**
  * Zeichnet den Hintergrund des Spielfeldes, also je nach Theme, Wasser oder Büsche sowie deren Rahmen.
- *
+ * <p>
  * Oder wenn das Spiel beendet ist zeigt es dem Spieler einen Win oder Loss Screen je nach Ergebnis
  */
 public class Tile extends JPanel {
 
+    /**
+     * Die Größe des Spielfeldes (Höhe und Breite)
+     */
     public static int field_size;
+
+    /**
+     * Gibt an, ob der Kampf begonnen hat false --> platzieren; true --> schießen
+     */
     static boolean fightstart = false;
-    private static int counter = 0;
+    /**
+     * Initialisiert den Bildloader, sodass Bilder geladen werden können
+     */
     private final Bildloader Bild = new Bildloader();
+    /**
+     * Repräsentation des Spielfeldes, wird verwendet um den jeweiligen Frame des Tiles zu speichern
+     */
     private final int[][] Feld;
-    boolean scnd ;
+
+    TilePainter parent;
     BufferedImage Image;
     BufferedImage Border;
+    /**
+     * Counter, der durch den das nächste Bild für die Animation gewählt wird
+     */
+    private int counter = 0;
 
     /**
      * @param x int gibt die Größe des zu zeichnenden Spielfeldes weiter
      *          <p>
      *          Zeichnet die individuellen Tiles des Spielfeldes
      */
-    public Tile(int x) {
+    public Tile(int x, TilePainter parent) {
         field_size = x;
+        this.parent = parent;
         Feld = new int[field_size][field_size];
         DummyLeser(Feld);
         Border = Bild.BildLoader("src/Images/Border.jpg");
@@ -144,19 +162,15 @@ public class Tile extends JPanel {
 
 
             }
-            //Um das Wasser zu animieren müssen verschieden Frames des Wassers aufgerufen werden, das wird durch die Erhöhung des counters erreicht
-            //Um aber zu garantieren, das immer eines der 32 Frames gewählt wird, wird mod 32 gerechnet
-            if(scnd){
-                counter = counter + 1;
-                scnd = false ;
-            } else {
-                scnd = true ;
-            }
-
-
 
 
         }
+        //Um das Wasser zu animieren müssen verschieden Frames des Wassers aufgerufen werden, das wird durch die Erhöhung des counters erreicht
+        //Um aber zu garantieren, das immer eines der 32 Frames gewählt wird, wird mod 32 gerechnet
+
+        counter += 1 % 32;
+        System.out.println(parent.field + "Counter ist auf: " + counter);
+
 
         //Da man jeweils x + 1 Linien braucht um x Felder zu umranden werden hier die letzten 2 Striche gezeichnet
         g2.drawLine(field_size * TileSize.Tile_Size + SizeofBorder, SizeofBorder, field_size * TileSize.Tile_Size + SizeofBorder, field_size * TileSize.Tile_Size + SizeofBorder);
