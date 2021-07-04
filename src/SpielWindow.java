@@ -373,7 +373,7 @@ public class SpielWindow extends JPanel {
             }
             gamePanel1.setVisible(true);
             gamePanel2.setVisible(false);
-            if((Online.loaded || SpielFeld2 == 2) && Multclient){
+            if((Online.loaded || SpielFeld2 == 2) && Multclient && !onlineCom){
                 try {
                     Thread t1 = new Thread(new Runnable() {
                         public void run()
@@ -387,6 +387,55 @@ public class SpielWindow extends JPanel {
                             }
 
                         }});
+                    t1.start();
+
+                } catch (Exception f) {
+                    f.printStackTrace();
+                }
+            }
+            else if( SpielFeld2 == 2 && Multclient && onlineCom){
+                try {
+                    Thread t1 = new Thread(new Runnable() {
+                        public void run()
+                        {
+                            try {
+                                Turn.switchTurn(false);
+                                TimeUnit.MILLISECONDS.sleep(100);
+                                dummybutton.doClick();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+
+                        }});
+                    t1.start();
+
+                } catch (Exception f) {
+                    f.printStackTrace();
+                }
+            }
+            else if( SpielFeld2 == 2 && !Multclient && onlineCom) {
+                int[] hold = new int[0];
+                try {
+                    hold = Online.getComPl().doNextShot();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                Online.Send("shot " + hold[0] + " " + hold[1]);
+                try {
+
+                    Thread t1 = new Thread(new Runnable() {
+                        public void run() {
+                            try {
+                                Turn.switchTurn(false);
+
+                                TimeUnit.MILLISECONDS.sleep(100);
+                                dummybutton.doClick();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    });
                     t1.start();
 
                 } catch (Exception f) {
