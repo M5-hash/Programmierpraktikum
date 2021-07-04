@@ -78,6 +78,8 @@ public class SpielWindow extends JPanel {
         Multclient = false ;
         if(onlineCom){
             tile.OnlineSchussKI();
+            tile.AnzSchiffe = sumofships;
+            gamestart();
         }
 
         if(Online.getLoaded()){
@@ -353,6 +355,7 @@ public class SpielWindow extends JPanel {
             menuPanel.revalidate();
         });
         timer.start();
+
     }
 
     private void gamestart(){
