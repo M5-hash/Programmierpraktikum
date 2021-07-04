@@ -1,10 +1,14 @@
 package src.components;
 
+import src.Bildloader;
+
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 import static src.FontLoader.Pokemon;
+import static src.config.selectedTheme;
 
 public class MenuButton extends JButton {
 
@@ -58,11 +62,26 @@ public class MenuButton extends JButton {
     @Override
     protected void paintComponent(Graphics g) {
 
-        if (isEnabled()) {
-            g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
-        } else {
-            g.drawImage(disabledimage, 0, 0, getWidth(), getHeight(), this);
+
+        if(selectedTheme.equals("Pokemon")){
+            if (isEnabled()) {
+                g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
+            } else {
+                g.drawImage(disabledimage, 0, 0, getWidth(), getHeight(), this);
+            }
+        } else{
+            Bildloader Bild = new Bildloader() ;
+            if (isEnabled()) {
+                setForeground(Color.white);
+                BufferedImage NavalButton = Bild.BildLoader("src/Images/NavalButton.png") ;
+                g.drawImage(NavalButton, 0,0, getWidth(), getHeight(), null);
+            } else {
+                BufferedImage NavalButton = Bild.BildLoader("src/Images/RedNavalButton.png") ;
+                g.drawImage(NavalButton, 0, 0, getWidth(), getHeight(), this);
+            }
+
         }
+
         super.paintComponent(g);
     }
 }

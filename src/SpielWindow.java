@@ -165,11 +165,11 @@ public class SpielWindow extends JPanel {
             btn_size5         = new ToggleButton("size 5: " + size5, ImageLoader.getImage(ImageLoader.RED), ImageLoader.getImage(ImageLoader.MENU_BUTTON2), ImageLoader.getImage(ImageLoader.GAME_BTN_BALL4));
         } else {
             Bildloader Bild = new Bildloader() ;
-            menuPanel         = new CustomPanel(Bild.BildLoader("src/Images/NavalBackground.jpg"));
-            btn_size2         = new ToggleButton("size 2: " + size2, ImageLoader.getImage(ImageLoader.RED), ImageLoader.getImage(ImageLoader.MENU_BUTTON2), Bild.BildLoader("src/Images/2Stern.png"));
-            btn_size3         = new ToggleButton("size 3: " + size3, ImageLoader.getImage(ImageLoader.RED), ImageLoader.getImage(ImageLoader.MENU_BUTTON2), Bild.BildLoader("src/Images/3Stern.png"));
-            btn_size4         = new ToggleButton("size 4: " + size4, ImageLoader.getImage(ImageLoader.RED), ImageLoader.getImage(ImageLoader.MENU_BUTTON2), Bild.BildLoader("src/Images/4Stern.png"));
-            btn_size5         = new ToggleButton("size 5: " + size5, ImageLoader.getImage(ImageLoader.RED), ImageLoader.getImage(ImageLoader.MENU_BUTTON2), Bild.BildLoader("src/Images/5Stern.png"));
+            menuPanel         = new CustomPanel(Bild.BildLoader("src/Images/NavalBackgroundShort.jpg"));
+            btn_size2         = new ToggleButton("size 2: " + size2, Bild.BildLoader("src/Images/RedNavalButtonShortFullRed.png"), Bild.BildLoader("src/Images/NavalButtonFullRoyal.png"), Bild.BildLoader("src/Images/2Stern.png"));
+            btn_size3         = new ToggleButton("size 3: " + size3, Bild.BildLoader("src/Images/RedNavalButtonShortFullRed.png"), Bild.BildLoader("src/Images/NavalButtonFullRoyal.png"), Bild.BildLoader("src/Images/3Stern.png"));
+            btn_size4         = new ToggleButton("size 4: " + size4, Bild.BildLoader("src/Images/RedNavalButtonShortFullRed.png"), Bild.BildLoader("src/Images/NavalButtonFullRoyal.png"), Bild.BildLoader("src/Images/4Stern.png"));
+            btn_size5         = new ToggleButton("size 5: " + size5, Bild.BildLoader("src/Images/RedNavalButtonShortFullRed.png"), Bild.BildLoader("src/Images/NavalButtonFullRoyal.png"), Bild.BildLoader("src/Images/5Stern.png"));
         }
         gamePanel1        = new JPanel();
         gamePanel2        = new JPanel();

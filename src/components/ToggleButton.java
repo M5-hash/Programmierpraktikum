@@ -5,6 +5,7 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import static src.config.selectedTheme ;
 
 import static src.FontLoader.Pokemon;
 
@@ -58,10 +59,14 @@ public class ToggleButton extends JToggleButton {
 
     @Override
     protected void paintComponent(Graphics g) {
+        if(selectedTheme.equals("Classic")){
+            setForeground(Color.white);
+        }
+
         if(isSelected()){
             g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
         } else {
-            g.drawImage(selected, 0, 0, getWidth(), getHeight(), this);
+            g.drawImage(selected, 0, 0, getWidth(), getHeight(),this);
         }
         super.paintComponent(g);
     }

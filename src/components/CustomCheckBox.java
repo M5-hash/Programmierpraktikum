@@ -1,17 +1,22 @@
 package src.components;
 
+import src.Bildloader;
 import src.ImageLoader;
 import src.config;
+
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
+
+import static src.config.selectedTheme;
 
 public class CustomCheckBox extends JPanel {
 
     JCheckBox checkBox;
 
-    public CustomCheckBox(String fullscreen, boolean b, Font Pokemon){
+    public CustomCheckBox(String fullscreen, boolean b, Font Pokemon) {
         setOpaque(false);
         setLayout(new BorderLayout());
         setBorder(new LineBorder(Color.black));
@@ -26,7 +31,7 @@ public class CustomCheckBox extends JPanel {
         checkBox.setFont(Pokemon);
         checkBox.setOpaque(false);
         checkBox.addItemListener(e -> {
-            if(checkBox.isSelected()){
+            if (checkBox.isSelected()) {
                 config.fullscreen = true;
                 System.out.println("Fullscreen active");
             } else {
@@ -39,7 +44,19 @@ public class CustomCheckBox extends JPanel {
 
     @Override
     protected void paintComponent(Graphics g) {
-        g.drawImage(ImageLoader.getImage(ImageLoader.MENU_BUTTON2), 0, 0, getWidth(), getHeight(), this);
+
+        if (selectedTheme.equals("Pokemon")) {
+
+            g.drawImage(ImageLoader.getImage(ImageLoader.MENU_BUTTON2), 0, 0, getWidth(), getHeight(), this);
+        } else {
+            Bildloader Bild = new Bildloader();
+
+            checkBox.setForeground(Color.white);
+            BufferedImage NavalButton = Bild.BildLoader("src/Images/NavalButton.png");
+            g.drawImage(NavalButton, 0, 0, getWidth(), getHeight(), null);
+
+        }
+
         super.paintComponent(g);
     }
 }

@@ -1,5 +1,6 @@
 package src.components;
 
+import src.Bildloader;
 import src.SpielWindow;
 
 import javax.swing.*;
@@ -13,6 +14,7 @@ import java.util.regex.Pattern;
 
 import static src.FontLoader.Pokemon;
 import static src.config.GameMode;
+import static src.config.selectedTheme;
 
 public class SaveGameButton extends JButton {
 
@@ -74,7 +76,17 @@ public class SaveGameButton extends JButton {
 
     @Override
     protected void paintComponent(Graphics g) {
-        g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
+        if (selectedTheme.equals("Pokemon")) {
+            g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
+
+        } else {
+            Bildloader Bild = new Bildloader();
+            setForeground(Color.white);
+            BufferedImage NavalButton = Bild.BildLoader("src/Images/NavalButton.png");
+            g.drawImage(NavalButton, 0, 0, getWidth(), getHeight(), null);
+
+
+        }
         super.paintComponent(g);
     }
 }

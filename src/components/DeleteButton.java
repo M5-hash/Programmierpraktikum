@@ -6,6 +6,7 @@ import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import static src.config.selectedTheme ;
 
 import static src.FontLoader.Pokemon;
 
@@ -38,11 +39,23 @@ public class DeleteButton extends JButton {
 
         BufferedImage image;
 
-        if (deleting) {
-            image = Bild.BildLoader("assets/button1green.png");
+        if(selectedTheme.equals("Pokemon")){
+            setForeground(Color.black);
+            if (deleting) {
+                image = Bild.BildLoader("assets/button1green.png");
+            } else {
+                image = Bild.BildLoader("assets/button1red.png");
+            }
+
         } else {
-            image = Bild.BildLoader("assets/button1red.png");
+            setForeground(Color.white);
+            if (deleting) {
+                image = Bild.BildLoader("src/Images/NavalButtonShort.png");
+            } else {
+                image = Bild.BildLoader("src/Images/RedNavalButtonShort.png");
+            }
         }
+
 
         g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
         super.paintComponent(g);

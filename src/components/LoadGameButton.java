@@ -4,7 +4,6 @@ import src.*;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -40,7 +39,7 @@ public class LoadGameButton extends JButton {
             int returnValue = jfc.showOpenDialog(null);
             if (returnValue == JFileChooser.APPROVE_OPTION) {
                 File selectedFile = jfc.getSelectedFile();
-                if(!selectedFile.exists()) return;
+                if (!selectedFile.exists()) return;
 
                 try {
                     if (GameMode) {
@@ -69,11 +68,23 @@ public class LoadGameButton extends JButton {
 
     @Override
     protected void paintComponent(Graphics g) {
-        g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
+        if (selectedTheme.equals("Pokemon")) {
+
+            g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
+
+        } else {
+            Bildloader Bild = new Bildloader();
+
+            setForeground(Color.white);
+            BufferedImage NavalButton = Bild.BildLoader("src/Images/NavalButton.png");
+            g.drawImage(NavalButton, 0, 0, getWidth(), getHeight(), null);
+
+
+        }
         super.paintComponent(g);
     }
 
-    private void loadGameMultiplayer(JFrame menuFrame, JPanel menuPanel){
+    private void loadGameMultiplayer(JFrame menuFrame, JPanel menuPanel) {
         onlineCom = false;
         menuPanel.setVisible(false);
         menuFrame.dispose();
