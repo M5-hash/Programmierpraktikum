@@ -62,6 +62,8 @@ public class SpielWindow extends JPanel {
         Multclient = true ;
         if(onlineCom){
             tile.OnlineSchussKI();
+            tile.AnzSchiffe = sumofships;
+            gamestart();
         }
 
         if(Online.getLoaded()){
