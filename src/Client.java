@@ -17,7 +17,7 @@ public class Client extends Com_base {
         this.in = new BufferedReader(new InputStreamReader(s.getInputStream()));
         this.out = new OutputStreamWriter(s.getOutputStream());
         this.pf = setupPlayingfield();
-        if(config.onlineCom) {
+        if(config.onlineCom && this.comPl == null) {
             this.comPl = new ComPlayerNormal(this.pf);
         }
     }
@@ -59,8 +59,13 @@ public class Client extends Com_base {
         }
         else{
             this.loaded = true;
-            pf_holder = new PlayingField();
-            pf_holder.loadGame(Long.valueOf(in_size[1]));
+            if(config.onlineCom){
+                this.comPl = new ComPlayerNormal(Long.valueOf(in_size[1]));
+                pf_holder = this.comPl.getPlayingField();
+            }else {
+                pf_holder = new PlayingField();
+                pf_holder.loadGame(Long.valueOf(in_size[1]));
+            }
         }
 
         this.myTurn = false;
