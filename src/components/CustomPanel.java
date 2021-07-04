@@ -9,7 +9,7 @@ import static src.config.selectedTheme ;
 
 public class CustomPanel extends JPanel {
 
-    private BufferedImage givenbackground;
+    private final BufferedImage givenbackground;
 
     public CustomPanel(BufferedImage image){
         this.givenbackground = image;

@@ -1,7 +1,6 @@
 package src.components;
 
 import src.ImageLoader;
-import src.MenuHost;
 import src.Server;
 import src.SpielWindow;
 
@@ -25,7 +24,6 @@ public class PanelSize extends JPanel {
     int temp_size4 = size4;
     int temp_size5 = size5;
     int temp_fieldsleft = 16;
-    int temp_sumofships = sumofships;
 
     GridBagConstraints constraints;
     GridBagLayout menuLayout;
@@ -281,21 +279,10 @@ public class PanelSize extends JPanel {
     }
 
     private String getShipString() {
-
-        String hold = "";
-        for (int i = 0; i < size2; i++) {
-            hold += "2 ";
-        }
-        for (int i = 0; i < size3; i++) {
-            hold += "3 ";
-        }
-        for (int i = 0; i < size4; i++) {
-            hold += "4 ";
-        }
-        for (int i = 0; i < size5; i++) {
-            hold += "5 ";
-        }
-        return hold;
+        return "2 ".repeat(Math.max(0, size2)) +
+                "3 ".repeat(Math.max(0, size3)) +
+                "4 ".repeat(Math.max(0, size4)) +
+                "5 ".repeat(Math.max(0, size5));
     }
 
     private void UpdateMenuCounter() {

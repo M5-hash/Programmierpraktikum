@@ -78,12 +78,11 @@ public class MenuInformation extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        Bildloader Bild = new Bildloader() ;
         if(!selectedTheme.equals("Pokemon")){
-            Bildloader Bild = new Bildloader() ;
             bgImage = Bild.BildLoader("src/Images/captain-iglo.png") ;
             g.drawImage(bgImage, 0,0, getWidth() / 5, getHeight() / 2, null);
         } else{
-            Bildloader Bild = new Bildloader() ;
             bgImage = Bild.BildLoader("assets/textfeld_eich1.png") ;
             g.drawImage(bgImage, 0,0, getWidth(), getHeight(), null);
         }
