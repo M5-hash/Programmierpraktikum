@@ -44,16 +44,8 @@ public abstract class Com_base {
         this.lastY = y;
     }
 
-    public int getLastX() {
-        return lastX;
-    }
-
     public void setLastX(int val){
         this.lastX = val;
-    }
-
-    public int getLastY(){
-        return lastY;
     }
 
     public void setLastY(int val){
@@ -137,10 +129,7 @@ public abstract class Com_base {
             e.printStackTrace();
         }
 
-        if (this.line == null || this.line.equals("")) {
-            return false;
-        }
-        return true;
+        return this.line != null && !this.line.equals("");
     }
 
     /**
@@ -155,63 +144,65 @@ public abstract class Com_base {
         frame.Turn.switchTurn(false);
         String in = loopCheckIN(true);
         String[] holder = in.split(" ");
-        if (holder[0].equals("shot")) {
-            int x = Integer.parseInt(holder[1]);
-            int y = Integer.parseInt(holder[2]);
+        switch (holder[0]) {
+            case "shot":
+                int x = Integer.parseInt(holder[1]);
+                int y = Integer.parseInt(holder[2]);
 
-            int hit = pf.isShot(x, y);
-            if (hit == 0) {
-                setTurn(true);
-                Send("answer 0");
+                int hit = pf.isShot(x, y);
+                if (hit == 0) {
+                    setTurn(true);
+                    Send("answer 0");
 
-            } else if (hit == 1) {
-                setTurn(true);
-                Send("answer 1");
+                } else if (hit == 1) {
+                    setTurn(true);
+                    Send("answer 1");
 
-            } else if (hit == 2) {
-                setTurn(true);
-                Send("answer 2");
-                if (pf.enemygameover()) {
-                    Send("pass");
-                    KillSocket();
+                } else if (hit == 2) {
+                    setTurn(true);
+                    Send("answer 2");
+                    if (pf.enemygameover()) {
+                        Send("pass");
+                        KillSocket();
+                    }
                 }
-            }
-        } else if (holder[0].equals("answer")) {
-            if (holder[1].equals("0")) {
-                pf.didHit(0, this.lastX, this.lastY);
-                setTurn(true);
-                Send("pass");
-
-            } else if (holder[1].equals("1")) {
-                pf.didHit(1, this.lastX, this.lastY);
-                myTurn = true;
-            } else if (holder[1].equals("2")) {
-                pf.didHit(2, this.lastX, this.lastY);
-                if (pf.gameover()) {
-                    myTurn = false;
+                break;
+            case "answer":
+                switch (holder[1]) {
+                    case "0" -> {
+                        pf.didHit(0, this.lastX, this.lastY);
+                        setTurn(true);
+                        Send("pass");
+                    }
+                    case "1" -> {
+                        pf.didHit(1, this.lastX, this.lastY);
+                        myTurn = true;
+                    }
+                    case "2" -> {
+                        pf.didHit(2, this.lastX, this.lastY);
+                        if (pf.gameover()) {
+                            myTurn = false;
+                        }
+                        myTurn = true;
+                    }
                 }
+
+                break;
+            case "save":
+                if (config.onlineCom) {
+                    this.comPl.saveGame(Long.parseLong(holder[1]));
+                } else {
+                    pf.saveGame(Long.parseLong(holder[1]));
+                }
+                KillSocket();
+                break;
+            case "ready":
+            case "pass":
                 myTurn = true;
-            }
-
-        } else if (holder[0].equals("save")) {
-            if(config.onlineCom){
-                this.comPl.saveGame(Long.parseLong(holder[1]));
-            }else {
-                pf.saveGame(Long.parseLong(holder[1]));
-            }
-            KillSocket();
-        } else if (holder[0].equals("ready")) {
-            myTurn = true;
-        } else if (holder[0].equals("pass")) {
-            myTurn = true;
+                break;
         }
 
-        if(myTurn){
-            frame.Turn.switchTurn(true);
-        }
-        else{
-            frame.Turn.switchTurn(false);
-        }
+        frame.Turn.switchTurn(myTurn);
     }
 
 

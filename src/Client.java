@@ -1,9 +1,10 @@
 package src;
 
 import javax.swing.*;
-import java.lang.Thread;
-import java.net.*;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.Socket;
 
 //
 public class Client extends Com_base {
@@ -64,11 +65,11 @@ public class Client extends Com_base {
         else{
             this.loaded = true;
             if(config.onlineCom){
-                this.comPl = new ComPlayerNormal(Long.valueOf(in_size[1]));
+                this.comPl = new ComPlayerNormal(Long.parseLong(in_size[1]));
                 pf_holder = this.comPl.getPlayingField();
             }else {
                 pf_holder = new PlayingField();
-                pf_holder.loadGame(Long.valueOf(in_size[1]));
+                pf_holder.loadGame(Long.parseLong(in_size[1]));
             }
         }
 
