@@ -101,7 +101,7 @@ public abstract class Com_base {
         try {
             this.line = this.in.readLine();
         } catch (IOException e) {
-            KillSocket();
+            e.printStackTrace();
         }
 
         if (this.line == null || this.line.equals("")) {

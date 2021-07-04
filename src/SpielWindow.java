@@ -435,7 +435,7 @@ public class SpielWindow extends JPanel {
                     f.printStackTrace();
                 }
             }
-            else if( SpielFeld2 == 2 && !Multclient && onlineCom) {
+            else if(SpielFeld2 == 2 && !Multclient && onlineCom) {
                 int[] hold = new int[0];
                 try {
                     hold = Online.getComPl().doNextShot();
