@@ -10,25 +10,96 @@ import java.io.IOException;
  */
 public class ImageLoader {
 
+    /**
+     * Index des THEME_POKEMON_SM_BG Image
+     */
     public static final int STARTMENU_BG = 0;
+
+    /**
+     * Index des STARTMENU_BTN_QUIT Image
+     */
     public static final int STARTMENU_BTN_QUIT = 1;
+
+    /**
+     * Index des GAME_BACKGROUND Image
+     */
     public static final int GAME_BACKGROUND = 2;
+
+    /**
+     * Index des GAME_BTN_BALL1 Image
+     */
     public static final int GAME_BTN_BALL1 = 3;
+
+    /**
+     * Index des GAME_BTN_BALL2 Image
+     */
     public static final int GAME_BTN_BALL2 = 4;
+
+    /**
+     * Index des GAME_BTN_BALL3 Image
+     */
     public static final int GAME_BTN_BALL3 = 5;
+
+    /**
+     * Index des GAME_BTN_BALL4 Image
+     */
     public static final int GAME_BTN_BALL4 = 6;
+
+    /**
+     * Index des STARTMENU_BTN_TEXTFIELD_EICH Image
+     */
     public static final int STARTMENU_BTN_TEXTFIELD_EICH = 7;
+
+    /**
+     * Index des MENU_BG Image
+     */
     public static final int MENU_BG = 8;
+
+    /**
+     * Index des MENU_BUTTON Image
+     */
     public static final int MENU_BUTTON = 9;
+
+    /**
+     * Index des MENU_BUTTON2 Image
+     */
     public static final int MENU_BUTTON2 = 10;
+
+    /**
+     * Index des GAME_BTN_BACKGROUND Image
+     */
     public static final int GAME_BTN_BACKGROUND = 11;
+
+    /**
+     * Index des FRAME_ICON Image
+     */
     public static final int FRAME_ICON = 12;
+
+    /**
+     * Index des OPTIONS_BACKGROUND Image
+     */
     public static final int OPTIONS_BACKGROUND = 13;
+
+    /**
+     * Index des GREEN Image
+     */
     public static final int GREEN = 14;
+
+    /**
+     * Index des RED Image
+     */
     public static final int RED = 15;
 
+    /**
+     * Die gebufferten Bilder
+     */
     private static BufferedImage[] image;
 
+    /**
+     * Initialisierung der zu buffernden Bilder
+     *
+     * @throws IOException Wenn die Dateien nicht existieren bzw. nicht lesbar sind
+     */
     public static void init() throws IOException {
         image = new BufferedImage[16];
 
@@ -50,6 +121,11 @@ public class ImageLoader {
         image[RED] = ImageIO.read(new File("assets/button1red.png"));
     }
 
+    /**
+     * Getter der gebufferten Bilder
+     * @param id Index eines Bildes
+     * @return Das gebufferte Bild des übergebenen Indizes
+     */
     public static BufferedImage getImage(int id) {
         if (image == null)
             throw new Error("Image not yet loaded");

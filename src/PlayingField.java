@@ -98,6 +98,7 @@ public class PlayingField {
      * @param x     X-Koordinate des zu überprüfenden Teiles
      * @param y     Y-Koordinate des zu überprüfenden Teiles
      * @return Gibt X und Y Koordinate vom Kopf eines Schiffes zurück
+     * @throws Exception Wenn die X/Y-Koordinate nicht Teil eines Schiffes ist
      */
     private static int[] getHeadOfShip(int[][] field, int x, int y) throws Exception {
         PlayingField.checkCoordinatesInFieldStatic(field, x, y);
