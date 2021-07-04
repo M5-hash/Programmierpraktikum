@@ -5,7 +5,6 @@ import src.components.*;
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
-
 import static src.config.*;
 
 /**
