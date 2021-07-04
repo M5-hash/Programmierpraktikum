@@ -21,6 +21,8 @@ public class Server extends Com_base {
         this.s = this.ss.accept();
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Connection konnte nicht hergestellt werden");
+            TimeUnit.SECONDS.sleep(5);
+            System.exit(1);
         }
         this.SocketActive = true;
         this.in = new BufferedReader(new InputStreamReader(this.s.getInputStream()));
