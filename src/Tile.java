@@ -220,7 +220,7 @@ public class Tile extends JPanel {
         //zeichnet den Hintergrund/Grenze des Panels
         g.drawImage(Border, 0, 0, Size, Size, null);
 
-        BufferedImage LossScreen = Bild.BildLoader("src/Images/youlost.png");
+        BufferedImage LossScreen = Bild.BildLoader("src/Images/YFYL.png");
 
         //Das Bild, das einem sagt, dass man verloren hat
         g.drawImage(LossScreen, SizeofBorder, SizeofBorder, Size - 2 * SizeofBorder, Size - 2 * SizeofBorder, null);
