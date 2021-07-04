@@ -22,6 +22,8 @@ public class Server extends Com_base {
         if(config.onlineCom && this.comPl == null) {
             this.comPl = new ComPlayerNormal(this.pf);
         }
+
+        config.fieldsize = this.pf.getField().length;
     }
 
 

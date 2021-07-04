@@ -49,6 +49,8 @@ public class ComPlayerNormal extends ComPlayer {
     public ComPlayerNormal(long id) throws FileNotFoundException {
         super();
         this.loadGame(id);
+
+        checkNullAfterLoad();
     }
 
     /**
@@ -60,6 +62,14 @@ public class ComPlayerNormal extends ComPlayer {
     public ComPlayerNormal(String file) throws FileNotFoundException {
         super();
         this.loadGame(file);
+
+        checkNullAfterLoad();
+    }
+
+    private void checkNullAfterLoad() {
+        if(rowSeq == null){
+            this.setRowSeq(pf.getField().length);
+        }
     }
 
     /**
