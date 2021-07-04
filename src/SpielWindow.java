@@ -61,7 +61,6 @@ public class SpielWindow extends JPanel {
         Multclient = true ;
         makeComponents(frame, onlineCom);
         if(onlineCom){
-            tile.OnlineSchussKI();
             tile.AnzSchiffe = sumofships;
             gamestart();
         }
@@ -79,7 +78,6 @@ public class SpielWindow extends JPanel {
         Multclient = false ;
         makeComponents(frame, onlineCom);
         if(onlineCom){
-            tile.OnlineSchussKI();
             tile.AnzSchiffe = sumofships;
             gamestart();
         }

@@ -17,11 +17,8 @@ public class TilePainter extends JPanel implements MouseMotionListener {
     private static int groesse = 0;
     private final Tile Ebene;
     private final int[] groessen = {0, 0, size2, size3, size4, size5};
-    Timer OnlineKI;
-    private MouseListener temp;
     public boolean Onfirstfield = false;
     int AnzSchiffe = 0;
-    boolean usable = false;
     int counter;
     boolean hasshot = false;
     boolean hitKI = true;
@@ -35,7 +32,6 @@ public class TilePainter extends JPanel implements MouseMotionListener {
     PlayingField pf;
     ComPlayer Computer;
     Graphics Test ;
-    private MouseListener temp2;
     Timer KItimer;
     int[] recentshot = new int[2];
     boolean placeable = false;
@@ -75,8 +71,7 @@ public class TilePainter extends JPanel implements MouseMotionListener {
 
             addMouseMotionListener(this);
 
-            //TODO Wenn man im Online Modus nochmal schießt, dann landet des einfach im Buffer und wird später nochmals gesendet
-            addMouseListener(temp = new MouseAdapter() {
+            addMouseListener(new MouseAdapter() {
                 @Override
                 public void mousePressed(MouseEvent e) {
                     if (e.getButton() == MouseEvent.BUTTON1) {
@@ -127,7 +122,7 @@ public class TilePainter extends JPanel implements MouseMotionListener {
             });
 
             //Erlaubt es dem Nutzer mit der rechten Maustaste zwischen horizontal und vertikal in der Schiffplatzierung zu wechseln
-            addMouseListener(temp2 = new MouseAdapter() {
+            addMouseListener(new MouseAdapter() {
                 @Override
                 public void mousePressed(MouseEvent e) {
                     if (e.getButton() == MouseEvent.BUTTON3) {
@@ -247,48 +242,6 @@ public class TilePainter extends JPanel implements MouseMotionListener {
         } catch (Exception ioException) {
             ioException.printStackTrace();
         }
-    }
-
-    /**
-     *Methode die dafür sorgt, dass die KI im Online Modus schießt
-     */
-    public void OnlineSchussKI() {
-/*
-        ActionListener OnlinetaskPerformer = evt -> {
-            if (Computer.gameover()) {
-                OnlineKItimerstopper();
-            } else {
-
-                int[] Feld = new int[2];
-                try {
-
-                    // Wohin der Computer schießt
-                    Feld = Computer.doNextShot();
-                    hasshot = true;
-                    recentshot = Feld;
-                } catch (Exception exception) {
-                    exception.printStackTrace();
-                }
-                allowchange = true;
-                frame.Online.setXY(Feld[0], Feld[1]);
-
-                String xString = Feld[0] + " ";
-                String yString = "" + Feld[1];
-
-                try {
-                    frame.Online.Send("shot " + xString + yString);
-                } catch (Exception ioException) {
-                    ioException.printStackTrace();
-                }
-
-                if (Computer.getPlayingField().enemygameover()) {
-                    OnlineKItimerstopper();
-                }
-            }
-        };
-        //300ms sind genug um die einzelnen Schüsse der Ki zu sehen
-        OnlineKI = new Timer(300, OnlinetaskPerformer);
-        OnlineKI.start();*/
     }
 
     /**
@@ -528,11 +481,6 @@ public class TilePainter extends JPanel implements MouseMotionListener {
     private void timerstarter() {
         KItimer.start();
     }
-
-    private void OnlineKItimerstopper() {
-        OnlineKI.stop();
-    }
-
 
     @Override
     public void mouseDragged(MouseEvent e) {
