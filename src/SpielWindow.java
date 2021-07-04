@@ -185,19 +185,15 @@ public class SpielWindow extends JPanel {
                 exception.printStackTrace();
             }
             if(!Online.isMyTurn() && !Online.getPf().gameover() && Online.SocketActive){
-                Thread t1 = new Thread(new Runnable() {
-                    public void run()
-                    {
-                        try {
-                            TimeUnit.MILLISECONDS.sleep(100);
-                            dummybutton.doClick();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        } catch (Exception exception) {
-                            exception.printStackTrace();
-                        }
+                Thread t1 = new Thread(() -> {
+                    try {
+                        TimeUnit.MILLISECONDS.sleep(100);
+                        dummybutton.doClick();
+                    } catch (Exception e1) {
+                        e1.printStackTrace();
+                    }
 
-                    }});
+                });
                 t1.start();
             }
             else if(onlineCom && Online.isMyTurn() && !Online.getPf().gameover() && Online.SocketActive){
@@ -241,21 +237,13 @@ public class SpielWindow extends JPanel {
         gamePanel2.setOpaque(false);
         gamePanel2.setLayout(gameLayout);
 
-        btn_size2.addActionListener(e -> {
-            TilePainter.setGroesse(2);
-        });
+        btn_size2.addActionListener(e -> TilePainter.setGroesse(2));
         buttonGroup.add(btn_size2);
-        btn_size3.addActionListener(e -> {
-            TilePainter.setGroesse(3);
-        });
+        btn_size3.addActionListener(e -> TilePainter.setGroesse(3));
         buttonGroup.add(btn_size3);
-        btn_size4.addActionListener(e -> {
-            TilePainter.setGroesse(4);
-        });
+        btn_size4.addActionListener(e -> TilePainter.setGroesse(4));
         buttonGroup.add(btn_size4);
-        btn_size5.addActionListener(e -> {
-            TilePainter.setGroesse(5);
-        });
+        btn_size5.addActionListener(e -> TilePainter.setGroesse(5));
         buttonGroup.add(btn_size5);
         buttonReady.addActionListener(e -> {
 
@@ -268,17 +256,15 @@ public class SpielWindow extends JPanel {
                 gamePanel1.setVisible(true);
                 gamePanel2.setVisible(false);
                 if(SpielFeld2 == 2 && Multclient){
-                    Thread t1 = new Thread(new Runnable() {
-                        public void run()
-                        {
-                            try {
-                                TimeUnit.MILLISECONDS.sleep(100);
-                                dummybutton.doClick();
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
+                    Thread t1 = new Thread(() -> {
+                        try {
+                            TimeUnit.MILLISECONDS.sleep(100);
+                            dummybutton.doClick();
+                        } catch (InterruptedException e12) {
+                            e12.printStackTrace();
+                        }
 
-                        }});
+                    });
                     t1.start();
                 }
             } else
@@ -398,18 +384,16 @@ public class SpielWindow extends JPanel {
             gamePanel2.setVisible(false);
             if((Online.loaded || SpielFeld2 == 2) && Multclient && !onlineCom){
                 try {
-                    Thread t1 = new Thread(new Runnable() {
-                        public void run()
-                        {
-                            try {
-                                Turn.switchTurn(false);
-                                TimeUnit.MILLISECONDS.sleep(100);
-                                dummybutton.doClick();
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
+                    Thread t1 = new Thread(() -> {
+                        try {
+                            Turn.switchTurn(false);
+                            TimeUnit.MILLISECONDS.sleep(100);
+                            dummybutton.doClick();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
 
-                        }});
+                    });
                     t1.start();
 
                 } catch (Exception f) {
@@ -418,18 +402,16 @@ public class SpielWindow extends JPanel {
             }
             else if( SpielFeld2 == 2 && Multclient && onlineCom){
                 try {
-                    Thread t1 = new Thread(new Runnable() {
-                        public void run()
-                        {
-                            try {
-                                Turn.switchTurn(false);
-                                TimeUnit.MILLISECONDS.sleep(100);
-                                dummybutton.doClick();
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
+                    Thread t1 = new Thread(() -> {
+                        try {
+                            Turn.switchTurn(false);
+                            TimeUnit.MILLISECONDS.sleep(100);
+                            dummybutton.doClick();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
 
-                        }});
+                    });
                     t1.start();
 
                 } catch (Exception f) {
@@ -455,18 +437,16 @@ public class SpielWindow extends JPanel {
                 Online.Send("shot " + hold[0] + " " + hold[1]);
                 try {
 
-                    Thread t1 = new Thread(new Runnable() {
-                        public void run() {
-                            try {
-                                Turn.switchTurn(false);
+                    Thread t1 = new Thread(() -> {
+                        try {
+                            Turn.switchTurn(false);
 
-                                TimeUnit.MILLISECONDS.sleep(100);
-                                dummybutton.doClick();
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-
+                            TimeUnit.MILLISECONDS.sleep(100);
+                            dummybutton.doClick();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
                         }
+
                     });
                     t1.start();
 
