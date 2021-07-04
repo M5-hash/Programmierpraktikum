@@ -7,6 +7,11 @@ import java.util.Random;
 
 import static src.config.selectedTheme;
 
+/**
+ * Zeichnet den Hintergrund des Spielfeldes, also je nach Theme, Wasser oder Büsche sowie deren Rahmen.
+ *
+ * Oder wenn das Spiel beendet ist zeigt es dem Spieler einen Win oder Loss Screen je nach Ergebnis
+ */
 public class Tile extends JPanel {
 
     public static int field_size;

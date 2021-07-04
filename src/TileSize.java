@@ -2,7 +2,10 @@ package src;
 
 import static src.config.*;
 
-public class TileSize {                         //Die Dimesionen der Tiles
+/**
+ * Setzt Größen, welche im ganzen Programm verwendet werden
+ */
+public class TileSize {
 
     public static int Tile_Size = ((GF_WIDTH / 4) - 12 )/ fieldsize;
 

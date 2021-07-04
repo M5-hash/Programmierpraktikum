@@ -3,6 +3,9 @@ package src;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Zeigt die aktuelle X- und Y-Position der Maus dem Nutzer an
+ */
 public class Zielhilfe extends JPanel {
 
     Bildloader Bild = new Bildloader();
@@ -58,17 +61,11 @@ public class Zielhilfe extends JPanel {
 
     }
 
-    /**
-     * Verhindert, dass die Zielhilfe gezeichnet wird
-     */
-    public void stopdrawing() {
-        draw = false;
-    }
 
     /**
      * @param g gibt Graphics Object weiter
      *          <p>
-     *          Wandelt die int X & Y Position in eine Bilderkombination um, welche dann leserlich von der GUI dargestellt werden kann
+     *          Wandelt die int X und Y Position in eine Bilderkombination um, welche dann leserlich von der GUI dargestellt werden kann
      */
     void BildRechner(Graphics g) {
 

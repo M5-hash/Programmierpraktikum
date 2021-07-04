@@ -10,6 +10,9 @@ import static src.config.selectedTheme ;
 
 import static src.FontLoader.Pokemon;
 
+/**
+ * Button, welcher die zwischen der Lösch und Platzieren Funktion hin und her wechselt
+ */
 public class DeleteButton extends JButton {
 
     boolean deleting;

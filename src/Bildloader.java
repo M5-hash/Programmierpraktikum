@@ -6,6 +6,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * Lädt neue Dateien und speichert diese für schnellere Wiederverwundung zwischen
+ */
 public class Bildloader {
 
     static int counter = 0;                                                     // Wird verwendet um Sicherzugehen, dass mindestens ein Bild bereits geladen wurde und garantiert, dass Bild und Quelle an den selben key besitzen

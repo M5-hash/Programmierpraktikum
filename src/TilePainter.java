@@ -250,48 +250,6 @@ public class TilePainter extends JPanel implements MouseMotionListener {
     }
 
     /**
-     *Methode die dafür sorgt, dass die KI im Online Modus schießt
-     */
-    public void OnlineSchussKI() {
-/*
-        ActionListener OnlinetaskPerformer = evt -> {
-            if (Computer.gameover()) {
-                OnlineKItimerstopper();
-            } else {
-
-                int[] Feld = new int[2];
-                try {
-
-                    // Wohin der Computer schießt
-                    Feld = Computer.doNextShot();
-                    hasshot = true;
-                    recentshot = Feld;
-                } catch (Exception exception) {
-                    exception.printStackTrace();
-                }
-                allowchange = true;
-                frame.Online.setXY(Feld[0], Feld[1]);
-
-                String xString = Feld[0] + " ";
-                String yString = "" + Feld[1];
-
-                try {
-                    frame.Online.Send("shot " + xString + yString);
-                } catch (Exception ioException) {
-                    ioException.printStackTrace();
-                }
-
-                if (Computer.getPlayingField().enemygameover()) {
-                    OnlineKItimerstopper();
-                }
-            }
-        };
-        //300ms sind genug um die einzelnen Schüsse der Ki zu sehen
-        OnlineKI = new Timer(300, OnlinetaskPerformer);
-        OnlineKI.start();*/
-    }
-
-    /**
      * Übergibt, welches Feld geklickt wurde an das PlayingField, welche das jeweilige Schiff dann entfernt.
      * Die Menge aller Schiffe sowie die der jeweiligen Schiffsart, welche gesetzt werden kann, wird daraufhin um Eins erhöht.
      */
@@ -452,14 +410,17 @@ public class TilePainter extends JPanel implements MouseMotionListener {
             //Gibt weiter, das nicht mehr das Spielfeld sondern der loss Screen Angezeigt werden soll
             frame.tile.Ebene.YouLost(g);
             //Schaltet die Zielhilfe aus (X und Y Anzeige über dem Spielfeld)
-            frame.Z.stopdrawing();
+            //frame.Z.stopdrawing();
+            frame.menuPanel.remove(frame.Z);
+            frame.menuPanel.remove(frame.Turn);
 
             //checkt ab ob der Computer bereits verloren hat
         } else if (Tile.fightstart && pf.getEnemyShipsDestroyed() >= sumofships) {
             //Gibt weiter, das nicht mehr das Spielfeld sondern der win Screen Angezeigt werden soll
             frame.tile.Ebene.YouWin(g);
             //Schaltet die Zielhilfe aus (X und Y Anzeige über dem Spielfeld)
-            frame.Z.stopdrawing();
+            frame.menuPanel.remove(frame.Z);
+            frame.menuPanel.remove(frame.Turn);
 
             //Das else bedeutet, dass das Spiel noch nicht beendet ist, also wird entweder platziert oder
             //gekämpft

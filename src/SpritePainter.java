@@ -14,6 +14,10 @@ import static src.Tile.field_size;
 import static src.config.fieldsize;
 import static src.config.selectedTheme;
 
+/**
+ * Alle Elemente, welche sich auf dem Spielfeld befinden, von Schiffen bis zu Fehlschüssen wird hier
+ * hier gezeichnet
+ */
 public class SpritePainter {
 
 
@@ -45,14 +49,14 @@ public class SpritePainter {
 
 
     /**
-     * @param Feldvon       gibt an für wenn die Schiffe gezeichnet werden
-     *                      "Spieler" = Spieler
-     *                      "GegnerKI" = Computer Gegner
-     *                      "GegnerMensch" = OnlineGegners / Menschlicher Gegner
-     *                      "Preview" = Feld wird verwendet um das setzen des Spieler besser darzustellen
+     * @param Feldvon       int gibt an für wenn die Schiffe gezeichnet werden
+     *                      0 = Spieler
+     *                      1 = Computer Gegner
+     *                      2 = OnlineGegners / Menschlicher Gegner
+     *                      4 = Feld wird verwendet um das setzen des Spieler besser darzustellen
      *
-     * @param frame
-     * @param playingField
+     * @param frame         SpielWindow Object erlaubt es dem Tile auf andere Elemente zuzugreifen
+     * @param playingField  Spielfeld Object enthält alle Informationen von dem, was hier gezeichnet werden muss
      */
     public SpritePainter(int Feldvon, SpielWindow frame, PlayingField playingField) {
 

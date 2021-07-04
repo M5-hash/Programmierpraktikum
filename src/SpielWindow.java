@@ -12,6 +12,12 @@ import java.util.concurrent.TimeUnit;
 
 import static src.config.*;
 
+/**
+ * Erstellt das Fenster, auf welchem sich die Benutzeroberfläche befindet.
+ * Die Positionen und Größen der einzelnen GUI Elemente werden eigenständig ermittelt.
+ *
+ * Ruft im Singleplayer auch das eigene Spielfeld, sowie den ComputerGegner auf
+ */
 public class SpielWindow extends JPanel {
 
     boolean Multclient ;
@@ -61,7 +67,6 @@ public class SpielWindow extends JPanel {
         Multclient = true ;
         makeComponents(frame, onlineCom);
         if(onlineCom){
-            tile.OnlineSchussKI();
             tile.AnzSchiffe = sumofships;
             gamestart();
         }
@@ -79,7 +84,6 @@ public class SpielWindow extends JPanel {
         Multclient = false ;
         makeComponents(frame, onlineCom);
         if(onlineCom){
-            tile.OnlineSchussKI();
             tile.AnzSchiffe = sumofships;
             gamestart();
         }

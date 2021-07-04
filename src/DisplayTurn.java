@@ -3,6 +3,9 @@ package src;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Zeigt an, ob man selbst oder der Gegner am Zug ist
+ */
 public class DisplayTurn extends JPanel {
 
     Bildloader Bild = new Bildloader();
@@ -25,34 +28,22 @@ public class DisplayTurn extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        Image img ;
+        Image img;
 
-        if (draw) {
+        setOpaque(false);
 
-            setOpaque(false);
-
-            if(Turn){
-                img = Bild.BildLoader("src/Images/yourturn.png");
-            } else {
-                img = Bild.BildLoader("src/Images/pleasewait.png");
-            }
-            g.drawImage(img, 0, 0, getWidth(), getHeight(), null);
+        if (Turn) {
+            img = Bild.BildLoader("src/Images/yourturn.png");
+        } else {
+            img = Bild.BildLoader("src/Images/pleasewait.png");
         }
-
+        g.drawImage(img, 0, 0, getWidth(), getHeight(), null);
     }
 
-    /**
-     * Verhindert, dass die Zielhilfe gezeichnet wird
-     */
-    public void stopdrawing() {
-        draw = false;
-    }
 
     public void switchTurn(boolean Set) {
         Turn = Set;
     }
-
-
 
 
 }
