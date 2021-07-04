@@ -21,7 +21,6 @@ import static src.config.selectedTheme;
 public class SpritePainter {
 
 
-    public static boolean ready = false;
     public static int counter;
     static ArrayList<BufferedImage> Finished = new ArrayList<>();              // Zwischenspeicher für bereits geladene Bilder
     static ArrayList<String> Loaded = new ArrayList<>();                       // Speichert als String die Quellen der bereits geladenen Bilder ab
@@ -283,8 +282,6 @@ public class SpritePainter {
             }
         }
 
-
-        ready = true;
 
 
     }

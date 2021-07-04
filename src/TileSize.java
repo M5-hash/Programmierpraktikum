@@ -7,8 +7,14 @@ import static src.config.*;
  */
 public class TileSize {
 
+    /**
+     * Größe eines einzelnen Felds in Pixeln
+     */
     public static int Tile_Size = ((GF_WIDTH / 4) - 12 )/ fieldsize;
 
+    /**
+     * Größe des Rahmens, welcher die Spielfeld umgibt
+     */
     public static int SizeofBorder = Math.max(18, TileSize.Tile_Size / 12) ;
 
     /**
