@@ -14,23 +14,21 @@ public abstract class Com_base {
     protected Socket s;
     protected BufferedReader in;
     protected Writer out;
-    protected String line;
-    protected boolean setup;
-    public PlayingField pf;
-    public boolean myTurn;
-    protected int lastX;
-    protected int lastY;
+    private String line;
+    protected PlayingField pf;
+    protected boolean myTurn;
+    private int lastX;
+    private int lastY;
     protected boolean role_server;
     protected boolean loopBreaker;
     private SpielWindow frame;
     protected boolean loaded;
     protected boolean SocketActive;
-    protected JFrame loadScreen;
+    private JFrame loadScreen;
 
 
     public Com_base(JFrame loadScreen) {
         this.port = 50000;
-        this.setup = false;
         this.loopBreaker = false;
         this.loaded = false;
         this.SocketActive = false;
@@ -46,8 +44,31 @@ public abstract class Com_base {
         this.lastY = y;
     }
 
+    public int getLastX() {
+        return lastX;
+    }
+
+    public void setLastX(int val){
+        this.lastX = val;
+    }
+
+    public int getLastY(){
+        return lastY;
+    }
+
+    public void setLastY(int val){
+        this.lastY = val;
+    }
+
+    public PlayingField getPf(){
+        return this.pf;
+    }
+
     public ComPlayer getComPl(){
         return this.comPl;
+    }
+    public boolean isMyTurn(){
+        return this.myTurn;
     }
 
     public void Send(String input){

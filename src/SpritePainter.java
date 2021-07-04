@@ -334,9 +334,9 @@ public class SpritePainter {
 
             case 2 -> {
                 if (frame.Multclient) {
-                    dummy = frame.Online.pf.getFieldEnemy();
+                    dummy = frame.Online.getPf().getFieldEnemy();
                 } else {
-                    dummy = frame.Online.pf.getFieldEnemy();
+                    dummy = frame.Online.getPf().getFieldEnemy();
                 }
             }
 
