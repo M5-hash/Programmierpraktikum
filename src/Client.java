@@ -8,17 +8,24 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Einrichtung der Client-Schnittstelle und Aufsetzen von Kommunikation und Spielfeld
+ * Enthält alle notwendige Daten für die Netzwerk-Kommunikation als Client
+ */
 public class Client extends Com_base {
 
+    /**
+     * IP-Adresse des Server-Sockets
+     */
     private final String IP;
 
     public Client(String IP_in) throws Exception{
         super();
-        this.role_server = false;
+        this.RoleServer = false;
         this.IP = IP_in;
         for(int i = 0; i < 10; i++){
             try {
-                this.s = new Socket(this.IP, this.port);
+                this.socket = new Socket(this.IP, this.port);
                 i = 10;
             } catch (IOException e){
                 TimeUnit.SECONDS.sleep(1);
@@ -38,8 +45,8 @@ public class Client extends Com_base {
             }
         }
         this.SocketActive = true;
-        this.in = new BufferedReader(new InputStreamReader(s.getInputStream()));
-        this.out = new OutputStreamWriter(s.getOutputStream());
+        this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        this.out = new OutputStreamWriter(socket.getOutputStream());
         this.pf = setupPlayingfield();
         if(config.onlineCom && this.comPl == null) {
             this.comPl = new ComPlayerNormal(this.pf);
@@ -72,7 +79,7 @@ public class Client extends Com_base {
                 else if (ships_int_arr[i]==4){config.size4++;}
                 else if (ships_int_arr[i]==5){config.size5++;}
             }
-            pf_holder = new PlayingField(Integer.parseInt(in_size[1]), ships_int_arr, role_server);
+            pf_holder = new PlayingField(Integer.parseInt(in_size[1]), ships_int_arr, RoleServer);
 
             setMyTurn(true);
             Send("done");

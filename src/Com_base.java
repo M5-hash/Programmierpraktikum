@@ -35,7 +35,7 @@ public abstract class Com_base {
      * True, wenn das Objekt die Rolle des Servers besitzt
      * False, wenn das Objekt die Rolle des Clients besitzt
      */
-    protected boolean role_server;
+    protected boolean RoleServer;
 
     /**
      * True, solange kein neuer String empfangen wurde
@@ -64,7 +64,7 @@ public abstract class Com_base {
     /**
      * Socket-Verbindung zwischen Kommunikationspartnern
      */
-    protected Socket s;
+    protected Socket socket;
 
     /**
      * Reader der den Input-Stream des Sockets entgegen nimmt
@@ -174,7 +174,7 @@ public abstract class Com_base {
     public void KillSocket() {
         try {
             this.SocketActive = false;
-            this.s.shutdownOutput();
+            this.socket.shutdownOutput();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -188,7 +188,7 @@ public abstract class Com_base {
     public void Send(String input) {
         if (getMyTurn()) {
             try {
-                this.out.write(String.format("%s%n", input));
+                this.out.write(String.format("%socket%n", input));
                 try {
                     this.out.flush();
                 } catch (SocketException a) {
