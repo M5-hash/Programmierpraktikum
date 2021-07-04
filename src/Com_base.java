@@ -7,7 +7,9 @@ import java.io.Writer;
 import java.net.Socket;
 import java.net.SocketException;
 
-//
+/**
+ * Abstrakte Klasse, welche die gemeinsamen Funktionen und Variablen der Netzwerkschnittstellen enthält
+ */
 public abstract class Com_base {
     protected ComPlayer comPl;
     protected final int port;
