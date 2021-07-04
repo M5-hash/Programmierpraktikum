@@ -4,11 +4,8 @@ import javax.swing.*;
 import java.net.*;
 import java.io.*;
 import java.util.concurrent.TimeUnit;
-//
+
 public class Server extends Com_base {
-
-
-
 
     private ServerSocket ss;
 
@@ -58,7 +55,7 @@ public class Server extends Com_base {
             setMyTurn(true);
         }
         else {
-            pf_holder = new PlayingField(in_size, ship_array_toInt(in_ships.split(" "), 0), role_server);
+            pf_holder = new PlayingField(in_size, ParseStringArrayToIntArray(in_ships.split(" "), 0), role_server);
             TimeUnit.MILLISECONDS.sleep(100);
 
             setMyTurn(true);
