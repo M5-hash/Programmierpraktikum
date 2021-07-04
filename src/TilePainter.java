@@ -126,11 +126,11 @@ public class TilePainter extends JPanel implements MouseMotionListener {
         this.frame = frame;
         field = Feldvon;
 
-            PickSmallestAvailableSize();
-            this.pf = pf;
-            hier = new SpritePainter(field,  frame, pf);
+        PickSmallestAvailableSize();
+        this.pf = pf;
+        hier = new SpritePainter(field, frame, pf);
 
-        if(!onlineCom) {
+        if (!onlineCom) {
             if (field == 0) {
                 //Da es sich hier nicht um ein normales Feld handelt wird hier 4 == Vorhersage übergeben
                 Predicted = new SpritePainter(4, frame, pf);
@@ -176,11 +176,12 @@ public class TilePainter extends JPanel implements MouseMotionListener {
                                             KISchussMausklick();
                                         }
 
-                                    } else{
-                                    if (field == 2 && frame.Online.getMyTurn()) {
+                                    } else {
+                                        if (field == 2 && frame.Online.getMyTurn()) {
 
-                                        OnlineMausklick();
-                                    }}
+                                            OnlineMausklick();
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -384,7 +385,7 @@ public class TilePainter extends JPanel implements MouseMotionListener {
             }
 
         }
-        if(groessen[groesse] == 0){
+        if (groessen[groesse] == 0) {
             PickSmallestAvailableSize();
         }
     }
@@ -397,9 +398,10 @@ public class TilePainter extends JPanel implements MouseMotionListener {
     }
 
     /**
+     * Überprüft ob die Maus sich momentan auf dem Spielfeld befindet
+     *
      * @param e gibt MouseEvent weiter
-     *          <p>
-     *          Überprüft ob die Maus sich momentan auf dem Spielfeld befindet
+     * @return True: Wenn sich die Maus auf dem Spielfeld befindet
      */
     public boolean setOnfirstfield(MouseEvent e) {
 
@@ -548,9 +550,10 @@ public class TilePainter extends JPanel implements MouseMotionListener {
     }
 
     /**
+     * setzt die Pos Variablen auf das Tile auf dem sich die Maus momentan befindet und sagt der Vorhersage,
+     * ob diese sich neue Werte für die Anzeige holen muss
+     *
      * @param e gibt MouseEvent weiter
-     *          setzt die Pos Variablen auf das Tile auf dem sich die Maus momentan befindet und sagt der Vorhersage,
-     *          ob diese sich neue Werte für die Anzeige holen muss
      */
     @Override
     public void mouseMoved(MouseEvent e) {
@@ -581,9 +584,9 @@ public class TilePainter extends JPanel implements MouseMotionListener {
      * Setzt das ausgewählte Schiff auf das momentan kleinstmögliche
      */
     private void PickSmallestAvailableSize() {
-        for(int i = 2; i <= 5 ; i++){
-            if(groessen[i] != 0){
-                groesse = i ;
+        for (int i = 2; i <= 5; i++) {
+            if (groessen[i] != 0) {
+                groesse = i;
                 break;
             }
         }
