@@ -58,6 +58,7 @@ public class SaveGameButton extends JButton {
                         if (!directory.exists())
                             if (!directory.mkdir()) throw new Exception("Temp-Ordner existiert nicht");
                         sw.getCom().saveGame(fpath + File.separator + sw.getPlayingField().getTimestamp() + fname);
+                        sw.getServer().KillSocket();
                     }
                 } catch (Exception ex) {
                     ex.printStackTrace();

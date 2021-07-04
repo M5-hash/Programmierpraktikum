@@ -92,42 +92,6 @@ public class PlayingField {
     }
 
     /**
-     * field-Getter
-     *
-     * @return Gibt field zurück
-     */
-    public int[][] getField() {
-        return this.field;
-    }
-
-    /**
-     * status-Getter
-     *
-     * @return this.status
-     */
-    public int getStatus() {
-        return this.status;
-    }
-
-    /**
-     * enemyShipsDestroyed-Getter
-     *
-     * @return this.enemyShipsDestroyed
-     */
-    public int getEnemyShipsDestroyed() {
-        return this.enemyShipsDestroyed;
-    }
-
-    /**
-     * timestamp-Getter
-     *
-     * @return Gibt this.timestamp zurück
-     */
-    public long getTimestamp() {
-        return this.timestamp;
-    }
-
-    /**
      * Ermittelt Schiffskopf eines Schiffsteils und gibt die Koordinaten zurück
      *
      * @param field Das Feld auf dem der Schiffskopf gesucht werden soll
@@ -149,15 +113,6 @@ public class PlayingField {
         }
 
         return new int[]{headX, headY};
-    }
-
-    /**
-     * fieldEnemy-Getter
-     *
-     * @return Gibt fieldEnemy zurück
-     */
-    public int[][] getFieldEnemy() {
-        return this.fieldEnemy;
     }
 
     /**
@@ -198,6 +153,60 @@ public class PlayingField {
     }
 
     /**
+     * field-Getter
+     *
+     * @return Gibt field zurück
+     */
+    public int[][] getField() {
+        return this.field;
+    }
+
+    /**
+     * status-Getter
+     *
+     * @return this.status
+     */
+    public int getStatus() {
+        return this.status;
+    }
+
+    /**
+     * enemyShipsDestroyed-Getter
+     *
+     * @return this.enemyShipsDestroyed
+     */
+    public int getEnemyShipsDestroyed() {
+        return this.enemyShipsDestroyed;
+    }
+
+    /**
+     * timestamp-Getter
+     *
+     * @return Gibt this.timestamp zurück
+     */
+    public long getTimestamp() {
+        return this.timestamp;
+    }
+
+    /**
+     * fieldEnemy-Getter
+     *
+     * @return Gibt fieldEnemy zurück
+     */
+    public int[][] getFieldEnemy() {
+        return this.fieldEnemy;
+    }
+
+    /**
+     * allowedShips-Getter
+     *
+     * @return this.allowedShips
+     */
+    public int[] getAllowedShips() {
+        return this.allowedShips;
+    }
+
+    /**
      * Wrapper von setShipWithCheck.
      * Setzt ein Schiff, wenn erlaubt.
      *
@@ -213,12 +222,65 @@ public class PlayingField {
     }
 
     /**
-     * allowedShips-Getter
+     * fieldEnemy-Setter
      *
-     * @return this.allowedShips
+     * @param x   X-Koordinate bzw. Index 2
+     * @param y   Y-Koordinate bzw. Index 1
+     * @param val Value welches in fieldEnemy geschrieben werden soll
      */
-    public int[] getAllowedShips() {
-        return this.allowedShips;
+    public void setFieldEnemy(int x, int y, int val) {
+        this.fieldEnemy[y][x] = val;
+    }
+
+    /**
+     * com-Setter
+     * 0 = Kein Computerspieler-Spiel
+     * 1 = Computerspieler Einfach
+     * 2 = Computerspieler Mittel
+     *
+     * @param com Value für this.com
+     */
+    public void setCom(int com) {
+        this.com = com;
+    }
+
+    /**
+     * Non-Static Wrapper für getDirHeadOfShipStatic
+     *
+     * @param x X-Koordinate eines Schiffteiles
+     * @param y Y-Koordinate eines Schiffteiles
+     * @return int[]{ x, y, 1 (horizontal) bzw. 0 (vertikal) }
+     * @throws Exception wenn x/y auserhalb des Spielfeldes
+     */
+    public int[] getDirHeadOfShip(int x, int y) throws Exception {
+        return PlayingField.getDirHeadOfShipStatic(this.field, x, y);
+    }
+
+    /**
+     * Überprüft ob ein Schuss ein Schiff erwischt hat
+     *
+     * @param x X-Koordinate Schiffkopf
+     * @param y Y-Koordinate Schiffkopf
+     * @return 0: Kein Treffer, 1: Treffer, 2: Treffer und versenkt
+     */
+    public int isShot(int x, int y) throws Exception {
+        checkCoordinatesInField(x, y);
+
+        if (this.field[y][x] == 0) {
+            this.field[y][x] = 5;
+        } else if (this.field[y][x] == 3) {
+            this.field[y][x] = 1;
+
+            int[] data = getDirHeadOfShip(x, y);
+            if (isShipDestroyed(data[0], data[1], data[2] == 1)) {
+                markShipDestroyed(data[0], data[1], data[2] == 1);
+                return 2;
+            }
+
+            return 1;
+        }
+
+        return 0;
     }
 
     /**
@@ -234,29 +296,6 @@ public class PlayingField {
      */
     public boolean checkShip(int length, int x, int y, boolean horizontal) {
         return setShipIntern(length, x, y, horizontal, false);
-    }
-
-    /**
-     * fieldEnemy-Setter
-     *
-     * @param x   X-Koordinate bzw. Index 2
-     * @param y   Y-Koordinate bzw. Index 1
-     * @param val Value welches in fieldEnemy geschrieben werden soll
-     */
-    public void setFieldEnemy(int x, int y, int val) {
-        this.fieldEnemy[y][x] = val;
-    }
-
-    /**
-     * Non-Static Wrapper für getDirHeadOfShipStatic
-     *
-     * @param x X-Koordinate eines Schiffteiles
-     * @param y Y-Koordinate eines Schiffteiles
-     * @return int[]{ x, y, 1 (horizontal) bzw. 0 (vertikal) }
-     * @throws Exception wenn x/y auserhalb des Spielfeldes
-     */
-    public int[] getDirHeadOfShip(int x, int y) throws Exception {
-        return PlayingField.getDirHeadOfShipStatic(this.field, x, y);
     }
 
     /**
@@ -289,45 +328,6 @@ public class PlayingField {
         this.ships--;
 
         return l;
-    }
-
-    /**
-     * Überprüft ob ein Schuss ein Schiff erwischt hat
-     *
-     * @param x X-Koordinate Schiffkopf
-     * @param y Y-Koordinate Schiffkopf
-     * @return 0: Kein Treffer, 1: Treffer, 2: Treffer und versenkt
-     */
-    public int isShot(int x, int y) throws Exception {
-        checkCoordinatesInField(x, y);
-
-        if (this.field[y][x] == 0) {
-            this.field[y][x] = 5;
-        } else if (this.field[y][x] == 3) {
-            this.field[y][x] = 1;
-
-            int[] data = getDirHeadOfShip(x, y);
-            if (isShipDestroyed(data[0], data[1], data[2] == 1)) {
-                markShipDestroyed(data[0], data[1], data[2] == 1);
-                return 2;
-            }
-
-            return 1;
-        }
-
-        return 0;
-    }
-
-    /**
-     * com-Setter
-     * 0 = Kein Computerspieler-Spiel
-     * 1 = Computerspieler Einfach
-     * 2 = Computerspieler Mittel
-     *
-     * @param com Value für this.com
-     */
-    public void setCom(int com) {
-        this.com = com;
     }
 
     /**
@@ -444,6 +444,30 @@ public class PlayingField {
     }
 
     /**
+     * Überprüft ob ein komplettes Schiff zerstört ist
+     *
+     * @param x          X-Koordinate Schiffkopf
+     * @param y          Y-Koordinate Schiffkopf
+     * @param horizontal Schiff horizontal überprüfen
+     * @return True: Komplettes Schiff ist zerstört
+     */
+    private boolean isShipDestroyed(int x, int y, boolean horizontal) throws Exception {
+        checkCoordinatesInField(x, y);
+
+        int xOffset = 0;
+        int yOffset = 0;
+
+        while (x + xOffset < this.field.length && y + yOffset < this.field.length
+                && this.field[y + yOffset][x + xOffset] == 1) {
+            if (horizontal) xOffset++;
+            else yOffset++;
+        }
+
+        //Überprüfen ob nach zerstörten Schiffsteilen Wasser
+        return y + yOffset >= this.field.length || x + xOffset >= this.field.length || this.field[y + yOffset][x + xOffset] == 0 || this.field[y + yOffset][x + xOffset] == 5;
+    }
+
+    /**
      * Markiert ein Schiff als komplett zerstört (Int-Wert 2)
      *
      * @param x          X-Koordinate Schiffkopf
@@ -466,30 +490,6 @@ public class PlayingField {
             if (horizontal) xOffset++;
             else yOffset++;
         }
-    }
-
-    /**
-     * Überprüft ob ein komplettes Schiff zerstört ist
-     *
-     * @param x          X-Koordinate Schiffkopf
-     * @param y          Y-Koordinate Schiffkopf
-     * @param horizontal Schiff horizontal überprüfen
-     * @return True: Komplettes Schiff ist zerstört
-     */
-    private boolean isShipDestroyed(int x, int y, boolean horizontal) throws Exception {
-        checkCoordinatesInField(x, y);
-
-        int xOffset = 0;
-        int yOffset = 0;
-
-        while (x + xOffset < this.field.length && y + yOffset < this.field.length
-                && this.field[y + yOffset][x + xOffset] == 1) {
-            if (horizontal) xOffset++;
-            else yOffset++;
-        }
-
-        //Überprüfen ob nach zerstörten Schiffsteilen Wasser
-        return y + yOffset >= this.field.length || x + xOffset >= this.field.length || this.field[y + yOffset][x + xOffset] == 0 || this.field[y + yOffset][x + xOffset] == 5;
     }
 
     /**
@@ -524,6 +524,20 @@ public class PlayingField {
                 }
             }
         }
+    }
+
+    /**
+     * fieldEnemy-Felder mit val markieren mit zusätzlichen Sicherheitsmaßnahmen
+     *
+     * @param x X-Koordinate
+     * @param y Y-Koordinate
+     */
+    private void markNotImportant(int x, int y) {
+        if (x < 0 || x >= this.fieldEnemy.length) return;
+        if (y < 0 || y >= this.fieldEnemy.length) return;
+        if (this.fieldEnemy[y][x] == 5) return;
+
+        this.fieldEnemy[y][x] = 4;
     }
 
     /**
@@ -592,20 +606,6 @@ public class PlayingField {
      */
     private void checkCoordinatesInField(int x, int y) throws Exception {
         PlayingField.checkCoordinatesInFieldStatic(this.field, x, y);
-    }
-
-    /**
-     * fieldEnemy-Felder mit val markieren mit zusätzlichen Sicherheitsmaßnahmen
-     *
-     * @param x X-Koordinate
-     * @param y Y-Koordinate
-     */
-    private void markNotImportant(int x, int y) {
-        if (x < 0 || x >= this.fieldEnemy.length) return;
-        if (y < 0 || y >= this.fieldEnemy.length) return;
-        if (this.fieldEnemy[y][x] == 5) return;
-
-        this.fieldEnemy[y][x] = 4;
     }
 
 
@@ -821,28 +821,34 @@ public class PlayingField {
         s.skip("\n");
 
         if (this.com == 2) {
-            ComPlayerNormal c = (ComPlayerNormal) com;
+            if(com == null){
+                s.nextLine();
+                s.nextLine();
+                s.nextInt();
+                s.skip("\n");
+            }else {
+                ComPlayerNormal c = (ComPlayerNormal) com;
 
-            //lastCoords
-            String str = s.nextLine();
-            if (!str.equals("NULL")) {
-                c.setLastCoords(Stream.of(str.split(","))
-                        .mapToInt(Integer::parseInt)
-                        .toArray());
+                //lastCoords
+                String str = s.nextLine();
+                if (!str.equals("NULL")) {
+                    c.setLastCoords(Stream.of(str.split(","))
+                            .mapToInt(Integer::parseInt)
+                            .toArray());
+                }
+
+                //rowSeq
+                str = s.nextLine();
+                List<Integer> l = new ArrayList<>();
+                for (int i : Stream.of(str.split(",")).mapToInt(Integer::parseInt).toArray()) {
+                    l.add(i);
+                }
+                c.setRowSeq(l);
+
+                //nextRow
+                c.setNextRow(s.nextInt());
+                s.skip("\n");
             }
-
-            //rowSeq
-            str = s.nextLine();
-            List<Integer> l = new ArrayList<>();
-            for (int i : Stream.of(str.split(",")).mapToInt(Integer::parseInt).toArray()) {
-                l.add(i);
-            }
-            c.setRowSeq(l);
-
-            //nextRow
-            c.setNextRow(s.nextInt());
-            s.skip("\n");
-
         }
         //Timestamp
         this.timestamp = s.nextLong();

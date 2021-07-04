@@ -1,19 +1,22 @@
 package src;
 
-import java.lang.Thread;
-import java.net.*;
-import java.io.*;
+import javax.swing.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.Socket;
 
 //
 public class Client extends Com_base {
 
     private final String IP;
 
-    public Client(String IP_in) throws Exception {
-        super();
+    public Client(String IP_in, JFrame loadScreen) throws Exception {
+        super(loadScreen);
         this.role_server = false;
         this.IP = IP_in;
         this.s = new Socket(this.IP, this.port);
+        this.SocketActive = true;
         this.in = new BufferedReader(new InputStreamReader(s.getInputStream()));
         this.out = new OutputStreamWriter(s.getOutputStream());
         this.pf = setupPlayingfield();
@@ -62,11 +65,11 @@ public class Client extends Com_base {
         else{
             this.loaded = true;
             if(config.onlineCom){
-                this.comPl = new ComPlayerNormal(Long.valueOf(in_size[1]));
+                this.comPl = new ComPlayerNormal(Long.parseLong(in_size[1]));
                 pf_holder = this.comPl.getPlayingField();
             }else {
                 pf_holder = new PlayingField();
-                pf_holder.loadGame(Long.valueOf(in_size[1]));
+                pf_holder.loadGame(Long.parseLong(in_size[1]));
             }
         }
 

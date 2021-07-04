@@ -57,9 +57,9 @@ public class SpielWindow extends JPanel {
 
     public SpielWindow(JFrame frame, Client Client){
         Online = Client ;
-        playingField = Client.pf ;
-        makeComponents(frame, onlineCom);
+        playingField = Client.getPf() ;
         Multclient = true ;
+        makeComponents(frame, onlineCom);
         if(onlineCom){
             tile.OnlineSchussKI();
             tile.AnzSchiffe = sumofships;
@@ -75,9 +75,9 @@ public class SpielWindow extends JPanel {
     public SpielWindow(JFrame frame, Server Server){
         System.out.println("Wir sind in das SpielWindow gekommen");
         Online = Server ;
-        playingField = Server.pf ;
-        makeComponents(frame, onlineCom);
+        playingField = Server.getPf() ;
         Multclient = false ;
+        makeComponents(frame, onlineCom);
         if(onlineCom){
             tile.OnlineSchussKI();
             tile.AnzSchiffe = sumofships;
@@ -184,7 +184,7 @@ public class SpielWindow extends JPanel {
             } catch (Exception exception) {
                 exception.printStackTrace();
             }
-            if(!Online.myTurn && !Online.pf.gameover()){
+            if(!Online.isMyTurn() && !Online.getPf().gameover() && Online.SocketActive){
                 Thread t1 = new Thread(new Runnable() {
                     public void run()
                     {
@@ -200,7 +200,7 @@ public class SpielWindow extends JPanel {
                     }});
                 t1.start();
             }
-            else if(onlineCom && Online.myTurn && !Online.pf.gameover()){
+            else if(onlineCom && Online.isMyTurn() && !Online.getPf().gameover() && Online.SocketActive){
                 int[] hold = new int[0];
                 try {
                     hold = Online.getComPl().doNextShot();
@@ -214,8 +214,8 @@ public class SpielWindow extends JPanel {
                 }
                 tile2.setPosX(hold[0]);
                 tile2.setPosY(hold[1]);
-                Online.lastX = hold[0];
-                Online.lastY = hold[1];
+                Online.setLastX(hold[0]);
+                Online.setLastY(hold[1]);
                 Online.Send("shot " + hold[0] + " " + hold[1]);
 
                 try {
@@ -450,8 +450,8 @@ public class SpielWindow extends JPanel {
                 }
                 tile2.setPosX(hold[0]);
                 tile2.setPosY(hold[1]);
-                Online.lastX = hold[0];
-                Online.lastY = hold[1];
+                Online.setLastX(hold[0]);
+                Online.setLastY(hold[1]);
                 Online.Send("shot " + hold[0] + " " + hold[1]);
                 try {
 
