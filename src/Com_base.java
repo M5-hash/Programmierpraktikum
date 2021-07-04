@@ -6,7 +6,7 @@ import java.io.Writer;
 import java.net.Socket;
 import java.net.SocketException;
 
-
+//
 public abstract class Com_base {
     protected ComPlayer comPl;
     protected final int port;
@@ -161,7 +161,11 @@ public abstract class Com_base {
             }
 
         } else if (holder[0].equals("save")) {
-            pf.saveGame(Long.parseLong(holder[1]));
+            if(config.onlineCom){
+                this.comPl.saveGame(Long.parseLong(holder[1]));
+            }else {
+                pf.saveGame(Long.parseLong(holder[1]));
+            }
         } else if (holder[0].equals("ready")) {
             myTurn = true;
         } else if (holder[0].equals("pass")) {

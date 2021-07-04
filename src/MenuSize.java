@@ -35,7 +35,7 @@ public class MenuSize {
         menuPanel = new CustomPanel(ImageLoader.getImage(ImageLoader.MENU_BG));
         menuPanel.setLayout(menuLayout);
 
-        menuInformation = new MenuInformation(ImageLoader.getImage(ImageLoader.STARTMENU_BTN_TEXTFIELD_EICH), TextSize, menuFrame);
+        menuInformation = new MenuInformation(ImageLoader.getImage(ImageLoader.STARTMENU_BTN_TEXTFIELD_EICH), selectedTheme.equals("Pokemon") ? TextSize : TextSize.replace("Pokemon", "Ships"), menuFrame);
         makeConstraints(menuInformation, 0, 0, 3);
 
         inputPanel = new PanelSize(menuFrame, ImageLoader.getImage(ImageLoader.OPTIONS_BACKGROUND), previousPanel, menuPanel);

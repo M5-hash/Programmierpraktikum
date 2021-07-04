@@ -11,7 +11,7 @@ import static src.FontLoader.Pokemon;
 import static src.config.*;
 
 /**
- * Optionen des Hauptmenü
+ * Optionen des Spiels
  */
 public class MenuOptions {
     GridBagLayout menuLayout;
