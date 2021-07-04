@@ -226,7 +226,6 @@ public class TilePainter extends JPanel implements MouseMotionListener {
     /**
      * Übergibt den Schuss an die Kommunikation im passenden String Format.
      * <p>
-     * TODO die repaint können eigentlich entfernt werden, da das ja eindeutig nicht funktioniert
      */
     private void OnlineMausklick() {
         String xString = PosX + " ";
