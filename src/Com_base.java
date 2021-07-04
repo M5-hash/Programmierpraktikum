@@ -33,7 +33,7 @@ public abstract class Com_base {
         this.setup = false;
         this.loopBreaker = false;
         this.loaded = false;
-        this.SocketActive = true;
+        this.SocketActive = false;
         this.loadScreen = loadScreen;
     }
 

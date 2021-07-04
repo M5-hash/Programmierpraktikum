@@ -15,6 +15,7 @@ public class Client extends Com_base {
         this.role_server = false;
         this.IP = IP_in;
         this.s = new Socket(this.IP, this.port);
+        this.SocketActive = true;
         this.in = new BufferedReader(new InputStreamReader(s.getInputStream()));
         this.out = new OutputStreamWriter(s.getOutputStream());
         this.pf = setupPlayingfield();
