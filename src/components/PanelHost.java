@@ -117,7 +117,11 @@ public class PanelHost extends JPanel {
         makeConstraints(buttonPanel, 1, 3, 4);
     }
 
-
+    /**
+     * Ermitteln der 192er IP-Adressen des Hosts
+     * @return Die IP-Adressen des Hosts
+     * @throws IOException Wenn kein Network-Interface existiert
+     */
     public static String[] IP_Ausgabe() throws IOException {
         ArrayList<String> IPs = new ArrayList<>();
         Enumeration<NetworkInterface> nis =
