@@ -8,32 +8,58 @@ import java.awt.*;
  */
 public class Zielhilfe extends JPanel {
 
+    /**
+     * Bildloader Object, welches es ermöglicht Bilder zu laden
+     */
     Bildloader Bild = new Bildloader();
-    String Zahldir = "Ich bin der String und ich bin ein Platzhalter";
-    Image Zahl; //Nur ein Platzhalter, dass die IDE nicht weint
+    /**
+     * String, welcher die Queldatei der Bilder/Zahlen angibt
+     */
+    String Zahldir;
+    /**
+     * Bilddatei, in welchen die Zahlen gespeichert werden
+     */
+    Image Zahl;
+    /**
+     *
+     */
     SpielWindow spWin;
+    /**
+     * X-Position des Feldes auf dem sich die Maus befindet
+     */
     int PosX = 5;
+    /**
+     * Y-Position des Feldes auf dem sich die Maus befindet
+     */
     int PosY = 5;
-    boolean draw = true;
-    JFrame frame ;
-    boolean eitherfield ;
+    /**
+     * Fenster auf welche sich die Zielhilfe befindet
+     */
+    JFrame frame;
+    /**
+     * Gibt an ob sich die Maus auf einem der Beiden Spielfelder befindet
+     */
+    boolean eitherfield;
+    /**
+     * Gibt an, ob es zu einer Änderung kam, welche dargestellt werden muss
+     */
     boolean change;
 
     /**
      * @param Window SpielWindow Object
-     * @param frame JFrame Object
-     *
-     *              Zielhilfe stellt die aktuelle Position der Maus dar
+     * @param frame  JFrame Object
+     *               <p>
+     *               Zielhilfe stellt die aktuelle Position der Maus dar
      */
     public Zielhilfe(SpielWindow Window, JFrame frame) {
         spWin = Window;
-        this.frame = frame ;
+        this.frame = frame;
     }
 
 
     /**
      * @param g Graphics Object
-     *
+     *          <p>
      *          Wenn das Spiel bereits vorbei ist, dann wird die Zeilhilfe nicht gebraucht/gezeichnet.
      *          Überprüft ob es zu einer Änderung in der Maus Position kam und die, wenn ja wird die Zielhilfe neu gezeichnet.
      *          Die Position wird von dem momentan verwendeten Feld bezogen.
@@ -42,22 +68,21 @@ public class Zielhilfe extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        if (draw) {
 
-            setOpaque(false);
+        setOpaque(false);
 
-            if (Tile.isFightstart() ) {
-                change = PosX != spWin.tile2.getPosX() || PosY != spWin.tile2.getPosY();
-                eitherfield = spWin.tile2.getOnfirstfield() ;
-            } else {
-                change = PosX != spWin.tile.getPosX() || PosY != spWin.tile.getPosY();
-                eitherfield = spWin.tile.getOnfirstfield() ;
-            }
-
-            if (change && eitherfield) {
-                BildRechner(g);
-            }
+        if (Tile.isFightstart()) {
+            change = PosX != spWin.tile2.getPosX() || PosY != spWin.tile2.getPosY();
+            eitherfield = spWin.tile2.getOnfirstfield();
+        } else {
+            change = PosX != spWin.tile.getPosX() || PosY != spWin.tile.getPosY();
+            eitherfield = spWin.tile.getOnfirstfield();
         }
+
+        if (change && eitherfield) {
+            BildRechner(g);
+        }
+
 
     }
 
@@ -69,7 +94,7 @@ public class Zielhilfe extends JPanel {
      */
     void BildRechner(Graphics g) {
 
-        int NumberSize = frame.getHeight() / 20 ;
+        int NumberSize = frame.getHeight() / 20;
 
         if (Tile.isFightstart()) {
             PosX = spWin.tile2.getPosX() + 1;
@@ -103,7 +128,7 @@ public class Zielhilfe extends JPanel {
                         NumberSize,
                         NumberSize, null);
 
-                Bildercounter++ ;
+                Bildercounter++;
 
             } else {
 
@@ -145,7 +170,7 @@ public class Zielhilfe extends JPanel {
             displacement = (Bildercounter++) * NumberSize;
 
 
-            if(!secondrun){
+            if (!secondrun) {
                 Zahl = Bild.BildLoader("src/Images/y.png");
                 g.drawImage(Zahl, displacement, 0, NumberSize, NumberSize, null);
             }
@@ -153,7 +178,6 @@ public class Zielhilfe extends JPanel {
             Inbetweener = PosY;
             secondrun = true;
             i = 0;
-
 
 
             if (PosY == 1) {
