@@ -76,7 +76,7 @@ public class MenuMultiplayer {
 
                 if(x==0 || x == 1) {
                     menuPanel.setVisible(false);
-                    menuFrame.dispose();
+                    //menuFrame.dispose();
                 }
                 if (x == 0) {
                     onlineCom = false;
