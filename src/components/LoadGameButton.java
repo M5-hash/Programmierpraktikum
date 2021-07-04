@@ -24,7 +24,15 @@ public class LoadGameButton extends JButton {
      * Hintergrundbild des Buttons
      */
     public Image image;
+
+    /**
+     * Das PlayingField welches dann anhand der ausgewählten Datei den Spielstand liest
+     */
     private PlayingField pf;
+
+    /**
+     * Der Computer-Gegner der möglicherweise durch den Spielstand mit geladen wird
+     */
     private ComPlayer com;
 
     /**
