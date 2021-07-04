@@ -253,7 +253,7 @@ public class TilePainter extends JPanel implements MouseMotionListener {
      *Methode die dafür sorgt, dass die KI im Online Modus schießt
      */
     public void OnlineSchussKI() {
-
+/*
         ActionListener OnlinetaskPerformer = evt -> {
             if (Computer.gameover()) {
                 OnlineKItimerstopper();
@@ -288,7 +288,7 @@ public class TilePainter extends JPanel implements MouseMotionListener {
         };
         //300ms sind genug um die einzelnen Schüsse der Ki zu sehen
         OnlineKI = new Timer(300, OnlinetaskPerformer);
-        OnlineKI.start();
+        OnlineKI.start();*/
     }
 
     /**
