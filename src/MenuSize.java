@@ -12,20 +12,37 @@ import static src.config.*;
 
 /**
  * Sizemenü des Spiels <br>
- * Auswahl der Feld -und Schiffsgröße
+ * Hier können die Größen des Feldes und der Schiffe eingestellt werden
  */
 public class MenuSize {
-
+    /**
+     * Constraints für das GridbagLayout
+     */
     GridBagConstraints constraints;
+    /**
+     * GridBaglayout der Panelsize <br>
+     */
     GridBagLayout menuLayout;
+    /**
+     * Informationen zum Menü
+     */
     JPanel menuInformation;
+    /**
+     * Panel mit Slidern und Textfeldern um Größe des Feldes und der Schiffe anzupassen
+     */
     JPanel inputPanel;
+    /**
+     * Panel auf dem die Components hinzugefügt werden
+     */
     JPanel menuPanel;
+    /**
+     * Frame des Menü
+     */
     JFrame menuFrame;
 
     /**
      * Erstellt die Components des Menü
-     * @param menuFrame Frame des Menüs
+     * @param menuFrame Frame des Menü
      * @param previousPanel Panel mit Components des vorherigen Menüs
      * @throws IOException Fehler beim Laden der Grafiken
      * @throws FontFormatException Fehler beim Laden der Font

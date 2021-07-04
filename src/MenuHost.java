@@ -9,12 +9,26 @@ import java.io.IOException;
 import static src.config.*;
 
 public class MenuHost {
-
-    GridBagLayout       menuLayout;
+    /**
+     * Constraints für das GridbagLayout
+     */
     GridBagConstraints  constraints;
-    JFrame              menuframe;
+    /**
+     * GridBaglayout der Optionen
+     */
+    GridBagLayout       menuLayout;
+    /**
+     * Panel mit InputComponents für das Hostmenü
+     */
     JPanel              menuHost;
+    /**
+     * Panel auf dem die Components hinzugefügt werden
+     */
     JPanel              menuPanel;
+    /**
+     * Frame des Menü
+     */
+    JFrame              menuframe;
 
     public MenuHost(JFrame menuFrame, JPanel previousPanel) throws IOException {
         this.menuframe = menuFrame;
