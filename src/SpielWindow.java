@@ -411,7 +411,9 @@ public class SpielWindow extends JPanel {
                 ioException.printStackTrace();
             }
         });
-        gamePanel1.add(buttonMenuStart);
+        if(this.Online == null) {
+            gamePanel1.add(buttonMenuStart);
+        }
         if (!Multclient) {
             gamePanel1.add(buttonSaveGame);
         }
