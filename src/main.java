@@ -7,11 +7,14 @@ import java.io.IOException;
 public class main{
 
     /**
-     * The main function for the battleships game.
-     * @param args The arguments which are passed to the programme - ignored
+     * Die main Funktion für das Spiel. <br>
+     * Lädt Bilder und Font für das Spiel und öffnet das Hauptmenü.
+     * @param args Argumente, die Übergeben werden werden ignoriert
+     * @throws IOException Falls nicht alle Bilder geladen werden konnten
+     * @throws FontFormatException Falls Font nicht geladen werden konnte
      */
     public static void main(String[] args) throws IOException, FontFormatException {
-        // Try to load the sprites
+
         try {
             ImageLoader.init();
         } catch (IOException e) {
@@ -26,6 +29,5 @@ public class main{
         JFrame.setDefaultLookAndFeelDecorated(true);
         // Create the start window
         new MenuStart();
-
     }
 }

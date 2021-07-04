@@ -5,9 +5,11 @@ import src.components.*;
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
-
 import static src.config.*;
 
+/**
+ * Startmenü des Spiels
+ */
 public class MenuStart {
 
     GridBagConstraints  constraints;
@@ -20,16 +22,14 @@ public class MenuStart {
     JPanel              menuPanel;
     JFrame              menuFrame;
 
+    /**
+     * Erstellung der Components im Startmenü
+     * @throws IOException
+     * @throws FontFormatException
+     */
     public MenuStart() throws IOException, FontFormatException {
         // Custom Frame
         menuFrame = new MenuFrame();
-        makeComponents();
-        menuFrame.repaint();
-        menuFrame.revalidate();
-    }
-
-    private void makeComponents(){
-
         int COL         = (INITIAL_WIDTH * 22 / 100) - 10;
         int C_GAP       = (INITIAL_WIDTH * 28 / 100) - 10;
         int ROW_INFO    = (INITIAL_HEIGHT * 33 / 100) - 10;
@@ -42,13 +42,14 @@ public class MenuStart {
 
         // Content Panel
         menuPanel = new CustomPanel(ImageLoader.getImage(ImageLoader.STARTMENU_BG));
+        menuFiller = new MenuPanelFiller();
+        buttonMenuSingleplayer = new MenuButton("SINGLEPLAYER", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
+
         menuPanel.setLayout(menuLayout);
 
-        menuFiller = new MenuPanelFiller();
+
         makeConstraints(menuFiller, 0, 0 , 4);
 
-        //The Buttons
-        buttonMenuSingleplayer = new MenuButton("SINGLEPLAYER", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
         buttonMenuSingleplayer.addActionListener(e -> {
             // Hide this window
             menuPanel.setVisible(false);
@@ -68,7 +69,6 @@ public class MenuStart {
             menuPanel.setVisible(false);
 
             // Create new singleplayer menu
-
             try {
                 new MenuMultiplayer(menuFrame, menuPanel);
             } catch (IOException | FontFormatException ioException) {
@@ -95,9 +95,17 @@ public class MenuStart {
         makeConstraints(buttonQuitGame, 1, 8, 2);
 
         menuFrame.add(menuPanel);
-
+        menuFrame.repaint();
+        menuFrame.revalidate();
     }
 
+    /**
+     * Legt Größe und Position der Components fest
+     * @param comp Ein Swing Component, welcher in constraints embedded werden soll.
+     * @param gridx X-Position auf der X-Achse
+     * @param gridy Y-Position auf der Y-Achse
+     * @param gridwidth Breite des Components
+     */
     private void makeConstraints(JComponent comp, int gridx, int gridy, int gridwidth) {
         constraints.fill        = GridBagConstraints.BOTH;
         constraints.gridheight  = 1;

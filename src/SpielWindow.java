@@ -314,7 +314,9 @@ public class SpielWindow extends JPanel {
             }
         });
         gamePanel1.add(buttonMenuStart);
-        gamePanel1.add(buttonSaveGame);
+        if(!Multclient){
+            gamePanel1.add(buttonSaveGame);
+        }
         gamePanel1.add(buttonQuitGame);
 
         gamePanel2.add(btn_size2);
