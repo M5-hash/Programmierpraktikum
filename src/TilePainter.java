@@ -37,7 +37,6 @@ public class TilePainter extends JPanel implements MouseMotionListener {
      * Anzahl der bis jetzt gesetzten Schiffe
      */
     int AnzSchiffe = 0;
-    int counter;
     boolean hasshot = false;
     boolean hitKI = true;
     boolean PlayerTurn = true;
@@ -49,7 +48,6 @@ public class TilePainter extends JPanel implements MouseMotionListener {
     SpielWindow frame;
     PlayingField pf;
     ComPlayer Computer;
-    Graphics Test ;
     Timer KItimer;
     int[] recentshot = new int[2];
     boolean placeable = false;
@@ -228,7 +226,6 @@ public class TilePainter extends JPanel implements MouseMotionListener {
                             frame.Turn.switchTurn(PlayerTurn);
                             timerstarter();
                         }
-                        System.out.println(counter++);
                     };
                     //300ms sind genug um die einzelnen Schüsse der Ki zu sehen
                     KItimer = new Timer(300, taskPerformer);
@@ -401,10 +398,6 @@ public class TilePainter extends JPanel implements MouseMotionListener {
         return recentshot;
     }
 
-    public void paintComponent(){
-        paintComponent(Test);
-    }
-
     /**
      * @param g Graphics Object
      *          <p>
@@ -413,7 +406,6 @@ public class TilePainter extends JPanel implements MouseMotionListener {
      */
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        Test = g ;
 
         setOpaque(false);
 
