@@ -146,6 +146,7 @@ public class PlayingField {
      * @param field Das Feld für das überprüft werden soll, ob die Koordinaten enthalten sind
      * @param x     X-Koordinate
      * @param y     Y-Koordinate
+     * @throws Exception Wenn die X/Y-Koordinaten nicht innerhalb des field-Arrays sind
      */
     public static void checkCoordinatesInFieldStatic(int[][] field, int x, int y) throws Exception {
         if (x < 0 || x >= field.length || y < 0 || y > field.length) {
@@ -263,6 +264,7 @@ public class PlayingField {
      * @param x X-Koordinate Schiffkopf
      * @param y Y-Koordinate Schiffkopf
      * @return 0: Kein Treffer, 1: Treffer, 2: Treffer und versenkt
+     * @throws Exception Wenn die X/Y-Koordinaten nicht innerhalb des field-Arrays sind
      */
     public int isShot(int x, int y) throws Exception {
         checkCoordinatesInField(x, y);
@@ -305,6 +307,7 @@ public class PlayingField {
      * @param x X-Koordinate eines Schiffteiles
      * @param y Y-Koordinate eines Schiffteiles
      * @return Länge des gelöschten Schiffes
+     * @throws Exception Wenn die X/Y-Koordinaten nicht innerhalb des field-Arrays sind
      */
     public int deleteShip(int x, int y) throws Exception {
         checkCoordinatesInField(x, y);
@@ -418,6 +421,7 @@ public class PlayingField {
      *            2: Treffer versenkt
      * @param x   X-Koordinate
      * @param y   Y-Koordinate
+     * @throws Exception Falls der übergebene hit-Parameter nicht im erlaubten Bereich ist
      */
     public void didHit(int hit, int x, int y) throws Exception {
         switch (hit) {
@@ -451,6 +455,7 @@ public class PlayingField {
      * @param y          Y-Koordinate Schiffkopf
      * @param horizontal Schiff horizontal überprüfen
      * @return True: Komplettes Schiff ist zerstört
+     * @throws Exception Wenn die X/Y-Koordinaten nicht innerhalb des field-Arrays sind
      */
     private boolean isShipDestroyed(int x, int y, boolean horizontal) throws Exception {
         checkCoordinatesInField(x, y);
@@ -474,6 +479,7 @@ public class PlayingField {
      * @param x          X-Koordinate Schiffkopf
      * @param y          Y-Koordinate Schiffkopf
      * @param horizontal Schiff ist horizontal gelegt
+     * @throws Exception Wenn die X/Y-Koordinaten nicht innerhalb des field-Arrays sind
      */
     private void markShipDestroyed(int x, int y, boolean horizontal) throws Exception {
         checkCoordinatesInField(x, y);
@@ -625,6 +631,7 @@ public class PlayingField {
      * Wrapper für saveGame ohne com Angabe
      *
      * @param id Long-ID die zum Spiel speichern verwendet wird
+     * @throws IOException Wenn die Datei nicht erstellt/beschrieben werden kann
      */
     public void saveGame(long id) throws IOException {
         this.saveGame(id, null);
@@ -753,7 +760,7 @@ public class PlayingField {
     private String getSaveString2DArray(int[][] field) {
         StringBuilder s = new StringBuilder();
 
-        for(int y = 0; y < field.length; y++){
+        for (int y = 0; y < field.length; y++) {
             for (int x = 0; x < field.length; x++) {
                 s.append(field[y][x]);
             }
@@ -787,6 +794,7 @@ public class PlayingField {
      *
      * @param id  ID der Speicherdatei, welche z.B. beim Netzwerkspiel vom Server beim Speichern zugeteilt wird
      * @param com Wenn es das PlayingField eines Computer-Spielers ist, diesen mitgeben, sonst null
+     * @throws FileNotFoundException Kein Zugriff auf den Temp Ordner
      */
     public void loadGame(long id, ComPlayer com) throws FileNotFoundException {
         String f = System.getProperty("java.io.tmpdir") + File.separator + "SchiffeVersenkenHSAalenSaves";
@@ -822,12 +830,12 @@ public class PlayingField {
         s.skip("\n");
 
         if (this.com == 2) {
-            if(com == null){
+            if (com == null) {
                 s.nextLine();
                 s.nextLine();
                 s.nextInt();
                 s.skip("\n");
-            }else {
+            } else {
                 ComPlayerNormal c = (ComPlayerNormal) com;
 
                 //lastCoords
