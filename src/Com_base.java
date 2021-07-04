@@ -1,6 +1,5 @@
 package src;
 
-import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Writer;
@@ -88,13 +87,14 @@ public abstract class Com_base {
     protected PlayingField pf;
 
     /**
-     *
+     * SpielWindow für Zugriff auf die switchTurn-Funktion
      */
     private SpielWindow frame;
 
 
-
-
+    /**
+     * Konstruktor des Com_base-Objekts
+     */
     public Com_base() {
         this.port = 50000;
         this.loopBreaker = false;
@@ -102,62 +102,74 @@ public abstract class Com_base {
         this.SocketActive = false;
     }
 
-    public void setTurn(boolean in) {
-        this.myTurn = in;
+
+    /**
+     * myTurn-Setter
+     *
+     * @param value neuer Wert für this.myTurn
+     */
+    public void setMyTurn(boolean value) {
+        this.myTurn = value;
     }
 
-    public void setXY(int x, int y) {
+    /**
+     * Setter für lastX und lastY
+     *
+     * @param x neuer Wert für this.lastX
+     * @param y  neuer Wert für this.lastY
+     */
+    public void setLastXY(int x, int y) {
         this.lastX = x;
         this.lastY = y;
     }
 
-    public void setLastX(int val){
-        this.lastX = val;
+    /**
+     * Setzt den Parameter frame
+     * @param frame value für this.frame
+     */
+    public void setSpielwindow(SpielWindow frame) {
+        this.frame = frame;
     }
 
-    public void setLastY(int val){
-        this.lastY = val;
-    }
-
-    public PlayingField getPf(){
-        return this.pf;
-    }
-
-    public ComPlayer getComPl(){
-        return this.comPl;
-    }
-    public boolean isMyTurn(){
+    /**
+     * myTurn-Getter
+     *
+     * @return gibt Wert von this.myTurn zurück
+     */
+    public boolean getMyTurn(){
         return this.myTurn;
     }
 
-    public void Send(String input){
-        if (this.myTurn) {
-            try {
-                this.out.write(String.format("%s%n", input));
-                try {
-                    this.out.flush();
-                } catch (SocketException a) {
-                    System.out.println("Shutdown");
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        this.myTurn = false;
-    }
-
+    /**
+     * loaded-Getter
+     *
+     * @return gibt Wert von this.loaded zurück
+     */
     public boolean getLoaded(){
         return this.loaded;
     }
 
-
-
-    public String Receive() {
-        System.out.println(this.line);
-        this.loopBreaker = false;
-        return this.line;
+    /**
+     * pf-Getter
+     *
+     * @return gibt this.pf zurück
+     */
+    public PlayingField getPf(){
+        return this.pf;
     }
 
+    /**
+     * ComPl-Getter
+     *
+     * @return gibt this.comPl zurück
+     */
+    public ComPlayer getComPl(){
+        return this.comPl;
+    }
+
+    /**
+     * Beendet die Socketverbindung und vermerkt dies mit false in SocketActive
+     */
     public void KillSocket() {
         try {
             this.SocketActive = false;
@@ -167,23 +179,33 @@ public abstract class Com_base {
         }
     }
 
-    public String loopCheckIN(boolean repaint){
-        this.loopBreaker = true;
-        String hold = "";
-        while (this.loopBreaker) {
-            if (repaint) {
-                //this.frame.repaint();
-                //this.frame.tile.repaint();
-                //this.frame.tile2.repaint();
+    /**
+     * Schreibt den eingebenen String in den Socket und sendet diesen
+     *
+     * @param input String der gesendet werden soll
+     */
+    public void Send(String input){
+        if (this.myTurn) {
+            try {
+                this.out.write(String.format("%s%n", input));
+                try {
+                    this.out.flush();
+                } catch (SocketException a) {
+                    a.printStackTrace();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            if (!in_check()) break;
-            hold = Receive();
         }
-        System.out.println(hold);
-        return hold;
+        setMyTurn(false);
     }
 
-    public boolean in_check(){
+    public String ReceiveInputStream() {
+        this.loopBreaker = false;
+        return this.line;
+    }
+
+    public boolean checkInputStream(){
         try {
             if(this.SocketActive) {
                 try {
@@ -199,18 +221,20 @@ public abstract class Com_base {
         return this.line != null && !this.line.equals("");
     }
 
-    /**
-     * Setzt den Parameter frame
-     * @param frame value für this.frame
-     */
-    public void setSpielwindow(SpielWindow frame) {
-        this.frame = frame;
+    public String ReceiveCheckedInputStream(){
+        this.loopBreaker = true;
+        String hold = "";
+        while (this.loopBreaker) {
+            if (!checkInputStream()) break;
+            hold = ReceiveInputStream();
+        }
+        System.out.println(hold);
+        return hold;
     }
 
-
-    protected void message_check() throws Exception {
+    protected void NetworkProtocol() throws Exception {
         frame.Turn.switchTurn(false);
-        String in = loopCheckIN(true);
+        String in = ReceiveCheckedInputStream();
         String[] holder = in.split(" ");
         switch (holder[0]) {
             case "shot":
@@ -219,15 +243,15 @@ public abstract class Com_base {
 
                 int hit = pf.isShot(x, y);
                 if (hit == 0) {
-                    setTurn(true);
+                    setMyTurn(true);
                     Send("answer 0");
 
                 } else if (hit == 1) {
-                    setTurn(true);
+                    setMyTurn(true);
                     Send("answer 1");
 
                 } else if (hit == 2) {
-                    setTurn(true);
+                    setMyTurn(true);
                     Send("answer 2");
                     if (pf.enemygameover()) {
                         Send("pass");
@@ -239,7 +263,7 @@ public abstract class Com_base {
                 switch (holder[1]) {
                     case "0" -> {
                         pf.didHit(0, this.lastX, this.lastY);
-                        setTurn(true);
+                        setMyTurn(true);
                         Send("pass");
                     }
                     case "1" -> {
@@ -272,6 +296,11 @@ public abstract class Com_base {
 
         frame.Turn.switchTurn(myTurn);
     }
+
+
+
+
+
 
 
 
