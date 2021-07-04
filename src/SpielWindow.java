@@ -144,7 +144,6 @@ public class SpielWindow extends JPanel {
         frameheigth = frame.getHeight();
         framewidth = frame.getWidth();
 
-
         Turn              = new DisplayTurn();
         tile              = new TilePainter(fieldsize, SpielFeld1, this, Com, playingField);
         tile2             = new TilePainter(fieldsize, SpielFeld2, this, Com, playingField);

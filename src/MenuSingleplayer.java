@@ -8,6 +8,9 @@ import java.io.IOException;
 
 import static src.config.*;
 
+/**
+ * Singleplayermenü des Spiels
+ */
 public class MenuSingleplayer {
 
     GridBagConstraints constraints;
@@ -96,7 +99,13 @@ public class MenuSingleplayer {
 
         menuFrame.add(menuPanel);
     }
-
+    /**
+     * Legt Größe und Position der Components fest
+     * @param comp Ein Swing Component, welcher in constraints embedded werden soll.
+     * @param gridx X-Position auf der X-Achse
+     * @param gridy Y-Position auf der Y-Achse
+     * @param gridwidth Breite des Components
+     */
     private void makeConstraints(JComponent comp, int gridx, int gridy, int gridwidth) {
         constraints.gridx = gridx;
         constraints.gridy = gridy;

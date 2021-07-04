@@ -17,8 +17,8 @@ public class FontLoader {
 
     /**
      * Lädt Pokemon Font aus Assets und
-     * @throws IOException
-     * @throws FontFormatException
+     * @throws IOException Fehler beim Laden der Grafiken
+     * @throws FontFormatException Fehler beim Laden der Font
      */
     public static void createFont() throws IOException, FontFormatException {
         Pokemon = Font.createFont(Font.TRUETYPE_FONT, new File("assets/pokemon.ttf")).deriveFont(12f);

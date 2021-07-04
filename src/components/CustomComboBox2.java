@@ -12,7 +12,7 @@ public class CustomComboBox2 extends JPanel {
 
     JComboBox<String> comboBox;
 
-    public CustomComboBox2(String[] text, Font Pokemon) {
+    public CustomComboBox2(String[] text, Font Pokemon, JFrame menuFrame) {
 
         setOpaque(false);
         setLayout(new BorderLayout());
@@ -29,7 +29,12 @@ public class CustomComboBox2 extends JPanel {
         comboBox.setAlignmentX(Component.CENTER_ALIGNMENT);
         comboBox.setFont(Pokemon);
         comboBox.addActionListener(e -> {
+            String themeCheck = selectedTheme;
             selectedTheme = (String) comboBox.getSelectedItem();
+            if(!themeCheck.equals(selectedTheme)){
+                menuFrame.revalidate();
+                menuFrame.repaint();
+            }
             System.out.println(selectedTheme);
         });
         add(comboBox, BorderLayout.CENTER);

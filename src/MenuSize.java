@@ -10,6 +10,10 @@ import java.io.IOException;
 
 import static src.config.*;
 
+/**
+ * Sizemenü des Spiels <br>
+ * Auswahl der Feld -und Schiffsgröße
+ */
 public class MenuSize {
 
     GridBagConstraints constraints;
@@ -19,6 +23,13 @@ public class MenuSize {
     JPanel menuPanel;
     JFrame menuFrame;
 
+    /**
+     * Erstellt die Components des Menü
+     * @param menuFrame Frame des Menüs
+     * @param previousPanel Panel mit Components des vorherigen Menüs
+     * @throws IOException Fehler beim Laden der Grafiken
+     * @throws FontFormatException Fehler beim Laden der Font
+     */
     public MenuSize(JFrame menuFrame, JPanel previousPanel) throws IOException, FontFormatException{
         this.menuFrame = menuFrame;
 
@@ -43,7 +54,13 @@ public class MenuSize {
 
         menuFrame.add(menuPanel);
     }
-
+    /**
+     * Legt Größe und Position der Components fest
+     * @param comp Ein Swing Component, welcher in constraints embedded werden soll.
+     * @param gridx X-Position auf der X-Achse
+     * @param gridy Y-Position auf der Y-Achse
+     * @param gridwidth Breite des Components
+     */
     private void makeConstraints(JComponent comp, int gridx, int gridy, int gridwidth) {
         constraints.gridx = gridx;
         constraints.gridy = gridy;
