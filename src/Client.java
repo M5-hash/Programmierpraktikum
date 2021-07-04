@@ -31,7 +31,7 @@ public class Client extends Com_base {
      *
      * @param inputIP enthält die vom Spieler eingegebene IP
      */
-    public Client(String inputIP) throws IOException {
+    public Client(String inputIP){
         super();
         this.RoleServer = false;
         this.IP = inputIP;
@@ -79,8 +79,8 @@ public class Client extends Com_base {
      * Bei Problemen beim Aufsetzen von Spielfeld oder ComPlayer, wird eine Fehlermeldung ausgegeben und das Spiel nach
      * kurzer Zeit beendet
      *
-     * @return
-     * @FileNotFoundException   wird geworfen falls keine Datei zum Laden des
+     * @return gibt ein geladenes oder neu erstelltes Playingfield zurück
+     * @throws FileNotFoundException wird geworfen falls keine Datei zum Laden des Spiels existiert
      */
     protected PlayingField setupPlayingfield() throws FileNotFoundException {
         PlayingField pf_holder = null;
