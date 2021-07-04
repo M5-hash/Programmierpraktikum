@@ -10,6 +10,7 @@ import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
 import static src.FontLoader.Pokemon;
@@ -59,6 +60,14 @@ public class SaveGameButton extends JButton {
 
                     if (GameMode) {//Multiplayer
                         sw.getServer().Send("save " + ID);
+                        sw.getServer().KillSocket();
+                        JOptionPane.showMessageDialog(null, "Spiel wurde gespeichert");
+                        try {
+                            TimeUnit.SECONDS.sleep(2);
+                        } catch (InterruptedException interruptedException) {
+                            interruptedException.printStackTrace();
+                        }
+                        System.exit(1);
                     } else {//Singleplayer
                         //Computer
                         String path = jfc.getSelectedFile().getAbsolutePath();
@@ -70,7 +79,7 @@ public class SaveGameButton extends JButton {
                         if (!directory.exists())
                             if (!directory.mkdir()) throw new Exception("Temp-Ordner existiert nicht");
                         sw.getCom().saveGame(fpath + File.separator + sw.getPlayingField().getTimestamp() + fname);
-                        sw.getServer().KillSocket();
+
                     }
                 } catch (Exception ex) {
                     ex.printStackTrace();

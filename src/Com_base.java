@@ -1,10 +1,12 @@
 package src;
 
+import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Writer;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Abstrakte Klasse, welche die gemeinsamen Funktionen und Variablen der Netzwerkschnittstellen enthält
@@ -321,6 +323,13 @@ public abstract class Com_base {
                         pf.saveGame(Long.parseLong(message[1]));
                     }
                     KillSocket();
+                    JOptionPane.showMessageDialog(null, "Spiel wurde gespeichert");
+                    try {
+                        TimeUnit.SECONDS.sleep(2);
+                    } catch (InterruptedException interruptedException) {
+                        interruptedException.printStackTrace();
+                    }
+                    System.exit(1);
                     break;
                 case "ready":
                 case "pass":
