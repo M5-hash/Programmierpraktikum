@@ -2,6 +2,7 @@ package src;
 
 import javax.swing.*;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
@@ -11,11 +12,15 @@ public class Client extends Com_base {
 
     private final String IP;
 
-    public Client(String IP_in, JFrame loadScreen) throws Exception {
+    public Client(String IP_in, JFrame loadScreen) throws Exception{
         super(loadScreen);
         this.role_server = false;
         this.IP = IP_in;
-        this.s = new Socket(this.IP, this.port);
+        try {
+            this.s = new Socket(this.IP, this.port);
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Connection konnte nicht hergestellt werden");
+        }
         this.SocketActive = true;
         this.in = new BufferedReader(new InputStreamReader(s.getInputStream()));
         this.out = new OutputStreamWriter(s.getOutputStream());
