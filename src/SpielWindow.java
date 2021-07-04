@@ -188,11 +188,6 @@ public class SpielWindow extends JPanel {
                     public void run()
                     {
                         try {
-                            if(onlineCom){
-                                int[] hold = Online.getComPl().doNextShot();
-                                TimeUnit.MILLISECONDS.sleep(100);
-                                Online.Send("shot " + hold[0] + " " + hold[1]);
-                            }
                             TimeUnit.MILLISECONDS.sleep(100);
                             dummybutton.doClick();
                         } catch (InterruptedException e) {
@@ -203,6 +198,26 @@ public class SpielWindow extends JPanel {
 
                     }});
                 t1.start();
+            }
+            else if(onlineCom && Online.myTurn && !Online.pf.gameover()){
+                int[] hold = new int[0];
+                try {
+                    hold = Online.getComPl().doNextShot();
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+                }
+                try {
+                    TimeUnit.MILLISECONDS.sleep(100);
+                } catch (InterruptedException interruptedException) {
+                    interruptedException.printStackTrace();
+                }
+                Online.Send("shot " + hold[0] + " " + hold[1]);
+
+                try {
+                    dummybutton.doClick();
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+                }
             }
 
         });
