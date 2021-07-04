@@ -19,6 +19,9 @@ import static src.config.*;
  */
 public class PanelSize extends JPanel {
 
+    /**
+     * Hintergrundbild
+     */
     private final BufferedImage background;
 
     /**
@@ -136,7 +139,7 @@ public class PanelSize extends JPanel {
     JPanel buttonPanel;
 
     /**
-     * Erstellung der Components im Startmenü
+     * Erstellung der Components des Sizemenü
      *
      * @param menuFrame     JFrame auf dem die Components erstellt werden
      * @param image         Hintergrundbild des Panels
