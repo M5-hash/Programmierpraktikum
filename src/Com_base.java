@@ -188,7 +188,7 @@ public abstract class Com_base {
     public void Send(String input) {
         if (getMyTurn()) {
             try {
-                this.out.write(String.format("%socket%n", input));
+                this.out.write(String.format("%s%n", input));
                 try {
                     this.out.flush();
                 } catch (SocketException a) {
