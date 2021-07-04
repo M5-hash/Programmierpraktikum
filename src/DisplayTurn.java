@@ -8,21 +8,19 @@ import java.awt.*;
  */
 public class DisplayTurn extends JPanel {
 
+    /**
+     * Ermöglich das laden von Bilddateien
+     */
     Bildloader Bild = new Bildloader();
-    boolean draw = true;
+    /**
+     * Gibt an, ober der Spieler gerade am Zug ist
+     */
     boolean Turn = true;
-
-    public DisplayTurn() {
-
-    }
-
 
     /**
      * @param g Graphics Object
      *          <p>
-     *          Wenn das Spiel bereits vorbei ist, dann wird die Zeilhilfe nicht gebraucht/gezeichnet.
-     *          Überprüft ob es zu einer Änderung in der Maus Position kam und die, wenn ja wird die Zielhilfe neu gezeichnet.
-     *          Die Position wird von dem momentan verwendeten Feld bezogen.
+     *          Überprüft ob der Spieler am Zug ist und zeigt das passende Bild
      */
     @Override
     protected void paintComponent(Graphics g) {
@@ -41,6 +39,11 @@ public class DisplayTurn extends JPanel {
     }
 
 
+    /**
+     * Setzt Turn auf die übergebene Variable
+     *
+     * @param Set boolean wird direkt an die Methode übergeben
+     */
     public void switchTurn(boolean Set) {
         Turn = Set;
     }
