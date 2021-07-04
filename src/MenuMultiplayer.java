@@ -10,22 +10,59 @@ import static src.config.*;
 
 
 public class MenuMultiplayer {
-
-    GridBagLayout menuLayout;
+    /**
+     * Constraints für das GridbagLayout
+     */
     GridBagConstraints constraints;
+    /**
+     * GridBaglayout der Optionen
+     */
+    GridBagLayout menuLayout;
+    /**
+     * Button zur Wiederherstellung des Startmenü
+     */
     JButton buttonMenuStart;
+    /**
+     * Öffnet das Hostmenü
+     */
     JButton buttonMenuHost;
+    /**
+     * Button um einem Spiel beizutreten <br>
+     * IP muss vorher über getIP übergeben werden.
+     */
     JButton buttonJoin;
+    /**
+     * Button um das Spiel zu schließen
+     */
     JButton buttonQuitGame;
-    JButton buttonConfirm;
-    JButton buttonCancel;
+    /**
+     * Textfeld mit Hintergrundbild zur Übergabe der IP
+     */
     JPanel getIP;
+    /**
+     * Informationen zum Menü
+     */
     JPanel menuInformation;
+    /**
+     * Panel für Inputcomponents
+     */
     JPanel buttonPanel1;
-    JPanel buttonPanel2;
+    /**
+     * Panel auf dem die Components hinzugefügt werden
+     */
     JPanel menuPanel;
+    /**
+     * Frame des Menü
+     */
     JFrame menuFrame;
 
+    /**
+     * Components werden hier erstellt
+     * @param menuFrame Frame des Hauptmenü
+     * @param menuMain Panel mit Components des Startmenü
+     * @throws IOException Fehler beim Laden der Grafiken
+     * @throws FontFormatException Fehler beim Laden der Font
+     */
     public MenuMultiplayer(JFrame menuFrame, JPanel menuMain) throws IOException, FontFormatException {
         this.menuFrame = menuFrame;
 
@@ -41,12 +78,9 @@ public class MenuMultiplayer {
         menuInformation = new MenuInformation(ImageLoader.getImage(ImageLoader.STARTMENU_BTN_TEXTFIELD_EICH), TextMulitplayer, menuFrame);
         buttonMenuStart = new MenuButton("MAIN MENU", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
         buttonPanel1 = new ButtonPanel();
-        buttonPanel2 = new ButtonPanel();
         buttonJoin = new MenuButton("JOIN GAME", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
         buttonMenuHost = new MenuButton("HOST GAME", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
         buttonQuitGame = new QuitButton();
-        buttonConfirm = new MenuButton("CONFIRM", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
-        buttonCancel = new MenuButton("CANCEL", ImageLoader.getImage(ImageLoader.MENU_BUTTON));
         getIP = new TextFieldIP("ENTER IP");
 
         menuLayout.columnWidths = new int[]{C_GAP, COL, COL, C_GAP};
@@ -116,9 +150,6 @@ public class MenuMultiplayer {
 
         buttonPanel1.add(buttonJoin);
         buttonPanel1.add(buttonMenuHost);
-
-        buttonPanel2.add(buttonConfirm);
-        buttonPanel2.add(buttonCancel);
 
         makeConstraints(menuInformation, 0, 0, 4, 1);
         makeConstraints(buttonMenuStart, 1, 2, 2, 1);

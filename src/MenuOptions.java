@@ -14,22 +14,55 @@ import static src.config.*;
  * Optionen des Spiels
  */
 public class MenuOptions {
-    GridBagLayout menuLayout;
+    /**
+     * Constraints für das GridbagLayout
+     */
     GridBagConstraints constraints;
+    /**
+     * GridBaglayout der Optionen
+     */
+    GridBagLayout menuLayout;
+    /**
+     * Button zur Wiederherstellung des Startmenü
+     */
     JButton buttonMenuStart;
+    /**
+     * Dropdownmenü zur Auswahl der Resolution
+     */
     JPanel cbResolutions;
+    /**
+     * Dropdownmenü zur Auswahl der Resolution
+     */
     JPanel cbThemes;
+    /**
+     * Button um das Spiel zu schließen
+     */
     JButton buttonQuitGame;
+    /**
+     * Checkbox um das Spiel im Fullscreen zu starten
+     */
     JPanel cbFullscreen;
+    /**
+     * Informationen zum Menü
+     */
     JPanel menuInformation;
+    /**
+     * Panel für Inputcomponents
+     */
     JPanel buttonPanel;
+    /**
+     * Panel auf dem die Components hinzugefügt werden
+     */
     JPanel menuPanel;
+    /**
+     * Frame des Menü
+     */
     JFrame menuFrame;
 
     /**
      * Components werden hier erstellt
      * @param menuFrame Frame des Hauptmenü
-     * @param menuMain Panel mit Compenents des Startmenü
+     * @param menuMain Panel mit Components des Startmenü
      * @throws IOException Fehler beim Laden der Grafiken
      * @throws FontFormatException Fehler beim Laden der Font
      */

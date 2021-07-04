@@ -9,7 +9,13 @@ import java.io.IOException;
  */
 public class FontLoader {
 
+    /**
+     * Grafikumgebung um Font zu registrieren
+     */
     public static GraphicsEnvironment ge = null;
+    /**
+     * Font des Spiels
+     */
     public static Font Pokemon = null;
 
     public FontLoader() {

@@ -12,7 +12,8 @@ import static src.FontLoader.Pokemon;
 import static src.config.*;
 
 /**
- *
+ * Inputpanel des Sizemenü <br>
+ * Hier können die Größen des Feldes und der Schiffe eingestellt werden
  */
 public class PanelSize extends JPanel {
 
@@ -46,7 +47,6 @@ public class PanelSize extends JPanel {
      * Temporäre Anzahl an Feldern, die noch nicht besetzt sind
      */
     int temp_fieldsleft = 16;
-
     /**
      * Constraints für das GridbagLayout
      */
@@ -132,7 +132,6 @@ public class PanelSize extends JPanel {
      * Panel für buttonApply und buttonCancel
      */
     JPanel buttonPanel;
-
     /**
      * Erstellung der Components im Startmenü
      * @param menuFrame JFrame auf dem die Components erstellt werden

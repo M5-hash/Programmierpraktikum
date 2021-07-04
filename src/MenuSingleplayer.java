@@ -11,19 +11,58 @@ import static src.config.*;
  * Singleplayermenü des Spiels
  */
 public class MenuSingleplayer {
-
+    /**
+     * Constraints für das GridbagLayout
+     */
     GridBagConstraints constraints;
+    /**
+     * GridBaglayout der Optionen
+     */
     GridBagLayout menuLayout;
+    /**
+     * Button zur Wiederherstellung des Startmenü
+     */
     JButton buttonMenuStart;
+    /**
+     * Öffnet das Sizemenü und stellt die Schwierigkeit der KI auf Easy
+     */
     JButton buttonEasy;
+    /**
+     * Öffnet das Sizemenü und stellt die Schwierigkeit der KI auf Normal
+     */
     JButton buttonNormal;
+    /**
+     * Öffnet Frame zum Laden alter Spielstände
+     */
     JButton buttonLoadGame;
+    /**
+     * Button um das Spiel zu schließen
+     */
     JButton buttonQuitGame;
+    /**
+     * Informationen zum Menü
+     */
     JPanel menuInformation;
+    /**
+     * Panel für Inputcomponents
+     */
     JPanel buttonPanel;
+    /**
+     * Panel auf dem die Components hinzugefügt werden
+     */
     JPanel menuPanel;
+    /**
+     * Frame des Menü
+     */
     JFrame menuFrame;
 
+    /**
+     * Components werden hier erstellt
+     * @param menuFrame Frame des Hauptmenü
+     * @param menuMain Panel mit Components des Startmenü
+     * @throws IOException Fehler beim Laden der Grafiken
+     * @throws FontFormatException Fehler beim Laden der Font
+     */
     public MenuSingleplayer(JFrame menuFrame, JPanel menuMain) throws IOException, FontFormatException {
         this.menuFrame = menuFrame;
 
