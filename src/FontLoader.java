@@ -18,9 +18,6 @@ public class FontLoader {
      */
     public static Font Pokemon = null;
 
-    public FontLoader() {
-    }
-
     /**
      * Lädt Pokemon Font aus Assets und
      *

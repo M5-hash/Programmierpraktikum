@@ -4,7 +4,13 @@ import javax.swing.*;
 
 import static src.FontLoader.Pokemon;
 
+/**
+ * Custom Slider für das Sizemenü
+ */
 public class SliderSize extends JSlider {
+    /**
+     * Default Werte des Sliders
+     */
     public SliderSize(){
         setOrientation(JSlider.HORIZONTAL);
         setMaximum(30);

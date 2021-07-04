@@ -2,6 +2,7 @@ package src.components;
 
 import src.Bildloader;
 import src.ImageLoader;
+
 import static src.config.*;
 
 import javax.swing.*;
@@ -12,11 +13,22 @@ import java.awt.image.BufferedImage;
 
 import static src.FontLoader.Pokemon;
 
+/**
+ * Custom Textfeld zur Übergabe der IP
+ */
 public class TextFieldIP extends JPanel {
 
+    /**
+     * Textfeld für IP
+     */
     private static JTextField textField;
 
-    public TextFieldIP(String text){
+    /**
+     * Default Werte des Panels und des Textfelds
+     *
+     * @param text text des Textfelds
+     */
+    public TextFieldIP(String text) {
 
         setOpaque(false);
         setLayout(new BorderLayout());
@@ -41,6 +53,11 @@ public class TextFieldIP extends JPanel {
         add(textField, BorderLayout.CENTER);
     }
 
+    /**
+     * Update des Hintergrundbilds
+     *
+     * @param g Übergibt Graphics Objekt
+     */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);

@@ -16,10 +16,22 @@ import static src.FontLoader.Pokemon;
 import static src.config.GameMode;
 import static src.config.selectedTheme;
 
+/**
+ * Button um Spielstand zu speichern
+ */
 public class SaveGameButton extends JButton {
-
+    /**
+     * Hintergrundbild des Buttons
+     */
     public Image image;
 
+    /**
+     * Aktueller Spielstand wird gespeichert.
+     *
+     * @param button_title Text des Buttons
+     * @param image        Hintergrundbild
+     * @param sw           Aktuelles SpielWindow
+     */
     public SaveGameButton(String button_title, BufferedImage image, SpielWindow sw) {
         this.image = image;
 
@@ -75,18 +87,20 @@ public class SaveGameButton extends JButton {
         });
     }
 
+    /**
+     * Update des Hintergrundbilds
+     *
+     * @param g Übergibt Graphics Objekt
+     */
     @Override
     protected void paintComponent(Graphics g) {
         if (selectedTheme.equals("Pokemon")) {
             g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
-
         } else {
             Bildloader Bild = new Bildloader();
             setForeground(Color.white);
             BufferedImage NavalButton = Bild.BildLoader("src/Images/NavalButton.png");
             g.drawImage(NavalButton, 0, 0, getWidth(), getHeight(), null);
-
-
         }
         super.paintComponent(g);
     }

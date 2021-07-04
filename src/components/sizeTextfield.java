@@ -8,8 +8,15 @@ import java.awt.event.MouseEvent;
 
 import static src.FontLoader.Pokemon;
 
+/**
+ * Custom Textfeld für das Sizemenü
+ */
 public class sizeTextfield extends JTextField {
 
+    /**
+     * Default Werte des Textfelds
+     * @param value Text des Textfelds
+     */
     public sizeTextfield(int value) {
         setText(String.valueOf(value));
         setHorizontalAlignment(SwingConstants.CENTER);
