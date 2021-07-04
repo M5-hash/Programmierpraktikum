@@ -13,30 +13,97 @@ import static src.config.*;
  */
 public class TilePainter extends JPanel implements MouseMotionListener {
 
+    /**
+     * Boolean, gibt an ob das zu setzende Schiff horizontal ausgerichtet ist
+     */
     public static boolean horizontal = true;
+    /**
+     * Die Größe des momentan ausgewählten Schiffs, wenn 0 ist kein Schiff ausgewählt
+     */
     private static int groesse = 0;
+    /**
+     * Variable für den Hintergrund
+     */
     private final Tile Ebene;
+    /**
+     * Array für die Anzahl der Größen des Schiffes
+     */
     private final int[] groessen = {0, 0, size2, size3, size4, size5};
+    /**
+     * Falls true --> Maus befindet sich auf dem Spielfeld; false --> Maus befindet sich neben dem Feld
+     */
     public boolean Onfirstfield = false;
+    /**
+     * Anzahl der bis jetzt gesetzten Schiffe
+     */
     int AnzSchiffe = 0;
-    int counter;
+    /**
+     * Gibt an ob bereits geschossen wurde
+     */
     boolean hasshot = false;
+    /**
+     * Gibt an, der letzte Schuss der KI ein Treffer war
+     */
     boolean hitKI = true;
+    /**
+     * Gibt an ob der Spieler am Zug ist
+     */
     boolean PlayerTurn = true;
+    /**
+     * int --> Für wen/was das Spielfeld ist (0 = Spieler ; 1 = GegnerKI ; 2 = GegnerOnline)
+     */
     int field;
+    /**
+     * Gibt an, ob es Änderungen gibt, welche von der GUI dargestellt werden müssen
+     */
     boolean allowchange = true;
+    /**
+     * Gibt an, ob der momentan Klick dem löschen dient
+     */
     boolean deleting;
+    /**
+     * SpritePainter, welcher die Schiffe diesen Feldes zeichnet
+     */
     SpritePainter hier;
+    /**
+     * SpritePainter, welcher die Vorhersage ob ein Schiff platziert werden kann zeichnet
+     */
     SpritePainter Predicted;
+    /**
+     * Frame, von dem diese Klasse aufgerufen wurde
+     */
     SpielWindow frame;
+    /**
+     * Spielfeld, mit welche diese Klasse interagiert und darstellt
+     */
     PlayingField pf;
+    /**
+     * ComputerGegner, falls im Singleplayer gegen die Ki angetreten wird
+     */
     ComPlayer Computer;
-    Graphics Test ;
+    /**
+     * Timer, vom dem die KI aufgerufen wird, sodass die einzelnen Angriffe derer erkennbar sind
+     */
     Timer KItimer;
+    /**
+     * Letzter Schuss der KI
+     */
     int[] recentshot = new int[2];
+    /**
+     * Gibt an, ob dass momentan gewählte Schiff an der Mausposition platziert werden kann
+     */
     boolean placeable = false;
+    /**
+     * Gibt an, ob es zu einer Änderung kam, welche von der Vorhersage dargestellt werden muss
+     */
     boolean MovementHandler;
+    /**
+     * X-Position des Feldes auf dem sich die Maus befindet
+     */
     private int PosX = 0;
+    /**
+     * Y-Position des Feldes auf dem sich die Maus befindet
+     */
     private int PosY = 0;
 
 
@@ -53,7 +120,7 @@ public class TilePainter extends JPanel implements MouseMotionListener {
      *                    (platzieren, löschen, schießen), falls die Position der Klicks dies erlaubt
      */
     public TilePainter(int Feldgroesse, int Feldvon, SpielWindow frame, ComPlayer Com, PlayingField pf) {
-        Ebene = new Tile(Feldgroesse, this);
+        Ebene = new Tile(Feldgroesse);
         System.out.println(AnzSchiffe);
         Computer = Com;
         this.frame = frame;
@@ -210,7 +277,6 @@ public class TilePainter extends JPanel implements MouseMotionListener {
                             frame.Turn.switchTurn(PlayerTurn);
                             timerstarter();
                         }
-                        System.out.println(counter++);
                     };
                     //300ms sind genug um die einzelnen Schüsse der Ki zu sehen
                     KItimer = new Timer(300, taskPerformer);
@@ -383,10 +449,6 @@ public class TilePainter extends JPanel implements MouseMotionListener {
         return recentshot;
     }
 
-    public void paintComponent(){
-        paintComponent(Test);
-    }
-
     /**
      * @param g Graphics Object
      *          <p>
@@ -395,7 +457,6 @@ public class TilePainter extends JPanel implements MouseMotionListener {
      */
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        Test = g ;
 
         setOpaque(false);
 
