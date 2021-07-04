@@ -17,7 +17,9 @@ public class Client extends Com_base {
         this.in = new BufferedReader(new InputStreamReader(s.getInputStream()));
         this.out = new OutputStreamWriter(s.getOutputStream());
         this.pf = setupPlayingfield();
-
+        if(config.onlineCom) {
+            this.comPl = new ComPlayerNormal(this.pf);
+        }
     }
 
     protected PlayingField setupPlayingfield() throws Exception {

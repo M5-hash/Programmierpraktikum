@@ -74,10 +74,12 @@ public class MenuMultiplayer {
                 int x = JOptionPane.showOptionDialog(menuFrame, "Wollen Sie selbst spielen oder als Computer?",
                         "Selfplay or KI", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, icon, options, options[0]);
 
-                if (x == 0) {
-                    onlineCom = false;
+                if(x==0 || x == 1) {
                     menuPanel.setVisible(false);
                     menuFrame.dispose();
+                }
+                if (x == 0) {
+                    onlineCom = false;
                     // Create SpielWindow and display it
                     try {
                         Client client = new Client(IP);
@@ -89,15 +91,14 @@ public class MenuMultiplayer {
                     }
                 } else if (x == 1) {
                     onlineCom = true;
-                    menuPanel.setVisible(false);
-                    menuFrame.dispose();
-                    // Create SpielWindow and display it
-//                try {
-//                    SpielFeld1 = 1 ;
-//                    //new SpielWindow(menuFrame, server, );    //Gleiche frage:Warum wird hier kein Spielfeld übergeben, die Ergebnisse von Schüssen werden in der GUI nie erfasst, die Daten sollen auch weitergeschickt werden
-//                } catch (IOException | FontFormatException ioException) {
-//                    ioException.printStackTrace();
-//                }
+                    try {
+                        Client client = new Client(IP);
+                        SpielFeld1 = 0;
+                        client.setSpielwindow(new SpielWindow(menuFrame, client));
+
+                    } catch (Exception ioException) {
+                        ioException.printStackTrace();
+                    }
                 } else {
                     System.out.println("no");
                 }

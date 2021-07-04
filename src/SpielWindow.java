@@ -188,10 +188,16 @@ public class SpielWindow extends JPanel {
                     public void run()
                     {
                         try {
+                            if(onlineCom){
+                                int[] hold = Online.getComPl().doNextShot();
+                                Online.Send("shot " + hold[0] + " " + hold[1]);
+                            }
                             TimeUnit.MILLISECONDS.sleep(100);
                             dummybutton.doClick();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
+                        } catch (Exception exception) {
+                            exception.printStackTrace();
                         }
 
                     }});
@@ -367,7 +373,7 @@ public class SpielWindow extends JPanel {
             }
             gamePanel1.setVisible(true);
             gamePanel2.setVisible(false);
-            if((Online.loaded|| SpielFeld2 == 2) && Multclient){
+            if((Online.loaded || SpielFeld2 == 2) && Multclient){
                 try {
                     Thread t1 = new Thread(new Runnable() {
                         public void run()

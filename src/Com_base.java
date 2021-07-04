@@ -41,6 +41,10 @@ public abstract class Com_base {
         this.lastY = y;
     }
 
+    public ComPlayer getComPl(){
+        return this.comPl;
+    }
+
     public void Send(String input){
         if (this.myTurn) {
             try {
@@ -60,6 +64,8 @@ public abstract class Com_base {
     public boolean getLoaded(){
         return this.loaded;
     }
+
+
 
     public String Receive() {
         System.out.println(this.line);

@@ -22,8 +22,6 @@ public class Server extends Com_base {
         if(config.onlineCom) {
             this.comPl = new ComPlayerNormal(this.pf);
         }
-        System.out.println("Working");
-
     }
 
 
@@ -38,9 +36,10 @@ public class Server extends Com_base {
 
             pf_holder.loadGame(config.filepath);
             TimeUnit.MILLISECONDS.sleep(100);
-            loaded = true;
+            this.loaded = true;
             setTurn(true);
             this.Send("load "+pf_holder.getFilenameLongID(config.filepath));
+            setTurn(true);
         }
         else {
             pf_holder = new PlayingField(in_size, ship_array_toInt(in_ships.split(" "), 0), role_server);
