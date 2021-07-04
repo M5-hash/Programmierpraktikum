@@ -11,30 +11,95 @@ import java.net.SocketException;
  * Abstrakte Klasse, welche die gemeinsamen Funktionen und Variablen der Netzwerkschnittstellen enthält
  */
 public abstract class Com_base {
-    protected ComPlayer comPl;
+
+    /**
+     * Portnummer für die Netzwerkkommunikation
+     */
     protected final int port;
-    protected Socket s;
-    protected BufferedReader in;
-    protected Writer out;
+
+    /**
+     * Letzter aus dem Input-Stream gelesener String
+     */
     private String line;
-    protected PlayingField pf;
-    protected boolean myTurn;
+
+    /**
+     * Speichert die x-Koordinate des letzen abgefeuerten Schusses
+     */
     private int lastX;
+
+    /**
+     * Speichert die y-Koordinate des letzen abgefeuerten Schusses
+     */
     private int lastY;
+
+    /**
+     * True, wenn das Objekt die Rolle des Servers besitzt
+     * False, wenn das Objekt die Rolle des Clients besitzt
+     */
     protected boolean role_server;
+
+    /**
+     * True, solange kein neuer String empfangen wurde
+     * False nach Empfang um while-Schleife zu beenden
+     */
     protected boolean loopBreaker;
-    private SpielWindow frame;
+
+    /**
+     * True, wenn das aktuelle Spiel geladen wurde
+     * False, wenn das Spiel neu aufgesetzt wurde
+     */
     protected boolean loaded;
+
+    /**
+     * True, wenn die Socket-Verbindung eingerichtet wurde
+     * False, wenn die Socket-Verbindung inaktiv ist
+     */
     protected boolean SocketActive;
-    private JFrame loadScreen;
+
+    /**
+     * True, wenn der Spieler/Computer am Zug ist und senden darf
+     * False, wenn der Spieler/Computer nicht senden darf
+     */
+    protected boolean myTurn;
+
+    /**
+     * Socket-Verbindung zwischen Kommunikationspartnern
+     */
+    protected Socket s;
+
+    /**
+     * Reader der den Input-Stream des Sockets entgegen nimmt
+     */
+    protected BufferedReader in;
+
+    /**
+     * Writer der den Output des Sockets in den Output-Stream schreibt
+     */
+    protected Writer out;
+
+    /**
+     * Computerspieler, falls die KI online spielen soll
+     */
+    protected ComPlayer comPl;
+
+    /**
+     * Playingfield, auf welchem Änderungen durch Netzwerkantworten vorgenommen werden können
+     */
+    protected PlayingField pf;
+
+    /**
+     *
+     */
+    private SpielWindow frame;
 
 
-    public Com_base(JFrame loadScreen) {
+
+
+    public Com_base() {
         this.port = 50000;
         this.loopBreaker = false;
         this.loaded = false;
         this.SocketActive = false;
-        this.loadScreen = loadScreen;
     }
 
     public void setTurn(boolean in) {
@@ -107,9 +172,9 @@ public abstract class Com_base {
         String hold = "";
         while (this.loopBreaker) {
             if (repaint) {
-                this.frame.repaint();
-                this.frame.tile.repaint();
-                this.frame.tile2.repaint();
+                //this.frame.repaint();
+                //this.frame.tile.repaint();
+                //this.frame.tile2.repaint();
             }
             if (!in_check()) break;
             hold = Receive();
@@ -141,6 +206,7 @@ public abstract class Com_base {
     public void setSpielwindow(SpielWindow frame) {
         this.frame = frame;
     }
+
 
     protected void message_check() throws Exception {
         frame.Turn.switchTurn(false);
