@@ -5,6 +5,7 @@ import src.components.*;
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
+
 import static src.config.*;
 
 /**
@@ -58,9 +59,10 @@ public class MenuSingleplayer {
 
     /**
      * Components werden hier erstellt
+     *
      * @param menuFrame Frame des Hauptmenü
-     * @param menuMain Panel mit Components des Startmenü
-     * @throws IOException Fehler beim Laden der Grafiken
+     * @param menuMain  Panel mit Components des Startmenü
+     * @throws IOException         Fehler beim Laden der Grafiken
      * @throws FontFormatException Fehler beim Laden der Font
      */
     public MenuSingleplayer(JFrame menuFrame, JPanel menuMain) throws IOException, FontFormatException {
@@ -137,11 +139,13 @@ public class MenuSingleplayer {
 
         menuFrame.add(menuPanel);
     }
+
     /**
      * Legt Größe und Position der Components fest
-     * @param comp Ein Swing Component, welcher in constraints embedded werden soll.
-     * @param gridx X-Position auf der X-Achse
-     * @param gridy Y-Position auf der Y-Achse
+     *
+     * @param comp      Ein Swing Component, welcher in constraints embedded werden soll.
+     * @param gridx     X-Position auf der X-Achse
+     * @param gridy     Y-Position auf der Y-Achse
      * @param gridwidth Breite des Components
      */
     private void makeConstraints(JComponent comp, int gridx, int gridy, int gridwidth) {

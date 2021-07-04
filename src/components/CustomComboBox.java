@@ -11,10 +11,22 @@ import java.awt.image.BufferedImage;
 import static javax.swing.SwingConstants.CENTER;
 import static src.config.*;
 
+/**
+ * CustomComboBox zur Auswahl der Resolution
+ */
 public class CustomComboBox extends JPanel {
-
+    /**
+     * ComboBox mit Resolutions
+     */
     JComboBox<String> comboBox;
 
+    /**
+     * Erzeugt Combobox mit Auswahl der Resolution <br>
+     * Bei Änderung der Resolution wird die Breite und Höhe des Spielframes angepasst
+     *
+     * @param text    Stringarray mit Auswahl der Resolutions
+     * @param Pokemon Font der comboBox
+     */
     public CustomComboBox(String[] text, Font Pokemon) {
 
         setLayout(new BorderLayout());
@@ -34,7 +46,7 @@ public class CustomComboBox extends JPanel {
         comboBox.addActionListener(e -> {
             selectedResolution = (String) comboBox.getSelectedItem();
             System.out.println(selectedResolution);
-            if(!(selectedResolution.equals("Resolution"))){
+            if (!(selectedResolution.equals("Resolution"))) {
                 String[] segments = selectedResolution.split("x");
                 GF_WIDTH = Integer.parseInt(segments[0]);
                 GF_HEIGHT = Integer.parseInt(segments[1]);
@@ -44,6 +56,12 @@ public class CustomComboBox extends JPanel {
         });
         add(comboBox, BorderLayout.CENTER);
     }
+
+    /**
+     * Update des Hintergrundbilds
+     *
+     * @param g Übergibt Graphics Objekt
+     */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -58,7 +76,5 @@ public class CustomComboBox extends JPanel {
             g.drawImage(NavalButton, 0, 0, getWidth(), getHeight(), null);
 
         }
-
-
     }
 }

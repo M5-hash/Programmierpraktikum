@@ -12,10 +12,22 @@ import java.awt.image.BufferedImage;
 import static javax.swing.SwingConstants.CENTER;
 import static src.config.selectedTheme;
 
+/**
+ * CustomComboBox zur Auswahl der Themes
+ */
 public class CustomComboBox2 extends JPanel {
-
+    /**
+     * ComboBox mit Themes
+     */
     JComboBox<String> comboBox;
 
+    /**
+     * Erzeugt Combobox mit Auswahl der Resolution <br>
+     * Bei Änderung des Themes wird menuFrame repainted und revalidated und Hintergrund der Components angepasst
+     *
+     * @param Pokemon   Font der ComboBox
+     * @param menuFrame JFrame der ComboBox
+     */
     public CustomComboBox2(String[] text, Font Pokemon, JFrame menuFrame) {
 
         setOpaque(false);
@@ -35,7 +47,7 @@ public class CustomComboBox2 extends JPanel {
         comboBox.addActionListener(e -> {
             String themeCheck = selectedTheme;
             selectedTheme = (String) comboBox.getSelectedItem();
-            if(!themeCheck.equals(selectedTheme)){
+            if (!themeCheck.equals(selectedTheme)) {
                 menuFrame.revalidate();
                 menuFrame.repaint();
             }
@@ -44,6 +56,11 @@ public class CustomComboBox2 extends JPanel {
         add(comboBox, BorderLayout.CENTER);
     }
 
+    /**
+     * Update des Hintergrundbilds
+     *
+     * @param g Übergibt Graphics Objekt
+     */
     @Override
     protected void paintComponent(Graphics g) {
         if (selectedTheme.equals("Pokemon")) {

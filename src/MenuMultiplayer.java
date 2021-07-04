@@ -8,7 +8,9 @@ import java.io.IOException;
 
 import static src.config.*;
 
-
+/**
+ * Multiplayermenü des Spiels
+ */
 public class MenuMultiplayer {
     /**
      * Constraints für das GridbagLayout
@@ -58,9 +60,10 @@ public class MenuMultiplayer {
 
     /**
      * Components werden hier erstellt
+     *
      * @param menuFrame Frame des Hauptmenü
-     * @param menuMain Panel mit Components des Startmenü
-     * @throws IOException Fehler beim Laden der Grafiken
+     * @param menuMain  Panel mit Components des Startmenü
+     * @throws IOException         Fehler beim Laden der Grafiken
      * @throws FontFormatException Fehler beim Laden der Font
      */
     public MenuMultiplayer(JFrame menuFrame, JPanel menuMain) throws IOException, FontFormatException {
@@ -106,7 +109,7 @@ public class MenuMultiplayer {
                 int x = JOptionPane.showOptionDialog(menuFrame, "Wollen Sie selbst spielen oder als Computer?",
                         "Selfplay or KI", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, icon, options, options[0]);
 
-                if(x==0 || x == 1) {
+                if (x == 0 || x == 1) {
                     menuPanel.setVisible(false);
                     //menuFrame.dispose();
                 }

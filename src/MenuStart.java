@@ -5,6 +5,7 @@ import src.components.*;
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
+
 import static src.config.*;
 
 /**
@@ -14,53 +15,54 @@ public class MenuStart {
     /**
      * Constraints für das GridbagLayout
      */
-    GridBagConstraints  constraints;
+    GridBagConstraints constraints;
     /**
      * GridBaglayout der Optionen
      */
-    GridBagLayout       menuLayout;
+    GridBagLayout menuLayout;
     /**
      * Öffnet das Singleplayermenü
      */
-    JButton             buttonMenuSingleplayer;
+    JButton buttonMenuSingleplayer;
     /**
      * Öffnet das Multiplayermenü
      */
-    JButton             buttonMenuMultiplayer;
+    JButton buttonMenuMultiplayer;
     /**
      * Öffnet die Optionen
      */
-    JButton             buttonMenuOptions;
+    JButton buttonMenuOptions;
     /**
      * Button um das Spiel zu schließen
      */
-    JButton             buttonQuitGame;
+    JButton buttonQuitGame;
     /**
      * Transparentes Panel um die Gräße der Buttons anzupassen
      */
-    JPanel              menuFiller;
+    JPanel menuFiller;
     /**
      * Panel auf dem die Components hinzugefügt werden
      */
-    JPanel              menuPanel;
+    JPanel menuPanel;
     /**
      * Frame des Menü
      */
-    JFrame              menuFrame;
+    JFrame menuFrame;
 
     /**
      * Erstellung der Components im Startmenü
-     * @throws IOException Fehler beim Laden der Grafiken
+     *
+     * @throws IOException         Fehler beim Laden der Grafiken
      * @throws FontFormatException Fehler beim Laden der Font
      */
     public MenuStart() throws IOException, FontFormatException {
         // Custom Frame
         menuFrame = new MenuFrame();
-        int COL         = (INITIAL_WIDTH * 22 / 100) - 10;
-        int C_GAP       = (INITIAL_WIDTH * 28 / 100) - 10;
-        int ROW_INFO    = (INITIAL_HEIGHT * 33 / 100) - 10;
-        int ROW         = (INITIAL_HEIGHT * 10 / 100) - 10;
-        int R_GAP       = (INITIAL_HEIGHT * 2) / 100;
+        int COL = (INITIAL_WIDTH * 22 / 100) - 10;
+        int C_GAP = (INITIAL_WIDTH * 28 / 100) - 10;
+        int ROW_INFO = (INITIAL_HEIGHT * 33 / 100) - 10;
+        int ROW = (INITIAL_HEIGHT * 10 / 100) - 10;
+        int R_GAP = (INITIAL_HEIGHT * 2) / 100;
         menuLayout = new GridBagLayout();
         menuLayout.columnWidths = new int[]{C_GAP, COL, COL, C_GAP};
         menuLayout.rowHeights = new int[]{ROW_INFO, R_GAP, ROW, R_GAP, ROW, R_GAP, ROW, R_GAP, ROW, ROW};
@@ -74,7 +76,7 @@ public class MenuStart {
         menuPanel.setLayout(menuLayout);
 
 
-        makeConstraints(menuFiller, 0, 0 , 4);
+        makeConstraints(menuFiller, 0, 0, 4);
 
         buttonMenuSingleplayer.addActionListener(e -> {
             // Hide this window
@@ -127,19 +129,20 @@ public class MenuStart {
 
     /**
      * Legt Größe und Position der Components fest
-     * @param comp Ein Swing Component, welcher in constraints embedded werden soll.
-     * @param gridx X-Position auf der X-Achse
-     * @param gridy Y-Position auf der Y-Achse
+     *
+     * @param comp      Ein Swing Component, welcher in constraints embedded werden soll.
+     * @param gridx     X-Position auf der X-Achse
+     * @param gridy     Y-Position auf der Y-Achse
      * @param gridwidth Breite des Components
      */
     private void makeConstraints(JComponent comp, int gridx, int gridy, int gridwidth) {
-        constraints.fill        = GridBagConstraints.BOTH;
-        constraints.gridheight  = 1;
-        constraints.gridwidth   = gridwidth;
-        constraints.gridx       = gridx;
-        constraints.gridy       = gridy;
-        constraints.weightx     = 0.5;
-        constraints.weighty     = 0.1;
+        constraints.fill = GridBagConstraints.BOTH;
+        constraints.gridheight = 1;
+        constraints.gridwidth = gridwidth;
+        constraints.gridx = gridx;
+        constraints.gridy = gridy;
+        constraints.weightx = 0.5;
+        constraints.weighty = 0.1;
         menuPanel.add(comp, constraints);
     }
 }

@@ -6,7 +6,8 @@ import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import static src.config.selectedTheme ;
+
+import static src.config.selectedTheme;
 
 import static src.FontLoader.Pokemon;
 
@@ -43,7 +44,7 @@ public class DeleteButton extends JButton {
      */
     public void switchDeleting() {
         this.deleting = !deleting;
-        if(!deleting){
+        if (!deleting) {
             setText("DELETE");
         } else {
             setText("PLACE");
@@ -52,7 +53,7 @@ public class DeleteButton extends JButton {
 
     /**
      * @param g Graphics Object
-     *
+     *          <p>
      *          Checkt das momentane Theme und ob platziert oder gelöscht wird und zeichnet den Button dann passend
      */
     @Override
@@ -60,7 +61,7 @@ public class DeleteButton extends JButton {
 
         BufferedImage image;
 
-        if(selectedTheme.equals("Pokemon")){
+        if (selectedTheme.equals("Pokemon")) {
             setForeground(Color.black);
             if (deleting) {
                 image = Bild.BildLoader("assets/button1green.png");
