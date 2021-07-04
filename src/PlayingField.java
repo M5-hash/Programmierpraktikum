@@ -821,28 +821,34 @@ public class PlayingField {
         s.skip("\n");
 
         if (this.com == 2) {
-            ComPlayerNormal c = (ComPlayerNormal) com;
+            if(com == null){
+                s.nextLine();
+                s.nextLine();
+                s.nextInt();
+                s.skip("\n");
+            }else {
+                ComPlayerNormal c = (ComPlayerNormal) com;
 
-            //lastCoords
-            String str = s.nextLine();
-            if (!str.equals("NULL")) {
-                c.setLastCoords(Stream.of(str.split(","))
-                        .mapToInt(Integer::parseInt)
-                        .toArray());
+                //lastCoords
+                String str = s.nextLine();
+                if (!str.equals("NULL")) {
+                    c.setLastCoords(Stream.of(str.split(","))
+                            .mapToInt(Integer::parseInt)
+                            .toArray());
+                }
+
+                //rowSeq
+                str = s.nextLine();
+                List<Integer> l = new ArrayList<>();
+                for (int i : Stream.of(str.split(",")).mapToInt(Integer::parseInt).toArray()) {
+                    l.add(i);
+                }
+                c.setRowSeq(l);
+
+                //nextRow
+                c.setNextRow(s.nextInt());
+                s.skip("\n");
             }
-
-            //rowSeq
-            str = s.nextLine();
-            List<Integer> l = new ArrayList<>();
-            for (int i : Stream.of(str.split(",")).mapToInt(Integer::parseInt).toArray()) {
-                l.add(i);
-            }
-            c.setRowSeq(l);
-
-            //nextRow
-            c.setNextRow(s.nextInt());
-            s.skip("\n");
-
         }
         //Timestamp
         this.timestamp = s.nextLong();
