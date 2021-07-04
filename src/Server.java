@@ -88,6 +88,7 @@ public class Server extends Com_base {
                     TimeUnit.MILLISECONDS.sleep(100);
                     setMyTurn(true);
                     Send("ready");
+                    setMyTurn(true);
                 }
             } else {
                 pf_holder = new PlayingField(fieldSize, ParseStringArrayToIntArray(availableShips.split(" "), 0), RoleServer);
