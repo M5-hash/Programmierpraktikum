@@ -223,7 +223,7 @@ public class PanelSize extends JPanel {
                 if (x == 0) {
                     onlineCom = false;
                     menuPanel.setVisible(false);
-                    menuFrame.dispose();
+                    //menuFrame.dispose();
                     // Create SpielWindow and display it
                     try {
                         SpielFeld1 = 0;
@@ -235,7 +235,7 @@ public class PanelSize extends JPanel {
                 } else if (x == 1) {
                     onlineCom = true;
                     menuPanel.setVisible(false);
-                    menuFrame.dispose();
+                    //menuFrame.dispose();
                     // Create SpielWindow and display it
                     try {
                         SpielFeld1 = 0;
@@ -250,7 +250,7 @@ public class PanelSize extends JPanel {
             } else {
                 try {
                     menuPanel.setVisible(false);
-                    menuFrame.dispose();
+                    //menuFrame.dispose();
                     new SpielWindow(menuFrame);
                 } catch (IOException | FontFormatException ioException) {
                     ioException.printStackTrace();
