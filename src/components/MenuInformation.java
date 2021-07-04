@@ -53,7 +53,7 @@ public class MenuInformation extends JPanel {
         timer.start();
     }
 
-    Timer timer = new Timer(80, new ActionListener() {
+    Timer timer = new Timer(60, new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
 

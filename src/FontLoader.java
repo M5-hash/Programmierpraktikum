@@ -4,6 +4,9 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * Fontloader dient zum Laden der Pokemon Font
+ */
 public class FontLoader {
 
     public static GraphicsEnvironment ge = null;
@@ -12,6 +15,11 @@ public class FontLoader {
     public FontLoader() {
     }
 
+    /**
+     * Lädt Pokemon Font aus Assets und
+     * @throws IOException
+     * @throws FontFormatException
+     */
     public static void createFont() throws IOException, FontFormatException {
         Pokemon = Font.createFont(Font.TRUETYPE_FONT, new File("assets/pokemon.ttf")).deriveFont(12f);
         //create the font to use. Specify the size!
