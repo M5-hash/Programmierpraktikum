@@ -384,6 +384,10 @@ public class PanelSize extends JPanel {
         makeConstraints(buttonPanel, 1, 7, 3);
     }
 
+    /**
+     * Erstellt einen String anhand der Schiffsvariablen
+     * @return String der Schiffsmengen
+     */
     private String getShipString() {
         return "2 ".repeat(Math.max(0, size2)) +
                 "3 ".repeat(Math.max(0, size3)) +

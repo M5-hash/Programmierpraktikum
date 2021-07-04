@@ -18,7 +18,7 @@ public class CustomPanel extends JPanel {
     private final BufferedImage givenbackground;
 
     /**
-     * @param image
+     * @param image Hintergrundbild des Pokemon Theme
      */
     public CustomPanel(BufferedImage image) {
         this.givenbackground = image;

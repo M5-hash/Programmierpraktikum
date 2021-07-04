@@ -1,7 +1,7 @@
 package src;
 
 /**
- * <h1>Config</h1>
+ * Config
  *
  * <p>Die Config dient zur Implementierung von Werten,
  * die in den meisten Klassen verwendet werden.

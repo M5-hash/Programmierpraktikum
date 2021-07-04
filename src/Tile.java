@@ -182,8 +182,6 @@ public class Tile extends JPanel {
 
     /**
      * @param Ebene Übergebenes int[][] Object
-     *              <p>
-     *              <p>
      *              Hier werden zufällige Werte den Feldern zugewiesen, sodass der Startframe des Tiles spezifisch ist.
      *              Da es so besser aussieht.
      */

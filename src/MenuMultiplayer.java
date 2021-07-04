@@ -163,6 +163,15 @@ public class MenuMultiplayer {
         menuFrame.add(this.menuPanel);
     }
 
+    /**
+     * Legt Größe und Position der Components fest
+     *
+     * @param comp       Ein Swing Component, welcher in constraints embedded werden soll.
+     * @param gridx      X-Position auf der X-Achse
+     * @param gridy      Y-Position auf der Y-Achse
+     * @param gridwidth  Breite des Components
+     * @param gridheight Höhe der Components
+     */
     private void makeConstraints(JComponent comp, int gridx, int gridy, int gridwidth, int gridheight) {
         constraints.gridx = gridx;
         constraints.gridy = gridy;

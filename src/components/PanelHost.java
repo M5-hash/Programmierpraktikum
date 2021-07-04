@@ -117,6 +117,7 @@ public class PanelHost extends JPanel {
         makeConstraints(buttonPanel, 1, 3, 4);
     }
 
+
     public static String[] IP_Ausgabe() throws IOException {
         ArrayList<String> IPs = new ArrayList<>();
         Enumeration<NetworkInterface> nis =

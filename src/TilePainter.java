@@ -451,9 +451,7 @@ public class TilePainter extends JPanel implements MouseMotionListener {
 
     /**
      * @param g Graphics Object
-     *          <p>
      *          Hier werden alle Methoden aufgerufen, welche etwas visuell darstellen.
-     *          <p>
      */
     public void paintComponent(Graphics g) {
         super.paintComponent(g);

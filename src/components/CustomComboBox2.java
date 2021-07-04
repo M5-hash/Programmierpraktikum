@@ -27,6 +27,7 @@ public class CustomComboBox2 extends JPanel {
      *
      * @param Pokemon   Font der ComboBox
      * @param menuFrame JFrame der ComboBox
+     * @param text      Stringarray mit Auswahl der Themes
      */
     public CustomComboBox2(String[] text, Font Pokemon, JFrame menuFrame) {
 

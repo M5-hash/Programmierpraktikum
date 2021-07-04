@@ -188,7 +188,10 @@ public class SpielWindow extends JPanel {
     /**
      * Zustandsanpassung des Spielstands nach dem Laden
      *
-     * @param pfStatus
+     * @param pfStatus Status des Spieles <br>
+     *                 0 = Schiffe setzen <br>
+     *                 1 = Spieler darf schießen <br>
+     *                 2 = Gegner darf schießen <br>
      */
     private void adjustState(boolean pfStatus) {
         tile.AnzSchiffe = sumofships;
@@ -590,20 +593,25 @@ public class SpielWindow extends JPanel {
 
     /**
      * Com - Getter
+     *
      * @return this.Com
      */
     public ComPlayer getCom() {
         return this.Com;
     }
+
     /**
      * PlayingField - Getter
+     *
      * @return this.playingField
      */
     public PlayingField getPlayingField() {
         return this.playingField;
     }
+
     /**
      * Server - Getter
+     *
      * @return this.Online
      */
     public Com_base getServer() {
