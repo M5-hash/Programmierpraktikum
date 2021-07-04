@@ -190,6 +190,7 @@ public class SpielWindow extends JPanel {
                         try {
                             if(onlineCom){
                                 int[] hold = Online.getComPl().doNextShot();
+                                TimeUnit.MILLISECONDS.sleep(100);
                                 Online.Send("shot " + hold[0] + " " + hold[1]);
                             }
                             TimeUnit.MILLISECONDS.sleep(100);
@@ -418,6 +419,11 @@ public class SpielWindow extends JPanel {
                 try {
                     hold = Online.getComPl().doNextShot();
                 } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                try {
+                    TimeUnit.MILLISECONDS.sleep(100);
+                } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
                 Online.Send("shot " + hold[0] + " " + hold[1]);
