@@ -25,6 +25,7 @@ public class Client extends Com_base {
                 if(i == 10){
                     System.exit(1);
                     JOptionPane.showMessageDialog(null, "Connection konnte nicht hergestellt werden");
+                    TimeUnit.SECONDS.sleep(5);
                 }
             }
         }
