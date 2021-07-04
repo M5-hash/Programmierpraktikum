@@ -116,7 +116,7 @@ public abstract class Com_base {
      * Setter für lastX und lastY
      *
      * @param x neuer Wert für this.lastX
-     * @param y  neuer Wert für this.lastY
+     * @param y neuer Wert für this.lastY
      */
     public void setLastXY(int x, int y) {
         this.lastX = x;
@@ -125,6 +125,7 @@ public abstract class Com_base {
 
     /**
      * Setzt den Parameter frame
+     *
      * @param frame value für this.frame
      */
     public void setSpielwindow(SpielWindow frame) {
@@ -136,7 +137,7 @@ public abstract class Com_base {
      *
      * @return gibt Wert von this.myTurn zurück
      */
-    public boolean getMyTurn(){
+    public boolean getMyTurn() {
         return this.myTurn;
     }
 
@@ -145,7 +146,7 @@ public abstract class Com_base {
      *
      * @return gibt Wert von this.loaded zurück
      */
-    public boolean getLoaded(){
+    public boolean getLoaded() {
         return this.loaded;
     }
 
@@ -154,7 +155,7 @@ public abstract class Com_base {
      *
      * @return gibt this.pf zurück
      */
-    public PlayingField getPf(){
+    public PlayingField getPf() {
         return this.pf;
     }
 
@@ -163,7 +164,7 @@ public abstract class Com_base {
      *
      * @return gibt this.comPl zurück
      */
-    public ComPlayer getComPl(){
+    public ComPlayer getComPl() {
         return this.comPl;
     }
 
@@ -184,8 +185,8 @@ public abstract class Com_base {
      *
      * @param input String der gesendet werden soll
      */
-    public void Send(String input){
-        if (this.myTurn) {
+    public void Send(String input) {
+        if (getMyTurn()) {
             try {
                 this.out.write(String.format("%s%n", input));
                 try {
@@ -200,17 +201,30 @@ public abstract class Com_base {
         setMyTurn(false);
     }
 
+    /**
+     * Setzt loop-Breaker auf falls und gibt den zuletzt eingelesenen String
+     * aus dem Input-Stream zurück
+     *
+     * @return gibt this.line zurück, enthält den zuletzt aus dem Input-Stream gelesenen String zurück
+     */
     public String ReceiveInputStream() {
         this.loopBreaker = false;
         return this.line;
     }
 
-    public boolean checkInputStream(){
+    /**
+     * Überprüft ob es eine neue Nachricht im Input-Stream gibt
+     * Falls die Socket-Verbindung eine Exception wirft, wird dies in SocketActive mit false vermerkt
+     *
+     * @return true, wenn eine neue Nachricht im Input-Stream enthalten ist
+     * false, wenn der Input-Stream keine neue Nachricht beinhaltet
+     */
+    public boolean checkInputStream() {
         try {
-            if(this.SocketActive) {
+            if (this.SocketActive) {
                 try {
                     this.line = this.in.readLine();
-                }catch(SocketException i){
+                } catch (SocketException i) {
                     this.SocketActive = false;
                 }
             }
@@ -221,96 +235,113 @@ public abstract class Com_base {
         return this.line != null && !this.line.equals("");
     }
 
-    public String ReceiveCheckedInputStream(){
+    /**
+     * Wartet bis eine neue Nachricht im Input-Stream enthalten ist und gibt diese zurück
+     *
+     * @return gibt den zuletzt aus dem Input-Stream gelesenen String zurück
+     */
+    public String ReceiveCheckedInputStream() {
         this.loopBreaker = true;
-        String hold = "";
+        String message = "";
         while (this.loopBreaker) {
             if (!checkInputStream()) break;
-            hold = ReceiveInputStream();
+            message = ReceiveInputStream();
         }
-        System.out.println(hold);
-        return hold;
+        return message;
     }
 
-    protected void NetworkProtocol() throws Exception {
+    /**
+     * Wartet auf eine neue Nachricht, wertet diese aus und übernimmt das automatische Antworten falls nötig
+     * Sollte sich aus der empfangenen Nachricht ergeben, dass der Spieler wieder am Zug ist, wird this.myTurn auf true
+     * gesetzt
+     * Es wird geprüft ob das Spiel gewonnen oder verloren wurde
+     * Eigene und gegnerische Schüsse werden auf dem PlayingField markiert
+     * Spiel wird, bei Aufforderung über das Netzwerk, gespeichert
+     * Die Turn-Anzeige wird auf den Wert von this.myTurn gesetzt
+     */
+    protected void NetworkProtocol() {
         frame.Turn.switchTurn(false);
-        String in = ReceiveCheckedInputStream();
-        String[] holder = in.split(" ");
-        switch (holder[0]) {
-            case "shot":
-                int x = Integer.parseInt(holder[1]);
-                int y = Integer.parseInt(holder[2]);
+        String inputString = ReceiveCheckedInputStream();
+        String[] message = inputString.split(" ");
+        try {
+            switch (message[0]) {
+                case "shot":
+                    int x = Integer.parseInt(message[1]);
+                    int y = Integer.parseInt(message[2]);
 
-                int hit = pf.isShot(x, y);
-                if (hit == 0) {
-                    setMyTurn(true);
-                    Send("answer 0");
+                    int hit = pf.isShot(x, y);
 
-                } else if (hit == 1) {
-                    setMyTurn(true);
-                    Send("answer 1");
-
-                } else if (hit == 2) {
-                    setMyTurn(true);
-                    Send("answer 2");
-                    if (pf.enemygameover()) {
-                        Send("pass");
-                        KillSocket();
-                    }
-                }
-                break;
-            case "answer":
-                switch (holder[1]) {
-                    case "0" -> {
-                        pf.didHit(0, this.lastX, this.lastY);
+                    if (hit == 0) {
                         setMyTurn(true);
-                        Send("pass");
-                    }
-                    case "1" -> {
-                        pf.didHit(1, this.lastX, this.lastY);
-                        myTurn = true;
-                    }
-                    case "2" -> {
-                        pf.didHit(2, this.lastX, this.lastY);
-                        if (pf.gameover()) {
-                            myTurn = false;
+                        Send("answer 0");
+
+                    } else if (hit == 1) {
+                        setMyTurn(true);
+                        Send("answer 1");
+
+                    } else if (hit == 2) {
+                        setMyTurn(true);
+                        Send("answer 2");
+                        if (pf.enemygameover()) {
+                            Send("pass");
+                            KillSocket();
                         }
-                        myTurn = true;
                     }
-                }
+                    break;
+                case "answer":
+                    switch (message[1]) {
+                        case "0" -> {
+                            pf.didHit(0, this.lastX, this.lastY);
+                            setMyTurn(true);
+                            Send("pass");
+                        }
+                        case "1" -> {
+                            pf.didHit(1, this.lastX, this.lastY);
+                            setMyTurn(true);
+                        }
+                        case "2" -> {
+                            pf.didHit(2, this.lastX, this.lastY);
+                            if (pf.gameover()) {
+                                setMyTurn(false);
+                            }
+                            setMyTurn(true);
+                        }
+                    }
 
-                break;
-            case "save":
-                if (config.onlineCom) {
-                    this.comPl.saveGame(Long.parseLong(holder[1]));
-                } else {
-                    pf.saveGame(Long.parseLong(holder[1]));
-                }
-                KillSocket();
-                break;
-            case "ready":
-            case "pass":
-                myTurn = true;
-                break;
+                    break;
+                case "save":
+                    if (config.onlineCom) {
+                        this.comPl.saveGame(Long.parseLong(message[1]));
+                    } else {
+                        pf.saveGame(Long.parseLong(message[1]));
+                    }
+                    KillSocket();
+                    break;
+                case "ready":
+                case "pass":
+                    setMyTurn(true);
+                    break;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        frame.Turn.switchTurn(myTurn);
+        frame.Turn.switchTurn(getMyTurn());
     }
 
-
-
-
-
-
-
-
-    protected int[] ship_array_toInt(String[] in_ships, int begin) {
-        int[] out_ships = new int[in_ships.length - begin];
-        for (int i = begin; i < in_ships.length; i++) {
-            out_ships[i - begin] = Integer.parseInt(in_ships[i]);
+    /**
+     * Konvertiert ein String-Array in ein Integer-Array und entfernt begin-viele erste Einträge
+     * Das Entfernen ist enthalten, um bei Netzwerkantworten das Signalwort zu entfernen
+     *
+     * @param StringArray beinhaltet die Schiffslängen als String-Objekte
+     * @param begin       Ab dem wie vielten Element des String-Arrays soll die Konvertierung stattfinden
+     * @return gibt ein um begin-viel erste Einträge gekürztes und in Integer konvertiertes Array zurück
+     */
+    protected int[] ParseStringArrayToIntArray(String[] StringArray, int begin) {
+        int[] IntegerArray = new int[StringArray.length - begin];
+        for (int i = begin; i < StringArray.length; i++) {
+            IntegerArray[i - begin] = Integer.parseInt(StringArray[i]);
         }
-        return out_ships;
+        return IntegerArray;
     }
-
-
 }

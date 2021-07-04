@@ -66,6 +66,10 @@ public class ComPlayerNormal extends ComPlayer {
         checkNullAfterLoad();
     }
 
+    /**
+     * Überprüft ob rowSeq nach einem Aufruf von loadGame trotzdem noch rowSeq ist und setzt diesen neu.
+     * Dies passiert, wenn man einen Spielstand liest, in dem zuvor kein Computer Spieler dabei war.
+     */
     private void checkNullAfterLoad() {
         if(rowSeq == null){
             this.setRowSeq(pf.getField().length);

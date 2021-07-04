@@ -8,7 +8,6 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.util.concurrent.TimeUnit;
 
-//
 public class Client extends Com_base {
 
     private final String IP;
@@ -61,7 +60,7 @@ public class Client extends Com_base {
 
 
             String[] in_ships_Str = ReceiveCheckedInputStream().split(" ");
-            int[] ships_int_arr = ship_array_toInt(in_ships_Str, 1);
+            int[] ships_int_arr = ParseStringArrayToIntArray(in_ships_Str, 1);
             config.size2 = 0;
             config.size3 = 0;
             config.size4 = 0;
