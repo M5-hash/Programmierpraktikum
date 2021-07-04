@@ -42,12 +42,13 @@ public class MenuSize {
 
     /**
      * Erstellt die Components des Menü
-     * @param menuFrame Frame des Menü
+     *
+     * @param menuFrame     Frame des Menü
      * @param previousPanel Panel mit Components des vorherigen Menüs
-     * @throws IOException Fehler beim Laden der Grafiken
+     * @throws IOException         Fehler beim Laden der Grafiken
      * @throws FontFormatException Fehler beim Laden der Font
      */
-    public MenuSize(JFrame menuFrame, JPanel previousPanel) throws IOException, FontFormatException{
+    public MenuSize(JFrame menuFrame, JPanel previousPanel) throws IOException, FontFormatException {
         this.menuFrame = menuFrame;
 
         int C_GAP = menuFrame.getWidth() / 10;
@@ -71,11 +72,13 @@ public class MenuSize {
 
         menuFrame.add(menuPanel);
     }
+
     /**
      * Legt Größe und Position der Components fest
-     * @param comp Ein Swing Component, welcher in constraints embedded werden soll.
-     * @param gridx X-Position auf der X-Achse
-     * @param gridy Y-Position auf der Y-Achse
+     *
+     * @param comp      Ein Swing Component, welcher in constraints embedded werden soll.
+     * @param gridx     X-Position auf der X-Achse
+     * @param gridy     Y-Position auf der Y-Achse
      * @param gridwidth Breite des Components
      */
     private void makeConstraints(JComponent comp, int gridx, int gridy, int gridwidth) {

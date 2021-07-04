@@ -6,25 +6,50 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import static src.FontLoader.Pokemon;
 import static src.config.selectedTheme;
 
+/**
+ * Panel mit Informationen des jeweiligen Menü
+ */
 public class MenuInformation extends JPanel {
+    /**
+     * Counter für den Text der TextArea
+     */
     int j = 0;
+    /**
+     * Text der TextArea
+     */
     String text;
-
+    /**
+     * Hintergrundbild des Pokemon Theme
+     */
     Image bgImage;
 
-    GridBagLayout contentLayout;
+    /**
+     * Constraints für das GridbagLayout
+     */
     GridBagConstraints constraints;
+    /**
+     * GridBaglayout der Optionen
+     */
+    GridBagLayout contentLayout;
+    /**
+     * TextArea für Informationen
+     */
     JTextArea displayText;
 
-    public MenuInformation(Image bgDisplayText, String text, JFrame menuFrame){
+    /**
+     * Default Werte des Panels und der Textarea
+     *
+     * @param bgDisplayText Hintergrund des Panels
+     * @param text          Text der TextArea
+     * @param menuFrame     Frame des Menü um Größe der TextArea zu berechnen
+     */
+    public MenuInformation(Image bgDisplayText, String text, JFrame menuFrame) {
         this.bgImage = bgDisplayText;
         this.text = text;
-
-        System.out.println(getHeight());
-
 
         contentLayout = new GridBagLayout();
         contentLayout.columnWidths = new int[]{menuFrame.getWidth() * 15 / 100, menuFrame.getWidth() * 75 / 100, menuFrame.getWidth() / 10};
@@ -44,7 +69,7 @@ public class MenuInformation extends JPanel {
         displayText.setOpaque(false);
         displayText.setForeground(Color.black);
         displayText.setWrapStyleWord(true);
-        displayText.setBackground(new Color(248,248,248));
+        displayText.setBackground(new Color(248, 248, 248));
         displayText.setEditable(false);
         displayText.setFont(Pokemon);
         displayText.setFocusable(false);
@@ -53,6 +78,9 @@ public class MenuInformation extends JPanel {
         timer.start();
     }
 
+    /**
+     * Timer um Text der Textarea Buchstabe für Buchstabe anzuzeigen
+     */
     Timer timer = new Timer(60, new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -67,24 +95,28 @@ public class MenuInformation extends JPanel {
             displayText.append(addedCharacter);
 
             j++;
-            if(j == arrayNumber){
+            if (j == arrayNumber) {
                 j = 0;
                 timer.stop();
             }
-
         }
     });
 
+    /**
+     * Update des Hintergrundbilds
+     *
+     * @param g Übergibt Graphics Objekt
+     */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        Bildloader Bild = new Bildloader() ;
-        if(!selectedTheme.equals("Pokemon")){
-            bgImage = Bild.BildLoader("src/Images/captain-iglo.png") ;
-            g.drawImage(bgImage, 0,0, getWidth() / 5, getHeight() / 2, null);
-        } else{
-            bgImage = Bild.BildLoader("assets/textfeld_eich1.png") ;
-            g.drawImage(bgImage, 0,0, getWidth(), getHeight(), null);
+        Bildloader Bild = new Bildloader();
+        if (!selectedTheme.equals("Pokemon")) {
+            bgImage = Bild.BildLoader("src/Images/captain-iglo.png");
+            g.drawImage(bgImage, 0, 0, getWidth() / 5, getHeight() / 2, null);
+        } else {
+            bgImage = Bild.BildLoader("assets/textfeld_eich1.png");
+            g.drawImage(bgImage, 0, 0, getWidth(), getHeight(), null);
         }
 
     }

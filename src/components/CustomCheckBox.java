@@ -12,10 +12,22 @@ import java.awt.image.BufferedImage;
 
 import static src.config.selectedTheme;
 
+/**
+ * CustomCheckBox mit Hintergrundbild
+ */
 public class CustomCheckBox extends JPanel {
-
+    /**
+     * Setzt Fullscreen True oder False
+     */
     JCheckBox checkBox;
 
+    /**
+     * Erzeugt transparentes Panel mit CheckBox <br>
+     *
+     * @param fullscreen Text der CheckBox
+     * @param b          Setzt Checkbox auf False
+     * @param Pokemon    Font der CheckBox
+     */
     public CustomCheckBox(String fullscreen, boolean b, Font Pokemon) {
         setOpaque(false);
         setLayout(new BorderLayout());
@@ -42,6 +54,11 @@ public class CustomCheckBox extends JPanel {
         add(checkBox, BorderLayout.CENTER);
     }
 
+    /**
+     * Update des Hintergrundbilds
+     *
+     * @param g Übergibt Graphics Objekt
+     */
     @Override
     protected void paintComponent(Graphics g) {
 

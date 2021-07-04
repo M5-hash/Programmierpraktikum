@@ -15,13 +15,35 @@ import java.util.regex.Pattern;
 import static src.FontLoader.Pokemon;
 import static src.config.*;
 
+/**
+ * Button um gespeicherte Spielstände zu laden
+ */
 public class LoadGameButton extends JButton {
 
+    /**
+     * Hintergrundbild des Buttons
+     */
     public Image image;
 
+    /**
+     * Das PlayingField welches dann anhand der ausgewählten Datei den Spielstand liest
+     */
     private PlayingField pf;
+
+    /**
+     * Der Computer-Gegner der möglicherweise durch den Spielstand mit geladen wird
+     */
     private ComPlayer com;
 
+    /**
+     * Gespeicherter Spielstand wird geladen und in einem neuen Spielwindow geöffnet <br>
+     * Alter Frame wird geschlossen.
+     *
+     * @param menuFrame    Frame in den das Spiel geladen wird
+     * @param menuPanel    menuPanel des aktuellen Windows
+     * @param button_title Text des Buttons
+     * @param image        Hintergrundbild
+     */
     public LoadGameButton(JFrame menuFrame, JPanel menuPanel, String button_title, BufferedImage image) {
         this.image = image;
 
@@ -66,24 +88,30 @@ public class LoadGameButton extends JButton {
         });
     }
 
+    /**
+     * Update des Hintergrundbilds
+     *
+     * @param g Übergibt Graphics Objekt
+     */
     @Override
     protected void paintComponent(Graphics g) {
         if (selectedTheme.equals("Pokemon")) {
-
             g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
-
         } else {
-            Bildloader Bild = new Bildloader();
-
             setForeground(Color.white);
+            Bildloader Bild = new Bildloader();
             BufferedImage NavalButton = Bild.BildLoader("src/Images/NavalButton.png");
             g.drawImage(NavalButton, 0, 0, getWidth(), getHeight(), null);
-
-
         }
         super.paintComponent(g);
     }
 
+    /**
+     * Lädt Multiplayerspielstand
+     *
+     * @param menuFrame Frame in den das Spiel geladen wird
+     * @param menuPanel menuPanel des aktuellen Windows
+     */
     private void loadGameMultiplayer(JFrame menuFrame, JPanel menuPanel) {
         onlineCom = false;
         menuPanel.setVisible(false);

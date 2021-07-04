@@ -3,11 +3,13 @@ package src.components;
 import src.ImageLoader;
 import src.Server;
 import src.SpielWindow;
+
 import javax.swing.*;
 import javax.swing.plaf.metal.MetalButtonUI;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+
 import static src.FontLoader.Pokemon;
 import static src.config.*;
 
@@ -132,12 +134,14 @@ public class PanelSize extends JPanel {
      * Panel für buttonApply und buttonCancel
      */
     JPanel buttonPanel;
+
     /**
      * Erstellung der Components im Startmenü
-     * @param menuFrame JFrame auf dem die Components erstellt werden
-     * @param image Hintergrundbild des Panels
+     *
+     * @param menuFrame     JFrame auf dem die Components erstellt werden
+     * @param image         Hintergrundbild des Panels
      * @param previousPanel menuPanel des zuvor zusehenden Panels
-     * @param menuPanel Aktuelles menuPanel des Sizemenüs
+     * @param menuPanel     Aktuelles menuPanel des Sizemenüs
      */
     public PanelSize(JFrame menuFrame, BufferedImage image, JPanel previousPanel, JPanel menuPanel) {
         this.background = image;
@@ -165,7 +169,7 @@ public class PanelSize extends JPanel {
         menuCounter.setFont(Pokemon);
         makeConstraints(menuCounter, 1, 1, 3);
 
-        if(selectedTheme.equals("Pokemon")){
+        if (selectedTheme.equals("Pokemon")) {
             menuSlidername2 = new JLabel("<html><body>   Size  2<br>Pokemon</body></html>");
             menuSlidername3 = new JLabel("<html><body>   Size 3<br>Pokemon</body></html>");
             menuSlidername4 = new JLabel("<html><body>   Size 4<br>Pokemon</body></html>");
@@ -427,11 +431,13 @@ public class PanelSize extends JPanel {
         System.out.println("size5: " + temp_size5);
         System.out.println("sumofships: " + sumofships);
     }
+
     /**
      * Legt Größe und Position der Components fest
-     * @param comp Ein Swing Component, welcher in constraints embedded werden soll.
-     * @param gridx X-Position auf der X-Achse
-     * @param gridy Y-Position auf der Y-Achse
+     *
+     * @param comp      Ein Swing Component, welcher in constraints embedded werden soll.
+     * @param gridx     X-Position auf der X-Achse
+     * @param gridy     Y-Position auf der Y-Achse
      * @param gridwidth Breite des Components
      */
     private void makeConstraints(JComponent comp, int gridx, int gridy, int gridwidth) {
@@ -448,6 +454,7 @@ public class PanelSize extends JPanel {
 
     /**
      * Update des Hintergrundbilds
+     *
      * @param g Übergibt Graphics Objekt
      */
     @Override

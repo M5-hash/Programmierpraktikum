@@ -4,13 +4,17 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 
-public class main{
+/**
+ * Main des Spiels
+ */
+public class main {
 
     /**
      * Die main Funktion für das Spiel. <br>
      * Lädt Bilder und Font für das Spiel und öffnet das Hauptmenü.
+     *
      * @param args Argumente, die Übergeben werden werden ignoriert
-     * @throws IOException Falls nicht alle Bilder geladen werden konnten
+     * @throws IOException         Falls nicht alle Bilder geladen werden konnten
      * @throws FontFormatException Falls Font nicht geladen werden konnte
      */
     public static void main(String[] args) throws IOException, FontFormatException {

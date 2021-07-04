@@ -1,13 +1,19 @@
 package src.components;
 
 import src.ImageLoader;
+
 import javax.swing.*;
 import java.awt.*;
+
 import static src.config.*;
 
-
+/**
+ * Frame des Hauptmenü
+ */
 public class MenuFrame extends JFrame {
-
+    /**
+     * Setzt Default Werte des Frames des Hauptmenü
+     */
     public MenuFrame() {
         super();
 
@@ -20,6 +26,11 @@ public class MenuFrame extends JFrame {
         setVisible(true);
     }
 
+    /**
+     * Setzt das Icon des Hauptmenü
+     *
+     * @return Icon des Hauptmenü
+     */
     private Image setIcon() {
         return ImageLoader.getImage(ImageLoader.FRAME_ICON);
     }

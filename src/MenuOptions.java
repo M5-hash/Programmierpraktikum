@@ -61,22 +61,23 @@ public class MenuOptions {
 
     /**
      * Components werden hier erstellt
+     *
      * @param menuFrame Frame des Hauptmenü
-     * @param menuMain Panel mit Components des Startmenü
-     * @throws IOException Fehler beim Laden der Grafiken
+     * @param menuMain  Panel mit Components des Startmenü
+     * @throws IOException         Fehler beim Laden der Grafiken
      * @throws FontFormatException Fehler beim Laden der Font
      */
     public MenuOptions(JFrame menuFrame, JPanel menuMain) throws IOException, FontFormatException {
         this.menuFrame = menuFrame;
 
-        int COL         = (INITIAL_WIDTH * 22 / 100) - 10;
-        int C_GAP       = (INITIAL_WIDTH * 28 / 100) - 10;
-        int ROW_INFO    = (INITIAL_HEIGHT * 33 / 100) - 10;
-        int ROW         = (INITIAL_HEIGHT * 10 / 100) - 10;
-        int R_GAP       = (INITIAL_HEIGHT * 2) / 100;
+        int COL = (INITIAL_WIDTH * 22 / 100) - 10;
+        int C_GAP = (INITIAL_WIDTH * 28 / 100) - 10;
+        int ROW_INFO = (INITIAL_HEIGHT * 33 / 100) - 10;
+        int ROW = (INITIAL_HEIGHT * 10 / 100) - 10;
+        int R_GAP = (INITIAL_HEIGHT * 2) / 100;
         menuLayout = new GridBagLayout();
-        menuLayout.columnWidths = new int[] {C_GAP, COL, COL, C_GAP};
-        menuLayout.rowHeights = new int[] {ROW_INFO, R_GAP, ROW, R_GAP, ROW, R_GAP, ROW, R_GAP, ROW, ROW};
+        menuLayout.columnWidths = new int[]{C_GAP, COL, COL, C_GAP};
+        menuLayout.rowHeights = new int[]{ROW_INFO, R_GAP, ROW, R_GAP, ROW, R_GAP, ROW, R_GAP, ROW, ROW};
         constraints = new GridBagConstraints();
 
         menuPanel = new CustomPanel(ImageLoader.getImage(ImageLoader.STARTMENU_BG));
@@ -120,9 +121,10 @@ public class MenuOptions {
 
     /**
      * Legt Größe und Position der Components fest
-     * @param comp Ein Swing Component, welcher in constraints embedded werden soll.
-     * @param gridx X-Position auf der X-Achse
-     * @param gridy Y-Position auf der Y-Achse
+     *
+     * @param comp      Ein Swing Component, welcher in constraints embedded werden soll.
+     * @param gridx     X-Position auf der X-Achse
+     * @param gridy     Y-Position auf der Y-Achse
      * @param gridwidth Breite des Components
      */
     private void makeConstraints(JComponent comp, int gridx, int gridy, int gridwidth) {

@@ -269,9 +269,7 @@ public abstract class Com_base {
                     int x = Integer.parseInt(message[1]);
                     int y = Integer.parseInt(message[2]);
 
-                    int hit = 0;
-
-                    hit = pf.isShot(x, y);
+                    int hit = pf.isShot(x, y);
 
                     if (hit == 0) {
                         setMyTurn(true);
