@@ -175,6 +175,8 @@ public abstract class Com_base {
         try {
             this.SocketActive = false;
             this.socket.shutdownOutput();
+            this.socket.shutdownInput();
+            this.socket.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

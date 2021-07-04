@@ -401,6 +401,9 @@ public class SpielWindow extends JPanel {
             size4 = 1;
             size5 = 1;
             sumofships = 4;
+            if(this.Online != null){
+                this.Online.KillSocket();
+            }
             // Create MenuMain and display it
             try {
                 new MenuStart();
