@@ -184,7 +184,7 @@ public class SpielWindow extends JPanel {
             } catch (Exception exception) {
                 exception.printStackTrace();
             }
-            if(!Online.myTurn && !Online.pf.gameover()){
+            if(!Online.myTurn && !Online.pf.gameover() && Online.SocketActive){
                 Thread t1 = new Thread(new Runnable() {
                     public void run()
                     {
@@ -200,7 +200,7 @@ public class SpielWindow extends JPanel {
                     }});
                 t1.start();
             }
-            else if(onlineCom && Online.myTurn && !Online.pf.gameover()){
+            else if(onlineCom && Online.myTurn && !Online.pf.gameover() && Online.SocketActive){
                 int[] hold = new int[0];
                 try {
                     hold = Online.getComPl().doNextShot();

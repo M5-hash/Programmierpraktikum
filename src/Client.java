@@ -1,5 +1,6 @@
 package src;
 
+import javax.swing.*;
 import java.lang.Thread;
 import java.net.*;
 import java.io.*;
@@ -9,8 +10,8 @@ public class Client extends Com_base {
 
     private final String IP;
 
-    public Client(String IP_in) throws Exception {
-        super();
+    public Client(String IP_in, JFrame loadScreen) throws Exception {
+        super(loadScreen);
         this.role_server = false;
         this.IP = IP_in;
         this.s = new Socket(this.IP, this.port);

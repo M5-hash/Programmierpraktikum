@@ -1,5 +1,6 @@
 package src;
 
+import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Writer;
@@ -23,13 +24,17 @@ public abstract class Com_base {
     protected boolean loopBreaker;
     private SpielWindow frame;
     protected boolean loaded;
+    protected boolean SocketActive;
+    protected JFrame loadScreen;
 
 
-    public Com_base() {
+    public Com_base(JFrame loadScreen) {
         this.port = 50000;
         this.setup = false;
         this.loopBreaker = false;
         this.loaded = false;
+        this.SocketActive = true;
+        this.loadScreen = loadScreen;
     }
 
     public void setTurn(boolean in) {
@@ -75,6 +80,7 @@ public abstract class Com_base {
 
     public void KillSocket() {
         try {
+            this.SocketActive = false;
             this.s.shutdownOutput();
         } catch (IOException e) {
             e.printStackTrace();
@@ -99,7 +105,13 @@ public abstract class Com_base {
 
     public boolean in_check(){
         try {
-            this.line = this.in.readLine();
+            if(this.SocketActive) {
+                try {
+                    this.line = this.in.readLine();
+                }catch(SocketException i){
+                    this.SocketActive = false;
+                }
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -166,6 +178,7 @@ public abstract class Com_base {
             }else {
                 pf.saveGame(Long.parseLong(holder[1]));
             }
+            KillSocket();
         } else if (holder[0].equals("ready")) {
             myTurn = true;
         } else if (holder[0].equals("pass")) {

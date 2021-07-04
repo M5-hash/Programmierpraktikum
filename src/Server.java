@@ -11,8 +11,8 @@ public class Server extends Com_base {
     private ServerSocket ss;
 
 
-    public Server(int in_size, String in_ships) throws Exception {
-        super();
+    public Server(int in_size, String in_ships, JFrame loadScreen) throws Exception {
+        super(loadScreen);
         this.role_server = true;
         this.ss = new ServerSocket(this.port);
         this.s = this.ss.accept();
