@@ -30,7 +30,7 @@ public class Server extends Com_base {
      * @param fieldSize      Größe des Spielfelds
      * @param availableShips String der Schiffsgrößen getrennt durch Leerzeichen enthält
      */
-    public Server(int fieldSize, String availableShips){
+    public Server(int fieldSize, String availableShips) {
         super();
         this.RoleServer = true;
 
@@ -41,13 +41,18 @@ public class Server extends Com_base {
             this.in = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
             this.out = new OutputStreamWriter(this.socket.getOutputStream());
             this.pf = setupPlayingfield(fieldSize, availableShips);
-            if (config.onlineCom && this.comPl == null) {this.comPl = new ComPlayerNormal(this.pf);}
+            if (config.onlineCom && this.comPl == null) {
+                this.comPl = new ComPlayerNormal(this.pf);
+            }
             config.fieldsize = this.pf.getField().length;
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Connection konnte nicht hergestellt werden");
-            try {TimeUnit.SECONDS.sleep(5); }
-            catch (InterruptedException interruptedException){interruptedException.printStackTrace();}
+            try {
+                TimeUnit.SECONDS.sleep(5);
+            } catch (InterruptedException interruptedException) {
+                interruptedException.printStackTrace();
+            }
             System.exit(1);
         }
     }
@@ -55,54 +60,68 @@ public class Server extends Com_base {
     /**
      * Setzt das Playingfield des neuen oder geladenen Spiels auf
      * Sendet entsprechende Befehle an den Client, damit dieser sein eigenes Playingfield aufsetzen kann
+     *
      * Bei Problemen beim Aufsetzen von Spielfeld oder ComPlayer, wird eine Fehlermeldung ausgegeben und das Spiel nach
      * kurzer Zeit beendet
      *
-     * @param fieldSize         Größe des Spielfelds
-     * @param availableShips    String der Schiffsgrößen getrennt durch Leerzeichen enthält
-     * @return                  gibt ein geladenes oder neu erstelltes Playingfield zurück
+     * @param fieldSize      Größe des Spielfelds
+     * @param availableShips String der Schiffsgrößen getrennt durch Leerzeichen enthält
+     * @return gibt ein geladenes oder neu erstelltes Playingfield zurück
      */
     protected PlayingField setupPlayingfield(int fieldSize, String availableShips) {
         PlayingField pf_holder = null;
-        try{
-        if (!config.filepath.equals("")) {
-            if (config.onlineCom) {
-                this.comPl = new ComPlayerNormal(config.filepath);
-                pf_holder = this.comPl.getPlayingField();
+        try {
+            if (!config.filepath.equals("")) {
+                if (config.onlineCom) {
+                    this.comPl = new ComPlayerNormal(config.filepath);
+                    pf_holder = this.comPl.getPlayingField();
+                } else {
+                    pf_holder = new PlayingField();
+                    pf_holder.loadGame(config.filepath);
+                }
+                TimeUnit.MILLISECONDS.sleep(100);
+                this.loaded = true;
+                setMyTurn(true);
+                this.Send("load " + pf_holder.getFilenameLongID(config.filepath));
+                setMyTurn(true);
+                if (ReceiveCheckedInputStream().equals("done")) {
+                    TimeUnit.MILLISECONDS.sleep(100);
+                    setMyTurn(true);
+                    Send("ready");
+                }
             } else {
-                pf_holder = new PlayingField();
-                pf_holder.loadGame(config.filepath);
-            }
-            TimeUnit.MILLISECONDS.sleep(100);
-            this.loaded = true;
-            setMyTurn(true);
-            this.Send("load " + pf_holder.getFilenameLongID(config.filepath));
-            setMyTurn(true);
-        } else {
-            pf_holder = new PlayingField(fieldSize, ParseStringArrayToIntArray(availableShips.split(" "), 0), RoleServer);
-            TimeUnit.MILLISECONDS.sleep(100);
-
-            setMyTurn(true);
-            Send("size " + fieldSize);
-
-            if (ReceiveCheckedInputStream().equals("done")) {
+                pf_holder = new PlayingField(fieldSize, ParseStringArrayToIntArray(availableShips.split(" "), 0), RoleServer);
+                TimeUnit.MILLISECONDS.sleep(100);
 
                 setMyTurn(true);
-                Send("ships " + availableShips);
+                Send("size " + fieldSize);
+
+                if (ReceiveCheckedInputStream().equals("done")) {
+
+                    setMyTurn(true);
+                    Send("ships " + availableShips);
+                }
+
+
+                if (ReceiveCheckedInputStream().equals("done")) {
+
+                    setMyTurn(true);
+                    Send("ready");
+                }
+                if (ReceiveCheckedInputStream().equals("ready")) ;
+
+
+                this.myTurn = true;
             }
-
-
-            if (ReceiveCheckedInputStream().equals("done")) {
-
-                setMyTurn(true);
-                Send("ready");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Es gab ein Fehler! Bitte neustarten.");
+            try {
+                TimeUnit.SECONDS.sleep(5);
+            } catch (InterruptedException interruptedException) {
+                interruptedException.printStackTrace();
             }
-            if (ReceiveCheckedInputStream().equals("ready")) ;
-
-
-            this.myTurn = true;
-        }}
-        catch(Exception e){JOptionPane.showMessageDialog(null, "Es gab ein Fehler! Bitte neustarten.");}
+            System.exit(1);
+        }
 
         return pf_holder;
     }
