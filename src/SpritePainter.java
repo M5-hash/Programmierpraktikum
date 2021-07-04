@@ -1,6 +1,6 @@
 package src;
 
-import javax.swing.Timer;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -29,11 +29,11 @@ public class SpritePainter {
      * BufferImage ArrayList, welche die bereits umgefärbten Bilddateien Zwischenspeichert, sodass diese nicht erneut
      * bearbeitet werden müssen, sondern einfach ausgelesen werden könne
      */
-    static ArrayList<BufferedImage> Finished = new ArrayList<>();              // Zwischenspeicher für bereits geladene Bilder
+    static ArrayList<BufferedImage> Finished = new ArrayList<>();
     /**
      * String ArrayList, welche die Quellen der bereits bearbeiteten Bilder speichert
      */
-    static ArrayList<String> Loaded = new ArrayList<>();                       // Speichert als String die Quellen der bereits geladenen Bilder ab
+    static ArrayList<String> Loaded = new ArrayList<>();
     /**
      * Gibt an, ob das momentan gewählte Schiff dort platziert werden könnte
      */
@@ -71,7 +71,7 @@ public class SpritePainter {
      * Preview angezeigt werden
      */
     int[][] Vorhersage = new int[fieldsize][fieldsize];
-    /**
+    /*
      * Haenle seine Tabelle
      * <p>
      * 0 = Wasser
@@ -82,18 +82,20 @@ public class SpritePainter {
      * 5 = Wasser abgeschossen
      */
 
+    /**
+     * Zwischenspeicher für die Ausrichtung der Schiffstücke
+     */
     private int[][] BugHeckMeck = new int[fieldsize][fieldsize];
 
 
     /**
-     * @param Feldvon       int gibt an für wenn die Schiffe gezeichnet werden
-     *                      0 = Spieler
-     *                      1 = Computer Gegner
-     *                      2 = OnlineGegners / Menschlicher Gegner
-     *                      4 = Feld wird verwendet um das setzen des Spieler besser darzustellen
-     *
-     * @param frame         SpielWindow Object erlaubt es dem Tile auf andere Elemente zuzugreifen
-     * @param playingField  Spielfeld Object enthält alle Informationen von dem, was hier gezeichnet werden muss
+     * @param Feldvon      int gibt an für wenn die Schiffe gezeichnet werden
+     *                     0 = Spieler
+     *                     1 = Computer Gegner
+     *                     2 = OnlineGegners / Menschlicher Gegner
+     *                     4 = Feld wird verwendet um das setzen des Spieler besser darzustellen
+     * @param frame        SpielWindow Object erlaubt es dem Tile auf andere Elemente zuzugreifen
+     * @param playingField Spielfeld Object enthält alle Informationen von dem, was hier gezeichnet werden muss
      */
     public SpritePainter(int Feldvon, SpielWindow frame, PlayingField playingField) {
 
@@ -108,8 +110,8 @@ public class SpritePainter {
 
     /**
      * @param Schiffdir String wird verwendet um die spezifischen Bilder zu identifizieren
-     * @return  int gibt die Stelle in der Liste zurück, wo sich das gewünschte Bild befindet
-     *          -1 falls es sich noch nicht in der Liste befindet
+     * @return int gibt die Stelle in der Liste zurück, wo sich das gewünschte Bild befindet
+     * -1 falls es sich noch nicht in der Liste befindet
      */
     static int fetchImg(String Schiffdir) {
         if (counter > 0) {                                                        // Macht sicher, dass die zuladende Datei auch eine neue Datei ist. Falls die Datei schon einmal geladen wurde, wurde Sie gespeichert
@@ -220,7 +222,7 @@ public class SpritePainter {
                     Pokemon[i][j] = pf.getField()[i][j];
                 } else if (Pokemon[i][j] == 0 && pf.getField()[i][j] == 3) {
                     Pokemon[i][j] = -1;
-                }  else if (pf.getField()[i][j] == 2) {
+                } else if (pf.getField()[i][j] == 2) {
                     Pokemon[i][j] = -5;
                 } else if (Pokemon[i][j] == -2) {
                     Pokemon[i][j] = -3;
@@ -321,7 +323,6 @@ public class SpritePainter {
         }
 
 
-
     }
 
     /**
@@ -392,7 +393,7 @@ public class SpritePainter {
                     //Wenn das Schiff getroffen wurde, dann ist das Array an der Stelle entweder 1 (Teil getroffen
                     // aber Schiff gibt es noch) oder 2 (Teil und gesamtes Schiff zerstört)
                     IsHit = pf.getField()[y][x] == 1 || pf.getField()[y][x] == 2;
-                    if(pf.getField()[y][x] == 5){
+                    if (pf.getField()[y][x] == 5) {
 
                         BufferedImage dummyImg = Bild.BildLoader("src/Images/WaterHitCircle.png");
 
@@ -448,8 +449,7 @@ public class SpritePainter {
 
                         default:
                             System.out.println(dummy[y][x]);
-                            System.out.println("Gamer, dass ist aber dick nicht Gut mein bester, das sollte nämlich nicht gehen");
-                            System.out.println("Es gibt also einen Fehler in der Schiffteil Methode");
+                            System.out.println("Das hätte jetzt aber nicht passieren sollen");
 
                     }
 
@@ -619,7 +619,7 @@ public class SpritePainter {
 
     /**
      * @param g Graphic Object
-     *
+     *          <p>
      *          Zeichnet das jeweilige Pokemon an der passenden Stelle im Spielfeld, das jeweilige Pokemon und deren
      *          Position wird durch updatePokemon vorgegeben
      */
@@ -720,7 +720,6 @@ public class SpritePainter {
                                         (y * TileSize.Tile_Size + SizeofBorder),
                                         TileSize.Tile_Size,
                                         TileSize.Tile_Size, null);
-
 
 
                             }
