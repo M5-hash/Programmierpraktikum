@@ -52,15 +52,15 @@ public class Client extends Com_base {
     protected PlayingField setupPlayingfield() throws Exception {
         PlayingField pf_holder;
 
-        String[] in_size = loopCheckIN(false).split(" ");
+        String[] in_size = ReceiveCheckedInputStream().split(" ");
 
         if (in_size[0].equals("size")) {
             config.fieldsize = Integer.parseInt(in_size[1]);
-            setTurn(true);
+            setMyTurn(true);
             Send("done");
 
 
-            String[] in_ships_Str = loopCheckIN(false).split(" ");
+            String[] in_ships_Str = ReceiveCheckedInputStream().split(" ");
             int[] ships_int_arr = ship_array_toInt(in_ships_Str, 1);
             config.size2 = 0;
             config.size3 = 0;
@@ -75,12 +75,12 @@ public class Client extends Com_base {
             }
             pf_holder = new PlayingField(Integer.parseInt(in_size[1]), ships_int_arr, role_server);
 
-            setTurn(true);
+            setMyTurn(true);
             Send("done");
 
-            if (loopCheckIN(false).equals("ready")) {
+            if (ReceiveCheckedInputStream().equals("ready")) {
 
-                setTurn(true);
+                setMyTurn(true);
                 Send("ready");
             }
         }

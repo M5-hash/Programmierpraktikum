@@ -184,11 +184,11 @@ public class SpielWindow extends JPanel {
         dummybutton.addActionListener(e -> {
 
             try {
-                Online.message_check();
+                Online.NetworkProtocol();
             } catch (Exception exception) {
                 exception.printStackTrace();
             }
-            if(!Online.isMyTurn() && !Online.getPf().gameover() && Online.SocketActive){
+            if(!Online.getMyTurn() && !Online.getPf().gameover() && Online.SocketActive){
                 Thread t1 = new Thread(() -> {
                     try {
                         TimeUnit.MILLISECONDS.sleep(100);
@@ -200,7 +200,7 @@ public class SpielWindow extends JPanel {
                 });
                 t1.start();
             }
-            else if(onlineCom && Online.isMyTurn() && !Online.getPf().gameover() && Online.SocketActive){
+            else if(onlineCom && Online.getMyTurn() && !Online.getPf().gameover() && Online.SocketActive){
                 int[] hold = new int[0];
                 try {
                     hold = Online.getComPl().doNextShot();
@@ -214,8 +214,7 @@ public class SpielWindow extends JPanel {
                 }
                 tile2.setPosX(hold[0]);
                 tile2.setPosY(hold[1]);
-                Online.setLastX(hold[0]);
-                Online.setLastY(hold[1]);
+                Online.setLastXY(hold[0], hold[1]);
                 Online.Send("shot " + hold[0] + " " + hold[1]);
 
                 try {
@@ -436,8 +435,7 @@ public class SpielWindow extends JPanel {
                 }
                 tile2.setPosX(hold[0]);
                 tile2.setPosY(hold[1]);
-                Online.setLastX(hold[0]);
-                Online.setLastY(hold[1]);
+                Online.setLastXY(hold[0], hold[1]);
                 Online.Send("shot " + hold[0] + " " + hold[1]);
                 try {
 

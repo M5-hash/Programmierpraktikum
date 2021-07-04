@@ -110,7 +110,7 @@ public class TilePainter extends JPanel implements MouseMotionListener {
                                         }
 
                                     } else{
-                                    if (field == 2 && frame.Online.isMyTurn()) {
+                                    if (field == 2 && frame.Online.getMyTurn()) {
 
                                         OnlineMausklick();
                                     }}
@@ -233,7 +233,7 @@ public class TilePainter extends JPanel implements MouseMotionListener {
 
         System.out.println("shot " + xString + yString);
 
-        frame.Online.setXY(PosX, PosY);
+        frame.Online.setLastXY(PosX, PosY);
         try {
             frame.Online.Send("shot " + xString + yString);
             frame.dummybutton.doClick();
