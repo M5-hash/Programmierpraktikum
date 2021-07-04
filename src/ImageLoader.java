@@ -5,6 +5,9 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * Imageloader dient zum Laden der Grafiken des Hauptmenü
+ */
 public class ImageLoader {
 
     public static final int STARTMENU_BG = 0;

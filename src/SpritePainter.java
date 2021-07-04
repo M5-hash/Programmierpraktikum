@@ -21,18 +21,55 @@ import static src.config.selectedTheme;
 public class SpritePainter {
 
 
-    public static boolean ready = false;
+    /**
+     * Gibt die Position in der Liste für die Bilddateien und Strings an
+     */
     public static int counter;
+    /**
+     * BufferImage ArrayList, welche die bereits umgefärbten Bilddateien Zwischenspeichert, sodass diese nicht erneut
+     * bearbeitet werden müssen, sondern einfach ausgelesen werden könne
+     */
     static ArrayList<BufferedImage> Finished = new ArrayList<>();              // Zwischenspeicher für bereits geladene Bilder
+    /**
+     * String ArrayList, welche die Quellen der bereits bearbeiteten Bilder speichert
+     */
     static ArrayList<String> Loaded = new ArrayList<>();                       // Speichert als String die Quellen der bereits geladenen Bilder ab
+    /**
+     * Gibt an, ob das momentan gewählte Schiff dort platziert werden könnte
+     */
     static boolean fits = true;
+    /**
+     * Bildloader, der es ermöglicht Bilder zu laden
+     */
     static Bildloader Bild = new Bildloader();
+    /**
+     * Zwischenspeicher, welcher angibt welches Pokemon sich an welcher Stelle befindet
+     */
     int[][] Pokemon = new int[field_size][field_size];
+    /**
+     * Gibt an für welches Spielfeld die SpritePainter die Sprites darstellt
+     */
     int fieldof;
+    /**
+     * Spielwindow für welches diese Klasse darstellt
+     */
     SpielWindow frame;
+    /**
+     * PlayingField, welches diese Klasse darstellt
+     */
     PlayingField pf;
+    /**
+     * die, das Quellbild des Pokemons verschiebt, sodass das Pokemon animiert dargestellt wird
+     */
     int addnumber;
+    /**
+     * Gibt an, ob das Schiff an dieser Stelle getroffen ist
+     */
     boolean IsHit = false;
+    /**
+     * Zwischenspeicher für die Vorhersage, sodass klar ist welche Schiffe wirklich gesetzt sind und welche nur als
+     * Preview angezeigt werden
+     */
     int[][] Vorhersage = new int[fieldsize][fieldsize];
     /**
      * Haenle seine Tabelle
@@ -284,8 +321,6 @@ public class SpritePainter {
         }
 
 
-        ready = true;
-
 
     }
 
@@ -415,7 +450,6 @@ public class SpritePainter {
                             System.out.println(dummy[y][x]);
                             System.out.println("Gamer, dass ist aber dick nicht Gut mein bester, das sollte nämlich nicht gehen");
                             System.out.println("Es gibt also einen Fehler in der Schiffteil Methode");
-                            Schiffdir = "src/Images/PokeTest32.jpg";
 
                     }
 

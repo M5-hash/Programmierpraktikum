@@ -11,15 +11,41 @@ import static src.config.*;
  * Startmenü des Spiels
  */
 public class MenuStart {
-
+    /**
+     * Constraints für das GridbagLayout
+     */
     GridBagConstraints  constraints;
+    /**
+     * GridBaglayout der Optionen
+     */
     GridBagLayout       menuLayout;
+    /**
+     * Öffnet das Singleplayermenü
+     */
     JButton             buttonMenuSingleplayer;
+    /**
+     * Öffnet das Multiplayermenü
+     */
     JButton             buttonMenuMultiplayer;
+    /**
+     * Öffnet die Optionen
+     */
     JButton             buttonMenuOptions;
+    /**
+     * Button um das Spiel zu schließen
+     */
     JButton             buttonQuitGame;
+    /**
+     * Transparentes Panel um die Gräße der Buttons anzupassen
+     */
     JPanel              menuFiller;
+    /**
+     * Panel auf dem die Components hinzugefügt werden
+     */
     JPanel              menuPanel;
+    /**
+     * Frame des Menü
+     */
     JFrame              menuFrame;
 
     /**
